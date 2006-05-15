@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+      "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Clipboard operations for the Web</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://www.w3.org/StyleSheets/base.css">
+</head>
+
+<body lang="en">
+
+<div class="head">
+<a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home"
+alt="W3C" height="48" width="72"></a>
+
+<h1 id="title">Clipboard Operations for the Web 1.0</h1>
+
+<h2>Editors' Draft 15 May 2006</h2>
+<dl>
+  <dt>This version:</dt>
+    <dd><a
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1</a></dd>
+  <dt>Latest Editors' version:</dt>
+    <dd><a
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html">http://dev.w3.org/cvsweb/2006//webapi/clipops/clipops.html</a></dd>
+  <dt>Previous version:</dt>
+    <dd>This is the first version</dd>
+  <dt>Editors:</dt>
+    <dd><a href="http://www.bitd.clrc.ac.uk/Person/A.J.Miles">Charles
+      McCathieNevile</a>, <a href="http://www.opera.com/">Opera
+    Software</a></dd>
+    <dd>Doug Schepers, Vectoreal</dd>
+</dl>
+
+<p class="copyright"><a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>
+© 2006 <a href="http://www.w3.org/"><acronym
+title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a
+href="http://www.csail.mit.edu/"><acronym
+title="Massachusetts Institute of Technology">MIT</acronym></a>, <a
+href="http://www.ercim.org/"><acronym
+title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>,
+<a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+<a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>
+and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document
+use</a> rules apply.</p>
+<hr>
+</div>
+
+<div>
+<h2 class="notoc"><a id="abstract" name="abstract">Abstract</a></h2>
+
+<p>This document describes how to do clipboard operations such as copy and
+paste or drag and drop in web applications.</p>
+</div>
+<hr>
+
+<div>
+<h2 id="Status">Status of this Document</h2>
+
+<p><em>This section describes the status of this document at the time of its
+publication. Other documents may supersede this document. A list of current
+W3C publications and the latest revision of this technical report can be
+found in the <a href="http://www.w3.org/TR/">W3C technical reports index</a>
+at http://www.w3.org/TR/.</em></p>
+
+<p>This document is in preparation as a draft for the Web API group, part of
+the Rich Web Client Activity. Currently it is a total mess, and needs serious
+work before it is useful.</p>
+
+<p>This document is an initial editors' draft published to solicit comments
+from interested parties. All comments are welcome and may be sent to <a
+href="mailto:public-webapi@w3.org">public-webapi@w3.org</a>. All messages
+received at this address are viewable in a <a
+href="http://lists.w3.org/Archives/Public/public-webapi/">public archive</a>.
+After reviewing comments and further feedback, the Working Group intends to
+publish a First Public Working Draft of this document in June 2006.</p>
+
+<p>This document was produced by a group operating under the <a
+href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004
+W3C Patent Policy</a>. W3C has a <a
+href="http://www.w3.org/2004/01/pp-impl/35495/status">public list of any
+patent disclosures</a> made in connection with the deliverables of the Web
+API Working Group; that page also includes instructions for disclosing a
+patent.</p>
+
+<p>Publication as an Editors' Draft does not imply endorsement by the working
+group or the W3C Membership. This is a draft document and may be updated,
+replaced or obsoleted by other documents at any time. It is inappropriate to
+cite this document as other than work in progress.</p>
+</div>
+
+<div>
+<h2 id="Contents">Table of Contents</h2>
+
+<div class="toc">
+<ul>
+  <li><a href="#secintro">Introduction</a></li>
+  <li><a href="#Cases">Use Cases and Requirements</a></li>
+  <li><a href="#Conformanc">Conformance</a></li>
+  <li><a href="#Security">Security issues</a></li>
+  <li><a href="#Select">Select, Cut, Copy, Paste</a></li>
+  <li><a href="#drag-and-drop">Drag and drop processing</a></li>
+  <li><a href="#Extensibil">Extensibility</a></li>
+  <li><a href="#References">References</a></li>
+  <li><a href="#Acknowledg">Acknowledgements</a></li>
+</ul>
+</div>
+</div>
+
+<div>
+
+<div>
+<h2 id="secintro">Introduction</h2>
+
+<p>This specification defines an event-based "drag-and-drop" mechanism.
+Conceptually, this is in fact a copy-and-paste operation, where a user can
+select an object, move the object to some other object, and "paste" it to
+another object which can decide how to deal with it. Additionally, when an
+object is selected as a potential target for dropping the object, it may
+provide feedback to the user, for example whether it is possible to drop
+objects on at all.</p>
+
+<p>A common interface design in the traditional WIMP interface is to move the
+pointer to an icon or to a highlighted selection, press the mouse key and
+drag a copy of the icon to the target where s/he wants to drop the object,
+then release the mouse key. There are, of course, many alternatives. In a
+graphic user interface without a mouse a user might select an object for
+dragging through a context menu, navigate to another object through standard
+navigation, and then select to drop the held object.</p>
+
+<p>However it is implemented in an interface, drag and drop operations must
+have a starting point (e.g. where the mouse was clicked, or the start of
+<span><a
+href="http://whatwg.org/specs/web-apps/current-work/#a-selection">the
+selection</a></span> or element that was selected for the drag), may have any
+number of intermediate steps (elements that the mouse moves over during a
+drag, or elements that the user picks as possible drop points as he cycles
+through possibilities), and must either have an end point (the element above
+which the mouse button was released, or the element that was finally
+selected), or be canceled. The end point must be the last element selected as
+a possible drop point before the drop occurs (so if the operation is not
+canceled, there must be at least one element in the middle step).</p>
+</div>
+
+<div>
+<h2 id="Cases">Use Cases and Requirements</h2>
+
+<p>There are many use cases for being able to change the default clipboard
+operations (cut/copy/paste, and the related drag-and-drop). Some samples
+which are used to motivate the present work are as follows:</p>
+
+<p>With content such as mathematics, simply copying rendered text and pasting
+it intoo another application generally leads to most of the semantics being
+lost. @@example 2^x = 7 is not the same as 2x = 7.</p>
+
+<p>Similarly, when copying text which contains hyperlinks or other structure,
+it is often useful to be able to reformat the content to preserve important
+information.</p>
+
+<p>And in order to make web applicaitons which allow the manipulation of rich
+text, or of graphic content such as SVG, it is useful to provide a mechanism
+that allows for copying more than just the rendered content.</p>
+
+<p>Allowing for interfaces that use a thumbnail image to refer to a block of
+content, which can then be dragged to insert the block of content represented
+in another part of a web page. The common Drag-and-drop pardigm must be
+implementable in such a way that it is accessible to users who are unable to
+use a mouse and ust rely on keyboard or other interfaces.</p>
+</div>
+
+<div>
+<h2 id="Conformanc">Conformance</h2>
+
+<p>The terms must, should, may, must not, should not, are used in this
+document in accordance with [RFC2119]. A conformant implementation of this
+specification meets all the requirements identified by the use of these
+terms.</p>
+</div>
+
+<div>
+<h2 id="Security">Security and usability issues</h2>
+
+<p>Enabling authors to change what is copied by a user, or to make an
+automated copy of something that was never selected and allowing unrestricted
+calls to paste information can raise various security concerns, especially if
+these operations are allowed to transfer data across documents from different
+sources. On the other hand, as the use cases demonstrate, there are valid
+reasons for allowing this in the right circumstances.</p>
+
+<p>An example scenario of a problem is where a user selects a link and copies
+it, but a different link is copied to the clipboard. The effect of this can
+range from an unexpected result on pasting to an attempted "phishing"
+attack.</p>
+
+<p>Authors should of course be aware that User Agents will typically restrict
+what is possible to content they consider "safe", or trusted by the user.</p>
+
+<p>Implementors should carefully consider the security implications of
+implementing this specification, and provide appropriate protection for users
+against malicious use, such as restricting access to the functionalities
+according to how trusted the source of a call is, or informing the user when
+something other than rendered content is copied to the clipboard.</p>
+</div>
+
+<div>
+<h2 id="Select">Select, Cut, Copy, Paste</h2>
+
+<p>In principle these are well-understood. So they need to be well-specified.
+There are events fired during selection, cut/copy and paste in some systems
+already which can be captured, cancelled, and whose effects can be
+overwritten. In particular, what is copied to the clipboard may be the
+rendered content that is selected, or may be some other modified version.
+(See security implications and annoying the user).</p>
+
+<p>Should a cut copy even if cutting is not allowed?</p>
+
+<p>When pasting an element, it may be rejected by the selected target. In
+that case it remains on the clipboard.</p>
+
+<p>@@Todo: Write this into proper implementable stuff</p>
+</div>
+</div>
+
+<div>
+<h2 id="drag-and-drop">Drag and drop processing</h2>
+
+<p>Drag and drop is essentially a special case of a cut or copy, moving to
+select some new target, and then a paste operation, which is implemented for
+mouse-based devices. There are events and interfaces defined in some systems
+for drag and drop as if it were a totally seperate set of operations - these
+events should trigger the relevant clipboard operations. There is a bunch of
+documentation of these things, and what they fire, in [WHAT-WA] and
+[SCCP].</p>
+
+<p>@@Todo: Write this into proper implementable stuff</p>
+</div>
+
+<h2><a name="Extensibil" id="Extensibil">Extensibility</a></h2>
+
+<p>Don't extend this yet, we haven't even specified it. Thanks!!!</p>
+
+<div>
+<h2 id="References">References</h2>
+
+<p>@@Todo: Seperate into normative and Informative when these are proper
+useful references</p>
+<dl>
+  <dt>[MDD] Microsoft Drag and Drop</dt>
+    <dd>Microsoft's stuff on the DnD idea</dd>
+  <dt>[<a name="RFC2119" id="RFC2119">RFC2119</a>] Must should may
+  (normative)</dt>
+    <dd>The spec for how to use english as if it were a technical
+    language...</dd>
+  <dt>Select Cut, Copy Paste</dt>
+    <dd>Microsoft documentation of the Cut, Copy, Paste, Select events.</dd>
+  <dt>[SCPS] Safe Copy and Paste</dt>
+    <dd>Paul Libbrecht</dd>
+  <dt>[<a name="WHAT-WA" id="WHAT-WA">WHAT-WA</a>]</dt>
+    <dd>Web Applications 1.0 Working Draft, I Hickson ed.</dd>
+</dl>
+</div>
+
+<div>
+<h2 id="Acknowledg">Acknowledgements</h2>
+
+<p>This section is informative</p>
+
+<p>The editors would like to acknowledge their intellectual debt to the
+documentation of Copy and Paste and Drag and Drop functionalities from
+Microsoft, the draft specification of them from the WHAT Working Group
+published as part of their draft "Web Applications 1.0", and the draft "safe
+copy and paste" from Paul Libbrecht. They would also like to acknowledge the
+contributions made by the following:</p>
+
+<p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
+Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
+Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
+Sucan, Tom Wlokowski</p>
+</div>
+
+<p></p>
+</body>
+</html>
