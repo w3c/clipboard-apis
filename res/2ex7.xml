@@ -2,7 +2,7 @@
 <?xml-stylesheet href="mml.css" type="text/css"?>
 <!DOCTYPE math PUBLIC "-//W3C//DTD MathML 2.0//EN"
       "http://www.w3.org/TR/MathML2/dtd/mathml2.dtd"
-    [<!ENTITY InvisibleTimes "&x2062;">]>
+    [<!ENTITY InvisibleTimes "&#x2062;">]>
 <!-- Created by amaya 9.51, see http://www.w3.org/Amaya/ -->
 <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
