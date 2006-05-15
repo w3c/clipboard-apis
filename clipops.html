@@ -4,8 +4,11 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>Clipboard operations for the Web</title>
+  <style type="text/css">
+
+.example {border:  2px double Grey; padding-left: 2em}</style>
   <link rel="stylesheet" type="text/css"
-  href="http://www.w3.org/StyleSheets/base.css">
+  href="http://www.w3.org/StyleSheets/TR/base.css">
 </head>
 
 <body lang="en">
@@ -20,12 +23,13 @@ alt="W3C" height="48" width="72"></a>
 <dl>
   <dt>This version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2</a></dd>
   <dt>Latest Editors' version:</dt>
     <dd><a
       href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html">http://dev.w3.org/cvsweb/2006//webapi/clipops/clipops.html</a></dd>
-  <dt>Previous version:</dt>
-    <dd>This is the first version</dd>
+  <dt>Previous Editors' version:</dt>
+    <dd><a
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1</a></dd>
   <dt>Editors:</dt>
     <dd><a href="http://www.bitd.clrc.ac.uk/Person/A.J.Miles">Charles
       McCathieNevile</a>, <a href="http://www.opera.com/">Opera
@@ -54,7 +58,8 @@ use</a> rules apply.</p>
 <h2 class="notoc"><a id="abstract" name="abstract">Abstract</a></h2>
 
 <p>This document describes how to do clipboard operations such as copy and
-paste or drag and drop in web applications.</p>
+paste and drag and drop (and the relationship between the two) in web
+applications.</p>
 </div>
 <hr>
 
@@ -116,13 +121,15 @@ cite this document as other than work in progress.</p>
 <div>
 <h2 id="secintro">Introduction</h2>
 
-<p>This specification defines an event-based "drag-and-drop" mechanism.
-Conceptually, this is in fact a copy-and-paste operation, where a user can
-select an object, move the object to some other object, and "paste" it to
-another object which can decide how to deal with it. Additionally, when an
-object is selected as a potential target for dropping the object, it may
-provide feedback to the user, for example whether it is possible to drop
-objects on at all.</p>
+<p>This specification defines the common clipboard operations of cutting,
+copying and pasting, in such a way that they are exposed to Web Applications
+and can be adapted to provide advanced functionalities. Its goal is to
+provide for compatibility where possible with existing implmentations.</p>
+
+<p>Recognising that "drag and drop" operations are essentially a common User
+Interface implementation of cut or copy, move, and paste, it also defines how
+the events currently implemented for "drag and drop" operations relate to the
+less device-specific approach of the general clipboard operations.</p>
 
 <p>A common interface design in the traditional WIMP interface is to move the
 pointer to an icon or to a highlighted selection, press the mouse key and
@@ -131,19 +138,6 @@ then release the mouse key. There are, of course, many alternatives. In a
 graphic user interface without a mouse a user might select an object for
 dragging through a context menu, navigate to another object through standard
 navigation, and then select to drop the held object.</p>
-
-<p>However it is implemented in an interface, drag and drop operations must
-have a starting point (e.g. where the mouse was clicked, or the start of
-<span><a
-href="http://whatwg.org/specs/web-apps/current-work/#a-selection">the
-selection</a></span> or element that was selected for the drag), may have any
-number of intermediate steps (elements that the mouse moves over during a
-drag, or elements that the user picks as possible drop points as he cycles
-through possibilities), and must either have an end point (the element above
-which the mouse button was released, or the element that was finally
-selected), or be canceled. The end point must be the last element selected as
-a possible drop point before the drop occurs (so if the operation is not
-canceled, there must be at least one element in the middle step).</p>
 </div>
 
 <div>
@@ -153,9 +147,27 @@ canceled, there must be at least one element in the middle step).</p>
 operations (cut/copy/paste, and the related drag-and-drop). Some samples
 which are used to motivate the present work are as follows:</p>
 
+<h3>Mathematical information</h3>
+
 <p>With content such as mathematics, simply copying rendered text and pasting
-it intoo another application generally leads to most of the semantics being
-lost. @@example 2^x = 7 is not the same as 2x = 7.</p>
+it into another application generally leads to most of the semantics being
+lost. The following example, when copied, typically adds two lines containing
+the text "2 x = 7" to the clipboard. But in the MathML source of this text,
+and for any human reader familiar with normal western conventions for
+mathematical layout, this leads to incorrect copying. The first line would
+often be better, if copied as plain text, as "2^x = 7", or if the XML source
+could be placed in the clipboard with the appropriate transformation
+occurring when pasting.</p>
+
+<div class="example">
+<p>Example 1: Mathematical information</p>
+
+<p><object type="application/mathml+xml" data="res/2ex7.xml">
+  The equations "2^x = 7" and "2x = 7" represented in MathML</object>
+</p>
+</div>
+
+<h3>Rich content editing</h3>
 
 <p>Similarly, when copying text which contains hyperlinks or other structure,
 it is often useful to be able to reformat the content to preserve important
@@ -164,6 +176,8 @@ information.</p>
 <p>And in order to make web applicaitons which allow the manipulation of rich
 text, or of graphic content such as SVG, it is useful to provide a mechanism
 that allows for copying more than just the rendered content.</p>
+
+<h3>Advanced application interfaces</h3>
 
 <p>Allowing for interfaces that use a thumbnail image to refer to a block of
 content, which can then be dragged to insert the block of content represented
@@ -197,7 +211,9 @@ range from an unexpected result on pasting to an attempted "phishing"
 attack.</p>
 
 <p>Authors should of course be aware that User Agents will typically restrict
-what is possible to content they consider "safe", or trusted by the user.</p>
+what is possible to content they consider "safe", or trusted by the user. For
+example, it may not be possible to launch some of the operations from script,
+such as requiring an actual (not simulated) user action to paste / drop.</p>
 
 <p>Implementors should carefully consider the security implications of
 implementing this specification, and provide appropriate protection for users
@@ -235,6 +251,17 @@ for drag and drop as if it were a totally seperate set of operations - these
 events should trigger the relevant clipboard operations. There is a bunch of
 documentation of these things, and what they fire, in [WHAT-WA] and
 [SCCP].</p>
+
+<p>However it is implemented in an interface, drag and drop operations must
+have a starting point (e.g. where the mouse was clicked, or the start of
+<span>the selection</span> or element that was selected for the drag), may
+have any number of intermediate steps (elements that the mouse moves over
+during a drag, or elements that the user picks as possible drop points as he
+cycles through possibilities), and must either have an end point (the element
+above which the mouse button was released, or the element that was finally
+selected), or be canceled. The end point must be the last element selected as
+a possible drop point before the drop occurs (so if the operation is not
+canceled, there must be at least one element in the middle step).</p>
 
 <p>@@Todo: Write this into proper implementable stuff</p>
 </div>
