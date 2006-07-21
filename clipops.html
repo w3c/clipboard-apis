@@ -19,19 +19,19 @@ alt="W3C" height="48" width="72"></a>
 
 <h1 id="title">Clipboard Operations for the Web 1.0</h1>
 
-<h2>Editors' Draft 15 May 2006</h2>
+<h2>Editors' Draft 15 July 2006</h2>
 <dl>
   <dt>This version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3</a></dd>
   <dt>Latest Editors' version:</dt>
     <dd><a
       href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html">http://dev.w3.org/cvsweb/2006//webapi/clipops/clipops.html</a></dd>
   <dt>Previous Editors' version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.1</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2</a></dd>
   <dt>Editors:</dt>
-    <dd><a href="http://www.bitd.clrc.ac.uk/Person/A.J.Miles">Charles
+    <dd><a href="mailto:chaals@opera.com">Charles
       McCathieNevile</a>, <a href="http://www.opera.com/">Opera
     Software</a></dd>
     <dd>Doug Schepers, Vectoreal</dd>
@@ -74,7 +74,7 @@ at http://www.w3.org/TR/.</em></p>
 
 <p>This document is in preparation as a draft for the Web API group, part of
 the Rich Web Client Activity. Currently it is a total mess, and needs serious
-work before it is useful.</p>
+work before it is useful. This draft attempts to add some genuine spec stuff to the ideas of the previous draft.</p>
 
 <p>This document is an initial editors' draft published to solicit comments
 from interested parties. All comments are welcome and may be sent to <a
@@ -106,7 +106,8 @@ cite this document as other than work in progress.</p>
   <li><a href="#secintro">Introduction</a></li>
   <li><a href="#Cases">Use Cases and Requirements</a></li>
   <li><a href="#Conformanc">Conformance</a></li>
-  <li><a href="#Security">Security issues</a></li>
+  <li><a href="#Security">Security Issues</a></li>
+  <li><a href="#UI">User Interface Issues</a></li>
   <li><a href="#Select">Select, Cut, Copy, Paste</a></li>
   <li><a href="#drag-and-drop">Drag and drop processing</a></li>
   <li><a href="#Extensibil">Extensibility</a></li>
@@ -196,7 +197,7 @@ terms.</p>
 </div>
 
 <div>
-<h2 id="Security">Security and usability issues</h2>
+<h2 id="Security">Security issues</h2>
 
 <p>Enabling authors to change what is copied by a user, or to make an
 automated copy of something that was never selected and allowing unrestricted
@@ -223,21 +224,63 @@ something other than rendered content is copied to the clipboard.</p>
 </div>
 
 <div>
+<h2 id="UI">User Interface Issues</h2>
+<p>This section is informative</p>
+
+<p>This specification does not define all the user interface modes that can be used to select content, but this section attempts to provide a survey of some common ones. Authors and implementors should be aware that the precise User Interface details will vary according to the use case and platform, with different methods applying for</p>
+
+<ul>
+<li>Mouse/Keyboard and window based interfaces</li>
+<li>Keyboard only interface</li>
+<li>Voice interfaces</li>
+<li>Stylus-based interfaces</li>
+<li>Restricted keyboards, such as on mobile telephones</li>
+<li>Multimodal interfaces, where part of an operation may be initiated through voice while another part is controlled through a stylus, or other combinations</li>
+</ul>
+
+<p>Many of these user interfaces have developed common interaction paradigms (in the case of the common mouse/keyboard/window interface there are several which are expected to interact seamlessly) for copy and paste at least. Other may be less common and have no emerging convention, while other interfaces may be developed. In each case, the events and results described below should be mapped by the platform to particular user interaction.</p>
+
+<p>Another method that can be used is to provide a copy/paste and copy special/paste special set of operations, to distinguish between copying simple or structured content to the clipboard.</p>
+
+</div>
+
+<div>
 <h2 id="Select">Select, Cut, Copy, Paste</h2>
 
-<p>In principle these are well-understood. So they need to be well-specified.
+<p>These are well-understood operations for users. So they need to be well-specified.
 There are events fired during selection, cut/copy and paste in some systems
 already which can be captured, cancelled, and whose effects can be
 overwritten. In particular, what is copied to the clipboard may be the
 rendered content that is selected, or may be some other modified version.
 (See security implications and annoying the user).</p>
 
-<p>Should a cut copy even if cutting is not allowed?</p>
+   <p>
+      Each copy-paste operation has 5 distinct phases:
+   </p>
+   <dl>
+       <dt>Source Selection</dt>
+         <dd>This should use the same user interface mechanism as for copy and paste, and fire the same events</dd>
+       <dt>Copy Initiation</dt>
+          <dd>This may use the standard copy mechanism, or may be defined specifically for a drag operaton. If it is defined seperately, it may use a seperate memory buffer rather than the regular clipboard, to store the object selected</dd>
+       <dt>Content Buffering</dt>
+          <dd>The content may be copied to the regular clipboard, or to a special clipboard. In the latter case, an implementation may clear the clipboard following a drop, whether it was successful or not. A single entry clipboard must be cleared whenever a new item is selected and copied into that clipboard, whether it is the regular copy clipboard or a special purpose clipboard for dragging.</dd>
+       <dt>Target Selection/Content Confirmation</dt>
+       <dt>Content Insertion into Target</dt>
+   </dl>
 
-<p>When pasting an element, it may be rejected by the selected target. In
-that case it remains on the clipboard.</p>
 
-<p>@@Todo: Write this into proper implementable stuff</p>
+   <p>
+      The source content may be either structured or unstructured. Unstructured content is of a single simple type such as text or an image bitmap.  Structured content is composed either of mixed content types, or a combination of several items of the same content type.
+   </p>
+
+<p>Selection may be accomplished by a number of means - see User Interface Issues above.</p>
+
+<p>Copy places a copy of the object selected into a clipboard. The current selection should not be affected.</p>
+<p>Cut removes the object selected, and places it into the keyboard. In the case of read-only content (such as a document which is not editable by the user) the content must not be removed, but a copy must be placed in the keyboard as for a copy operation.</p> 
+<p class="issue">Issue: Should a cut copy where permitted, if cutting is not allowed? CMN I think so.</p>
+<p>Paste triggers a drop event (see below) on the current target (usually the current selection).</p>
+<p class="issue">Issue: For compatibility it probably has to trigger a paste event too...</p>
+
 </div>
 </div>
 
@@ -246,7 +289,11 @@ that case it remains on the clipboard.</p>
 
 <p>Drag and drop is essentially a special case of a cut or copy, moving to
 select some new target, and then a paste operation, which is implemented for
-mouse-based devices. There are events and interfaces defined in some systems
+mouse-based devices. The difference between drag-and-drop is that the object being 
+dragged is generally not copied to the regular clipboard, in the case of systems with 
+a single entry clipboard.</p>
+
+<p> There are events and interfaces defined in some systems
 for drag and drop as if it were a totally seperate set of operations - these
 events should trigger the relevant clipboard operations. There is a bunch of
 documentation of these things, and what they fire, in [WHAT-WA] and
@@ -256,12 +303,194 @@ documentation of these things, and what they fire, in [WHAT-WA] and
 have a starting point (e.g. where the mouse was clicked, or the start of
 <span>the selection</span> or element that was selected for the drag), may
 have any number of intermediate steps (elements that the mouse moves over
-during a drag, or elements that the user picks as possible drop points as he
+during a drag, or elements that the user picks as possible drop points as she
 cycles through possibilities), and must either have an end point (the element
 above which the mouse button was released, or the element that was finally
 selected), or be canceled. The end point must be the last element selected as
-a possible drop point before the drop occurs (so if the operation is not
-canceled, there must be at least one element in the middle step).</p>
+a possible drop point before the drop occurs (<strike>so if the operation is not
+canceled, there must be at least one element in the middle step</strike>).</p>
+
+
+
+   <p>Then, regardless of whether the event was canceled or not, the drag
+       feedback (e.g. the mouse cursor) must be updated to match the kind of
+       drag-and-drop operation indicated by the event's <code title="dom-dataTransfer"><a href="#datatransfer0">dataTransfer</a></code> object's <code title="dom-dataTransfer-dropEffect">dropEffect</code> attribute, as
+       follows:</p>
+
+      <table>
+       <thead>
+        <tr>
+
+         <th><code title="dom-dataTransfer-dropEffect">dropEffect</code>
+
+         </th><th>Drag operation
+
+       </th></tr></thead><tbody>
+        <tr>
+         <td><code title="">none</code>
+
+         </td><td>No operation allowed.
+
+        </td></tr><tr>
+         <td><code title="">copy</code>
+
+         </td><td>Data will be copied.
+
+        </td></tr><tr>
+         <td><code title="">link</code>
+
+         </td><td>Data will be linked.
+
+        </td></tr><tr>
+         <td><code title="">move</code>
+
+         </td><td>Data will be moved.
+      </td></tr></tbody></table>
+
+
+
+<p>The following events are involved in the drag-and-drop model. They all
+  use the <code>DragEvent</code> interface. (these fire <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/datatransfer/overview.asp">on-* events in IE 5</a> (and 6?))</p>
+
+<table>
+   <thead>
+    <tr>
+     <th> Event Name
+     </th><th> Target
+     </th><th> Bubbles?
+     </th><th> Cancelable?
+     </th><th> <code title="dom-dataTransfer-addElement">dataTransfer</code>
+     </th><th> <code title="dom-dataTransfer-effectAllowed">effectAllowed</code>
+     </th><th> <code title="dom-dataTransfer-dropEffect">dropEffect</code>
+     </th><th> Default Action
+   </th></tr></thead><tbody>
+    <tr>
+     <td><dfn id="dragstart" title="event-dragstart"><code>dragstart</code></dfn>
+
+     </td><td><span><a href="#source">Source node</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td>Contains <span><a href="#source">source node</a></span> unless a
+      selection is being dragged, in which case it is empty
+
+     </td><td><code title="">uninitialized</code>
+
+     </td><td><code title="">none</code>
+
+     </td><td>Initiate the drag-and-drop operation
+
+    </td></tr><tr>
+     <td><dfn id="drag" title="event-drag"><code>drag</code></dfn>
+
+     </td><td><span><a href="#source">Source node</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td>—
+
+     </td><td>Same as last event
+
+     </td><td><code title="">none</code>
+
+     </td><td>Continue the drag-and-drop operation
+
+    </td></tr><tr>
+     <td><dfn id="dragenter" title="event-dragenter"><code>dragenter</code></dfn>
+
+     </td><td><span><a href="#immediate">Immediate user selection</a></span> or
+      <span><a href="#the-body0">the <code>body</code> element</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td>—
+
+     </td><td>Same as last event
+
+     </td><td><a href="#dropEffect-initialisation">Based on
+      <code>effectAllowed</code> value</a>
+
+     </td><td>Reject <span><a href="#immediate">immediate user
+      selection</a></span> as potential <span title="current target
+      element"><a href="#current0">target element</a></span>
+
+    </td></tr><tr>
+     <td><dfn id="dragleave" title="event-dragleave"><code>dragleave</code></dfn>
+
+     </td><td><span title="current target element"><a href="#current0">Previous
+      target element</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>—
+
+     </td><td>—
+
+     </td><td>Same as last event
+
+     </td><td><code title="">none</code>
+
+     </td><td>None
+
+    </td></tr><tr>
+     <td><dfn id="dragover" title="event-dragover"><code>dragover</code></dfn>
+
+     </td><td><span><a href="#current0">Current target element</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td>—
+
+     </td><td>Same as last event
+
+     </td><td><a href="#dropEffect-initialisation">Based on
+      <code>effectAllowed</code> value</a>
+
+     </td><td>Reset <code title="dom-dataTransfer-dropEffect">dropEffect</code> <a href="#dropEffect-initialisation">based on <code>effectAllowed</code>
+      value</a>
+
+    </td></tr><tr>
+     <td><dfn id="drop" title="event-drop"><code>drop</code></dfn>
+
+     </td><td><span><a href="#current0">Current target element</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td><code>getData()</code> returns data set in <code title="dom-dragstart">dragstart</code> event
+
+     </td><td>Same as last event
+
+     </td><td><span><a href="#current1">Current drag operation</a></span>
+
+     </td><td>Varies
+
+    </td></tr><tr>
+     <td><dfn id="dragend" title="event-dragend"><code>dragend</code></dfn>
+
+     </td><td><span><a href="#source">Source node</a></span>
+
+     </td><td>? Bubbles
+
+     </td><td>? Cancelable
+
+     </td><td>—
+
+     </td><td>Same as last event
+
+     </td><td><code title="">none</code>
+
+     </td><td>Varies
+  </td></tr></tbody></table>
 
 <p>@@Todo: Write this into proper implementable stuff</p>
 </div>
@@ -276,18 +505,16 @@ canceled, there must be at least one element in the middle step).</p>
 <p>@@Todo: Seperate into normative and Informative when these are proper
 useful references</p>
 <dl>
-  <dt>[MDD] Microsoft Drag and Drop</dt>
-    <dd>Microsoft's stuff on the DnD idea</dd>
+  <dt>[MDT] Microsoft Data Transfer</dt>
+    <dd>Microsoft's stuff on the Data Transfer. Available at <a href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/datatransfer/overview.asp">http://msdn.microsoft.com/library/default.asp?url=/workshop/author/datatransfer/overview.asp</a>.</dd>
   <dt>[<a name="RFC2119" id="RFC2119">RFC2119</a>] Must should may
-  (normative)</dt>
+  (normative). Available at <a href="http://rfc.net/rfc2119.html">http://rfc.net/rfc2119.html</a></dt>
     <dd>The spec for how to use english as if it were a technical
     language...</dd>
-  <dt>Select Cut, Copy Paste</dt>
-    <dd>Microsoft documentation of the Cut, Copy, Paste, Select events.</dd>
   <dt>[SCPS] Safe Copy and Paste</dt>
-    <dd>Paul Libbrecht</dd>
+    <dd>Paul Libbrecht, submission for Web API WG and WHAT-WG. Available at <a href="http://www.activemath.org/~paul/tmp/Ideal-Browser-Behaviour.html">http://www.activemath.org/~paul/tmp/Ideal-Browser-Behaviour.html</a>. </dd>
   <dt>[<a name="WHAT-WA" id="WHAT-WA">WHAT-WA</a>]</dt>
-    <dd>Web Applications 1.0 Working Draft, I Hickson ed.</dd>
+    <dd>Web Applications 1.0 Working Draft, I Hickson ed. Unstable draft, available at <a href="http://whatwg.org/specs/web-apps/current-work/">http://whatwg.org/specs/web-apps/current-work/</a>.</dd>
 </dl>
 </div>
 
@@ -297,7 +524,7 @@ useful references</p>
 <p>This section is informative</p>
 
 <p>The editors would like to acknowledge their intellectual debt to the
-documentation of Copy and Paste and Drag and Drop functionalities from
+documentation of Data Transfer functionalities from
 Microsoft, the draft specification of them from the WHAT Working Group
 published as part of their draft "Web Applications 1.0", and the draft "safe
 copy and paste" from Paul Libbrecht. They would also like to acknowledge the
@@ -306,7 +533,7 @@ contributions made by the following:</p>
 <p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
-Sucan, Tom Wlokowski</p>
+Sucan, Tom Wlodkowski</p>
 </div>
 
 <p></p>
