@@ -19,19 +19,20 @@
 <a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home"
 alt="W3C" height="48" width="72"></a>
 
-<h1 id="title">Clipboard Operations for the Web 1.0</h1>
+<h1 id="title">Clipboard Operations for the Web 1.0: Copy, Paste, Drag and
+Drop...</h1>
 
-<h2>Editors' Draft 15 July 2006</h2>
+<h2>Editors' Draft 22 September 2006</h2>
 <dl>
   <dt>This version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.5</a></dd>
   <dt>Latest Editors' version:</dt>
     <dd><a
       href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html">http://dev.w3.org/cvsweb/2006//webapi/clipops/clipops.html</a></dd>
   <dt>Previous Editors' version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3</a></dd>
   <dt>Editors:</dt>
     <dd><a href="mailto:chaals@opera.com">Charles McCathieNevile</a>, <a
       href="http://www.opera.com/">Opera Software</a></dd>
@@ -73,18 +74,19 @@ W3C publications and the latest revision of this technical report can be
 found in the <a href="http://www.w3.org/TR/">W3C technical reports index</a>
 at http://www.w3.org/TR/.</em></p>
 
-<p>This document is in preparation as a draft for the Web API group, part of
-the Rich Web Client Activity. In large part it describes the functionalities
-as implemented in Internet Explorer, and has not been tested much in other
-browsers yet.</p>
+<p>This document is in preparation as a first public working draft for the
+Web API group, part of the Rich Web Client Activity. In large part it
+describes the functionalities as implemented in Internet Explorer, and has
+not been sufficiently tested in other browsers yet. The intention of this
+document is where possible to specify what actually works.</p>
 
-<p>This document is an initial editors' draft published to solicit comments
-from interested parties. All comments are welcome and may be sent to <a
+<p>This document is published to solicit comments from interested parties.
+All comments are welcome and may be sent to <a
 href="mailto:public-webapi@w3.org">public-webapi@w3.org</a>. All messages
 received at this address are viewable in a <a
 href="http://lists.w3.org/Archives/Public/public-webapi/">public archive</a>.
 After reviewing comments and further feedback, the Working Group intends to
-publish a First Public Working Draft of this document in September 2006.</p>
+publish a new Working Draft of this document at the beginning of 2007.</p>
 
 <p>This document was produced by a group operating under the <a
 href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004
@@ -146,18 +148,19 @@ copying and pasting, in such a way that they are exposed to Web Applications
 and can be adapted to provide advanced functionalities. Its goal is to
 provide for compatibility where possible with existing implmentations.</p>
 
-<p>Recognising that "drag and drop" operations are essentially a common User
-Interface implementation of cut or copy, move, and paste, it also defines how
-the events currently implemented for "drag and drop" operations relate to the
-less device-specific approach of the general clipboard operations.</p>
+<p>Recognising that "drag and drop" operations are essentially a common user
+interface extension of cut or copy, move, and paste, it also defines how the
+events currently implemented for "drag and drop" operations relate to the
+less device-specific approach of general clipboard operations.</p>
 
-<p>A common interface design in the traditional WIMP interface is to move the
-pointer to an icon or to a highlighted selection, press the mouse key and
-drag a copy of the icon to the target where s/he wants to drop the object,
-then release the mouse key. There are, of course, many alternatives. In a
-graphic user interface without a mouse a user might select an object for
-dragging through a context menu, navigate to another object through standard
-navigation, and then select to drop the held object.</p>
+<p>A common interface design in the traditional <acronym>WIMP</acronym>
+(Windows, Icons, Mouse Pointer) interface is to move the pointer to an icon
+or to a highlighted selection, press the mouse key and drag a copy of the
+icon to the target where s/he wants to drop the object, then release the
+mouse key. There are, of course, many alternatives. In a graphic user
+interface without a mouse a user might select an object for dragging through
+a context menu, navigate to another object through standard navigation, and
+then select to drop the held object.</p>
 </div>
 
 <div>
@@ -193,7 +196,7 @@ occurring when pasting.</p>
 it is often useful to be able to reformat the content to preserve important
 information.</p>
 
-<p>And in order to make web applicaitons which allow the manipulation of rich
+<p>And in order to make web applications which allow the manipulation of rich
 text, or of graphic content such as SVG, it is useful to provide a mechanism
 that allows for copying more than just the rendered content.</p>
 
@@ -203,7 +206,8 @@ that allows for copying more than just the rendered content.</p>
 content, which can then be dragged to insert the block of content represented
 in another part of a web page. The common Drag-and-drop pardigm must be
 implementable in such a way that it is accessible to users who are unable to
-use a mouse and ust rely on keyboard or other interfaces.</p>
+use a mouse (such as those on a phone where there is no mouse) and must rely
+on keyboard or other interfaces.</p>
 </div>
 
 <div>
@@ -211,9 +215,9 @@ use a mouse and ust rely on keyboard or other interfaces.</p>
 
 <p>The terms <strong>must</strong>, <strong>should</strong>,
 <strong>may</strong>, <strong>must not</strong>, <strong>should not</strong>,
-are used in this document in accordance with [RFC2119]. A conformant
-implementation of this specification meets all requirements identified by the
-use of these terms.</p>
+are used in this document in accordance with [<a
+href="#ref-rfc2119">RFC2119</a>]. A conformant implementation of this
+specification meets all requirements identified by the use of these terms.</p>
 </div>
 
 <div>
@@ -223,8 +227,8 @@ use of these terms.</p>
 automated copy of something that was never selected and allowing unrestricted
 calls to paste information can raise various security concerns, especially if
 these operations are allowed to transfer data across documents from different
-sources. On the other hand, as the use cases demonstrate, there are valid
-reasons for allowing this in the right circumstances.</p>
+sources. On the other hand there are valid reasons for allowing this in the
+right circumstances.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies
 it, but a different link is copied to the clipboard. The effect of this can
@@ -234,7 +238,8 @@ attack.</p>
 <p>Authors should of course be aware that User Agents will typically restrict
 what is possible to content they consider "safe", or trusted by the user. For
 example, it may not be possible to launch some of the operations from script,
-such as requiring an actual (not simulated) user action to paste / drop.</p>
+such as requiring an actual (not simulated or script-generated) user action
+to paste or drop.</p>
 
 <p>Implementors should carefully consider the security implications of
 implementing this specification, and provide appropriate protection for users
@@ -296,9 +301,10 @@ annoying the user, and the setData method's ).</p>
   <dt>Copy</dt>
     <dd>This uses the <code>setData</code> method to copy the <a
       href="#source">source node</a> to the <code>clipboardData</code>
-      object. It may also copy the data to a <code>dataTransfer</code>
-      object. <span class="issue">@@Issue: This makes drag and drop more
-      flexible, e.g. for accessibility. What is the downside?</span></dd>
+      object. It <em>may</em> also copy the data to a
+      <code>dataTransfer</code> object. <span class="issue">@@Issue: This
+      makes drag and drop more flexible, e.g. for accessibility. What is the
+      downside?</span></dd>
   <dt>Target Selection/Content Confirmation</dt>
     <dd>In a typical usage scenario, this will in fact be the same user
       interface mechanism that is used for Source Selection. It sets the <a
@@ -314,24 +320,26 @@ annoying the user, and the setData method's ).</p>
 content is of a single simple type such as text or an image bitmap.
 Structured content is composed either of mixed content types, or a
 combination of several items of the same content type. <span
-class="issue">@@Issue: Or is it just an object, as in drag'n'drop, so the
-choice is made at paste time what to do with it?</span></p>
+class="issue">@@Issue: Actually, this isn't how it works in IE. We should
+think about this bit more...</span></p>
 
 <p>Selection may be accomplished by a number of means - see User Interface
 Issues above.</p>
 
-<p>Copy places a copy of the object selected into a clipboard. The current
-selection <em>must not</em> be affected.</p>
+<p><code>copy</code> places a copy of the object selected into a clipboard.
+The current selection <em>must not</em> be affected.</p>
 
-<p>Cut <em>should</em> delete the object selected, and place it into the
-clipboard. In the case of read-only content (such as a document which is not
-editable by the user) the content <em>should not</em> be removed, but a copy
-<em>must</em> be placed in the keyboard as for a copy operation. <span
-class="issue">@@Issue: nice idea, does it reflect current reality?</span>.</p>
+<p><code>cut</code> <em>should</em> delete the object selected, and place it
+into the clipboard. In the case of read-only content (such as a document
+which is not editable by the user) the content <em>should not</em> be
+removed, but a copy <em>should</em> be placed in the keyboard as for a copy
+operation. <span class="issue">@@Issue: nice idea, does it reflect current
+reality?</span>.</p>
 
 <p><code>paste</code> triggers an event on the current target (usually the
 current selection). <span class="issue">@@Issue: For drag and drop
-compatibility should it trigger drop and paste, or vice versa?</span></p>
+compatibility should it trigger <em>drop</em> <strong>and</strong>
+<em>paste</em>, or vice versa?</span></p>
 </div>
 </div>
 
@@ -382,31 +390,26 @@ in copy and paste:</p>
     successful?</span></dd>
 </dl>
 
-<p><span class="issue">There are events and interfaces defined in some
-systems for drag and drop as if it were a totally seperate set of operations
-- these events should trigger the relevant clipboard operations. @@Issue:
-this whole para. There is a bunch of documentation of these things, and what
-they fire, in [WHAT-WA] and [SCCP].</span></p>
-
 <p>However it is implemented in an interface, drag and drop operations must
-have a starting point (e.g. where the mouse was clicked, or the when a <span>
-selection</span> or element is selected for the drag), may have any number of
-intermediate steps (elements that the mouse moves over during a drag, or
-elements that the user picks as possible drop points as she cycles through
-possibilities), and must either have an end point (the element above which
-the mouse button was released, or the element that was finally selected), or
-be canceled. The end point must be the last element selected as a possible
-drop point before the drop occurs. If there is no <code>dragenter</code>
-event fired after a <code>dragstart</code>, then the <code>drop</code> event
-<em>should</em> be cancelled, but <em>may</em> be fired on the <a
-href="#source">source node</a>.</p>
+have a starting point (e.g. where the mouse was clicked, or the when a
+<span>selection</span> or element is selected for the drag), may have any
+number of intermediate steps (elements that the mouse moves over during a
+drag, or elements that the user picks as possible drop points as she cycles
+through possibilities), and must either have an end point (the element above
+which the mouse button was released, or the element that was finally
+selected), or be canceled. The end point must be the last element selected as
+a possible drop point before the drop occurs. If there is no
+<code>dragenter</code> event fired after a <code>dragstart</code>, then the
+<code>drop</code> event <em>should</em> be cancelled, but <em>may</em> be
+fired on the <a href="#source">source node</a>.</p>
 
 <p>Then, regardless of whether the event was canceled or not, drag feedback
 (e.g. the mouse cursor or other clear indication to the user) <em>should</em>
 be updated to match the kind of operation indicated by the event's <code
 title="dom-dataTransfer"><a href="#datatransfer0">dataTransfer</a></code>
 object's <code title="dom-dataTransfer-dropEffect">dropEffect</code>
-attribute,  as follows:</p>
+attribute, as follows: <span class="issue">@@Issue: More info about setting
+the dropEffect would be useful</span></p>
 
 <table>
   <thead>
@@ -481,8 +484,8 @@ events in IE 5+</a> <span class="issue">@@Issue: and IE7?</span></p>
       <td></td>
       <td>— </td>
       <td>Based on <code>effectAllowed</code> value</td>
-      <td>Change the <span title="current target       element"><a
-        href="#current0">Current target element</a> from the</span><span><a
+      <td>Change the current <span title="current target       element"><a
+        href="#current0">target element</a> from the </span><span><a
         href="#immediate">immediate user selection</a></span> to the element
         this event is fired on. <span class="issue">@@Issue: If it is fired
         on the body, this text isn't right...</span></td>
@@ -490,8 +493,9 @@ events in IE 5+</a> <span class="issue">@@Issue: and IE7?</span></p>
     <tr>
       <td><dfn id="dragleave"
         title="event-dragleave"><code>dragleave</code></dfn></td>
-      <td><span title="current target element"><a href="#current0">Previous
-        target element</a></span></td>
+      <td><span title="current target element">Previous </span><span
+        title="current target element"><a href="#current0">target
+        element</a></span></td>
       <td>Not cancelable</td>
       <td>— </td>
       <td><code title="">none</code></td>
@@ -500,21 +504,22 @@ events in IE 5+</a> <span class="issue">@@Issue: and IE7?</span></p>
     <tr>
       <td><dfn id="dragover"
         title="event-dragover"><code>dragover</code></dfn></td>
-      <td><span><a href="#current0">Current target element</a></span></td>
+      <td><span>Current </span><span><a href="#current0">target
+        element</a></span></td>
       <td></td>
       <td>— </td>
       <td>Based on <code>effectAllowed</code> value</td>
       <td>Reset <code title="dom-dataTransfer-dropEffect">dropEffect</code>
-        <a href="#dropEffect-initialisation">based on
-        <code>effectAllowed</code> value</a></td>
+        based on <code>effectAllowed</code> value</td>
     </tr>
     <tr>
       <td><dfn id="drop" title="event-drop"><code>drop</code></dfn></td>
-      <td><span><a href="#current0">Current target element</a></span></td>
+      <td><span>Current </span><span><a href="#current0">target
+        element</a></span></td>
       <td></td>
       <td><code>getData()</code> returns data set in <code
         title="dom-dragstart">dragstart</code> event</td>
-      <td><span><a href="#current1">Current drag operation</a></span></td>
+      <td><span>Current drag operation</span></td>
       <td>Varies</td>
     </tr>
     <tr>
@@ -552,6 +557,7 @@ id="Extensibil">Extensibility</a></h2>
 
 <h2 id="Glossary">Glossary</h2>
 <dl>
+  <dt id="immediate">Immediate User Selection</dt>
   <dt id="source">Source Node</dt>
     <dd>The node which is the source of the object to be copied, dragged,
     etc.</dd>
@@ -600,7 +606,7 @@ Working Group published as part of their draft "Web Applications 1.0" [<a
 href="#WHAT-WA">WHAT-WA</a>] which essentially repeats the
 drag-and-drop-specific parts of that were heavily used to prepare the initial
 drafts of this specification. We are also grateful for the draft "safe copy
-and paste" [<a href="#ref-scp">SCP</a>] from Paul Libbrecht. </p>
+and paste" [<a href="#ref-scp">SCP</a>] from Paul Libbrecht.</p>
 
 <p>We would like to acknowledge the contributions made by the following:</p>
 
