@@ -3,7 +3,8 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Clipboard operations for the Web</title>
+  <title>Clipboard Operations for the Web 1.0: Copy, Paste, Drag and
+  Drop...</title>
   <style type="text/css">
 
 .example {border:  2px double Grey; padding-left: 2em}
@@ -22,17 +23,17 @@ alt="W3C" height="48" width="72"></a>
 <h1 id="title">Clipboard Operations for the Web 1.0: Copy, Paste, Drag and
 Drop...</h1>
 
-<h2>Editors' Draft 22 September 2006</h2>
+<h2>(not yet a@) W3C Working Draft 13 October 2006</h2>
 <dl>
   <dt>This version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.6">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.6</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.7&amp;content-type=text/html;charset=utf-8">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.7&amp;content-type=text/html;charset=utf-8</a></dd>
   <dt>Latest Editors' version:</dt>
     <dd><a
       href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html">http://dev.w3.org/cvsweb/2006//webapi/clipops/clipops.html</a></dd>
   <dt>Previous Editors' version:</dt>
     <dd><a
-      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.2">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.3</a></dd>
+      href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.6">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.6</a></dd>
   <dt>Editors:</dt>
     <dd><a href="mailto:chaals@opera.com">Charles McCathieNevile</a>, <a
       href="http://www.opera.com/">Opera Software</a></dd>
@@ -59,9 +60,8 @@ use</a> rules apply.</p>
 <div>
 <h2 class="notoc"><a id="abstract" name="abstract">Abstract</a></h2>
 
-<p>This document describes how to do clipboard operations such as copy and
-paste and drag and drop (and the relationship between the two) in web
-applications.</p>
+<p>This document describes how to do clipboard operations such as copy/cut
+and paste, or drag and drop in web applications.</p>
 </div>
 <hr>
 
@@ -74,11 +74,15 @@ W3C publications and the latest revision of this technical report can be
 found in the <a href="http://www.w3.org/TR/">W3C technical reports index</a>
 at http://www.w3.org/TR/.</em></p>
 
-<p>This document is in preparation as a first public working draft for the
-Web API group, part of the Rich Web Client Activity. In large part it
-describes the functionalities as implemented in Internet Explorer, and has
-not been sufficiently tested in other browsers yet. The intention of this
-document is where possible to specify what actually works.</p>
+<p>This document is (in preparation as@) a first public working draft
+prepared by the <a href="http://www.w3.org/2006/webapi/">Web API group</a>,
+part of the Rich Web Client Activity. In large part it describes the
+functionalities as implemented in Internet Explorer, and has not been
+sufficiently tested in other browsers yet. The intention of this document is
+where possible to specify what actually works in current browsers, or is a
+simple target for them to improve interoperability, rather than adding new
+features. A second version of this specification may be produced which
+extends that functionality in various ways which have proven useful.</p>
 
 <p>This document is published to solicit comments from interested parties.
 All comments are welcome and may be sent to <a
@@ -94,7 +98,12 @@ W3C Patent Policy</a>. W3C has a <a
 href="http://www.w3.org/2004/01/pp-impl/35495/status">public list of any
 patent disclosures</a> made in connection with the deliverables of the Web
 API Working Group; that page also includes instructions for disclosing a
-patent.</p>
+patent. An individual who has actual knowledge of a patent which the
+individual believes contains <a
+href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+Claim(s)</a> must disclose the information in accordance with <a
+href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+6 of the W3C Patent Policy</a>.</p>
 
 <p>Publication as an Editors' Draft does not imply endorsement by the working
 group or the W3C Membership. This is a draft document and may be updated,
@@ -143,6 +152,8 @@ cite this document as other than work in progress.</p>
 <div>
 <h2 id="secintro">Introduction</h2>
 
+<p>This section is informative</p>
+
 <p>This specification defines the common clipboard operations of cutting,
 copying and pasting, in such a way that they are exposed to Web Applications
 and can be adapted to provide advanced functionalities. Its goal is to
@@ -164,11 +175,23 @@ then select to drop the held object.</p>
 </div>
 
 <div>
-<h2 id="Cases">Use Cases and Requirements</h2>
+<h2 id="Cases">Use Cases</h2>
+
+<p>This section is informative</p>
 
 <p>There are many use cases for being able to change the default clipboard
-operations (cut/copy/paste, and the related drag-and-drop). Some samples
-which are used to motivate the present work are as follows:</p>
+operations (cut/copy/paste, and the related drag-and-drop). We have colected
+a few samples to demonstrate possible uses, although these may not all be
+supoprted by this specification.</p>
+
+<h3 id="Advanced">Advanced application interfaces</h3>
+
+<p>Allowing for interfaces that use a thumbnail image to refer to a block of
+content, which can then be dragged to insert the block of content represented
+in another part of a web page. The common Drag-and-drop pardigm must be
+implementable in such a way that it is accessible to users who are unable to
+use a mouse (such as those on a phone where there is no mouse) and must rely
+on keyboard or other interfaces.</p>
 
 <h3 id="Mathematic">Mathematical information</h3>
 
@@ -186,7 +209,9 @@ occurring when pasting.</p>
 <p>Example 1: Mathematical information</p>
 
 <p><object type="application/mathml+xml" data="res/2ex7.xml">
-  The equations "2^x = 7" and "2x = 7" represented in MathML</object>
+  The equations "2^x = 7" and "2x = 7" represented in Presentation MathML
+  contain the same sequence of characters, but have different
+semantics.</object>
 </p>
 </div>
 
@@ -199,15 +224,6 @@ information.</p>
 <p>And in order to make web applications which allow the manipulation of rich
 text, or of graphic content such as SVG, it is useful to provide a mechanism
 that allows for copying more than just the rendered content.</p>
-
-<h3 id="Advanced">Advanced application interfaces</h3>
-
-<p>Allowing for interfaces that use a thumbnail image to refer to a block of
-content, which can then be dragged to insert the block of content represented
-in another part of a web page. The common Drag-and-drop pardigm must be
-implementable in such a way that it is accessible to users who are unable to
-use a mouse (such as those on a phone where there is no mouse) and must rely
-on keyboard or other interfaces.</p>
 </div>
 
 <div>
@@ -225,21 +241,21 @@ specification meets all requirements identified by the use of these terms.</p>
 
 <p>Enabling authors to change what is copied by a user, or to make an
 automated copy of something that was never selected and allowing unrestricted
-calls to paste information can raise various security concerns, especially if
-these operations are allowed to transfer data across documents from different
-sources. On the other hand there are valid reasons for allowing this in the
-right circumstances.</p>
+calls to paste information can raise various security concerns. If these
+operations are allowed to transfer data across documents from different
+sources then there are even greater risks imaginable. On the other hand there
+are valid reasons for allowing this in the right circumstances.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies
 it, but a different link is copied to the clipboard. The effect of this can
 range from an unexpected result on pasting to an attempted "phishing"
 attack.</p>
 
-<p>Authors should of course be aware that User Agents will typically restrict
-what is possible to content they consider "safe", or trusted by the user. For
-example, it may not be possible to launch some of the operations from script,
-such as requiring an actual (not simulated or script-generated) user action
-to paste or drop.</p>
+<p>Authors be aware that User Agents will typically restrict what is possible
+to content they consider "safe", or trusted by the user. For example, it may
+not be possible to launch some of the operations from script, such as
+requiring an actual (not simulated or script-generated) user action to paste
+or drop.</p>
 
 <p>Implementors should carefully consider the security implications of
 implementing this specification, and provide appropriate protection for users
@@ -247,6 +263,14 @@ against malicious use, such as restricting access to the functionalities
 according to how trusted the source of a function call is, or informing the
 user when something other than rendered content is copied to the
 clipboard.</p>
+
+<p>This specification will attempt to highlight all areas where possible
+security issues arise, but the final responsibility for making decisions
+about what to allow rests with user agent implementors. Note that this is not
+done in the current draft.</p>
+
+<p class="issue">@@Issue: identify what the restrictions generally used are,
+as some guidance on interoperability</p>
 </div>
 
 <div>
@@ -333,8 +357,8 @@ The current selection <em>must not</em> be affected.</p>
 into the clipboard. In the case of read-only content (such as a document
 which is not editable by the user) the content <em>should not</em> be
 removed, but a copy <em>should</em> be placed in the keyboard as for a copy
-operation. <span class="issue">@@Issue: nice idea, does it reflect current
-reality?</span>.</p>
+operation. <span class="issue">[@@Issue: nice idea, does it reflect current
+reality? Opera/Safari on Mac don't do that...]</span>.</p>
 
 <p><code>paste</code> triggers an event on the current target (usually the
 current selection). <span class="issue">@@Issue: For drag and drop
