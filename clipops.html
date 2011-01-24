@@ -363,7 +363,7 @@ function test(e){
 }
 </script>
 
-<p class="note">The default action of the cut event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved.</p>
+<p class="note">The default action of the cut event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved. Any such events are queued up to fire after processing of the cut event is finished.</p>
 
 <div class="event-definition">
 	<table border="0" summary="Overview of the cut event" cellpadding="2" cellspacing="0">
@@ -452,7 +452,7 @@ function test(e){
 	return passed;
 }
 </script>
-<p class="note">The default action of the paste event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeInserted.</p>
+<p class="note">The default action of the paste event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeInserted. Any such events are queued up to fire after processing of the copy event is finished.</p>
 
 
 <div class="event-definition">
