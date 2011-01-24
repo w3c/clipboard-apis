@@ -310,7 +310,7 @@ function test(e){
 
 
 <h3>cut event</h3>
-<p>When the user initiates a cut operation, the implementation must fire a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
+<p>When the user initiates a cut operation, the implementation <em>must</em> fire a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 <script>
 /** ClipboardData interface - cancelling default action of cut prevents removal of text from editable context  */
@@ -323,7 +323,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
-<p>In a non-editable context, or if there is no selection, the cut event has no default action.</p>
+<p>In a non-editable context, or if there is no selection, the cut event has no default action, but the implementation <em>must</em> fire the event regardless.</p>
 <script>
 /** ClipboardData interface - no default action for cut in non-editable context */
 /* Events: cut */
@@ -365,6 +365,34 @@ function test(e){
   }
 }
 </script>
+<p>The cut event <em>must</em> fire before the selected data is removed.</p>
+<script>
+/** ClipboardData interface - cut fires before text is removed  */
+/* Events: cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+	var passed = e.target.value === e.target.defaultValue;
+  return passed;
+}
+</script>
+
+<p>When the cut operation is completed, the selection <em>must</em> be collapsed.</p>
+<script>
+/** ClipboardData interface - cut collapses selection  */
+/* Events: cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
+/* Targets: 'input_text' */
+function test(e){
+	setTimeout(function(){
+    var elm=document.getElementById('input_text');
+    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0;
+    result( passed );
+  }, 20);
+}
+</script>
+
+<p class="note">The default action of the cut event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved.</p>
 
 <div class="event-definition">
 	<table border="0" summary="Overview of the cut event" cellpadding="2" cellspacing="0">
@@ -378,7 +406,7 @@ function test(e){
 
 
 <h3>paste event</h3>
-<p>When the user initiates a paste operation, the implementation must fire a paste event.</p>
+<p>When the user initiates a paste operation, the implementation <em>must</em> fire a paste event. The event <em>must</em> fire before any clipboard data is inserted.</p>
 <script>
 /** ClipboardData interface - events fire  */
 /* Events: paste */
@@ -418,7 +446,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
 }
 </script>
-<p>In an editable context, the paste event's target property refers to the element that contains the start of the selection.
+<p>In an editable context, the paste event's target property <em>must</em> refer to the element that contains the start of the selection.
 <script>
 /** ClipboardData interface - event target when selection spans several elements  */
 /* Events: paste */
@@ -453,6 +481,7 @@ function test(e){
 	return passed;
 }
 </script>
+<p class="note">The default action of the paste event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeInserted.</p>
 
 
 <div class="event-definition">
