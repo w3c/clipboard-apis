@@ -1,18 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-      "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Clipboard Operations for the Web 1.0: Copy, Paste, Drag and
-  Drop...</title>
-  <style type="text/css">
-
-.example {border:  2px double Grey; padding-left: 2em}
-.issue {background-color: #ffffbf; border:  2px dashed Red;}</style>
-  <link rel="stylesheet" type="text/css"
-  href="http://www.w3.org/StyleSheets/TR/base.css">
+﻿<!DOCTYPE html>
+<html><head>
+	<title> Clipboard API and events </title>
+	<link href="http://www.w3.org/TR/DOM-Level-3-Events/geek.css" rel="stylesheet">
+	<link href="http://www.w3.org/TR/DOM-Level-3-Events/spec.css" rel="stylesheet">
+	<link href="http://www.w3.org/StyleSheets/TR/w3c-tr.css" rel="stylesheet">
+	<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet">
   <link rel="contents" href="#Contents">
 </head>
+<!--
+	The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
+		each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
+		extra inline HTML code for test case can be given with Test HTML: comment (defaults to single input)
+		defines test method that returns true for pass, false for failure and string for other unexpected statuses.
+		framework must set up a listener for the relevant event(s) that calls the test() method with the event object as argument, and check return value
+		framework will then focus suitable element and trigger relevant event. For paste, data will be given in 'paste data:' comment.
+		(If there is no "paste data:" instruction, the framework shall clear the clipboard before each test is run)
+		for cut/copy, framework will select element contents before triggering command
+		if test function returns undefined, the test is async and will call a result() method the framework must define with pass/fail
+		An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
+		If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
+		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
+-->
 
 <body lang="en">
 
@@ -20,10 +28,9 @@
 <a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home"
 alt="W3C" height="48" width="72"></a>
 
-<h1 id="title">Clipboard Operations for the Web 1.0: Copy, Paste, Drag and
-Drop...</h1>
+<h1>Clipboard API and events</h1>
 
-<h2>(not yet a@) W3C Working Draft 13 October 2006</h2>
+<h2>(not yet a@) W3C Working Draft 24 January 2011</h2>
 <dl>
   <dt>This version:</dt>
     <dd><a
@@ -35,14 +42,16 @@ Drop...</h1>
     <dd><a
       href="http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.7&amp;content-type=text/html;charset=utf-8">http://dev.w3.org/cvsweb/2006/webapi/clipops/clipops.html?rev=1.7&amp;content-type=text/html;charset=utf-8</a></dd>
   <dt>Editors:</dt>
-    <dd><a href="mailto:chaals@opera.com">Charles McCathieNevile</a>, <a
+    <dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a
       href="http://www.opera.com/">Opera Software</a></dd>
-    <dd>Doug Schepers, Vectoreal</dd>
+<!--     <dd><a href="mailto:chaals@opera.com">Charles McCathieNevile</a>, <a
+      href="http://www.opera.com/">Opera Software</a></dd>
+    <dd>Doug Schepers, Vectoreal</dd> -->
 </dl>
 
 <p class="copyright"><a
 href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>
-© 2006 <a href="http://www.w3.org/"><acronym
+© 2011 <a href="http://www.w3.org/"><acronym
 title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a
 href="http://www.csail.mit.edu/"><acronym
 title="Massachusetts Institute of Technology">MIT</acronym></a>, <a
@@ -60,8 +69,8 @@ use</a> rules apply.</p>
 <div>
 <h2 class="notoc"><a id="abstract" name="abstract">Abstract</a></h2>
 
-<p>This document describes apis for clipboard operations such as copy/cut and
-paste, or drag and drop in web applications.</p>
+<p>This document describes APIs for clipboard operations such as copy, cut and
+paste in web applications.</p>
 </div>
 <hr>
 
@@ -76,21 +85,15 @@ at http://www.w3.org/TR/.</em></p>
 
 <p>This document is (in preparation as@) a first public working draft
 prepared by the <a href="http://www.w3.org/2006/webapi/">Web API group</a>,
-part of the Rich Web Client Activity. In large part it describes the
-functionalities as implemented in Internet Explorer, and has not been
-sufficiently tested in other browsers yet. The intention of this document is
-where possible to specify what actually works in current browsers, or is a
-simple target for them to improve interoperability, rather than adding new
-features. A second version of this specification may be produced which
-extends that functionality in various ways which have proven useful.</p>
+part of the Rich Web Client Activity.</p>
 
 <p>This document is published to solicit comments from interested parties.
 All comments are welcome and may be sent to <a
-href="mailto:public-webapi@w3.org">public-webapi@w3.org</a>. All messages
+href="mailto:public-webapps@w3.org">public-webapps@w3.org</a>. All messages
 received at this address are viewable in a <a
-href="http://lists.w3.org/Archives/Public/public-webapi/">public archive</a>.
+href="http://lists.w3.org/Archives/Public/public-webapps/">public archive</a>.
 After reviewing comments and further feedback, the Working Group intends to
-publish a new Working Draft of this document at the beginning of 2007.</p>
+publish a new Working Draft of this document.</p>
 
 <p>This document was produced by a group operating under the <a
 href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004
@@ -114,7 +117,7 @@ cite this document as other than work in progress.</p>
 <div>
 <h2 id="Contents">Table of Contents</h2>
 
-<div class="toc">
+<!-- <div class="toc">
 <ul>
   <li><a href="#secintro">Introduction</a></li>
   <li><a href="#Cases">Use Cases and Requirements</a>
@@ -145,7 +148,7 @@ cite this document as other than work in progress.</p>
   <li><a href="#Acknowledg">Acknowledgements</a></li>
 </ul>
 </div>
-</div>
+ --></div>
 
 <div>
 
@@ -158,20 +161,6 @@ cite this document as other than work in progress.</p>
 copying and pasting, in such a way that they are exposed to Web Applications
 and can be adapted to provide advanced functionalities. Its goal is to
 provide for compatibility where possible with existing implmentations.</p>
-
-<p>Recognising that "drag and drop" operations are essentially a common user
-interface extension of cut or copy, move, and paste, it also defines how the
-events currently implemented for "drag and drop" operations relate to the
-less device-specific approach of general clipboard operations.</p>
-
-<p>A common interface design in the traditional <acronym>WIMP</acronym>
-(Windows, Icons, Mouse Pointer) interface is to move the pointer to an icon
-or to a highlighted selection, press the mouse key and drag a copy of the
-icon to the target where s/he wants to drop the object, then release the
-mouse key. There are, of course, many alternatives. In a graphic user
-interface without a mouse a user might select an object for dragging through
-a context menu, navigate to another object through standard navigation, and
-then select to drop the held object.</p>
 </div>
 
 <div>
@@ -180,50 +169,29 @@ then select to drop the held object.</p>
 <p>This section is informative</p>
 
 <p>There are many use cases for being able to change the default clipboard
-operations (cut/copy/paste, and the related drag-and-drop). We have colected
+operations (cut/copy/paste). We have collected
 a few samples to demonstrate possible uses, although these may not all be
-supoprted by this specification.</p>
+supported by this specification.</p>
 
-<h3 id="Advanced">Advanced application interfaces</h3>
+<h3 id="Rich">Rich content editing</h3>
 
-<p>Allowing for interfaces that use a thumbnail image to refer to a block of
-content, which can then be dragged to insert the block of content represented
-in another part of a web page. The common Drag-and-drop pardigm must be
-implementable in such a way that it is accessible to users who are unable to
-use a mouse (such as those on a phone where there is no mouse) and must rely
-on keyboard or other interfaces.</p>
+<p>When copying text which contains hyperlinks or other structure,
+it is often useful to be able to reformat the content to preserve important
+information.</p>
+
+<h3>Graphics with built-in semantics</h3>
+<p>In order to make web applications which allow the manipulation of rich
+text, or of graphic content such as SVG, it is useful to provide a mechanism
+that allows for copying more than just the rendered content.</p>
 
 <h3 id="Mathematic">Mathematical information</h3>
 
 <p>With content such as mathematics, simply copying rendered text and pasting
 it into another application generally leads to most of the semantics being
-lost. The following example, when copied, typically adds two lines containing
-the text "2 x = 7" to the clipboard. But in the MathML source of this text,
-and for any human reader familiar with normal western conventions for
-mathematical layout, this leads to incorrect copying. The first line would
-often be better, if copied as plain text, as "2^x = 7", or if the XML source
+lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign. Also, the XML source
 could be placed in the clipboard with the appropriate transformation
 occurring when pasting.</p>
 
-<div class="example">
-<p>Example 1: Mathematical information</p>
-
-<p><object type="application/mathml+xml" data="res/2ex7.xml">
-  The equations "2^x = 7" and "2x = 7" represented in Presentation MathML
-  contain the same sequence of characters, but have different
-semantics.</object>
-</p>
-</div>
-
-<h3 id="Rich">Rich content editing</h3>
-
-<p>Similarly, when copying text which contains hyperlinks or other structure,
-it is often useful to be able to reformat the content to preserve important
-information.</p>
-
-<p>And in order to make web applications which allow the manipulation of rich
-text, or of graphic content such as SVG, it is useful to provide a mechanism
-that allows for copying more than just the rendered content.</p>
 </div>
 
 <div>
@@ -241,9 +209,7 @@ specification meets all requirements identified by the use of these terms.</p>
 
 <p>Enabling authors to change what is copied by a user, or to make an
 automated copy of something that was never selected and allowing unrestricted
-calls to paste information can raise various security concerns. If these
-operations are allowed to transfer data across documents from different
-sources then there are even greater risks imaginable. On the other hand there
+calls to paste information can raise various security and privacy concerns. On the other hand there
 are valid reasons for allowing this in the right circumstances.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies
@@ -251,344 +217,831 @@ it, but a different link is copied to the clipboard. The effect of this can
 range from an unexpected result on pasting to an attempted "phishing"
 attack.</p>
 
-<p>Authors be aware that User Agents will typically restrict what is possible
-to content they consider "safe", or trusted by the user. For example, it may
-not be possible to launch some of the operations from script, such as
-requiring an actual (not simulated or script-generated) user action to paste
-or drop.</p>
+<p>Authors should be aware that User Agents will typically restrict what is possible
+to content they consider "safe", or trusted by the user.</p>
 
-<p>Implementors should carefully consider the security implications of
-implementing this specification, and provide appropriate protection for users
-against malicious use, such as restricting access to the functionalities
-according to how trusted the source of a function call is, or informing the
-user when something other than rendered content is copied to the
-clipboard.</p>
-
-<p>This specification will attempt to highlight all areas where possible
-security issues arise, but the final responsibility for making decisions
-about what to allow rests with user agent implementors. Note that this is not
-done in the current draft.</p>
-
-<p class="issue">@@Issue: identify what the restrictions generally used are,
-as some guidance on interoperability</p>
 </div>
 
 <div>
-<h2 id="UI">User Interface Issues</h2>
-
-<p>This section is informative</p>
-
-<p>This specification does not define all the user interface modes that can
-be used to select content, but this section attempts to provide a survey of
-some common ones. Authors and implementors should be aware that the precise
-User Interface details will vary according to the use case and platform, with
-different methods applying for</p>
-<ul>
-  <li>Mouse/Keyboard and window based interfaces</li>
-  <li>Keyboard only interface</li>
-  <li>Voice interfaces</li>
-  <li>Stylus-based interfaces</li>
-  <li>Restricted keyboards, such as on mobile telephones</li>
-  <li>Multimodal interfaces, where part of an operation may be initiated
-    through voice while another part is controlled through a stylus, or other
-    combinations</li>
-</ul>
-
-<p>Many of these user interfaces have developed common interaction paradigms
-(in the case of the common mouse/keyboard/window interface there are several
-which are expected to interact seamlessly) for copy and paste at least. Other
-may be less common and have no emerging convention, while other interfaces
-may be developed. In each case, the events and results described below should
-be mapped by the platform to particular user interaction.</p>
-
-<p>Another method that can be used is to provide a copy/paste and copy
-special/paste special set of operations, to distinguish between copying
-simple or structured content to the clipboard.</p>
-</div>
 
 <div>
 <h2 id="Select">Select, Cut, Copy, Paste</h2>
 
-<p>These are well-understood operations for users. There are events fired
-during selection, cut/copy and paste in some systems already which can be
-captured, cancelled, and whose effects can be overwritten. In particular,
-what is copied to the clipboard may be the rendered content that is selected,
-or may be some other modified version. (See security implications and
-annoying the user, and the setData method's ).</p>
+<h2>Events</h2>
+<h3>copy event</h3>
+<p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. 
+<script>
+/** ClipboardData interface - events fire  */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
+	return passed;
+}
+</script>
+<script>
+/** ClipboardData interface - cancelling default action, basic test  */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	e.preventDefault();
+}
+</script>
 
-<p>Each copy-paste operation has 4 distinct phases:</p>
-<dl>
-  <dt>Source Selection</dt>
-    <dd>This typically uses the standard selection mechanism for the system
-      User Interface to set the <a href="#source">source node</a> for any
-      clipboard operation.</dd>
-  <dt>Copy</dt>
-    <dd>This uses the <code>setData</code> method to copy the <a
-      href="#source">source node</a> to the <code>clipboardData</code>
-      object. It <em>may</em> also copy the data to a
-      <code>dataTransfer</code> object. <span class="issue">@@Issue: This
-      makes drag and drop more flexible, e.g. for accessibility. What is the
-      downside?</span></dd>
-  <dt>Target Selection/Content Confirmation</dt>
-    <dd>In a typical usage scenario, this will in fact be the same user
-      interface mechanism that is used for Source Selection. It sets the <a
-      href="#current0">current target</a>.</dd>
-  <dt>Content Insertion into Target</dt>
-    <dd>This fires a <code>paste</code> event on the <a
-      href="#current0">current target</a>. The default effect is that where
-      applicable (for example in editable text such as an input) the content
-      which is held in the clipboard is inserted at the target.</dd>
-</dl>
+<p>The current selection <em>must not</em> be affected.</p>
+<script>
+/** ClipboardData interface - copy event does not modify selection  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+	setTimeout(function(){
+    /* what is the "most standardised" way to test this? */
+    var passed = document.activeElement == document.getElementById('input_text') ;
+    passed = passed && document.activeElement.selectionStart == 0 && document.activeElement.selectionEnd == document.activeElement.value.length;
+    result(passed);
+  }, 10);
+}
+</script>
 
-<p>The source content may be either structured or unstructured. Unstructured
-content is of a single simple type such as text or an image bitmap.
-Structured content is composed either of mixed content types, or a
-combination of several items of the same content type. <span
-class="issue">@@Issue: Actually, this isn't how it works in IE. We should
-think about this bit more...</span></p>
+<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified unless in response to the <a href="#clipboarddata-setdata">setData() method</a>.</p>
 
-<p>Selection may be accomplished by a number of means - see User Interface
-Issues above.</p>
+<script>
+/** ClipboardData interface - copy event when there is no selection  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+  void(0);
+}
+</script>
 
-<p><code>copy</code> places a copy of the object selected into a clipboard.
-The current selection <em>must not</em> be affected.</p>
+<script>
+/** ClipboardData interface - copy event when there is no selection and script uses setData()  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+  e.clipboardData.setData('text/plain', 'modified text');
+  /* normally we'd need e.preventDefault() here, but since there is no selection the event does not have a default action */
+  /* or so goes the logic anyway, we'll see if reality obeys */
+}
+</script>
 
-<p><code>cut</code> <em>should</em> delete the object selected, and place it
-into the clipboard. In the case of read-only content (such as a document
-which is not editable by the user) the content <em>should not</em> be
-removed, but a copy <em>should</em> be placed in the keyboard as for a copy
-operation. <span class="issue">[@@Issue: nice idea, does it reflect current
-reality? Opera/Safari on Mac don't do that...]</span>.</p>
 
-<p><code>paste</code> triggers an event on the current target (usually the
-current selection). <span class="issue">@@Issue: For drag and drop
-compatibility should it trigger <em>drop</em> <strong>and</strong>
-<em>paste</em>, or vice versa?</span></p>
-</div>
-</div>
-
-<div>
-<h2 id="drag-and-drop">Drag and drop processing</h2>
-
-<p>Drag and drop is essentially a special case of a cut or copy, moving to
-select some new target, and then a paste operation, which is implemented for
-mouse-based devices. The main differences in drag-and-drop are that the
-object being dragged is can fire a dragover event on various possible targets
-before being dropped onto them, and that the object selected may be copied to
-a temporary drag-specific clipboard. Compare the following phases with those
-in copy and paste:</p>
-<dl>
-  <dt>Source Selection</dt>
-    <dd>This <em>may</em> use the same user interface mechanism as for copy
-      and paste (<span class="issue">@@Issue: and fire the same
-      events?</span>).</dd>
-  <dt>Copy Initiation</dt>
-    <dd>In a typical Drag and Drop implementation, this event is initiated by
-      dragging the currently selected source. This <em>must</em> fire a
-      <code>dragstart</code> event. It <em>must</em> copy the <a
-      href="#source">source node</a> into <code>dataTransfer</code>. It
-      <em>should</em> set the <code>effectAllowed</code> property to
-      determine whether a drag operation copies, moves, links, etc the source
-      node. See [<a href="#ref-mdt">MDT</a>] for further documentation of how
-      this works in Internet Explorer. (<span class="issue">@@Issue: Can it
-      just use the copy interface? Where does dataTransfer come from? Can you
-      start a drag using the existing copy buffer?</span>)</dd>
-  <dt>Target Selection</dt>
-    <dd>This process is repeated, and fires three events:
-      <code>dragenter</code>, <code>dragover</code>, and
-      <code>dragleave</code>. This <em>may</em> be the same mechanism as used
-      for selection, although typical implementations provide a seperate
-      mechanism. These events <code>should not</code> fired on the source, so
-      until there is a <code>dragenter</code> event fired, a
-      <code>drop</code> event <em>should</em> not be fired. Any action which
-      would have caused a <code>drop</code> to be fired before any
-      <code>dragenter</code> event has fired <em>should</em> cancel the
-    drag.</dd>
-  <dt>Content Insertion into Target</dt>
-    <dd>When a drop operation is performed, a <code>drop</code> event is
-      fired at the target. In order to protect the user from pasting
-      unexpected content, user agents <em>may</em> not allow this event to be
-      fired when not triggered by direct user interaction. In a drag
-      operation this normally destroys the dataTransfer object. <span
-      class="issue">@@Issue: what if the operation is not
-    successful?</span></dd>
-</dl>
-
-<p>However it is implemented in an interface, drag and drop operations must
-have a starting point (e.g. where the mouse was clicked, or the when a
-<span>selection</span> or element is selected for the drag), may have any
-number of intermediate steps (elements that the mouse moves over during a
-drag, or elements that the user picks as possible drop points as she cycles
-through possibilities), and must either have an end point (the element above
-which the mouse button was released, or the element that was finally
-selected), or be canceled. The end point must be the last element selected as
-a possible drop point before the drop occurs. If there is no
-<code>dragenter</code> event fired after a <code>dragstart</code>, then the
-<code>drop</code> event <em>should</em> be cancelled, but <em>may</em> be
-fired on the <a href="#source">source node</a>.</p>
-
-<p>Then, regardless of whether the event was canceled or not, drag feedback
-(e.g. the mouse cursor or other clear indication to the user) <em>should</em>
-be updated to match the kind of operation indicated by the event's <code
-title="dom-dataTransfer"><a href="#datatransfer0">dataTransfer</a></code>
-object's <code title="dom-dataTransfer-dropEffect">dropEffect</code>
-attribute, as follows: <span class="issue">@@Issue: More info about setting
-the dropEffect would be useful</span></p>
-
-<table>
-  <thead>
-    <tr>
-      <th><code title="dom-dataTransfer-dropEffect">dropEffect</code></th>
-      <th>Drag operation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code title="">none</code></td>
-      <td>No operation allowed.</td>
-    </tr>
-    <tr>
-      <td><code title="">copy</code></td>
-      <td>Data will be copied.</td>
-    </tr>
-    <tr>
-      <td><code title="">link</code></td>
-      <td>Data will be linked.</td>
-    </tr>
-    <tr>
-      <td><code title="">move</code></td>
-      <td>Data will be moved.</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>The following events are involved in the drag-and-drop model. They all use
-the <code>DragEvent</code> interface. (these fire <a
-href="http://msdn.microsoft.com/library/default.asp?url=/workshop/author/datatransfer/overview.asp">on-*
-events in IE 5+</a> <span class="issue">@@Issue: and IE7?</span></p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Event Name</th>
-      <th>Target</th>
-      <th>Bubbles/Cancelable? (yes/yes unless noted)</th>
-      <th><code title="dom-dataTransfer-addElement">dataTransfer</code></th>
-      <th><code title="dom-dataTransfer-dropEffect">dropEffect</code></th>
-      <th>Default Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><dfn id="dragstart"
-        title="event-dragstart"><code>dragstart</code></dfn></td>
-      <td><span><a href="#source">Source node</a></span></td>
-      <td></td>
-      <td>The setData method places the <span><a href="#source">source
-        node</a></span> in either clipboardData or dataTransfer. <span
-        class="issue">@@Issue: if it sets clipboardData is should also set
-        dataTransfer, no?</span></td>
-      <td><code title="">none</code></td>
-      <td>Initiate the drag-and-drop operation</td>
-    </tr>
-    <tr>
-      <td><dfn id="drag" title="event-drag"><code>drag</code></dfn></td>
-      <td><span><a href="#source">Source node</a></span></td>
-      <td></td>
-      <td>— </td>
-      <td><code title="">none</code></td>
-      <td>Continue the drag-and-drop operation</td>
-    </tr>
-    <tr>
-      <td><dfn id="dragenter"
-        title="event-dragenter"><code>dragenter</code></dfn></td>
-      <td><span><a href="#immediate">Immediate user selection</a></span> or
-        <span><a href="#the-body0">the <code>body</code>
-      element</a></span></td>
-      <td></td>
-      <td>— </td>
-      <td>Based on <code>effectAllowed</code> value</td>
-      <td>Change the current <span title="current target       element"><a
-        href="#current0">target element</a> from the </span><span><a
-        href="#immediate">immediate user selection</a></span> to the element
-        this event is fired on. <span class="issue">@@Issue: If it is fired
-        on the body, this text isn't right...</span></td>
-    </tr>
-    <tr>
-      <td><dfn id="dragleave"
-        title="event-dragleave"><code>dragleave</code></dfn></td>
-      <td><span title="current target element">Previous </span><span
-        title="current target element"><a href="#current0">target
-        element</a></span></td>
-      <td>Not cancelable</td>
-      <td>— </td>
-      <td><code title="">none</code></td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <td><dfn id="dragover"
-        title="event-dragover"><code>dragover</code></dfn></td>
-      <td><span>Current </span><span><a href="#current0">target
-        element</a></span></td>
-      <td></td>
-      <td>— </td>
-      <td>Based on <code>effectAllowed</code> value</td>
-      <td>Reset <code title="dom-dataTransfer-dropEffect">dropEffect</code>
-        based on <code>effectAllowed</code> value</td>
-    </tr>
-    <tr>
-      <td><dfn id="drop" title="event-drop"><code>drop</code></dfn></td>
-      <td><span>Current </span><span><a href="#current0">target
-        element</a></span></td>
-      <td></td>
-      <td><code>getData()</code> returns data set in <code
-        title="dom-dragstart">dragstart</code> event</td>
-      <td><span>Current drag operation</span></td>
-      <td>Varies</td>
-    </tr>
-    <tr>
-      <td><dfn id="dragend"
-      title="event-dragend"><code>dragend</code></dfn></td>
-      <td><span><a href="#source">Source node</a></span></td>
-      <td></td>
-      <td>— </td>
-      <td><code title="">none</code></td>
-      <td>Varies</td>
-    </tr>
-  </tbody>
-</table>
+<div class="event-definition">
+	<table border="0" summary="Overview of the copy event" cellpadding="2" cellspacing="0">
+		<tr class="assert must"><th>Type</th><td>copy</td></tr>
+		<tr class="assert must"><th>Interface</th><td><a href="#clipboardevent">ClipboardEvent</a></td></tr>
+		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Target</th><td>Elements</td></tr>
+	</table>
 </div>
 
-<h3 id="Setting">Setting and getting the data to be transferred</h3>
 
-<p>Internet Explorer provides 3 methods for the <code>clipboardData</code>
-and <code>dataTransfer</code> objects:</p>
+<h3>cut event</h3>
+<p>When the user initiates a cut operation, the implementation must fire a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
+<!-- Tests are above, under copy. One additional test for preventing default action here: -->
+<script>
+/** ClipboardData interface - cancelling default action of cut prevents removal of text from editable context  */
+/* Events: cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+	e.preventDefault();
+	var theTarget=e.target;
+	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
+}
+</script>
+<p>In a non-editable context, or if there is no selection, the cut event has no default action.</p>
+<script>
+/** ClipboardData interface - no default action for cut in non-editable context */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	return true; /* this is intentionally a no-op, the point of the test is to make sure that the event fires but the clipboard data is not altered */
+}
+</script>
+<script>
+/** ClipboardData interface - modifying data for cut event in non-editable context */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
+function test(e){
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'cut text');
+    /* note: no e.preventDefault() call, this event should have no default action since there is no selection.. */
+	}else{
+    return false;
+  }
+}
+</script>
+<script>
+/** ClipboardData interface - modifying data for cut event in non-editable context with selection */
+/* Events: cut */
+/* Targets: document  */
+/* Test HTML: <script> function onTestSetupReady(){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}<\/script>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
+function test(e){
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'cut text');
+    /* note: no e.preventDefault() call, this event should have no default action since the selection can not be removed.. */
+	}else{
+    return false;
+  }
+}
+</script>
+
+<div class="event-definition">
+	<table border="0" summary="Overview of the cut event" cellpadding="2" cellspacing="0">
+		<tr class="assert must"><th>Type</th><td>cut</td></tr>
+		<tr class="assert must"><th>Interface</th><td><a href="#clipboardevent">ClipboardEvent</a></td></tr>
+		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Target</th><td>Elements</td></tr>
+	</table>
+</div>
+
+
+<h3>paste event</h3>
+<p>When the user initiates a paste operation, the implementation must fire a paste event.</p>
+<script>
+/** ClipboardData interface - events fire  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
+	return passed;
+}
+</script>
+
+<script>
+/** ClipboardData interface - paste event fires before data is inserted */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.type == 'paste' && document.getElementById('input_text').value=='original text';
+	return passed;
+}
+</script>
+
+
+<p>If the cursor is in an editable element, the default action is to insert clipboard data in the most suitable format supported for the given context.</p>
+<script>
+/** ClipboardData interface - preventing default action  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	e.preventDefault();
+	var theTarget=e.target;
+	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
+}
+</script>
+<p>In an editable context, the paste event's target property refers to the element that contains the start of the selection.
+<script>
+/** ClipboardData interface - event target when selection spans several elements  */
+/* Events: paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);<\/script> */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+</script>
+
+In a non-editable document, the event is targeted at a node focused by clicking or by an interactive cursor. If the node that has focus is not a text node, the event is targeted at the BODY element.</p>
+<script>
+/** ClipboardData interface - event target when focused element has no text node inside  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()<\/script>*/
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.target === document.body;
+	return passed;
+}
+</script>
+<p> The paste event has no default action in a non-editable context.</p>
+
+<script>
+/** ClipboardData interface - paste event fires even in non-editable context */
+/* Events: paste */
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.type === 'paste';
+	return passed;
+}
+</script>
+
+
+<div class="event-definition">
+	<table border="0" summary="Overview of the paste event" cellpadding="2" cellspacing="0">
+		<tr class="assert must"><th>Type</th><td>paste</td></tr>
+		<tr class="assert must"><th>Interface</th><td><a href="#clipboardevent">ClipboardEvent</a></td></tr>
+		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
+		<tr class="assert must"><th>Target</th><td>Element</td></tr>
+	</table>
+</div>
+
+
+<h2>Interface ClipboardData</h2>
+<p class="issue">How should we define the relationship to the HTML5 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#the-datatransfer-interface">DataTransfer</a> interface? Can DataTransfer inherit from ClipboardData and add the drag-and-drop stuff, or should we just defer to HTML5 for all of this? </p>
+<h3>IDL definition</h3>
+<pre class="idl idl-code">
+interface <dfn id="clipboarddata">ClipboardData</dfn> {
+    void <a href="#clipboarddata-cleardata">clearData</a>( in optional DOMString type );
+    DOMString <a href="#clipboarddata-getdata">getData</a>(in DOMString type);
+    void <a href="#clipboarddata-setdata">setData</a>(in DOMString type, in DOMString data);
+    DOMStringList <a href="clipboarddata-types">types</a>;
+}
+</pre>
+
+<script>
+/** ClipboardData interface */
+/* Events: cut copy paste */
+function test(e){
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
+	return passed;
+}
+</script>
+<h3>Attributes</h3>
+<h4 id="clipboarddata-types">types</h4>
+<!-- 
+<p class="issue">Note: seems this is not currently implemented. WebKit has a types property but it's always null. Suggested text is thus guesswork which should be checked with WebKit developers.</p>
+-->
+<p>The types property returns a DOMStringList of MIME type strings. <a href="#refsRFC2046">[RFC2046]</a>. In the paste event, it lists those formats available on the clipboard the implementation supports returning to the script.  In the copy and cut events, the types property returns a list of supported formats for the copy operation - for example, if the implementation supports copying plain text and HTML it would return a DOMStringList with the values 'text/plain' and 'text/html'.</p>
+<script>
+/** ClipboardData interface - types property */
+/* Events: cut copy paste */
+function test(e){
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
+	}
+	return hasTextPlain;
+}
+</script>
+<p>The order of these values is undefined.</p>
+<p class="issue">This .types spec is slightly different from the HTML5 DnD .types - consistent enough to make sense to authors and implementers?</p>
+<h3>Methods</h3>
+<h4 id="clipboarddata-getdata">getData</h4>
+<p>Calling getData() from within a paste event handler will return the clipboard data in the specified format. An implementation must support 'text/plain' and should support 'text/html' to retrieve any HTML formatted data on the system clipboard.</p>
+<script>
+/** ClipboardData interface - getData() method in paste event retrieving plain text */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
+	}
+	return passed;
+}
+</script>
+<p>If getData() is not called from within a paste event handler, or if the type is not available, the method returns undefined. <span class="issue">Note: IE allows this, but it seems to go against user expectations</span></p>
+<script>
+/** ClipboardData interface - getData() method in cut and copy events should return undefined */
+/* Events: cut copy */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')===undefined)passed=true;
+	}
+	return passed;
+}
+</script>
+<script>
+/** ClipboardData interface - getData() method when type is unsupported should return undefined */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/foobarbogustype')===undefined)passed=true;
+	}
+	return passed;
+}
+</script>
+<script>
+/** ClipboardData interface - getData() method when called outside event handler should return undefined */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		var passed = cbData.getData('text/plain')===undefined;
+		result(passed);
+	}, 1 );
+}
+</script>
+<p class="issue">HTML5 says return empty string if data of that type is not found. WebKit returns undefined though..</p>
+<p>If the method is called with too many or too few arguments, it throws a syntax error exception.</p>
+<script>
+/** ClipboardData interface - getData() method with wrong number of arguments */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed=true;
+	try{
+		e.clipboardData.getData();
+		passed=false;
+	}catch(e){}
+	try{
+		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
+		passed=false;
+	}catch(e){}
+	return passed;
+}
+</script>
+<p class="note">Note: for compatibility purposes, the value 'text' (case-insensitive) must be treated as 'text/plain'.</p>
+<script>
+/** ClipboardData interface - getData() method supports legacy 'text' argument */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(  e.clipboardData.getData('text')==='pasted text'
+		&& e.clipboardData.getData('tEXt')==='pasted text' )passed=true;
+	}
+	return passed;
+}
+</script>
+
+<h4 id="clipboarddata-setdata">setData</h4>
+<p class="issue">Method exists in WebKit but doesn't seem to do anything</p>
+<p>Calling setData() from within an event handler will modify the data which will be placed on the clipboard, for the specified format.</p>
+<script>
+/** ClipboardData interface - setData() method */
+/* Events: copy cut paste */
+/* External pass condition - clipboard data: "copycutpaste modified text" */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
+	}
+	e.preventDefault();
+}
+</script>
+
+<p>If the type argument is not supported, the setData() call does nothing.</p>
+<p class="issue">setData() with unsupported type throws in IE</p>
+<script>
+/** ClipboardData interface - setData() method ignored for unsupported types */
+/* Events: copy cut paste */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		try{
+			e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text');
+			passed=true;
+		}catch(e){
+		}
+	}
+	return passed;
+}
+</script>
+<p>Calling setData() from a paste event handler will modify the data before it is inserted. <span class="issue">Not what WebKit does (but its support for setData() is non-existant anyway). IE does this.</span></p>
+<script>
+/** ClipboardData interface - setData() modifies text that is about to be inserted in a paste event */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Test HTML: <form><input autofocus></form> */
+function test(e){
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'modified text');
+	}
+	setTimeout(function(){
+		var passed=false;
+		if( e.target.value ){
+			/*form element..*/
+			passed=e.target.value==='modified text';
+		}else{
+			passed = e.target.data==='modified text'
+		}
+		result(passed);
+	}, 10);
+}
+</script>
+<p>The default action of a copy and cut event is to place the selection on the clipboard. Hence, after calling setData() the script must cancel the default action of the event, otherwise the data placed on the clipboard with the setData() call will immediately be overwritten by the default action.</p>
+<script>
+/** ClipboardData interface - setData() method without preventing events's default action */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
+	}
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+}
+</script>
+
+
+<script>
+/** ClipboardData interface - setData() method with text/html (experimental) */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "<p>copycut <b>modified</b> text</p>" */
+/* IE's CF_HTML can not be emulated from JS with the existing clipboard API. The format includes quite some meta data:
+Version:1.0
+StartHTML:000000224
+EndHTML:000007594
+StartFragment:000006999
+EndFragment:000007548
+StartSelection:000006999
+EndSelection:000007530
+SourceURL: ...
+and a document containing all parents of the selection, plus the full HEAD section. Plus magic <!--StartFragment--> and EndFragment comments.
+
+So..what should an implementation do if the script tries to place text/html data on the clipboard? Preferably support magically using the CF_HTML format. What is an implementation that doesn't support CF_HTML supposed to do?? //TODO!
+Note: IE throws.
+*/
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/html', '<p>copycut <b>modified</b> text</p>');
+	}
+}
+</script>
+<p></p>
+
+<h4 id="clipboarddata-cleardata">clearData</h4>
+<p>Calling clearData() empties the system clipboard if no argument is given, and removes the specified type of data from the clipboard if called with the optional type argument.</p>
+<script>
+/** ClipboardData interface - clearData() method without arguments */
+/* Events: copy cut paste */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.clearData){
+		e.clipboardData.clearData();
+	}
+	e.preventDefault();
+}
+</script>
+<script>
+/** ClipboardData interface - clearData() method with text/plain argument */
+/* Events: copy cut paste */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
+// TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.clearData){
+		e.clipboardData.clearData('text/plain');
+	}
+	e.preventDefault();
+}
+</script>
+<script>
+/** ClipboardData interface - clearData() method without preventing events's default action */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+function test(e){
+	var passed = false;
+	if(e.clipboardData){
+		e.clipboardData.clearData();
+	}
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+}
+</script>
+
+
+<h2>Clipboard event interface</h2>
+<h3>IDL definition</h3>
+<pre class="idl idl-code">interface <dfn id="clipboardevent">ClipboardEvent</dfn> : <a href="http://www.w3.org/TR/DOM-Level-3-Events/#events-Events-Event">Event</a> {
+  readonly attribute <a href="#clipboarddata">ClipboardData</a> clipboardData;
+  void <a href="#clipboardevent-initclipboardevent">initClipboardEvent</a>( in DOMString eventType,
+		in boolean canBubble,
+		in boolean cancelable,
+		in DOMString dataType,
+		in DOMString data );
+};
+</pre>
+<p>The ClipboardEvent interface extends the Event interface.  [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]</p>
+
+<h3>Attributes</h3>
+<h4 id="clipboardevent-clipboarddata">clipboardData</h4>
+<p>The clipboardData attribute is an instance of the <a href="#clipboarddata">ClipboardData</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations.</p>
+<h3>Methods</h3>
+<h4 id="clipboardevent-initclipboardevent">initClipboardEvent</h4>
+<p>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a MIME type describing the format of the data argument. Event listeners triggered by the synthetic event can get access to the data by calling ClipboardData.getData() with a string which case-insensitively matches the dataType argument.</p>
+
+<script>
+/** ClipboardEvent interface - synthetic events  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+function test(e){
+	return e.clipboardData.getData('text/plain')=='synthetic event text';
+}
+function triggerTestManually(){
+	onTestSetupReady();
+}
+function onTestSetupReady(){
+	try{
+		var evt=document.createEvent('ClipboardEvent');
+		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		document.dispatchEvent(evt);
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+</script>
+<script>
+/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+function test(e){
+	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
+}
+function triggerTestManually(){
+	onTestSetupReady();
+}
+function onTestSetupReady(){
+	try{
+		var evt=document.createEvent('ClipboardEvent');
+		evt.initClipboardEvent( window.eventType, true, true, 'text/foobarbogustype', 'synthetic event text' );
+		document.dispatchEvent(evt);
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+</script>
+<p>A synthetic paste event must not give a script access to data on the real system clipboard. Synthetic cut and copy events must not modify data on the system clipboard.</p>
+<script>
+/** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
+/* Events: copy cut */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+
+}
+function triggerTestManually(){
+	onTestSetupReady();
+}
+function onTestSetupReady(){
+	try{
+		var evt=document.createEvent('ClipboardEvent');
+		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		/* make a selection to check if selected text is copied by the synthetic event.. */
+		var range=document.createRange();
+		range.selectNodeContents(document.body);
+		window.getSelection().addRange(range);
+		document.dispatchEvent(evt);
+		window.getSelection().removeAllRanges();
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+</script>
+
+
+<h2>Supported data types</h2>
+<p>The values below must be supported by all methods that take a type argument. Note that the type argument is always case-insensitive.</p>
+<script>
+/** ClipboardData interface - getData() method's type argument not case sensitive */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if( e.clipboardData.getData('text/PLAIN')==='pasted text' &&
+			e.clipboardData.getData('TEXT/PLAIN')==='pasted text' &&
+			e.clipboardData.getData('Text/Plain')==='pasted text' &&
+			e.clipboardData.getData('TeXt/PlAin')==='pasted text'
+		)passed=true;
+	}
+	return passed;
+}
+</script>
+
 <dl>
-  <dt><code>setData()</code></dt>
-    <dd>This takes one or two parameters. The first <em>must</em> be set to
-      either 'text' or 'URL' (case-insensitive).</dd>
-  <dt><code>getData()</code></dt>
-    <dd>This takes one parameter, that allows the target to request a
-      specific type of data.</dd>
-  <dt><code>clearData()</code></dt>
-    <dd>This clears the data from the object.</dd>
+	<dt>text/plain</dt>
+	<dd>Simple text format with no formatting</dd>
+	<dt>text</dt>
+	<dd>Alias for text/plain, must be supported for compatibility with legacy content.</dd>
+	<dt>text/url-list</dt>
+	<dd>This type indicates that the data on the clipboard is one or more valid web addresses. This enables an implementation to offer specialised UI for inserting URIs, for example give the user a choice between creating a link and inserting an image whose source is the given address.</dd>
+	<dt>URL</dt>
+	<dd>Alias for text/url-list, must be supported for compatibility with legacy content.</dd>
+</dl>
+<p>Implementations are encouraged to also support text/html for dealing with HTML-formatted data.</p>
+<h2>Integration with rich text editing APIs</h2>
+<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation must fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
+<script>
+/** ClipboardData interface - integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+function test(e){
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
+}
+function onTestSetupReady(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('ifr');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		window.afterExecCommand=false;
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		window.afterExecCommand=true;
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
+}
+</script>
+<script>
+/** ClipboardData interface - integration with execCommand, can prevent default action */
+/* Events: copy cut */
+/* paste data: "clipboard text" */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+/* External pass condition - clipboard data: "clipboard text" */
+
+function test(e){
+	e.preventDefault();
+}
+
+function triggerTestManually(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('ifr');
+	var doc=ifr.contentDocument;
+	doc.designMode='on';
+	ifr.contentWindow.focus();
+	doc.body.innerHTML='<p>This is filler text</p>';
+	var range=doc.createRange();
+	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
+	doc.defaultView.getSelection().addRange(range);
+	try{
+		doc.execCommand(window.eventType, false, false);
+    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
+}
+</script>
+
+<script>
+/** ClipboardData interface - integration with execCommand, can prevent default action */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+function test(e){
+	window.eventFired=true;
+	e.preventDefault();
+}
+function triggerTestManually(){
+	var ifr=document.getElementById('ifr');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		setTimeout(function(){
+			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
+			result(passed);
+		}, 10);
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
+}
+</script>
+
+<h2>Privacy concerns</h2>
+<p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the UA's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
+<ul>
+<li>Objects implementing the ClipboardData interface must only be available within the ClipboardEvent event handler.</li>
+<li>If a script stores a reference to an object implementing the ClipboardData interface to use from outside the ClipboardEvent event handler, all methods must be no-ops when called outside the expected context</li>
+<script>
+/** ClipboardData interface - setData() called outside event handler method */
+/* Events: copy cut paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.setData('text/plain', 'Test failed');
+	}, 1 );
+}
+</script>
+<script>
+/** ClipboardData interface - clearData() called outside event handler method */
+/* Events: copy cut paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.clearData();
+	}, 1 );
+}
+</script>
+<li>Implementations must not let scripts create synthetic clipboard events to get access to real clipboard data</li>
+</ul>
+<p>Implementations may choose to further limit the functionality provided by the ClipboardData interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
+<h2>Nuisance considerations</h2>
+<p>Scripts may use the ClipboardData API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
+<p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
+<h2>Security considerations</h2>
+<p class="issue">How do we safeguard cross-origin copy/paste of HTML source code? </p>
+<p>Pasting HTML copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup.</p>
+<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and the data available on the clipboard is from a different origin, the implementation must sanitize the content by following these steps:</p>
+<ol>
+	<li>Parse the HTML code on the clipboard to a DOM tree</li>
+	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, FORM, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP. For all elements except FORM, also remove all child nodes.</li>
+	<li>Remove all event handler attributes from all elements</li>
+	<li>Remove all data- attributes from all elements</li>
+	<li>Serialize the DOM and return the generated string to the script</li>
+</ol>
+<p>Implementations may implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
+
+<p class="issue">Is this sufficient to prevent sneaky cross-site request forgery attacks?</p>
+
+<h2>References</h2>
+<dl>
+<dt id="refsDOMEVENTS">[DOMEVENTS]</dt>
+<!--
+   <dd><cite><a
+   href="http://www.w3.org/TR/DOM-Level-3-Events/">Document Object
+   Model (DOM) Level 3 Events Specification</a></cite>,
+   B. H&ouml;hrmann, P. Le Hegaret, T. Pixley. W3C, December
+   2007.</dd>
+   -->
+<dd>
+<cite>
+<a href="http://dev.w3.org/2006/webapi/DOM-Level-3-Events/html/DOM3-Events.html">Document Object Model (DOM) Level 3 Events Specification</a>
+</cite>
+, D. Schepers. W3C, July 2009.
+</dd>
+<dt id="refsRFC2046">[RFC2046]</dt>
+<dd>
+<cite>
+<a href="http://www.ietf.org/rfc/rfc2046.txt">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>
+</cite>
+, N. Freed, N. Borenstein. IETF, November 1996.
+</dd>
 </dl>
 
-<h2 id="Extensibil1"><a name="Extensibil"
-id="Extensibil">Extensibility</a></h2>
+<h2 id="Acknowledg">Acknowledgements</h2>
 
-<p>Don't extend this yet, we haven't even specified it. Thanks!!!</p>
+<p>This section is informative</p>
 
-<h2 id="Glossary">Glossary</h2>
-<dl>
-  <dt id="immediate">Immediate User Selection</dt>
-  <dt id="source">Source Node</dt>
-    <dd>The node which is the source of the object to be copied, dragged,
-    etc.</dd>
-  <dt>Target Element</dt>
-    <dd>The node at which a <code>paste</code> or <code>drop</code> event
-      will be fired.</dd>
-</dl>
+<p>The editors would like to acknowledge their intellectual debt to the
+documentation of Data Transfer functionalities from Microsoft [<a
+href="#ref-mdt">MDT</a>]. The draft specification of them from the WHAT
+Working Group published as part of their draft "Web Applications 1.0" [<a
+href="#WHAT-WA">WHAT-WA</a>] which essentially repeats the
+drag-and-drop-specific parts of that were heavily used to prepare the initial
+drafts of this specification. We are also grateful for the draft "safe copy
+and paste" [<a href="#ref-scp">SCP</a>] from Paul Libbrecht.</p>
+
+<p>We would like to acknowledge the contributions made by the following:</p>
+
+<p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
+Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
+Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
+Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones</p>
+</div>
+
+
 
 <div>
 <h2 id="References">References</h2>
@@ -619,26 +1072,6 @@ id="Extensibil">Extensibility</a></h2>
 </div>
 
 <div>
-<h2 id="Acknowledg">Acknowledgements</h2>
-
-<p>This section is informative</p>
-
-<p>The editors would like to acknowledge their intellectual debt to the
-documentation of Data Transfer functionalities from Microsoft [<a
-href="#ref-mdt">MDT</a>]. The draft specification of them from the WHAT
-Working Group published as part of their draft "Web Applications 1.0" [<a
-href="#WHAT-WA">WHAT-WA</a>] which essentially repeats the
-drag-and-drop-specific parts of that were heavily used to prepare the initial
-drafts of this specification. We are also grateful for the draft "safe copy
-and paste" [<a href="#ref-scp">SCP</a>] from Paul Libbrecht.</p>
-
-<p>We would like to acknowledge the contributions made by the following:</p>
-
-<p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
-Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
-Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
-Sucan, Tom Wlodkowski</p>
-</div>
 
 <p></p>
 </body>
