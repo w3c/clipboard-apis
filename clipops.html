@@ -175,28 +175,8 @@ href="#ref-rfc2119">RFC2119</a>]. A conformant implementation of this
 specification meets all requirements identified by the use of these terms.</p>
 </div>
 
-<div>
-<h2 id="Security">Security issues</h2>
-
-<p>Enabling authors to change what is copied by a user, or to make an
-automated copy of something that was never selected and allowing unrestricted
-calls to paste information can raise various security and privacy concerns. On the other hand there
-are valid reasons for allowing this in the right circumstances.</p>
-
-<p>An example scenario of a problem is where a user selects a link and copies
-it, but a different link is copied to the clipboard. The effect of this can
-range from an unexpected result on pasting to an attempted "phishing"
-attack.</p>
-
-<p>Authors should be aware that User Agents will typically restrict what is possible
-to content they consider "safe", or trusted by the user.</p>
-
-</div>
 
 <div>
-
-<div>
-<h2 id="Select">Select, Cut, Copy, Paste</h2>
 
 <h2>Events</h2>
 <h3>copy event</h3>
@@ -363,8 +343,6 @@ function test(e){
 }
 </script>
 
-<p class="note">The default action of the cut event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved. Any such events are queued up to fire after processing of the cut event is finished.</p>
-
 <div class="event-definition">
 	<table border="0" summary="Overview of the cut event" cellpadding="2" cellspacing="0">
 		<tr class="assert must"><th>Type</th><td>cut</td></tr>
@@ -452,7 +430,6 @@ function test(e){
 	return passed;
 }
 </script>
-<p class="note">The default action of the paste event <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeInserted. Any such events are queued up to fire after processing of the copy event is finished.</p>
 
 
 <div class="event-definition">
@@ -464,6 +441,113 @@ function test(e){
 		<tr class="assert must"><th>Target</th><td>Element</td></tr>
 	</table>
 </div>
+
+<h2 id="otherevents">Interaction with other events</h2>
+<p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asyncronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
+
+<script>
+/** DataTransfer interface - clipboard events relative to key events  */
+/* Events: copy cut paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
+/* Targets: 'input_text' */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
+},false);
+
+function test(e){
+  logEvent(e);
+	setTimeout(function(){
+    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
+    result( passed, 'Got: '+eventsFired.join(',') );
+  }, 500);
+}
+</script>
+
+
+<p>The default action of the cut and paste events <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved / DOMNodeInserted. Any such events are queued up to fire after processing of the cut/paste event is finished.</p>
+<script>
+/** DataTransfer interface - clipboard events relative to other input events  */
+/* Events: cut */
+/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
+/* Targets: 'input_text' */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
+},false);
+
+function test(e){
+  logEvent(e);
+  setTimeout(function(){
+    e.target.blur(); // causes change event
+    e.target.form.checkValidity(); // causes invalid event
+  }, 10);
+	setTimeout(function(){
+    var evString = eventsFired.join(',')
+    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
+    result( passed, 'Got: '+evString );
+  }, 500);
+  logEvent( {type: e.type+' handler done'} );
+}
+</script>
+
+<script>
+/** DataTransfer interface - clipboard events relative to other input events  */
+/* Events:  paste */
+/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
+/* paste data: "clipboard text" */
+/* Targets: 'input_text' */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
+},false);
+
+function test(e){
+  logEvent(e);
+  setTimeout(function(){
+    e.target.blur(); // causes change event
+    e.target.form.checkValidity(); // causes invalid event
+  }, 10);
+	setTimeout(function(){
+    var evString = eventsFired.join(',')
+    var passed =  evString ==='paste,paste handler done,textInput,input,change' || evString ==='paste,paste handler done,input,change' ;
+    result( passed, 'Got: '+evString );
+  }, 500);
+  logEvent( {type: e.type+' handler done'} );  
+}
+</script>
+
+<p>The implementation <em>must not</em> dispatch other input-related events like textInput, input, change, and validation events in response to the copy operation. </p>
+<script>
+/** DataTransfer interface - copy operation does not dispatch other events  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+  var otherEventsFired=[];
+  var events=[ 'input', 'textInput', 'change' ];
+  for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
+	setTimeout(function(){
+    var passed = otherEventsFired.length===0;
+    result(passed);
+  }, 50);
+  e.target.blur(); // might provoke a change event, but should not
+}
+</script>
 
 
 <h2>Interface DataTransfer</h2>
@@ -807,7 +891,7 @@ function onTestSetupReady(){
 	}
 }
 </script>
-<p>A synthetic paste event must not give a script access to data on the real system clipboard. Synthetic cut and copy events must not modify data on the system clipboard.</p>
+<p>A synthetic paste event <em>must not</em> give a script access to data on the real system clipboard. Synthetic cut and copy events <em>must not</em> modify data on the system clipboard.</p>
 <script>
 /** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
 /* Events: copy cut */
@@ -947,8 +1031,27 @@ function triggerTestManually(){
 	}
 }
 </script>
+<div>
 
-<h2>Privacy concerns</h2>
+<h2 id="Security">Security issues</h2>
+
+<p>Enabling authors to change what is copied by a user, or to make an
+automated copy of something that was never selected and allowing unrestricted
+calls to paste information can raise various security and privacy concerns. On the other hand there
+are valid reasons for allowing this in the right circumstances.</p>
+
+<p>An example scenario of a problem is where a user selects a link and copies
+it, but a different link is copied to the clipboard. The effect of this can
+range from an unexpected result on pasting to an attempted "phishing"
+attack.</p>
+
+<p>Authors should be aware that User Agents will typically restrict what is possible
+to content they consider "safe", or trusted by the user.</p>
+
+</div>
+
+
+<h2 id="privacy">Privacy concerns</h2>
 <p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the UA's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
 <ul>
 <li>Objects implementing the DataTransfer interface must only be available within the ClipboardEvent event handler.</li>
@@ -985,11 +1088,11 @@ function test(e){
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 <h2>Security considerations</h2>
 <p class="issue">How do we safeguard cross-origin copy/paste of HTML source code? </p>
-<p>Pasting HTML copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup.</p>
-<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and the data available on the clipboard is from a different origin, the implementation must sanitize the content by following these steps:</p>
+<p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup.</p>
+<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and the data available on the clipboard is from a different origin, the implementation <em>must</em> sanitize the content by following these steps:</p>
 <ol>
-	<li>Parse the HTML code on the clipboard to a DOM tree</li>
-	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, FORM, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP. For all elements except FORM, also remove all child nodes.</li>
+	<li>Parse the code on the clipboard to a DOM tree</li>
+	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, FORM, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP. For all mentioned elements except FORM, also remove all child nodes.</li>
 	<li>Remove all event handler attributes from all elements</li>
 	<li>Remove all data- attributes from all elements</li>
 	<li>Serialize the DOM and return the generated string to the script</li>
