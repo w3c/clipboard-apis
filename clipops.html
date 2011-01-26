@@ -30,7 +30,7 @@ alt="W3C" height="48" width="72"></a>
 
 <h1>Clipboard API and events</h1>
 
-<h2>(not yet a@) W3C Working Draft 24 January 2011</h2>
+<p>(not yet a@) W3C Working Draft 24 January 2011</p>
 <dl>
   <dt>This version:</dt>
     <dd><a
@@ -423,7 +423,7 @@ function test(e){
 	</table>
 </div>
 
-<h2 id="the-target">Determining the target property for clipboard events</h2>
+<h3 id="the-target">Determining the target property for clipboard events</h3>
 
 <p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection.
 <script>
@@ -506,7 +506,7 @@ interface <dfn>DataTransfer</dfn> {
 }
 </pre>
  -->
- <h2 class="issue">Issues we need addressed in HTML5</h2>
+ <h3 class="issue">Issues we need addressed in HTML5</h3>
  <table summary="issues we need addressed in HTML5" border="1">
   <tr><th>Summary</th><th>HTML5 bug</th><th>Browser ref</th></tr>
   <tr><td>Return value of getData() with unknown type should be undefined</td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=11856">11856</a></td><td>WebKit (Chrome)</td></tr>
@@ -902,7 +902,7 @@ function onTestSetupReady(){
 
 <h2>Integration with other scripts and events</h2>
 <h3>Integration with rich text editing APIs</h3>
-<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation must fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
+<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
 <script>
 /** integration with execCommand, events are syncronous */
 /* Events: copy cut paste */
