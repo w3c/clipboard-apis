@@ -425,7 +425,7 @@ function test(e){
 
 <h2 id="the-target">Determining the target property for clipboard events</h2>
 
-<p>In an editable context, the paste event's target property <em>must</em> refer to the element that contains the start of the selection.
+<p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection.
 <script>
 /** event target when selection spans several elements  */
 /* Events: copy cut paste */
@@ -439,7 +439,7 @@ function test(e){
 }
 </script>
 
-In a non-editable document, the event's targeted <em>must</em> point to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
+In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
 <script>
 /** event target when focused element has no text node inside  */
 /* Events: paste */
