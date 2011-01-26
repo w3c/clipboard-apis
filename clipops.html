@@ -492,7 +492,7 @@ function test(e){
 </script>
 
 
-<h2 id="datatransfer">Interface DataTransfer</h2>
+<h2 id="datatransfer">DataTransfer interface</h2>
 <p>Clipboard events require the DataTransfer interface from the HTML5 specification <a href="#refsHTML5">[HTML5]</a>. </p>
 <p class="issue">TODO: review/sync with <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#the-datatransfer-interface">DataTransfer</a>. 
 There will be a very brief informative (not normative) text below for each method, clearly indicating that the normative stuff is in the HTML5 spec. We will however maintain tests for this, so keeping in sync with HTML5 will remain important.</p>
@@ -534,7 +534,7 @@ function test(e){
 </script>
 <h3>Attributes</h3>
 
-<h4 id="datatransfer-types">types</h4>
+<h4 id="datatransfer-items">items</h4>
 <p>When pasting multi-part or non-textual data, the items property returns a DataTransferItems list of parts. See HTML5 for details <a href="#refsHTML5">[HTML5]</a>.</p>
 <script>
 /** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
@@ -550,7 +550,7 @@ function test(e){
 	return hasTextPlain;
 }
 </script>
-<h4 id="datatransfer-items">items</h4>
+<h4 id="datatransfer-types">types</h4>
 <p>The types property returns a DOMStringList of MIME type strings <a href="#refsRFC2046">[RFC2046]</a>, see HTML5 for details <a href="#refsHTML5">[HTML5]</a>.</p>
 
 <h3>Methods</h3>
