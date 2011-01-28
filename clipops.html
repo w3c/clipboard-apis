@@ -721,7 +721,7 @@ function test(e){
 	}
 }
 </script>
-<p>The default action of a copy and cut event is to place the selection on the clipboard. Hence, after calling setData() the script must cancel the default action of the event, otherwise the data placed on the clipboard with the setData() call will immediately be overwritten by the default action.</p>
+<p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard. Hence, in those cases the script calling setData() must also cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
 <script>
 /** setData() method without preventing events's default action */
 /* Events: copy cut */
