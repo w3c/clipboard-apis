@@ -683,7 +683,7 @@ function test(e){
 }
 </script>
 <!-- <p>If the type argument is not supported, the setData() call does nothing.</p> -->
-<p class="issue">TODO: how are unknown types reflected on the OS clipboard??</p>
+<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to common types is recommended.</p>
 <script>
 /** setData() method does not throw when implementation does not know the type */
 /* Events: copy cut paste */
@@ -848,9 +848,6 @@ function test(e){
 function test(e){
 	return e.clipboardData.getData('text/plain')=='synthetic event text';
 }
-function triggerTestManually(){
-	onTestSetupReady();
-}
 function onTestSetupReady(){
 	try{
 		var evt=document.createEvent('ClipboardEvent');
@@ -869,9 +866,7 @@ function onTestSetupReady(){
 function test(e){
 	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
 }
-function triggerTestManually(){
-	onTestSetupReady();
-}
+
 function onTestSetupReady(){
 	try{
 		var evt=document.createEvent('ClipboardEvent');
@@ -892,19 +887,18 @@ function onTestSetupReady(){
 function test(e){
 
 }
-function triggerTestManually(){
-	onTestSetupReady();
-}
 function onTestSetupReady(){
 	try{
 		var evt=document.createEvent('ClipboardEvent');
 		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+    if( window.eventType=='cut' )document.body.contentEditable='true';
 		/* make a selection to check if selected text is copied by the synthetic event.. */
 		var range=document.createRange();
 		range.selectNodeContents(document.body);
 		window.getSelection().addRange(range);
 		document.dispatchEvent(evt);
 		window.getSelection().removeAllRanges();
+    if( window.eventType=='cut' )document.body.contentEditable='false';
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
 		return;
@@ -1148,9 +1142,35 @@ function test(e){
 </script>
 
 <h2 id="binary-paste">Pasting data with multiple parts</h2>
+<h3>Security precautions</h3>
+<h4>Risks</h4>
+<p><i>This section is informative.</i></p>
+<p>There are two security risks associated with pasting formatted or multi-part data.</p>
+<ul>
+  <li>The user might paste hidden data which the user is not aware of. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
+  <li>The implementation might grant scripts access to local files the user did not intend to expose.</li>
+</ul>
+<p>To determine what policies to use, the factors we consider are </p>
+<ul>
+  <li>The origin of the data being pasted</li>
+  <li>The origin of data sub-parts such as referenced images</li>
+  <li>The origin of the running script</li>
+</ul>
+<h4>Security policies</h4>
+<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList.</p>
+<p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
+<p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
+<table border="1" summary="security policies">
+  <tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
+  <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
+  <tr><td>Different origin</td><td>Sanitize content. Do not access any local files.</td></tr>
+  <tr><td>Originates from local application</td><td>Any</td><td>Do not sanitize HTML. Grant access to local files</td></tr>
+</table>
+<p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not expose the content of example.jpg as an entry in the files attribute.</p>
+
+<h3>Using clipboardData.items list for multi-part paste</h3>
 <p>Some formats may contain multiple parts and embed images or other forms of data. Implementations <em>must</em> handle data with sub-parts by populating the FileList <b>files</b> attribute of the <a href="#datatransfer">DataTransfer interface</a>. References to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<a href="#refsRFC2392">RFC2392</a>]. The identifier of each sub-part is its index in the FileList.</p>
 <p class="note">For example, if the user pastes some HTML that contains one IMG tag linking to an image on the local hard drive, a compliant implementation would add a File item to the files list, and modify the SRC attribute of the IMG tag to read src="cid:0" to reference the 0<sup>th</sup> file in the filelist.</p>
-<p class="issue">We have a gaping security hole here if we allow scripts to also insert text/html data on the clipboard: simply copying once and pasting once would let an attacker read a local file of their choice. How do we make this safe? Only do the File object thing for truly embedded (clipboard-based) parts? That means leaving &lt;img src="file://..."&gt; case unsupported.</p>
 
 <h2 id="security">Security and privacy considerations</h2>
 <p>Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.</p>
@@ -1171,6 +1191,18 @@ function test(e){
 	var cbData=e.clipboardData;
 	setTimeout( function(){
 		cbData.setData('text/plain', 'Test failed');
+	}, 1 );
+}
+</script>
+<script>
+/** items.add() called outside event handler method */
+/* Events: copy cut paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.items.add( 'Test failed', 'text/plain');
 	}, 1 );
 }
 </script>
@@ -1200,9 +1232,11 @@ function test(e){
 <ol>
 	<li>Parse the code on the clipboard to a DOM tree</li>
 	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, FORM, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP and comment nodes. For all mentioned elements except FORM, also remove all child nodes.</li>
+  <li>Remove any elements whose computed style's display property is 'none'</li>
 	<li>Remove all event handler attributes from all elements</li>
 	<li>Remove all data- attributes from all elements</li>
   <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
+  <li>Remove HTML comments.</li>
 	<li>Serialize the DOM and return the generated string to the script</li>
 </ol>
 <p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
