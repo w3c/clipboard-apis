@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  cancelling default action, basic test   - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** cancelling default action, basic test  */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	e.preventDefault();
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

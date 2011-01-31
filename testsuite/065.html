@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  getData() method in cut and copy events should return undefined  - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** getData() method in cut and copy events should return undefined */
+/* Events: cut copy */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')===undefined)passed=true;
+	}
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  copy event target property - selection in input   - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** copy event target property - selection in input  */
+/* Events: copy cut paste */
+/* Test HTML: <form><input id="input_text"  onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document */
+
+function test(e){
+  var passed = e.target === document.getElementById('input_text');
+  return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text"  onfocus="this.select()" value="copied text"></form>
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

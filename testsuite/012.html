@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  copy event when there is no selection and script uses setData()   - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** copy event when there is no selection and script uses setData()  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+  e.clipboardData.setData('text/plain', 'modified text');
+  /* normally we'd need e.preventDefault() here, but since there is no selection the event does not have a default action */
+  /* or so goes the logic anyway, we'll see if reality obeys */
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="modified text";
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  preventing default action   - paste event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** preventing default action  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	if(e.preventDefault){
+    e.preventDefault();
+  }else{
+    e.returnValue=false;
+  }
+	var theTarget=e.target;
+	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  event target when selection spans several elements - reversed selection   - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** event target when selection spans several elements - reversed selection  */
+/* Events: copy cut paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
+/* paste data: "pasted text" */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} </script> 
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

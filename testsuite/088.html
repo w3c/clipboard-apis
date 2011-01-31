@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  clearData() method with text/plain argument  - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** clearData() method with text/plain argument */
+/* Events: copy cut paste */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
+// TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.clearData){
+		e.clipboardData.clearData('text/plain');
+	}
+	e.preventDefault();
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="";
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  event target when selection spans several elements   - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** event target when selection spans several elements  */
+/* Events: copy cut paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
+/* paste data: "pasted text" */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } </script> 
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

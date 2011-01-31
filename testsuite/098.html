@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  integration with execCommand, events are syncronous  - paste event on 'ifr.contentWindow'</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+function test(e){
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
+}
+function onTestSetupReady(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('ifr');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		window.afterExecCommand=false;
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		window.afterExecCommand=true;
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<iframe id="ifr"></iframe>
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget='ifr.contentWindow';
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

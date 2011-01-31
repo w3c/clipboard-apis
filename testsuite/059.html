@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  Clipboard event's clipboardData API  - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
+function test(e){
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

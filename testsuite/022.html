@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  events fire   - paste event on 'input_text'</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** events fire  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

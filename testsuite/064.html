@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** getData() method in paste event retrieving plain text */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
+	}
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

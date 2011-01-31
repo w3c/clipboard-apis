@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  copy event target property - selection in document text   - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** copy event target property - selection in document text  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
+/* Targets: document */
+
+function test(e){
+  var passed = e.target === document.getElementsByTagName('div')[0];
+  return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } </script>
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

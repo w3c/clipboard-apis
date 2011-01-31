@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  getData() method when called outside event handler should return undefined  - paste event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** getData() method when called outside event handler should return undefined */
+/* Events: paste */
+/* paste data: "pasted text" */
+function test(e){
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		var passed = cbData.getData('text/plain')===undefined;
+		result(passed);
+	}, 1 );
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

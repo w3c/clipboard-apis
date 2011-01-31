@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  no default action for cut in non-editable context  - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** no default action for cut in non-editable context */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	return true; /* this is intentionally a no-op, the point of the test is to make sure that the event fires but the clipboard data is not altered */
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

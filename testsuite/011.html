@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  copy event when there is no selection   - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** copy event when there is no selection  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+  void(0);
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

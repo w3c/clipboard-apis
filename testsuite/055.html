@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  event target when no specific element has focus   - copy event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** event target when no specific element has focus  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This is filler text</div>*/
+/* paste data: "pasted text" */
+/* Targets: document */
+
+function test(e){
+	var passed = e.target===document.body;
+	return passed;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div>This is filler text</div>
+
+	<script>
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='copy';
+	window.onload=function(){
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

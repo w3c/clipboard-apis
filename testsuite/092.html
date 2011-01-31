@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  ClipboardEvent interface - synthetic events   - paste event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** ClipboardEvent interface - synthetic events  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+function test(e){
+	return e.clipboardData.getData('text/plain')=='synthetic event text';
+}
+function triggerTestManually(){
+	onTestSetupReady();
+}
+function onTestSetupReady(){
+	try{
+		var evt=document.createEvent('ClipboardEvent');
+		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		document.dispatchEvent(evt);
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
+	window.onload=function(){
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  modifying data for cut event in non-editable context with selection  - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** modifying data for cut event in non-editable context with selection */
+/* Events: cut */
+/* Targets: document  */
+/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
+function test(e){
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'cut text');
+    /* note: no e.preventDefault() call, this event should have no default action since the selection can not be removed.. */
+	}else{
+    return false;
+  }
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}</script>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition="cut text";
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

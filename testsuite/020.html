@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  cut collapses selection   - cut event on 'input_text'</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** cut collapses selection  */
+/* Events: cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
+/* Targets: 'input_text' */
+function test(e){
+	setTimeout(function(){
+    var elm=document.getElementById('input_text');
+    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0;
+    result( passed );
+  }, 20);
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>
+
+	<script>
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>

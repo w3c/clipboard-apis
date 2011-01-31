@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head>
+	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - cut event on document</title>
+	<script src="_lib.js"></script>
+	<script>
+	
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/* Events: cut copy paste */
+/* paste data: "clipboard text" */
+function test(e){
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
+	}
+	return hasTextPlain;
+}
+
+	</script>
+</head>
+<body>
+
+	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<form><input autofocus id="input_text"></form>
+
+	<script>
+	var dataToPaste="clipboard text";
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
+	window.onload=function(){
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+	}
+	</script>
+</body></html>
