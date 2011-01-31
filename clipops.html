@@ -1168,7 +1168,7 @@ function test(e){
 </table>
 <p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not expose the content of example.jpg as an entry in the files attribute.</p>
 
-<h3>Using clipboardData.items list for multi-part paste</h3>
+<h3>Using clipboardData.files list for multi-part paste</h3>
 <p>Some formats may contain multiple parts and embed images or other forms of data. Implementations <em>must</em> handle data with sub-parts by populating the FileList <b>files</b> attribute of the <a href="#datatransfer">DataTransfer interface</a>. References to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<a href="#refsRFC2392">RFC2392</a>]. The identifier of each sub-part is its index in the FileList.</p>
 <p class="note">For example, if the user pastes some HTML that contains one IMG tag linking to an image on the local hard drive, a compliant implementation would add a File item to the files list, and modify the SRC attribute of the IMG tag to read src="cid:0" to reference the 0<sup>th</sup> file in the filelist.</p>
 
