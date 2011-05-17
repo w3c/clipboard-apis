@@ -8,7 +8,7 @@
       var respecConfig = {
           // document info
           specStatus:           "WD",
-          shortName:            "clipops",
+          shortName:            "clipboard-apis",
           // publishDate:   "2009-08-06",
           // previousMaturity: "WD",
           // previousPublishDate:  "2009-03-15",
@@ -18,7 +18,7 @@
           // lcEnd:  "2010-08-06",
           // extraCSS:             ["../css/respec.css"],
           extraCSS:             ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
-
+					NoIDLIn: true,
           // editors
           editors:  [
               { name: "Hallvord R. M. Steen", url: "mailto:hallvord@opera.com",
@@ -816,7 +816,7 @@ function test(e){
 </dd>
 <dt>boolean clearData()</dt>
 <dd>
-<dl class="parameters"><dt>[Optional] DOMString type</dt><dd>The type of data to clear</dd></dl>
+<dl class="parameters"><dt>optional DOMString type</dt><dd>The type of data to clear</dd></dl>
 <p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [[!HTML5]].</p>
 <script>
 /** clearData() method without arguments */
@@ -1101,16 +1101,16 @@ function test(e){
 </script>
 </section>
 </section>
-<section>
-<h2 id="binary-paste">Pasting data with multiple parts</h2>
-<p class="issue">This section needs to be more specific on how different types of data should be handled. We probably need to specify different algorithms for exposing data types as "drag data store" entries, and set up some kind of registry mapping the various data types (both MIME types and platform-specific type identifiers) to various algorithms.</p>
 
-<h3>Security precautions</h3>
-<h4>Risks</h4>
+<section>
+<h3 id="pasting-html">Pasting HTML and multi-part data</h3>
+<section>
+<h4>Security risks</h4>
 <p><i>This section is informative.</i></p>
-<p>There are two security risks associated with pasting formatted or multi-part data.</p>
+<p>There are certain security risks associated with pasting formatted or multi-part data.</p>
 <ul>
   <li>The user might paste hidden data which the user is not aware of. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
+  <li>The user might paste malicious JavaScript into a trusted page.</li>
   <li>The implementation might grant scripts access to local files the user did not intend to expose.</li>
 </ul>
 <p>To determine what policies to use, the factors we consider are </p>
@@ -1119,23 +1119,66 @@ function test(e){
   <li>The origin of data sub-parts such as referenced images</li>
   <li>The origin of the running script</li>
 </ul>
-<h4>Security policies</h4>
-<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList.</p>
-<p class="issue">Should we allow this for same-origin copy/paste content? There is no strong use case for doing so, since pasting markup which references online content should "just work" in the sense that referenced content should affect the rendering without the script having direct access to it.</p>
-<p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
-<p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
-<table summary="security policies">
+<p>This is an overview of the scenarios and the intended security policies:</p>
+<table summary="security policies" class="simple">
   <tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
   <tr><td>Different origin</td><td>Sanitize content. Do not access any local files.</td></tr>
   <tr><td>Originates from local application</td><td>Any</td><td>Do not sanitize HTML. Grant access to local files</td></tr>
 </table>
-<p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not expose the content of example.jpg as an entry in the files attribute.</p>
-
-<h3>Using clipboardData.files list for multi-part paste</h3>
-<p>Some formats may contain multiple parts and embed images or other forms of data. Implementations <em>must</em> handle data with sub-parts by populating the FileList <b>files</b> attribute of the <a href="#datatransfer">DataTransfer interface</a>. References to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. The identifier of each sub-part is its index in the FileList.</p>
-<p class="note">For example, if the user pastes some HTML that contains one IMG tag linking to an image on the local hard drive, a compliant implementation would add a File item to the files list, and modify the SRC attribute of the IMG tag to read src="cid:0" to reference the 0<sup>th</sup> file in the filelist.</p>
 </section>
+<section>
+<h4>General security policies</h4>
+<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList or DataTransferItems list.</p>
+<p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
+<p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
+<p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
+</section>
+<section>
+<h4>Processing model for pasting HTML data</h4>
+<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and there is HTML-formatted data on the clipboard, the implementation <em>must</em> process the markup according to the following steps:</p>
+<ol>
+	<li>Parse the code on the clipboard to a DOM tree</li>
+	<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
+	<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
+	<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
+		<ol>
+			<li>Let itemNumber be the integer 0</li>
+			<li><p>Choose the appropriate steps</p>
+				<dl class="switch">
+					<dt>If the DataTransferItems list of the current DataTransfer object (clipboardData.items) already contains an entry for the referenced file or clipboard part</dt>
+					<dd>set itemNumber to the index of the existing entry</dd>
+					<dt>Otherwise</dt>
+					<dd>Set itemNumber to the length of the existing DataTransferItems list</dd>
+					<dd>Add a new entry to the DataTransferItems list with index set to itemNumber, kind set to 'file', and type set to the MIME type of the file or clipboard part if known.</dd>
+					<dd>Update the DataTransfer object's FileList accordingly</dd>
+				</dl>
+			</li>
+			<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by itemNumber.</li>
+		</ol>
+	</li>
+	<li>Serialize the processed DOM and return the markup to the script</li>
+</ol>
+<section>
+<h4 id="cross-origin-html-paste">Cross-origin HTML paste sanitization algorithm</h4>
+<p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. HTML content from a different origin must therefore be processed according to the following steps, carried out after parsing the markup to a DOM presentation:</p>
+<ol>
+	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP, EMBED and KEYGEN. For all mentioned elements, also remove any child nodes.<p class="issue">Too draconian? Should we remove only SCRIPT, APPLET and input type=hidden?</p></li>
+	<li>Remove any FORM action attributes</li>
+  <li>Remove any elements whose computed style's display property is 'none'</li>
+  <li>Remove any elements whose computed style's visibility property is 'hidden'</li>
+ 	<li>Remove all event handler attributes from all elements</li>
+ 	<li>Remove all javascript: URLs from link HREF attributes, changing the HREF to an empty string instead <p class="issue">Should we allow javascript: HREFs?</p></li>
+	<li>Remove all data- attributes from all elements</li>
+  <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
+  <li>Remove comment nodes.</li>
+</ol>
+<p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
+</section>
+</section>
+</section>
+
+
 <section>
 <h2 id="security">Security and privacy considerations</h2>
 <p>Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.</p>
@@ -1191,23 +1234,6 @@ function test(e){
 <p>Scripts may use the DataTransfer API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 </section>
-<section>
-<h3 id="cross-origin-html-paste">Cross-origin copy/paste of source code</h3>
-<p class="issue">How do we safeguard cross-origin copy/paste of source code? Are below rules sufficient to prevent sneaky cross-site request forgery attacks?</p>
-<p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup.</p>
-<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and the data available on the clipboard is from a different origin, the implementation <em>must</em> sanitize the content by following these steps:</p>
-<ol>
-	<li>Parse the code on the clipboard to a DOM tree</li>
-	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, FORM, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP and comment nodes. For all mentioned elements except FORM, also remove all child nodes.</li>
-  <li>Remove any elements whose computed style's display property is 'none'</li>
-	<li>Remove all event handler attributes from all elements</li>
-	<li>Remove all data- attributes from all elements</li>
-  <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
-  <li>Remove HTML comments.</li>
-	<li>Serialize the DOM and return the generated string to the script</li>
-</ol>
-<p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
-</section>
 
 
 <h2 id="Acknowledg">Acknowledgements</h2>
@@ -1215,8 +1241,7 @@ function test(e){
 <p>This section is informative</p>
 
 <p>The editors would like to acknowledge their intellectual debt to the
-documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-OP]] and earlier drafts of the [[HTML5]] specification.  We are also grateful for the draft "safe copy
-and paste" [<a href="#ref-scp">SCP</a>] from Paul Libbrecht.</p>
+documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-OP]] and earlier drafts of the [[HTML5]] specification.  We are also grateful for the draft "safe copy and paste" from Paul Libbrecht (this draft is no longer available on the Web).</p>
 
 <p>We would like to acknowledge the contributions made by the following:</p>
 

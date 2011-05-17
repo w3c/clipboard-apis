@@ -12,11 +12,15 @@ function test(e){
 	try{
 		e.clipboardData.getData();
 		passed=false;
-	}catch(e){}
+	}catch(e){
+		//console.log(e);
+	}
 	try{
 		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
 		passed=false;
-	}catch(e){}
+	}catch(e){
+		//console.log(e);
+	}
 	return passed;
 }
 
