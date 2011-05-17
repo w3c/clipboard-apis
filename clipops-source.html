@@ -371,6 +371,9 @@ function test(e){
 		<tr class="assert must"><th>Target</th><td>Element</td></tr>
 	</table>
 </div>
+
+	<p class="warning">A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations.</p>
+
 </section>
 </section>
 
@@ -1113,7 +1116,6 @@ function test(e){
   <li>The user might paste hidden data which the user is not aware of. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
   <li>The user might paste malicious JavaScript into a trusted page.</li>
   <li>The implementation might grant scripts access to local files the user did not intend to expose.</li>
-	<li>A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future.</li>
 </ul>
 <p>To determine what policies to use, the factors we consider are </p>
 <ul>
@@ -1135,7 +1137,6 @@ function test(e){
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
 <p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
-<p>Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations.</p>
 </section>
 <section>
 <h4>Processing model for pasting HTML data</h4>
