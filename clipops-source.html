@@ -112,7 +112,7 @@ that allows for copying more than just the rendered content.</p>
 
 <p>With content such as mathematics, simply copying rendered text and pasting
 it into another application generally leads to most of the semantics being
-lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign. Also, the XML source
+lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. Also, the XML source
 could be placed in the clipboard with the appropriate transformation
 occurring when pasting.</p>
 
@@ -552,6 +552,7 @@ function test(e){
 <section>
 <h2 id="datatransfer">DataTransfer interface</h2>
 <p>This section is informative. The normative specification for the DataTransfer interface is found in [[HTML5]]'s <cite>Drag and Drop</cite> section.</p>
+<p class="issue"><a href="http://dev.w3.org/html5/spec/dnd.html#the-datatransfer-interface">Direct link to DataTransfer interface</a></p>
 <script>
 /** Clipboard event's clipboardData API */
 /* Events: cut copy paste */
@@ -1112,6 +1113,7 @@ function test(e){
   <li>The user might paste hidden data which the user is not aware of. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
   <li>The user might paste malicious JavaScript into a trusted page.</li>
   <li>The implementation might grant scripts access to local files the user did not intend to expose.</li>
+	<li>A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future.</li>
 </ul>
 <p>To determine what policies to use, the factors we consider are </p>
 <ul>
@@ -1133,6 +1135,7 @@ function test(e){
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
 <p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
+<p>Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations.</p>
 </section>
 <section>
 <h4>Processing model for pasting HTML data</h4>
@@ -1144,7 +1147,7 @@ function test(e){
 	<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 		<ol>
 			<li>Let itemNumber be the integer 0</li>
-			<li><p>Choose the appropriate steps</p>
+			<li><p>Choose the appropriate steps from this list:</p>
 				<dl class="switch">
 					<dt>If the DataTransferItems list of the current DataTransfer object (clipboardData.items) already contains an entry for the referenced file or clipboard part</dt>
 					<dd>set itemNumber to the index of the existing entry</dd>
@@ -1180,7 +1183,7 @@ function test(e){
 
 
 <section>
-<h2 id="security">Security and privacy considerations</h2>
+<h2 id="security">Other security and privacy considerations</h2>
 <p>Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies it, but a different link is copied to the clipboard. The effect of this can range from an unexpected result on pasting to an attempted "phishing" attack.</p>
