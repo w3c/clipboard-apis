@@ -167,7 +167,10 @@ occurring when pasting.</p>
 		</dd>
 	</dl>
 </li>
-<li>Fire the event.</li>
+<li>
+	<p>Fire the event.</p>
+	<p class="issue">Need to add something about how implementation gets data from clipboard (or throws) in response to for example .item[x].getAsFile(), also how File.name and File.lastModifiedDate should be set when the "file" is basically a pointer to a part of the clipboard contents</p>
+</li>
 <li><p>Process the default action or the data from the script per the following instructions:</p>
 	<dl class="switch">
 		<dt>Paste event</dt>
