@@ -71,7 +71,6 @@
 </section>
 
 <section id="sotd">
-<p class="issue">NOTE: feedback on any details of the spec is welcome, but particularly on <a href="http://www.w3.org/mid/op.vsqlj2vqa3v5gv@hr-opera.oslo.opera.com">the question of whether we should create a registry of clipboard data types</a> and where such a registry should be maintained.</p>
 </section>
 
 <section id="conformance"></section>
@@ -123,6 +122,195 @@ occurring when pasting.</p>
 
 <h2>Events</h2>
 <section>
+<h3>Processing model</h3>
+<p>These are the general steps to follow when firing clipboard events</p>
+<ol>
+	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
+	<li id="the-target"><p>Determine the target node for the event as follows</p>
+		<ul>
+			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
+<script>
+/** event target when selection spans several elements  */
+/* Events: copy cut paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
+/* paste data: "pasted text" */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+</script>
+<script>
+/** event target when selection spans several elements - reversed selection  */
+/* Events: copy cut paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
+/* paste data: "pasted text" */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+</script>
+		</li>
+		<li>
+			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
+<script>
+/** event target when focused element has no text node inside  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()<\/script>*/
+/* paste data: "pasted text" */
+/* Targets: document 'input_img' */
+
+function test(e){
+  if(document.activeElement.id!='input_img')return 'Not testable, input.focus() has not focused the input type=image';
+	var passed = e.target.id==='input_img';
+	return passed;
+}
+</script>
+<script>
+/** copy event target property - selection in input  */
+/* Events: copy cut paste */
+/* Test HTML: <form><input id="input_text"  onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document */
+
+function test(e){
+  var passed = e.target === document.getElementById('input_text');
+  return passed;
+}
+</script>
+
+<script>
+/** copy event target property - selection in document text  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
+/* Targets: document */
+
+function test(e){
+  var passed = e.target === document.getElementsByTagName('div')[0];
+  return passed;
+}
+</script>
+
+
+<script>
+/** event target when no specific element has focus  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This is filler text</div>*/
+/* paste data: "pasted text" */
+/* Targets: document */
+
+function test(e){
+	var passed = e.target===document.body;
+	return passed;
+}
+</script>
+		</li>
+		</ul>
+</li>
+<li><p>Prepare for firing the event per the event type specific instructions below:</p>
+	<dl class="switch">
+		<dt>Paste event</dt>
+		<dd>
+			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
+			<dl class="switch">
+				<dt>If the clipboard's main content is data in a supported bitmap format:</dt>
+				<dd id="paste-bitmaps">Prepare the DataTransferItems list according to these steps:</p>
+					<ol>
+						<li><p>Determine the description of the data, <var>typestr</var>:</p>
+							<dl class="switch">
+								<dt>If the OS clipboard description of the data is a MIME type starting with the string "image/"</dt>
+								<dd>Set <var>typestr</var> to the OS description of the data</dd>
+								<dt>Otherwise</dt>
+								<dd>
+									<p>Set <var>typestr</var> to "image/bmp"</p>
+									<p class="issue">Mandate an (on-demand?) conversion to PNG and use image/png as default type?</p>
+								</dd>
+							</dl>
+						</li>
+						<li>Add one entry to the DataTransferItems list with <code>kind</code> set to "file", <code>type</code> set to <var>typestr</var></li>
+					</ol>
+				</dd>
+				<dt>If the clipboard's main content is HTML-formatted</dt>
+				<dd id="processing-model-for-pasting-html-data">
+					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
+					<ol>
+						<li>Add one entry to the DataTransferItems list with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the DataTransferItems list.</li>
+						<li>Parse the code on the clipboard to a DOM tree</li>
+						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
+						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
+						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
+							<ol>
+								<li>Let <var>itemNumber</var> be the number of items on the DataTransferItems list</li>
+								<li><p>Choose the appropriate steps from this list:</p>
+									<dl class="switch">
+										<dt>If the DataTransferItems list of the current DataTransfer object (clipboardData.items) already contains an entry for the referenced file or clipboard part</dt>
+										<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
+										<dt>Otherwise</dt>
+										<dd>Add a new entry to the DataTransferItems list with index set to <var>itemNumber</var>, kind set to 'file', and type set to the MIME type of the file or clipboard part if known.</dd>
+										<dd>Update the DataTransfer object's FileList accordingly</dd>
+										<dd>Set <var>itemNumber</var> to the number of the existing DataTransferItems list</dd>
+									</dl>
+								</li>
+								<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
+							</ol>
+						</li>
+						<li>Serialize the processed DOM and update the DataTransferItems entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
+					</ol>
+				</dd>
+			</dl>
+		</dd>
+		<dt>Copy / cut event</dt>
+		<dd>
+			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read/write</em></p>
+			<p>No further action required</p>
+			<p class="issue">Is it true?</p>
+		</dd>
+	</dl>
+</li>
+<li>Fire the event.</li>
+<li><p>Process the default action or the data from the script per the following instructions:</p>
+	<dl class="switch">
+		<dt>Paste event</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the default action was prevented</dt>
+				<dd>Do nothing, terminate this algorithm.
+				</dd>
+				<dt>Otherwise</dt>
+				<dd>If the cursor or selection is in an editable context, insert the data from the clipboard
+				</dd>
+			</dl>
+		</dd>
+		<dt>Copy / cut event</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the default action was prevented</dt>
+				<dd>
+					<p>If the script called <code>setData()</code> or modified <code>clipboardData.items</code>, update the clipboard contents with the data from the script</p>
+					<p class="issue">spec this in more detail on a per-type basis</p>
+				</dd>
+				<dt>Otherwise</dt>
+				<dd>
+					<dl class="switch">
+						<dt>If there is a selection</dt>
+						<dd>Place contents of selection on the clipboard</dd>
+						<dd>If the event was cut and the context is editable, remove selection contents and collapse the selection</dd>
+						<dt>Otherwise</dt>
+						<dd>
+							<p>Do nothing, terminate this algorithm</p>
+							<p class="issue">Should we update clipboard contents with data given by the script, if any? <b>Editor's opinion: to let a script that doesn't call preventDefault() have a different outcome depending on whether there happens to be a selection would not be a good idea.</b></p>
+						</dd>
+					</dl>
+				</dd>
+			</dl>
+</dd>
+	</dl>
+</li>
+</ol>
+</section>
+<section>
 <h3>copy event</h3>
 <p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
 <script>
@@ -164,8 +352,7 @@ function test(e){
 }
 </script>
 
-<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified except in response to the <a href="#datatransfer-setdata">setData() method</a>. </p>
-<p class="issue">What about for example clipboardData.items.add(), or clipboardData.clearData() called from a copy event listener when there is no selection? The event has no default action, so these calls should probably successfully modify clipboard contents.</p>
+<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified except in response to the <a href="#datatransfer-setdata">setData() method</a> if the default action is prevented. </p>
 <script>
 /** copy event when there is no selection  */
 /* Events: copy */
@@ -219,8 +406,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
-<p>In a non-editable context, or if there is no selection, the cut event has no default action, but the implementation <em>must</em> fire the event regardless.</p>
-<p class="issue">What happens if there is a selection which is cut but the event listener also calls clipboardData.items.add()? Short answer: the default action will undo what the script has done, so the .add() will have no apparent effect - is this clear enough from current text?</p>
+<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation <em>must</em> fire the event regardless.</p>
 <script>
 /** no default action for cut in non-editable context */
 /* Events: cut */
@@ -375,6 +561,7 @@ function test(e){
 	<p class="warning">A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations.</p>
 
 </section>
+
 </section>
 
 <section>
@@ -468,88 +655,6 @@ function onTestSetupReady(){
 </dl>
 <div class="issue">Should we allow any type for the "data" argument, rather than limiting it to DOMString?</div>
 
-<section>
-
-<h3 id="the-target">Determining the target property for clipboard events</h3>
-
-<p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document.
-<script>
-/** event target when selection spans several elements  */
-/* Events: copy cut paste */
-/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
-/* paste data: "pasted text" */
-/* Targets: document 'a' 'b' */
-
-function test(e){
-	var passed = e.target.id === 'b';
-	return passed;
-}
-</script>
-<script>
-/** event target when selection spans several elements - reversed selection  */
-/* Events: copy cut paste */
-/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
-/* paste data: "pasted text" */
-/* Targets: document 'a' 'b' */
-
-function test(e){
-	var passed = e.target.id === 'b';
-	return passed;
-}
-</script>
-
-In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
-<script>
-/** event target when focused element has no text node inside  */
-/* Events: paste */
-/* Test HTML: <form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()<\/script>*/
-/* paste data: "pasted text" */
-/* Targets: document 'input_img' */
-
-function test(e){
-  if(document.activeElement.id!='input_img')return 'Not testable, input.focus() has not focused the input type=image';
-	var passed = e.target.id==='input_img';
-	return passed;
-}
-</script>
-<script>
-/** copy event target property - selection in input  */
-/* Events: copy cut paste */
-/* Test HTML: <form><input id="input_text"  onfocus="this.select()" value="copied text"></form>*/
-/* Targets: document */
-
-function test(e){
-  var passed = e.target === document.getElementById('input_text');
-  return passed;
-}
-</script>
-
-<script>
-/** copy event target property - selection in document text  */
-/* Events: copy cut paste */
-/* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
-/* Targets: document */
-
-function test(e){
-  var passed = e.target === document.getElementsByTagName('div')[0];
-  return passed;
-}
-</script>
-
-
-<script>
-/** event target when no specific element has focus  */
-/* Events: copy cut paste */
-/* Test HTML: <div>This is filler text</div>*/
-/* paste data: "pasted text" */
-/* Targets: document */
-
-function test(e){
-	var passed = e.target===document.body;
-	return passed;
-}
-</script>
-</section>
 </section>
 
 <section>
@@ -1139,31 +1244,6 @@ function test(e){
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
 </section>
 <section>
-<h4>Processing model for pasting HTML data</h4>
-<p>If a script calls getData('text/html'), the implementation supports pasting HTML, and there is HTML-formatted data on the clipboard, the implementation <em>must</em> process the markup according to the following steps:</p>
-<ol>
-	<li>Parse the code on the clipboard to a DOM tree</li>
-	<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-	<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
-	<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
-		<ol>
-			<li>Let itemNumber be the integer 0</li>
-			<li><p>Choose the appropriate steps from this list:</p>
-				<dl class="switch">
-					<dt>If the DataTransferItems list of the current DataTransfer object (clipboardData.items) already contains an entry for the referenced file or clipboard part</dt>
-					<dd>set itemNumber to the index of the existing entry</dd>
-					<dt>Otherwise</dt>
-					<dd>Set itemNumber to the length of the existing DataTransferItems list</dd>
-					<dd>Add a new entry to the DataTransferItems list with index set to itemNumber, kind set to 'file', and type set to the MIME type of the file or clipboard part if known.</dd>
-					<dd>Update the DataTransfer object's FileList accordingly</dd>
-				</dl>
-			</li>
-			<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by itemNumber.</li>
-		</ol>
-	</li>
-	<li>Serialize the processed DOM and return the markup to the script</li>
-</ol>
-<section>
 <h4 id="cross-origin-html-paste">Cross-origin HTML paste sanitization algorithm</h4>
 <p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. HTML content from a different origin must therefore be processed according to the following steps, carried out after parsing the markup to a DOM presentation:</p>
 <ol>
@@ -1178,7 +1258,6 @@ function test(e){
   <li>Remove comment nodes.</li>
 </ol>
 <p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
-</section>
 </section>
 </section>
 
@@ -1238,7 +1317,19 @@ function test(e){
 <p>Scripts may use the DataTransfer API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 </section>
+<section>
+<h2>Mandatory and optional data types and their processing requirements</h2>
+<table class="simple">
+	<tr><th>Type</th><th>Processing when read from clipboard</th><th>Processing when placed on clipboard</th></tr>
+	<tr><td>text/plain</td><td><ol><li>Retrieve the plain text variant of the clipboard contents (for example CF_UNICODETEXT on Windows, utxt on Mac)</li><li>Ensure the encoding is the expected one</li></ol></td><td><ol><li>Ensure correct encoding</li><li>Normalize linebreaks according to platform convention</li><li>Place on clipboard labelled as the clipboard's plain text (for example CF_UNICODETEXT on Windows, utxt on Mac)</li></ol></td></tr>
+	<tr><td>text/uri-list</td><td></td><td></td></tr>
+	<tr><td>text/html, application/xhtml+xml</td><td>Refer to <a href="#paste-html">pasting HTML data</a></td><td><ol><li>Format the data according to platform conventions for HTML clipboard data</li><li>Ensure data is correctly labelled with the source URL.</li></ol></td></tr>
+	<tr><td>image/png</td><td>Refer to <a href="#paste-bitmaps">bitmaps</a></td><td></td></tr>
+	<tr><td>text/json</td><td></td><td></td></tr>
+	<tr><td>Any XML format</td><td></td><td></td></tr>
+</table>
 
+</section>
 
 <h2 id="Acknowledg">Acknowledgements</h2>
 
