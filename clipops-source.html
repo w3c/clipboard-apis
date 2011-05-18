@@ -250,10 +250,10 @@ function test(e){
 										<dt>Otherwise</dt>
 										<dd>Add a new entry to the DataTransferItems list with index set to <var>itemNumber</var>, kind set to 'file', and type set to the MIME type of the file or clipboard part if known.</dd>
 										<dd>Update the DataTransfer object's FileList accordingly</dd>
-										<dd>Set <var>itemNumber</var> to the number of the existing DataTransferItems list</dd>
 									</dl>
 								</li>
 								<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
+									<li>Set <var>itemNumber</var> to the number of the existing DataTransferItems list</li>
 							</ol>
 						</li>
 						<li>Serialize the processed DOM and update the DataTransferItems entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
