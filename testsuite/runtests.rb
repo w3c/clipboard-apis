@@ -8,7 +8,6 @@ require "operawatir/helper"
  # 		An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
  # 		If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
  # 		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
- # -->
  # 
 
 

@@ -24,13 +24,13 @@
 		An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
 		If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
 		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
---><body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-working-draft-18-may-2011">W3C Working Draft 18 May 2011</h2><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2011/WD-clipboard-apis-20110518/">http://www.w3.org/TR/2011/WD-clipboard-apis-20110518/</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
+--><body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-working-draft-04-september-2011">W3C Working Draft 04 September 2011</h2><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2011/WD-clipboard-apis-20110904/">http://www.w3.org/TR/2011/WD-clipboard-apis-20110904/</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
 </dl><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2010-2011 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p><hr></div>
 <div id="abstract" class="introductory section"><h2>Abstract</h2>
 	<p>This document describes APIs for clipboard operations such as copy, cut and
 	paste in web applications.</p>
 </div><div id="sotd" class="introductory section"><h2>Status of This Document</h2><p><em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current W3C publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/">W3C technical reports index</a> at http://www.w3.org/TR/.</em></p>
-<p>This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Draft. This document is intended to become a W3C Recommendation. If you wish to make comments regarding this document, please send them to <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). All feedback is welcome.</p><p>Publication as a Working Draft does not imply endorsement by the W3C Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p><p>This document was produced by a group operating under the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>. W3C maintains a <a href="" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.</p></div><div id="toc" class="section"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a href="#use-cases" class="tocxref"><span class="secno">3. </span>Use Cases</a></li><li class="tocline"><a href="#events" class="tocxref"><span class="secno">4. </span>Events</a><ul class="toc"><li class="tocline"><a href="#processing-model" class="tocxref"><span class="secno">4.1 </span>Processing model</a></li><li class="tocline"><a href="#copy-event" class="tocxref"><span class="secno">4.2 </span>copy event</a></li><li class="tocline"><a href="#cut-event" class="tocxref"><span class="secno">4.3 </span>cut event</a></li><li class="tocline"><a href="#paste-event" class="tocxref"><span class="secno">4.4 </span>paste event</a></li></ul></li><li class="tocline"><a href="#clipboard-event-interface" class="tocxref"><span class="secno">5. </span><span class="formerLink">Clipboard event</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes" class="tocxref"><span class="secno">5.1 </span>Attributes</a></li><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">5.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#datatransfer-interface" class="tocxref"><span class="secno">6. </span>DataTransfer interface</a><ul class="toc"><li class="tocline"><a href="#attributes-1" class="tocxref"><span class="secno">6.1 </span>Attributes</a></li><li class="tocline"><a href="#methods-1" class="tocxref"><span class="secno">6.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#interaction-with-other-events" class="tocxref"><span class="secno">7. </span>Interaction with other events</a><ul class="toc"><li class="tocline"><a href="#event-listeners-that-modify-selection-or-focus" class="tocxref"><span class="secno">7.1 </span>Event listeners that modify selection or focus</a></li></ul></li><li class="tocline"><a href="#pasting-html-and-multi-part-data" class="tocxref"><span class="secno">8. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a href="#security-risks" class="tocxref"><span class="secno">8.1 </span>Security risks</a></li><li class="tocline"><a href="#general-security-policies" class="tocxref"><span class="secno">8.2 </span>General security policies</a></li><li class="tocline"><a href="#cross-origin-html-paste-sanitization-algorithm" class="tocxref"><span class="secno">8.3 </span>Cross-origin HTML paste sanitization algorithm</a></li></ul></li><li class="tocline"><a href="#other-security-and-privacy-considerations" class="tocxref"><span class="secno">9. </span>Other security and privacy considerations</a></li><li class="tocline"><a href="#mandatory-and-optional-data-types-and-their-processing-requirements" class="tocxref"><span class="secno">10. </span>Mandatory and optional data types and their processing requirements</a></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></div>
+<p>This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Draft. This document is intended to become a W3C Recommendation. If you wish to make comments regarding this document, please send them to <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). All feedback is welcome.</p><p>Publication as a Working Draft does not imply endorsement by the W3C Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p><p>This document was produced by a group operating under the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>. W3C maintains a <a href="" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.</p></div><div id="toc" class="section"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a href="#use-cases" class="tocxref"><span class="secno">3. </span>Use Cases</a></li><li class="tocline"><a href="#events" class="tocxref"><span class="secno">4. </span>Events</a><ul class="toc"><li class="tocline"><a href="#event-types-and-details" class="tocxref"><span class="secno">4.1 </span>Event types and details</a><ul class="toc"><li class="tocline"><a href="#copy-event" class="tocxref"><span class="secno">4.1.1 </span>copy event</a></li><li class="tocline"><a href="#cut-event" class="tocxref"><span class="secno">4.1.2 </span>cut event</a></li><li class="tocline"><a href="#paste-event" class="tocxref"><span class="secno">4.1.3 </span>paste event</a></li></ul></li></ul></li><li class="tocline"><a href="#processing-model" class="tocxref"><span class="secno">5. </span>Processing model</a></li><li class="tocline"><a href="#clipboard-event-interface" class="tocxref"><span class="secno">6. </span><span class="formerLink">Clipboard event</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes" class="tocxref"><span class="secno">6.1 </span>Attributes</a></li><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">6.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#datatransfer-interface" class="tocxref"><span class="secno">7. </span><span>DataTransfer</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes-1" class="tocxref"><span class="secno">7.1 </span>Attributes</a></li><li class="tocline"><a href="#methods-1" class="tocxref"><span class="secno">7.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#integration-with-other-scripts-and-events" class="tocxref"><span class="secno">8. </span>Integration with other scripts and events</a></li><li class="tocline"><a href="#pasting-html-and-multi-part-data" class="tocxref"><span class="secno">9. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a href="#security-risks" class="tocxref"><span class="secno">9.1 </span>Security risks</a></li><li class="tocline"><a href="#general-security-policies" class="tocxref"><span class="secno">9.2 </span>General security policies</a></li><li class="tocline"><a href="#cross-origin-html-paste-sanitization-algorithm" class="tocxref"><span class="secno">9.3 </span>Cross-origin HTML paste sanitization algorithm</a></li></ul></li><li class="tocline"><a href="#other-security-and-privacy-considerations" class="tocxref"><span class="secno">10. </span>Other security and privacy considerations</a></li><li class="tocline"><a href="#mandatory-data-types-1" class="tocxref"><span class="secno">11. </span>Mandatory data types</a></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></div>
 
 
 
@@ -84,135 +84,10 @@ occurring when pasting.</p>
 
 
 <!--OddPage--><h2><span class="secno">4. </span>Events</h2>
-<div id="processing-model" class="section">
-<h3><span class="secno">4.1 </span>Processing model</h3>
-<p>These are the general steps to follow when firing clipboard events</p>
-<ol>
-	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
-	<li id="the-target"><p>Determine the target node for the event as follows</p>
-		<ul>
-			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
-
-
-		</li>
-		<li>
-			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
-
-
-
-
-
-
-
-		</li>
-		</ul>
-</li>
-<li><p>Prepare for firing the event per the event type specific instructions below:</p>
-	<dl class="switch">
-		<dt>Paste event</dt>
-		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
-			<dl class="switch">
-				<dt>If the clipboard's main content is data in a supported bitmap format:</dt>
-				<dd id="paste-bitmaps">Prepare the DataTransferItems list according to these steps:<p></p>
-					<ol>
-						<li><p>Determine the description of the data, <var>typestr</var>:</p>
-							<dl class="switch">
-								<dt>If the OS clipboard description of the data is a MIME type starting with the string "image/"</dt>
-								<dd>Set <var>typestr</var> to the OS description of the data</dd>
-								<dt>Otherwise</dt>
-								<dd>
-									<p>Set <var>typestr</var> to "image/bmp"</p>
-									<p class="issue">Mandate an (on-demand?) conversion to PNG and use image/png as default type?</p>
-								</dd>
-							</dl>
-						</li>
-						<li>Add one entry to the DataTransferItems list with <code>kind</code> set to "file", <code>type</code> set to <var>typestr</var></li>
-					</ol>
-				</dd>
-				<dt>If the clipboard's main content is HTML-formatted</dt>
-				<dd id="processing-model-for-pasting-html-data">
-					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
-					<ol>
-						<li>Add one entry to the DataTransferItems list with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the DataTransferItems list.</li>
-						<li>Parse the code on the clipboard to a DOM tree</li>
-						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
-						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2392">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
-							<ol>
-								<li>Let <var>itemNumber</var> be the number of items on the DataTransferItems list</li>
-								<li><p>Choose the appropriate steps from this list:</p>
-									<dl class="switch">
-										<dt>If the DataTransferItems list of the current DataTransfer object (clipboardData.items) already contains an entry for the referenced file or clipboard part</dt>
-										<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
-										<dt>Otherwise</dt>
-										<dd>Add a new entry to the DataTransferItems list with index set to <var>itemNumber</var>, kind set to 'file', and type set to the MIME type of the file or clipboard part if known.</dd>
-										<dd>Update the DataTransfer object's FileList accordingly</dd>
-									</dl>
-								</li>
-								<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
-									<li>Set <var>itemNumber</var> to the number of the existing DataTransferItems list</li>
-							</ol>
-						</li>
-						<li>Serialize the processed DOM and update the DataTransferItems entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
-					</ol>
-				</dd>
-			</dl>
-		</dd>
-		<dt>Copy / cut event</dt>
-		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read/write</em></p>
-			<p>No further action required</p>
-			<p class="issue">Is it true?</p>
-		</dd>
-	</dl>
-</li>
-<li>
-	<p>Fire the event.</p>
-	<p class="issue">Need to add something about how implementation gets data from clipboard (or throws) in response to for example .item[x].getAsFile(), also how File.name and File.lastModifiedDate should be set when the "file" is basically a pointer to a part of the clipboard contents</p>
-</li>
-<li><p>Process the default action or the data from the script per the following instructions:</p>
-	<dl class="switch">
-		<dt>Paste event</dt>
-		<dd>
-			<dl class="switch">
-				<dt>If the default action was prevented</dt>
-				<dd>Do nothing, terminate this algorithm.
-				</dd>
-				<dt>Otherwise</dt>
-				<dd>If the cursor or selection is in an editable context, insert the data from the clipboard and queue tasks to fire any events that should fire due to the modification, see <a href="#interaction-with-other-events">interaction with other events</a> for details
-				</dd>
-			</dl>
-		</dd>
-		<dt>Copy / cut event</dt>
-		<dd>
-			<dl class="switch">
-				<dt>If the default action was prevented</dt>
-				<dd>
-					<p>If the script called <code>setData()</code> or modified <code>clipboardData.items</code>, update the clipboard contents with the data from the script</p>
-					<p class="issue">spec this in more detail on a per-type basis</p>
-				</dd>
-				<dt>Otherwise</dt>
-				<dd>
-					<dl class="switch">
-						<dt>If there is a selection</dt>
-						<dd>Place contents of selection on the clipboard</dd>
-						<dd>If the event was cut and the context is editable, remove selection contents and collapse the selection</dd>
-						<dt>Otherwise</dt>
-						<dd>
-							<p>Do nothing, terminate this algorithm</p>
-							<p class="issue">Should we update clipboard contents with data given by the script, if any? <b>Editor's opinion: to let a script that doesn't call preventDefault() have a different outcome depending on whether there happens to be a selection would not be a good idea.</b></p>
-						</dd>
-					</dl>
-				</dd>
-			</dl>
-</dd>
-	</dl>
-</li>
-</ol>
-</div>
+<div id="event-types-and-details" class="section">
+<h3><span class="secno">4.1 </span>Event types and details</h3>
 <div id="copy-event" class="section">
-<h3><span class="secno">4.2 </span>copy event</h3>
+<h4><span class="secno">4.1.1 </span>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
 
 
@@ -220,7 +95,7 @@ occurring when pasting.</p>
 <p>The current selection <em>must not</em> be affected.</p>
 
 
-<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified except in response to the <a href="#datatransfer-setdata">setData() method</a> if the default action is prevented. </p>
+<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
 
 
 
@@ -238,11 +113,11 @@ occurring when pasting.</p>
 
 <div id="cut-event" class="section">
 
-<h3><span class="secno">4.3 </span>cut event</h3>
+<h4><span class="secno">4.1.2 </span>cut event</h4>
 <p>When the user initiates a cut operation, the implementation <em>must</em> fire a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 
-<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation <em>must</em> fire the event regardless.</p>
+<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation <em>must</em> fire the event regardless. If the default action is to do nothing, the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
 
 
 
@@ -266,7 +141,7 @@ occurring when pasting.</p>
 <div id="paste-event" class="section">
 
 
-<h3><span class="secno">4.4 </span>paste event</h3>
+<h4><span class="secno">4.1.3 </span>paste event</h4>
 <p>When the user initiates a paste operation, the implementation <em>must</em> fire a paste event. The event <em>must</em> fire before any clipboard data is inserted.</p>
 
 
@@ -290,14 +165,176 @@ occurring when pasting.</p>
 	</tbody></table>
 </div>
 
-	<p class="warning">A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations.</p>
+	<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations. The spec mandates that where the OS supports a clipboard sequence number, the <code>DataTransferItemList</code> object's mode must be set to <i>disabled</i> if the number changes during event processing, but on platforms where such a sequence number is not available other limitations should be implemented.</p>
 
 </div>
 
+</div>
+</div>
+
+
+<div id="processing-model" class="section">
+<!--OddPage--><h2><span class="secno">5. </span>Processing model</h2>
+<p>These are the general steps to follow when firing clipboard events</p>
+<ol>
+	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
+	<li>Initialise an internal <code>clear-was-called flag</code> and set its value to <var>false</var></li>
+	<li>If the native OS clipboard supports a sequence number, let <code>clipboard-entry</code> be the sequence number of the current content</li>
+	<li id="the-target"><p>Determine the target node for the event as follows</p>
+		<ul>
+			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
+
+
+		</li>
+		<li>
+			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
+
+
+
+
+
+
+
+		</li>
+		</ul>
+</li>
+<li><p>Prepare for firing the event per the event type specific instructions below:</p>
+	<dl class="switch">
+		<dt>Paste event</dt>
+		<dd>
+			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
+			<p>For each part on the OS clipboard, carry out these steps:</p>
+			<dl class="switch">
+				<dt>If the current clipboard part contains plain text:</dt>
+				<dd>
+					<ol>
+						<li>Ensure the text is in the encoding the scripting engine uses internally</li>
+						<li>Add one entry for the text to the DataTransferItemList with <code>kind</code> set to <var>string</var> and <code>type</code> set to <var>text/plain</var></li>
+					</ol>
+				</dd>
+				<!-- CF_HDROP -->
+				<dt>If the current clipboard part represents file references:</dt>
+				<dd>
+					<ol>
+						<li>Determine MIME type of referenced files</li>
+						<li>Add one entry per file reference to the <code>DataTransferItemList</code> with <code>kind</code> set to <var>file</var> and <code>type</code> set to the corresponding MIME type</li>
+					</ol>
+				</dd>
+				<dt>If the current clipboard part contains HTML- or XHTML-formatted text</dt>
+				<dd id="processing-model-for-html-data">
+					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
+					<ol>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
+						<li>Parse the code on the clipboard to a DOM tree</li>
+						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
+						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
+						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2392">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
+							<ol>
+								<li>Let <var>itemNumber</var> be the number of items on the <code>DataTransferItemList</code></li>
+								<li><p>Choose the appropriate steps from this list:</p>
+									<dl class="switch">
+										<dt>If the <code>DataTransferItemList</code> of the current DataTransfer object already contains an entry for the referenced file or clipboard part</dt>
+										<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
+										<dt>Otherwise</dt>
+										<dd>
+											<ol>
+												<li>Add a new entry to the <code>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <code>kind</code> set to "file", and <code>type</code> set to the MIME type of the file or clipboard part if known. </li>
+												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
+												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
+											</ol></dd>
+									</dl>
+								</li>
+								<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
+							</ol>
+						</li>
+						<li>Serialize the processed DOM and update the <code>DataTransferItemList</code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
+					</ol>
+				</dd>
+				<dt>If the current clipboard part contains data in <a href="#mandatory-data-types">another supported binary or text-based format</a>:</dt>
+				<dd>
+					<ol>
+						<li>Determine the MIME type of the data
+						</li>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to "file", <code>type</code> set to the corresponding MIME type</li>
+					</ol>
+				</dd>
+				<dt>Otherwise</dt>
+				<dd>Do nothing</dd>
+			</dl>
+		<p>Update the <code>files</code> property to match entries in the <code>DataTransferItemList</code>.</p>
+		<p>Update the <code>types</code> property to match entries in the <code>DataTransferItemList</code>.</p>
+		</dd>
+		<dt>Copy / cut event</dt>
+		<dd>
+			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read/write</em></p>
+		</dd>
+	</dl>
+</li>
+<li>
+	<p>Fire the event. Implementation requirements for access to data during event dispatch is defined in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
+	<dl class="switch">
+		<dt>If script calls clearData() or items.clear()</dt>
+		<dd>set the <code>clear-was-called flag</code> to true</dd>
+		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <code>clipboard-entry</code> is set</dt>
+		<dd>check that the clipboard data's sequence number matches <code>clipboard-entry</code>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <i>mode</i> to the <i>disabled mode</i></dd>
+	</dl>
+</li>
+<li><p>Process the default action or the data from the script per the following instructions:</p>
+	<dl class="switch">
+		<dt>Paste event</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the default action was prevented</dt>
+				<dd>Do nothing, terminate this algorithm.
+				</dd>
+				<dt>Otherwise</dt>
+				<dd>If the cursor or selection is in an editable context, insert the data from the clipboard and queue tasks to fire any events that should fire due to the modification, see <a href="#interaction-with-other-events">interaction with other events</a> for details
+				</dd>
+			</dl>
+		</dd>
+		<dt>Copy / cut event</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the default action was prevented</dt>
+				<dd>
+					<p>Update the clipboard contents with the data from the script, as given by the <code>DataTransferItemList</code>. Process each part as follows:</p>
+					<dl class="switch">
+						<dt>If the list of items is empty and the <code>clear-was-called flag</code> is <i>true</i></dt>
+						<dd>Clear the clipboard</dd>
+						<dt>If data type is <i>text/plain</i></dt>
+						<dd>
+							<ol>
+								<li>Ensure encoding is correct per OS and locale conventions</li>
+								<li>Normalize line endings according to platform conventions</li>
+								<li>Place text on clipboard</li>
+							</ol>
+						</dd>
+						<dt>Otherwise</dt>
+						<dd>Place part on clipboard with the appropriate OS clipboard format description</dd>
+					</dl>
+				</dd>
+				<dt>Otherwise</dt>
+				<dd>
+					<dl class="switch">
+						<dt>If there is a selection</dt>
+						<dd>Place contents of selection on the clipboard</dd>
+						<dd>If the event was a <em>cut</em> event and the context is editable, remove selection contents and collapse the selection</dd>
+						<dt>Otherwise</dt>
+						<dd>
+							<p>Do nothing, terminate this algorithm</p>
+<!-- 							<p class="issue">Should we update clipboard contents with data given by the script, if any? <b>Editor's opinion: to let a script that doesn't call preventDefault() have a different outcome depending on whether there happens to be a selection would not be a good idea.</b></p> -->
+						</dd>
+					</dl>
+				</dd>
+			</dl>
+</dd>
+	</dl>
+</li>
+</ol>
 </div>
 
 <div id="clipboard-event-interface" class="section">
-<!--OddPage--><h2><span class="secno">5. </span><a>Clipboard event</a> interface</h2>
+<!--OddPage--><h2><span class="secno">6. </span><a>Clipboard event</a> interface</h2>
 <p>The ClipboardEvent interface extends the Event interface [<cite><a class="bibref" rel="biblioentry" href="#bib-DOM-LEVEL-3-EVENTS">DOM-LEVEL-3-EVENTS</a></cite>].</p>
 
 
@@ -306,49 +343,31 @@ occurring when pasting.</p>
 
 <pre class="idl"><span class="idlInterface" id="idl-def-ClipboardEvent">interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlSuperclass"><a>Event</a></span> {
 <span class="idlAttribute">    readonly attribute <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
-<span class="idlMethod">    <span class="idlMethType"><a>void</a></span> <span class="idlMethName"><a href="#widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data">initClipboardEvent</a></span> (<span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">eventType</span></span>, <span class="idlParam">in <span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">canBubble</span></span>, <span class="idlParam">in <span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">cancelable</span></span>, <span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">dataType</span></span>, <span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
+<span class="idlMethod">    <span class="idlMethType"><a>void</a></span> <span class="idlMethName"><a href="#widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data">initClipboardEvent</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">eventType</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">canBubble</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">cancelable</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">dataType</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
 };</span>
-</pre><div id="attributes" class="section"><h3><span class="secno">5.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly</dt><dd>
+</pre><div id="attributes" class="section"><h3><span class="secno">6.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly</dt><dd>
       The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing all data types the implementation knows the script can safely access.
-    <div><em>No exceptions.</em></div></dd></dl></div><div id="methods" class="section"><h3><span class="secno">5.2 </span>Methods</h3><dl class="methods"><dt id="widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data"><code>initClipboardEvent</code></dt><dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
+    <div><em>No exceptions.</em></div></dd></dl></div><div id="methods" class="section"><h3><span class="secno">6.2 </span>Methods</h3><dl class="methods"><dt id="widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data"><code>initClipboardEvent</code></dt><dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
 			<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">eventType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The event type, i.e. 'cut', 'copy' or 'paste'</td></tr><tr><td class="prmName">canBubble</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">Whether the event bubbles</td></tr><tr><td class="prmName">cancelable</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">Whether the event can be cancelled</td></tr><tr><td class="prmName">dataType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The type of data the event contains</td></tr><tr><td class="prmName">data</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The data</td></tr></table><div><em>No exceptions.</em></div><div><em>Return type: </em><code><a>void</a></code></div></dd></dl></div>
-<div class="issue">Should we allow any type for the "data" argument, rather than limiting it to DOMString?</div>
-
 </div>
 
 <div id="datatransfer-interface" class="section">
-<!--OddPage--><h2 id="datatransfer"><span class="secno">6. </span>DataTransfer interface</h2>
-<p>This section is informative. The normative specification for the DataTransfer interface is found in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]'s <cite>Drag and Drop</cite> section.</p>
-<p class="issue"><a href="http://dev.w3.org/html5/spec/dnd.html#the-datatransfer-interface">Direct link to DataTransfer interface</a></p>
-
-
-<p class="issue">TODO: review/sync with <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dnd.html#the-datatransfer-interface">DataTransfer</a>. 
-There will be a very brief informative (not normative) text below for each method, clearly indicating that the normative stuff is in the HTML5 spec. We will however maintain tests for this, so keeping in sync with HTML5 will remain important.</p>
- <table summary="issues we need addressed in HTML5" class="issue tmp-issue-table">
- <caption>Issues we need addressed in HTML5</caption>
-  <tbody><tr><th>Summary</th><th>HTML5 bug</th><th>Browser ref</th></tr>
-  <tr><td>Calling getData() too many or too few arguments should throw</td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=11857">11857</a></td><td>WebKit (Chrome)</td></tr>
-  <tr><td>Return value of setData()/clearData() should be boolean</td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id=12443">12443</a></td><td>IE</td></tr>
-  <tr><td>Can make better use of .types for copy/cut events, to indicate what types are supported by the implementation and/or system clipboard?</td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id="></a></td><td>(Suggestion, not implemented anywhere)</td></tr>
-  <tr><td>A way to indicate the "id" of different items so that they can be referenced from the "main" content? (e.g. images embedded in HTML - to indicate that <b>&lt;img src="cid:img1"&gt;</b> references items[1], we could define an .id property so that <b>clipboardData.items[1].id</b> is 'img1'?)</td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id="></a></td><td>Unknown</td></tr>
-  <!-- Suggested text: In the paste event, it lists those formats available on the clipboard the implementation supports returning to the script.
-  In the copy and cut events, the types property returns a list of supported formats for the copy operation - for example, if the implementation supports copying plain text and HTML it would return a DOMStringList with the values 'text/plain' and 'text/html'.
-  -->
-  
-<!--   <tr><td>Can we extend setData() with extra argument "append" to place multiple alternate formats on the clipboard? </td><td><a href="http://www.w3.org/Bugs/Public/show_bug.cgi?id="></a></td><td>(Suggestion, not implemented anywhere)</td></tr> -->
-<!-- dropped suggestion because clipboardData.items.add() should be sufficient -->
- </tbody></table>
+<!--OddPage--><h2><span class="secno">7. </span><dfn id="datatransfer">DataTransfer</dfn> interface</h2>
+<p>This section is informative, and describes only the parts of the DataTransfer interface that are relevant for clipboard events. The normative specification for the DataTransfer interface is found in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]'s <cite>Drag and Drop</cite> section.</p>
+<!-- <p class="issue"><a href="http://dev.w3.org/html5/spec/dnd.html#the-datatransfer-interface">Direct link to DataTransfer interface</a></p>
+ -->
 
 <pre class="idl"><span class="idlInterface" id="idl-def-clipboardData">interface <span class="idlInterfaceID">clipboardData</span> : <span class="idlSuperclass"><a>DataTransfer</a></span> {
-<span class="idlAttribute">    attribute <span class="idlAttrType"><a>DataTransferItems</a></span> <span class="idlAttrName"><a href="#widl-clipboardData-items">items</a></span>;</span>
-<span class="idlAttribute">    attribute <span class="idlAttrType"><a>DOMStringList</a></span>     <span class="idlAttrName"><a href="#widl-clipboardData-types">types</a></span>;</span>
-<span class="idlMethod">    <span class="idlMethType"><a>DOMString</a></span> <span class="idlMethName"><a href="#widl-clipboardData-getData-DOMString-DOMString-type">getData</a></span> (<span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>);</span>
-<span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-setData-boolean-DOMString-type-DOMString-data">setData</a></span> (<span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>, <span class="idlParam">in <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
-<span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-clearData-boolean-DOMString-type">clearData</a></span> (<span class="idlParam">in optional <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>);</span>
+<span class="idlAttribute">             attribute <span class="idlAttrType"><a>DataTransferItemList</a></span> <span class="idlAttrName"><a href="#widl-clipboardData-items">items</a></span>;</span>
+<span class="idlAttribute">             attribute <span class="idlAttrType"><a>DOMStringList</a></span>        <span class="idlAttrName"><a href="#widl-clipboardData-types">types</a></span>;</span>
+<span class="idlAttribute">    readonly attribute <span class="idlAttrType"><a>FileList</a></span>             <span class="idlAttrName"><a href="#widl-clipboardData-files">files</a></span>;</span>
+<span class="idlMethod">    <span class="idlMethType"><a>DOMString</a></span> <span class="idlMethName"><a href="#widl-clipboardData-getData-DOMString-DOMString-type">getData</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>);</span>
+<span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-setData-boolean-DOMString-type-DOMString-data">setData</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
+<span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-clearData-boolean-DOMString-type">clearData</a></span> (<span class="idlParam">optional <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>);</span>
 };</span>
-</pre><div id="attributes-1" class="section"><h3><span class="secno">6.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-clipboardData-items"><code>items</code> of type <span class="idlAttrType"><a>DataTransferItems</a></span></dt><dd>When pasting multi-part or non-textual data, the items property returns a DataTransferItems list of parts. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].<div><em>No exceptions.</em></div></dd><dt id="widl-clipboardData-types"><code>types</code> of type <span class="idlAttrType"><a>DOMStringList</a></span></dt><dd>The types property returns a DOMStringList of MIME type strings [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2046">RFC2046</a></cite>], see HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].
+</pre><div id="attributes-1" class="section"><h3><span class="secno">7.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-clipboardData-files"><code>files</code> of type <span class="idlAttrType"><a>FileList</a></span>, readonly</dt><dd>A list of references to files being pasted, if applicable. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].<div><em>No exceptions.</em></div></dd><dt id="widl-clipboardData-items"><code>items</code> of type <span class="idlAttrType"><a>DataTransferItemList</a></span></dt><dd>The items property returns a DataTransferItemList of parts, making it possible to paste multi-part or non-textual data. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].<div><em>No exceptions.</em></div></dd><dt id="widl-clipboardData-types"><code>types</code> of type <span class="idlAttrType"><a>DOMStringList</a></span></dt><dd>The types property returns a DOMStringList of MIME type strings [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2046">RFC2046</a></cite>], see HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].
 	
-<div><em>No exceptions.</em></div></dd></dl></div><div id="methods-1" class="section"><h3><span class="secno">6.2 </span>Methods</h3><dl class="methods"><dt id="widl-clipboardData-clearData-boolean-DOMString-type"><code>clearData</code></dt><dd>
+<div><em>No exceptions.</em></div></dd></dl></div><div id="methods-1" class="section"><h3><span class="secno">7.2 </span>Methods</h3><dl class="methods"><dt id="widl-clipboardData-clearData-boolean-DOMString-type"><code>clearData</code></dt><dd>
 
 <p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</p>
 
@@ -372,12 +391,9 @@ There will be a very brief informative (not normative) text below for each metho
 
 <p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]</p>
 
-<!-- <p>If the type argument is not supported, the setData() call does nothing.</p> -->
-<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to common types is recommended.</p>
-<p class="issue">Should we list some "common types"?</p>
+<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
 
 <p>Calling setData() from a paste event handler <em>must not</em> modify the data that is inserted, and <em>must not</em> modify the data on the clipboard.</p>
-<p class="issue">What about the other clipboardData.* methods when called from a paste event handler? We should refer to HTML5 and say drag data store mode is in read-only mode for paste events. Will be spec'ed this way when I have time to write corresponding tests..</p>
 
 
 <p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard. Hence, in those cases the script calling setData() also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
@@ -391,17 +407,16 @@ There will be a very brief informative (not normative) text below for each metho
 
 </div>
 
-
-<h2 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h2>
+<div id="integration-with-other-scripts-and-events" class="section">
+<!--OddPage--><h2><span class="secno">8. </span>Integration with other scripts and events</h2>
 <h3 id="integration-with-rich-text-editing-apis">Integration with rich text editing APIs</h3>
 <p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
 
 
 
 
-<div id="interaction-with-other-events" class="section">
 
-<!--OddPage--><h2 id="otherevents"><span class="secno">7. </span>Interaction with other events</h2>
+<h3 id="otherevents">Interaction with other events</h3>
 <p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asyncronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
 
 
@@ -414,19 +429,18 @@ There will be a very brief informative (not normative) text below for each metho
 
 <p>The implementation <em>must not</em> dispatch other input-related events like textInput, input, change, and validation events in response to the copy operation. </p>
 
-<div id="event-listeners-that-modify-selection-or-focus" class="section">
-<h3 id="selection-mod"><span class="secno">7.1 </span>Event listeners that modify selection or focus</h3>
+
+<h3 id="selection-mod">Event listeners that modify selection or focus</h3>
 <p>If the event listener modifies the selection or focus, the clipboard action <em>must</em> be completed on the modified selection.</p>
 
 
 
 </div>
-</div>
 
 <div id="pasting-html-and-multi-part-data" class="section">
-<!--OddPage--><h2 id="pasting-html"><span class="secno">8. </span>Pasting HTML and multi-part data</h2>
+<!--OddPage--><h2 id="pasting-html"><span class="secno">9. </span>Pasting HTML and multi-part data</h2>
 <div id="security-risks" class="section">
-<h3><span class="secno">8.1 </span>Security risks</h3>
+<h3><span class="secno">9.1 </span>Security risks</h3>
 <p><i>This section is informative.</i></p>
 <p>There are certain security risks associated with pasting formatted or multi-part data.</p>
 <ul>
@@ -449,14 +463,14 @@ There will be a very brief informative (not normative) text below for each metho
 </tbody></table>
 </div>
 <div id="general-security-policies" class="section">
-<h3><span class="secno">8.2 </span>General security policies</h3>
-<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList or DataTransferItems list.</p>
+<h3><span class="secno">9.2 </span>General security policies</h3>
+<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList or <code>DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
 <p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
 </div>
 <div id="cross-origin-html-paste-sanitization-algorithm" class="section">
-<h3 id="cross-origin-html-paste"><span class="secno">8.3 </span>Cross-origin HTML paste sanitization algorithm</h3>
+<h3 id="cross-origin-html-paste"><span class="secno">9.3 </span>Cross-origin HTML paste sanitization algorithm</h3>
 <p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. HTML content from a different origin must therefore be processed according to the following steps, carried out after parsing the markup to a DOM presentation:</p>
 <ol>
 	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, INPUT, BUTTON, TEXTAREA, SELECT, OPTION, OPTGROUP, EMBED and KEYGEN. For all mentioned elements, also remove any child nodes.<p class="issue">Too draconian? Should we remove only SCRIPT, APPLET and input type=hidden?</p></li>
@@ -464,7 +478,7 @@ There will be a very brief informative (not normative) text below for each metho
   <li>Remove any elements whose computed style's display property is 'none'</li>
   <li>Remove any elements whose computed style's visibility property is 'hidden'</li>
  	<li>Remove all event handler attributes from all elements</li>
- 	<li>Remove all javascript: URLs from link HREF attributes, changing the HREF to an empty string instead <p class="issue">Should we allow javascript: HREFs?</p></li>
+ 	<li>Remove all javascript: URLs from link HREF attributes, changing the HREF to an empty string instead</li>
 	<li>Remove all data- attributes from all elements</li>
   <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
   <li>Remove comment nodes.</li>
@@ -475,7 +489,7 @@ There will be a very brief informative (not normative) text below for each metho
 
 
 <div id="other-security-and-privacy-considerations" class="section">
-<!--OddPage--><h2 id="security"><span class="secno">9. </span>Other security and privacy considerations</h2>
+<!--OddPage--><h2 id="security"><span class="secno">10. </span>Other security and privacy considerations</h2>
 <p>Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies it, but a different link is copied to the clipboard. The effect of this can range from an unexpected result on pasting to an attempted "phishing" attack.</p>
@@ -496,18 +510,44 @@ There will be a very brief informative (not normative) text below for each metho
 <p>Scripts may use the DataTransfer API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 </div>
-<div id="mandatory-and-optional-data-types-and-their-processing-requirements" class="section">
-<!--OddPage--><h2><span class="secno">10. </span>Mandatory and optional data types and their processing requirements</h2>
-<table class="simple">
-	<tbody><tr><th>Type</th><th>Processing when read from clipboard</th><th>Processing when placed on clipboard</th></tr>
-	<tr><td>text/plain</td><td><ol><li>Retrieve the plain text variant of the clipboard contents (for example CF_UNICODETEXT on Windows, utxt on Mac)</li><li>Ensure the encoding is the expected one</li></ol></td><td><ol><li>Ensure correct encoding</li><li>Normalize linebreaks according to platform convention</li><li>Place on clipboard labelled as the clipboard's plain text (for example CF_UNICODETEXT on Windows, utxt on Mac)</li></ol></td></tr>
-	<tr><td>text/uri-list</td><td></td><td></td></tr>
-	<tr><td>text/html, application/xhtml+xml</td><td>Refer to <a href="#paste-html">pasting HTML data</a></td><td><ol><li>Format the data according to platform conventions for HTML clipboard data</li><li>Ensure data is correctly labelled with the source URL.</li></ol></td></tr>
-	<tr><td>image/png</td><td>Refer to <a href="#paste-bitmaps">bitmaps</a></td><td></td></tr>
-	<tr><td>text/json</td><td></td><td></td></tr>
-	<tr><td>Any XML format</td><td></td><td></td></tr>
-</tbody></table>
+<div id="mandatory-data-types-1" class="section">
+<!--OddPage--><h2 id="mandatory-data-types"><span class="secno">11. </span>Mandatory data types</h2>
+<p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <code>DataTransferItemList</code> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
+<ul>
+<li>text/plain</li>
+<li>text/uri-list</li>
+<li>text/csv</li>
+<li>text/css</li>
+<li>text/html</li>
+<li>application/xhtml+xml</li>
+<li>image/png</li>
+<li>image/jpg</li>
+<li>image/gif</li>
+<li>image/svg+xml</li>
+<li>application/xml, text/xml</li>
+<li>application/javascript</li>
+<li>application/json</li>
+<li></li>
+</ul>
+<p class="issue">What about audio and video types? BMP?
+RTF? RTF was requested due to embedded images possibility (but this spec allows access to local images referenced in HTML fragments by design..).
+</p>
 
+<pre class="issue">Some standard Windows formats we don't handle
+
+DataFormats.CF_RTFTEXT 
+
+DataFormats.CF_WAVE 
+DataFormats.CF_RIFF 
+
+DataFormats.CF_BITMAP 
+DataFormats.CF_DIB 
+DataFormats.CF_DIF 
+DataFormats.CF_METAFILEPICT 
+DataFormats.CF_PALETTE 
+DataFormats.CF_TIFF 
+
+</pre>
 </div>
 
 <h2 id="Acknowledg">Acknowledgements</h2>
@@ -528,8 +568,8 @@ Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng.</p>
 
 
 
-<div id="references" class="appendix section"><!--OddPage--><h2><span class="secno">A. </span>References</h2><div id="normative-references" class="section"><h3><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography"><dt id="bib-DOM-LEVEL-3-EVENTS">[DOM-LEVEL-3-EVENTS]</dt><dd>Björn Höhrmann; Tom Pixley; Philippe Le Hégaret. <a href="http://www.w3.org/TR/2010/WD-DOM-Level-3-Events-20100907"><cite>Document Object Model (DOM) Level 3 Events Specification.</cite></a> 7 September 2010. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2010/WD-DOM-Level-3-Events-20100907">http://www.w3.org/TR/2010/WD-DOM-Level-3-Events-20100907</a> 
-</dd><dt id="bib-HTML5">[HTML5]</dt><dd>Ian Hickson; David Hyatt. <a href="http://www.w3.org/TR/2010/WD-html5-20100304/"><cite>HTML 5.</cite></a> 4 March 2010. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2010/WD-html5-20100304/">http://www.w3.org/TR/2010/WD-html5-20100304/</a> 
+<div id="references" class="appendix section"><!--OddPage--><h2><span class="secno">A. </span>References</h2><div id="normative-references" class="section"><h3><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography"><dt id="bib-DOM-LEVEL-3-EVENTS">[DOM-LEVEL-3-EVENTS]</dt><dd>Björn Höhrmann; Tom Pixley; Philippe Le Hégaret. <a href="http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/"><cite>Document Object Model (DOM) Level 3 Events Specification.</cite></a> 31 May 2011. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/">http://www.w3.org/TR/2011/WD-DOM-Level-3-Events-20110531/</a> 
+</dd><dt id="bib-HTML5">[HTML5]</dt><dd>Ian Hickson; David Hyatt. <a href="http://www.w3.org/TR/html5"><cite>HTML5.</cite></a> 25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/html5">http://www.w3.org/TR/html5</a> 
 </dd><dt id="bib-RFC2046">[RFC2046]</dt><dd>N. Freed; N. Borenstein. <a href="http://www.ietf.org/rfc/rfc2046.txt"><cite>Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types.</cite></a> November 1996. Internet RFC 2046. URL: <a href="http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a> 
 </dd><dt id="bib-RFC2119">[RFC2119]</dt><dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> 
 </dd><dt id="bib-RFC2392">[RFC2392]</dt><dd>E. Levinson. <a href="http://www.ietf.org/rfc/rfc2392.txt"><cite>Content-ID and Message-ID Uniform Resource Locators.</cite></a> August 1998. Internet RFC 2392. URL: <a href="http://www.ietf.org/rfc/rfc2392.txt">http://www.ietf.org/rfc/rfc2392.txt</a> 
