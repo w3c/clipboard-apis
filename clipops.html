@@ -24,7 +24,7 @@
 		An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
 		If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
 		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
---><body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-working-draft-04-september-2011">W3C Working Draft 04 September 2011</h2><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2011/WD-clipboard-apis-20110904/">http://www.w3.org/TR/2011/WD-clipboard-apis-20110904/</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
+--><body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-working-draft-05-september-2011">W3C Working Draft 05 September 2011</h2><dl><dt>This version:</dt><dd><a href="http://www.w3.org/TR/2011/WD-clipboard-apis-20110905/">http://www.w3.org/TR/2011/WD-clipboard-apis-20110905/</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
 </dl><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2010-2011 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p><hr></div>
 <div id="abstract" class="introductory section"><h2>Abstract</h2>
 	<p>This document describes APIs for clipboard operations such as copy, cut and
@@ -74,9 +74,8 @@ that allows for copying more than just the rendered content.</p>
 
 <p>With content such as mathematics, simply copying rendered text and pasting
 it into another application generally leads to most of the semantics being
-lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. Also, the XML source
-could be placed in the clipboard with the appropriate transformation
-occurring when pasting.</p>
+lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. The XML source
+could also be placed in the clipboard with the appropriate transformation occurring at paste time.</p>
 
 </div>
 
@@ -346,7 +345,7 @@ occurring when pasting.</p>
 <span class="idlMethod">    <span class="idlMethType"><a>void</a></span> <span class="idlMethName"><a href="#widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data">initClipboardEvent</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">eventType</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">canBubble</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">cancelable</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">dataType</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
 };</span>
 </pre><div id="attributes" class="section"><h3><span class="secno">6.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly</dt><dd>
-      The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing all data types the implementation knows the script can safely access.
+      The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.
     <div><em>No exceptions.</em></div></dd></dl></div><div id="methods" class="section"><h3><span class="secno">6.2 </span>Methods</h3><dl class="methods"><dt id="widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data"><code>initClipboardEvent</code></dt><dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
 			<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">eventType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The event type, i.e. 'cut', 'copy' or 'paste'</td></tr><tr><td class="prmName">canBubble</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">Whether the event bubbles</td></tr><tr><td class="prmName">cancelable</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">Whether the event can be cancelled</td></tr><tr><td class="prmName">dataType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The type of data the event contains</td></tr><tr><td class="prmName">data</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The data</td></tr></table><div><em>No exceptions.</em></div><div><em>Return type: </em><code><a>void</a></code></div></dd></dl></div>
 </div>
@@ -417,7 +416,7 @@ occurring when pasting.</p>
 
 
 <h3 id="otherevents">Interaction with other events</h3>
-<p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asyncronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
+<p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
 
 
 
@@ -444,7 +443,7 @@ occurring when pasting.</p>
 <p><i>This section is informative.</i></p>
 <p>There are certain security risks associated with pasting formatted or multi-part data.</p>
 <ul>
-  <li>The user might paste hidden data which the user is not aware of. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
+  <li>The user might paste hidden data without realising is there. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
   <li>The user might paste malicious JavaScript into a trusted page.</li>
   <li>The implementation might grant scripts access to local files the user did not intend to expose.</li>
 </ul>
@@ -464,7 +463,7 @@ occurring when pasting.</p>
 </div>
 <div id="general-security-policies" class="section">
 <h3><span class="secno">9.2 </span>General security policies</h3>
-<p>The implementation <em>must not</em> download referenced online resources and expose their contents in the FileList or <code>DataTransferItemList</code>.</p>
+<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the FileList or <code>DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
 <p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>should</em> apply the <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
@@ -498,12 +497,12 @@ occurring when pasting.</p>
 <p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the UA's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
 <ul>
 <li>Objects implementing the DataTransfer interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.</li>
-<li>If a script stores a reference to an object implementing the DataTransfer interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context
+<li>If a script stores a reference to an object implementing the DataTransfer interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
 
 
 
 </li>
-<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data</li>
+<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data.</li>
 </ul>
 <p>Implementations may choose to further limit the functionality provided by the DataTransfer interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
 <h3 id="nuisances">Nuisance considerations</h3>
