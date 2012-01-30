@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clipboard events relative to key events   - copy event on 'input_text'</title>
+	<meta charset="UTF-8">
+	<title>  clearData() method without arguments  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to key events  */
-/* Events: copy cut paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
-/* Targets: 'input_text' */
-
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
-},false);
-
+/** clearData() method without arguments */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
 function test(e){
-  logEvent(e);
-	setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
-    result( passed, 'Got: '+eventsFired.join(',') );
-  }, 500);
+	var passed = false;
+	e.clipboardData.clearData();
+	e.preventDefault();
 }
 
 	</script>
@@ -30,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='copy';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

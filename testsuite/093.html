@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  ClipboardEvent interface - synthetic events with non-standard MIME type   - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  setData() method does not throw when implementation does not know the type  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
-/* Events: paste */
-/* paste data: "clipboard text" */
+/** setData() method does not throw when implementation does not know the type */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "unmodified text" */
+//TODO: this test asserts a NOOP.
+// how this SHOULD work is, however, underspecified..
 function test(e){
-	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
-}
-function triggerTestManually(){
-	onTestSetupReady();
-}
-function onTestSetupReady(){
+	var passed = false;
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/foobarbogustype', 'synthetic event text' );
-		document.dispatchEvent(evt);
+		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
+		e.preventDefault();
+		passed=true;
 	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
 	}
+	return passed;
 }
 
 	</script>
@@ -29,15 +28,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var dataToPaste="unmodified text";
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

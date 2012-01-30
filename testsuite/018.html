@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  cut fires before text is removed   - cut event on document</title>
+	<meta charset="UTF-8">
+	<title>  no default action for cut in non-editable context  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** cut fires before text is removed  */
+/** no default action for cut in non-editable context */
 /* Events: cut */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
-/* Targets: document 'input_text' */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	var passed = e.target.value === e.target.defaultValue;
-  return passed;
+	/* the point of the test is to make sure that the event fires but the clipboard data is not altered */
+	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 
 	</script>
@@ -18,11 +20,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

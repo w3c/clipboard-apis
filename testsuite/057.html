@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  event target when no specific element has focus   - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  copy event target property - selection in input   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event target when no specific element has focus  */
+/** copy event target property - selection in input  */
 /* Events: copy cut paste */
-/* Test HTML: <div>This is filler text</div>*/
-/* paste data: "pasted text" */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document */
 
 function test(e){
-	var passed = e.target===document.body;
-	return passed;
+  var passed = e.target === document.getElementById('input_text');
+  return passed;
 }
 
 	</script>
@@ -20,10 +20,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div>This is filler text</div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

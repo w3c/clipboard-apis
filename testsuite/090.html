@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clearData() method without preventing events's default action  - copy event on document</title>
+	<meta charset="UTF-8">
+	<title>  setData() in cut event without preventDefault() has no effect when default action is noop  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without preventing events's default action */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/** setData() in cut event without preventDefault() has no effect when default action is noop */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData){
-		e.clipboardData.clearData();
-	}
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+	e.clipboardData.setData('text/plain', 'cut text');
+  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
 }
 
 	</script>
@@ -21,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

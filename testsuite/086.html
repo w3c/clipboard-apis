@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clearData() method without arguments  - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  setData() method  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without arguments */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "" */
-/* paste data: "clipboard text" */
+/** setData() method */
+/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
+/* Events: copy cut */
+/* paste data: "pasted text" */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.clearData){
-		e.clipboardData.clearData();
-	}
+	e.clipboardData.setData('text/plain', 'modified text');
 	e.preventDefault();
 }
 
@@ -24,12 +24,12 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var dataToPaste="pasted text";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

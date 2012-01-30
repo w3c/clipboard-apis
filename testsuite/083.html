@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  setData() method with text/html (experimental)  - cut event on document</title>
+	<meta charset="UTF-8">
+	<title>  getData() method with wrong number of arguments  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method with text/html (experimental) */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "<p>copycut <b>modified</b> text</p>" */
-/* IE's CF_HTML can not be emulated from JS with the existing clipboard API. The format includes quite some meta data:
-Version:1.0
-StartHTML:000000224
-EndHTML:000007594
-StartFragment:000006999
-EndFragment:000007548
-StartSelection:000006999
-EndSelection:000007530
-SourceURL: ...
-and a document containing all parents of the selection, plus the full HEAD section. Plus magic <!--StartFragment--> and EndFragment comments.
-
-So..what should an implementation do if the script tries to place text/html data on the clipboard? Preferably support magically using the CF_HTML format. What is an implementation that doesn't support CF_HTML supposed to do?? //TODO!
-Note: IE throws.
-*/
+/** getData() method with wrong number of arguments */
+/* Events: paste */
+/* paste data: "pasted text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/html', '<p>copycut <b>modified</b> text</p>');
-	}
+	var passed=true;
+	try{
+		e.clipboardData.getData();
+		passed=false;
+	}catch(e){}
+	try{
+		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
+		passed=false;
+	}catch(e){}
+	return passed;
 }
 
 	</script>
@@ -33,15 +26,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="<p>copycut <b>modified</b> text</p>";
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

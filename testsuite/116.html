@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clearData() called outside event handler method  - copy event on document</title>
+	<meta charset="UTF-8">
+	<title>  clipboard events relative to key events   - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() called outside event handler method */
+/** clipboard events relative to key events  */
 /* Events: copy cut paste */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
+/* Targets: 'input_text' */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
+},false);
+
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		cbData.clearData();
-	}, 1 );
+  logEvent(e);
+	setTimeout(function(){
+    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
+    result( passed, 'Got: '+eventsFired.join(',') );
+  }, 500);
 }
 
 	</script>
@@ -20,15 +31,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget=document;
-	var eventType='copy';
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

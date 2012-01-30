@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  event listener that modifies focus  - cut event on 'input_text'</title>
+	<meta charset="UTF-8">
+	<title>  integration with execCommand, events are syncronous  - paste event on 'iframe.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event listener that modifies focus */
-/* Events: copy cut */
-/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
-/* Targets: 'input_text' */
-/* External pass condition - clipboard data: "input 2" */
-
+/** integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="iframe"></iframe>*/
+/* Targets: 'iframe.contentWindow' */
 function test(e){
-	document.getElementById('second').focus();
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
 }
-
+function onTestSetupReady(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('iframe');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		window.afterExecCommand=false;
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		window.afterExecCommand=true;
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
+}
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
+	<iframe id="iframe"></iframe>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="input 2";
-	var eventTarget='input_text';
-	var eventType='cut';
+	var externalPassCondition=null;
+	var eventTarget='iframe.contentWindow';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'iframe.contentWindow', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

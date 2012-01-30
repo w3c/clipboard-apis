@@ -1,33 +1,26 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - copy event on document</title>
+	<meta charset="UTF-8">
+	<title>  setData() method does not throw when implementation does not know the type  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
+/** setData() method does not throw when implementation does not know the type */
 /* Events: copy cut */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "unmodified text" */
+//TODO: this test asserts a NOOP.
+// how this SHOULD work is, however, underspecified..
 function test(e){
-
-}
-function triggerTestManually(){
-	onTestSetupReady();
-}
-function onTestSetupReady(){
+	var passed = false;
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
-		/* make a selection to check if selected text is copied by the synthetic event.. */
-		var range=document.createRange();
-		range.selectNodeContents(document.body);
-		window.getSelection().addRange(range);
-		document.dispatchEvent(evt);
-		window.getSelection().removeAllRanges();
+		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
+		e.preventDefault();
+		passed=true;
 	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
 	}
+	return passed;
 }
 
 	</script>
@@ -35,15 +28,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
+	var dataToPaste="unmodified text";
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

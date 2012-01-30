@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clearData() method with text/plain argument  - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  copy event when there is no selection and script uses setData()   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method with text/plain argument */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "" */
+/** copy event when there is no selection and script uses setData()  */
+/* here we have a cursor in an editable context but no selection */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" autofocus value="copied text"></form>*/
+/* Targets: document */
 /* paste data: "clipboard text" */
-// TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.clearData){
-		e.clipboardData.clearData('text/plain');
-	}
-	e.preventDefault();
+  e.clipboardData.setData('text/plain', 'modified text');
+	/* The default action is to do nothing (because there is no selection). 
+	 *  We thus need to prevent the default 'NOOP' action to make the implementation update the clipboard */
+  e.preventDefault();
 }
 
 	</script>
@@ -22,15 +24,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input id="input_text" autofocus value="copied text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

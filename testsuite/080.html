@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  setData() method without preventing events's default action  - copy event on document</title>
+	<meta charset="UTF-8">
+	<title>  getData() method in cut and copy events should return undefined  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method without preventing events's default action */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/** getData() method in cut and copy events should return undefined */
+/* Events: cut copy */
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')==='')passed=true;
 	}
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+	return passed;
 }
 
 	</script>
@@ -21,11 +20,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="unmodified text";
+	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  setData() method  - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  Clipboard event's clipboardData API  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "copycutpaste modified text" */
-/* paste data: "pasted text" */
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
-	}
-	e.preventDefault();
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
+	return passed;
 }
 
 	</script>
@@ -21,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition="copycutpaste modified text";
+	var dataToPaste="";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

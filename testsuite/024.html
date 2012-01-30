@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  paste event fires before data is inserted  - paste event on 'input_text'</title>
+	<meta charset="UTF-8">
+	<title>  events fire on TEXTAREA  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** paste event fires before data is inserted */
+/** events fire on TEXTAREA */
 /* Events: paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
-	var passed = e.type == 'paste' && document.getElementById('input_text').value=='original text';
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
 	return passed;
 }
 
@@ -19,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
+	<form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>
 
 	<script>
 	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

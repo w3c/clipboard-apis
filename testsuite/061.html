@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - cut event on document</title>
+	<meta charset="UTF-8">
+	<title>  event target when no specific element has focus   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
-/* Events: cut copy paste */
-/* paste data: "clipboard text" */
+/** event target when no specific element has focus  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This is filler text</div>*/
+/* Targets: document */
+
 function test(e){
-	var hasTextPlain=false;
-	if(e.clipboardData.types){
-		for(var i=0; i<e.clipboardData.types.length;i++){
-			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
-		}
-	}
-	return hasTextPlain;
+	var passed = e.target===document.body;
+	return passed;
 }
 
 	</script>
@@ -22,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div>This is filler text</div>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

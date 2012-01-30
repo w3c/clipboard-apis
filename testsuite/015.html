@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  no default action for cut in non-editable context  - cut event on document</title>
+	<meta charset="UTF-8">
+	<title>  copy event when there is no selection   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** no default action for cut in non-editable context */
-/* Events: cut */
-/* Targets: document  */
+/** copy event when there is no selection  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/* Targets: document */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	return true; /* this is intentionally a no-op, the point of the test is to make sure that the event fires but the clipboard data is not altered */
+  void(0);
 }
 
 	</script>
@@ -18,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

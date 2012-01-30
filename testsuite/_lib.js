@@ -28,10 +28,11 @@ function setupTest( target, event, dataToPaste, externalPassCondition ){
 			btn.parentNode.removeChild(btn);
 		}
 		btn.appendChild(document.createTextNode(' Click here to run test: '));
-	}else if(typeof onTestSetupReady==='function'){
-		onTestSetupReady();
 	}else{
 		logNode.data+='Test in progress, waiting for '+event+' event';
+	} 
+	if(typeof onTestSetupReady==='function'){
+		onTestSetupReady();
 	}
 
 	function intermediateListener(e){

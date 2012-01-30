@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  integration with execCommand, events are syncronous  - paste event on 'ifr.contentWindow'</title>
+	<meta charset="UTF-8">
+	<title>  setData() method without preventing events's default action  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
+/** setData() method without preventing events's default action */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
-	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
-}
-function onTestSetupReady(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
-	ifr.contentWindow.focus();
-	try{
-		window.afterExecCommand=false;
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		window.afterExecCommand=true;
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
 	}
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -30,15 +22,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='ifr.contentWindow';
-	var eventType='paste';
+	var externalPassCondition="unmodified text";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

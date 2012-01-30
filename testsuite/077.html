@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  setData() method does not throw when implementation does not know the type  - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method does not throw when implementation does not know the type */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
-/* paste data: "pasted text" */
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/* Events: paste */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		try{
-			e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text');
-      e.preventDefault();
-			passed=true;
-		}catch(e){
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
 		}
 	}
-	return passed;
+	return hasTextPlain;
 }
 
 	</script>
@@ -27,11 +23,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){

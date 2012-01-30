@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  copy operation does not dispatch other events   - copy event on 'input_text'</title>
+	<meta charset="UTF-8">
+	<title>  integration with execCommand, events are syncronous  - copy event on 'iframe.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy operation does not dispatch other events  */
-/* Events: copy */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
-/* Targets: document 'input_text' */
+/** integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="iframe"></iframe>*/
+/* Targets: 'iframe.contentWindow' */
 function test(e){
-  var otherEventsFired=[];
-  var events=[ 'input', 'textInput', 'change' ];
-  for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
-	setTimeout(function(){
-    var passed = otherEventsFired.length===0;
-    result(passed);
-  }, 50);
-  e.target.blur(); // might provoke a change event, but should not
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
+}
+function onTestSetupReady(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('iframe');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		window.afterExecCommand=false;
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		window.afterExecCommand=true;
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
 }
 
 	</script>
@@ -24,15 +31,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
+	<iframe id="iframe"></iframe>
 
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget='iframe.contentWindow';
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'iframe.contentWindow', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

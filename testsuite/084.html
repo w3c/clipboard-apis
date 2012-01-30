@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  clearData() method without arguments  - copy event on document</title>
+	<meta charset="UTF-8">
+	<title>  getData() method supports legacy 'text' argument  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without arguments */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "" */
-/* paste data: "clipboard text" */
+/** getData() method supports legacy 'text' argument */
+/* Events: paste */
+/* paste data: "pasted text" */
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.clearData){
-		e.clipboardData.clearData();
+	if(e.clipboardData && e.clipboardData.getData){
+		if(  e.clipboardData.getData('text')==='pasted text'
+		&& e.clipboardData.getData('tEXt')==='pasted text' )passed=true;
 	}
-	e.preventDefault();
+	return passed;
 }
 
 	</script>
@@ -24,12 +25,12 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var dataToPaste="pasted text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  setData() does not modify text that is about to be inserted in a paste event  - paste event on document</title>
+	<meta charset="UTF-8">
+	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() does not modify text that is about to be inserted in a paste event */
+/** getData() method in paste event retrieving plain text */
 /* Events: paste */
 /* paste data: "pasted text" */
-/* Test HTML: <form><input autofocus></form> */
 function test(e){
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'modified text');
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
 	}
-	setTimeout(function(){
-		var passed=false;
-    passed=e.target.value==='pasted text';
-		result(passed);
-	}, 10);
+	return passed;
 }
 
 	</script>
@@ -24,7 +21,7 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus></form> 
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="pasted text";

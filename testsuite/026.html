@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  preventing default action   - paste event on 'input_text'</title>
+	<meta charset="UTF-8">
+	<title>  paste event fires before data is inserted  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** preventing default action  */
+/** paste event fires before data is inserted */
 /* Events: paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
-	if(e.preventDefault){
-    e.preventDefault();
-  }else{
-    e.returnValue=false;
-  }
-	var theTarget=e.target;
-	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
+	var passed = e.type == 'paste' && document.getElementById('input_text').value=='original text';
+	return passed;
 }
 
 	</script>
@@ -29,10 +25,10 @@ function test(e){
 	<script>
 	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  copy event target property - selection in document text   - cut event on document</title>
+	<meta charset="UTF-8">
+	<title>  event target when focused element has no text node inside   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy event target property - selection in document text  */
-/* Events: copy cut paste */
-/* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
-/* Targets: document */
+/** event target when focused element has no text node inside  */
+/* Events: paste */
+/* Test HTML: <form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()<\/script>*/
+/* paste data: "pasted text" */
+/* Targets: document 'input_img' */
 
 function test(e){
-  var passed = e.target === document.getElementsByTagName('div')[0];
-  return passed;
+  if(document.activeElement.id!='input_img')return 'Not testable, input.focus() has not focused the input type=image';
+	var passed = e.target.id==='input_img';
+	return passed;
 }
 
 	</script>
@@ -19,15 +22,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } </script>
+	<form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()</script>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

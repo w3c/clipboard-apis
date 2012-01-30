@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html><head>
-	<title>  integration with execCommand, events are syncronous  - copy event on 'ifr.contentWindow'</title>
+	<meta charset="UTF-8">
+	<title>  setData() doesn't modify text on the clipboard when called from a paste event  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
+/** setData() doesn't modify text on the clipboard when called from a paste event */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Test HTML: <form><input autofocus id="input_text"></form> */
+/* External pass condition - clipboard data: "pasted text" */
+/* Targets:  'input_text' */
+
 function test(e){
-	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
-}
-function onTestSetupReady(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
-	ifr.contentWindow.focus();
-	try{
-		window.afterExecCommand=false;
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		window.afterExecCommand=true;
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'modified text');
 	}
 }
 
@@ -30,15 +23,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<form><input autofocus id="input_text"></form> 
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='ifr.contentWindow';
-	var eventType='copy';
+	var dataToPaste="pasted text";
+	var externalPassCondition="pasted text";
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
