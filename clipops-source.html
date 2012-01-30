@@ -126,9 +126,20 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <h4>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
 <script>
-/** ClipboardEvent - events fire  */
+/** ClipboardEvent - events fire on INPUT */
 /* Events: copy cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
+function test(e){
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
+	return passed;
+}
+</script>
+<script>
+/** ClipboardEvent - events fire on TEXTAREA */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
 /* Targets: document 'input_text' */
 function test(e){
 	var passed = e.type === window.eventType;
@@ -164,7 +175,7 @@ function test(e){
 }
 </script>
 
-<p>If there is no selection, the event has no default action, and the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
+<p>If there is no selection, the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
 <script>
 /** copy event when there is no selection  */
 /* Events: copy */
@@ -177,29 +188,6 @@ function test(e){
 }
 </script>
 
-<script>
-/** copy event when there is no selection and script uses setData()  */
-/* Events: copy */
-/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
-/* Targets: document */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "modified text" */
-function test(e){
-  e.clipboardData.setData('text/plain', 'modified text');
-  /* normally we'd need e.preventDefault() here, but since there is no selection the event does not have a default action */
-  /* or so goes the logic anyway, we'll see if reality obeys */
-}
-</script>
-
-<div class="event-definition">
-	<table summary="Overview of the copy event">
-		<tr class="assert must"><th>Type</th><td>copy</td></tr>
-		<tr class="assert must"><th>Interface</th><td><a href="#clipboard-event-interface">ClipboardEvent</a></td></tr>
-		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Target</th><td>Elements</td></tr>
-	</table>
-</div>
 </section>
 
 <section>
@@ -226,40 +214,12 @@ function test(e){
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	return true; /* this is intentionally a no-op, the point of the test is to make sure that the event fires but the clipboard data is not altered */
+	/* the point of the test is to make sure that the event fires but the clipboard data is not altered */
+	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 </script>
-<script>
-/** modifying data for cut event in non-editable context */
-/* Events: cut */
-/* Targets: document  */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "cut text" */
-function test(e){
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'cut text');
-    /* note: no e.preventDefault() call, this event should have no default action since there is no selection.. */
-	}else{
-    return false;
-  }
-}
-</script>
-<script>
-/** modifying data for cut event in non-editable context with selection */
-/* Events: cut */
-/* Targets: document  */
-/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "cut text" */
-function test(e){
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'cut text');
-    /* note: no e.preventDefault() call, this event should have no default action since the selection can not be removed.. */
-	}else{
-    return false;
-  }
-}
-</script>
+
+
 
 <p>The cut event <em>must</em> fire before the selected data is removed.
 <script>
@@ -268,8 +228,7 @@ function test(e){
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
 /* Targets: document 'input_text' */
 function test(e){
-	var passed = e.target.value === e.target.defaultValue;
-  return passed;
+	return e.target.value === e.target.defaultValue;
 }
 </script>
 
@@ -282,21 +241,12 @@ function test(e){
 function test(e){
 	setTimeout(function(){
     var elm=document.getElementById('input_text');
-    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0;
+    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0 && elm.value === '';
     result( passed );
   }, 20);
 }
 </script>
 
-<div class="event-definition">
-	<table summary="Overview of the cut event">
-		<tr class="assert must"><th>Type</th><td>cut</td></tr>
-		<tr class="assert must"><th>Interface</th><td><a href="#clipboard-event-interface">ClipboardEvent</a></td></tr>
-		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Target</th><td>Elements</td></tr>
-	</table>
-</div>
 </section>
 <section>
 
@@ -304,9 +254,21 @@ function test(e){
 <h4>paste event</h4>
 <p>When the user initiates a paste operation, the implementation <em>must</em> fire a paste event. The event <em>must</em> fire before any clipboard data is inserted.</p>
 <script>
-/** events fire  */
+/** events fire on INPUT */
 /* Events: paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+function test(e){
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
+	return passed;
+}
+</script>
+<script>
+/** events fire on TEXTAREA */
+/* Events: paste */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
@@ -337,11 +299,7 @@ function test(e){
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
-	if(e.preventDefault){
     e.preventDefault();
-  }else{
-    e.returnValue=false;
-  }
 	var theTarget=e.target;
 	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
 }
@@ -360,18 +318,6 @@ function test(e){
 </script>
 
 
-<div class="event-definition">
-	<table summary="Overview of the paste event">
-		<tr class="assert must"><th>Type</th><td>paste</td></tr>
-		<tr class="assert must"><th>Interface</th><td><a href="#clipboard-event-interface">ClipboardEvent</a></td></tr>
-		<tr class="assert must"><th>Cancelable</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Bubbles</th><td>Yes</td></tr>
-		<tr class="assert must"><th>Target</th><td>Element</td></tr>
-	</table>
-</div>
-
-	<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. Implementations <em>should</em> consider the threat of a long-running paste thread polling the clipboard, and implement appropriate limitations. The spec mandates that where the OS supports a clipboard sequence number, the <code>DataTransferItemList</code> object's mode must be set to <i>disabled</i> if the number changes during event processing, but on platforms where such a sequence number is not available other limitations should be implemented.</p>
-
 </section>
 
 </section>
@@ -383,6 +329,16 @@ function test(e){
 <p>These are the general steps to follow when firing clipboard events</p>
 <ol>
 	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
+<script>
+/** event.clipboardData exists and inherits from DataTransfer */
+/* Events: copy cut paste */
+/* Targets: document */
+
+function test(e){
+	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
+	return passed;
+}
+</script>
 	<li>Initialise an internal <code>clear-was-called flag</code> and set its value to <var>false</var></li>
 	<li>If the native OS clipboard supports a sequence number, let <code>clipboard-entry</code> be the sequence number of the current content</li>
 	<li id="the-target"><p>Determine the target node for the event as follows</p>
@@ -390,7 +346,18 @@ function test(e){
 			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
 <script>
 /** event target when selection spans several elements  */
-/* Events: copy cut paste */
+/* Events: copy cut */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+</script>
+<script>
+/** event target when selection spans several elements  */
+/* Events: paste */
 /* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
 /* paste data: "pasted text" */
 /* Targets: document 'a' 'b' */
@@ -402,7 +369,18 @@ function test(e){
 </script>
 <script>
 /** event target when selection spans several elements - reversed selection  */
-/* Events: copy cut paste */
+/* Events: copy cut */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
+/* Targets: document 'a' 'b' */
+
+function test(e){
+	var passed = e.target.id === 'b';
+	return passed;
+}
+</script>
+<script>
+/** event target when selection spans several elements - reversed selection  */
+/* Events: paste */
 /* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
 /* paste data: "pasted text" */
 /* Targets: document 'a' 'b' */
@@ -431,7 +409,7 @@ function test(e){
 <script>
 /** copy event target property - selection in input  */
 /* Events: copy cut paste */
-/* Test HTML: <form><input id="input_text"  onfocus="this.select()" value="copied text"></form>*/
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document */
 
 function test(e){
@@ -441,7 +419,7 @@ function test(e){
 </script>
 
 <script>
-/** copy event target property - selection in document text  */
+/** event target property - selection in document text  */
 /* Events: copy cut paste */
 /* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
 /* Targets: document */
@@ -457,7 +435,6 @@ function test(e){
 /** event target when no specific element has focus  */
 /* Events: copy cut paste */
 /* Test HTML: <div>This is filler text</div>*/
-/* paste data: "pasted text" */
 /* Targets: document */
 
 function test(e){
@@ -473,6 +450,7 @@ function test(e){
 		<dt>Paste event</dt>
 		<dd>
 			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
+			<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
 			<p>For each part on the OS clipboard, carry out these steps:</p>
 			<dl class="switch">
 				<dt>If the current clipboard part contains plain text:</dt>
@@ -480,6 +458,29 @@ function test(e){
 					<ol>
 						<li>Ensure the text is in the encoding the scripting engine uses internally</li>
 						<li>Add one entry for the text to the DataTransferItemList with <code>kind</code> set to <var>string</var> and <code>type</code> set to <var>text/plain</var></li>
+<script>
+/** clipboardData.items when clipboard has one single text/plain entry */
+/* Events: paste */
+/* paste data: "pasted text" */
+
+function test(e){
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
+	return passed;
+}
+</script>
+<script>
+/** getting data from clipboardData.items when clipboard has one single text/plain entry */
+/* Events: paste */
+/* paste data: "pasted text" */
+
+function test(e){
+	e.clipboardData.items[0].getAsString( function(s){
+		result( s==='pasted text' );
+	} );
+}
+</script>
+
 					</ol>
 				</dd>
 				<!-- CF_HDROP -->
@@ -487,7 +488,25 @@ function test(e){
 				<dd>
 					<ol>
 						<li>Determine MIME type of referenced files</li>
-						<li>Add one entry per file reference to the <code>DataTransferItemList</code> with <code>kind</code> set to <var>file</var> and <code>type</code> set to the corresponding MIME type</li>
+						<li>
+							Add one entry per file reference to the <code>DataTransferItemList</code> with <code>kind</code> set to <var>file</var> and <code>type</code> set to the corresponding MIME type
+
+<script>
+/** pasting a file */
+/* Events: paste */
+/* Targets: document */
+/* 	Clipboard data type: file reference: /tmp/image.jpg */
+/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+
+function test(e){
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='file' && ( /image\/jpe?g/i.test(e.clipboardData.items[0].type) );
+	return passed;
+}
+// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
+</script>
+
+							<p class="issue">What if the MIME type is unknown? Use application/octet-stream?</p></li>
 					</ol>
 				</dd>
 				<dt>If the current clipboard part contains HTML- or XHTML-formatted text</dt>
@@ -497,8 +516,8 @@ function test(e){
 						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
 						<li>Parse the code on the clipboard to a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
-						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or multi-part sections on the OS clipboard. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
+						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply the <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
+						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 							<ol>
 								<li>Let <var>itemNumber</var> be the number of items on the <code>DataTransferItemList</code></li>
 								<li><p>Choose the appropriate steps from this list:</p>
@@ -545,9 +564,50 @@ function test(e){
 	<dl class="switch">
 		<dt>If script calls clearData() or items.clear()</dt>
 		<dd>set the <code>clear-was-called flag</code> to true</dd>
+		<dt>If script calls setData() or modifies items and the <code>clear-was-called</code> flag is true</dt>
+		<dd>set the <code>clear-was-called flag</code> to false</dd>
+<script>
+/** clipboard modification when script uses both clearData() and setData()  */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: document */
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+	e.clipboardData.clearData();
+  e.clipboardData.setData('text/plain', 'modified text');
+  e.preventDefault();
+}
+</script>
+
 		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <code>clipboard-entry</code> is set</dt>
 		<dd>check that the clipboard data's sequence number matches <code>clipboard-entry</code>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <i>mode</i> to the <i>disabled mode</i></dd>
 	</dl>
+		<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
+<script>
+/** reading clipboard data from looping script  */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Targets: document */
+
+function test(e){
+	var last=new Date(),now=new Date(), interval=50, seconds=10;
+	var start=new Date();
+	var text=e.clipboardData.getData( 'text/plain' ), readAgain='';
+	document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode('Please copy "pasted text 2" to clipboard while the test runs.'));
+	var logElm=document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode(''));
+	while( now=new Date() ){
+		if( now.getTime() - last.getTime() > interval ){
+			readAgain=e.clipboardData.getData('text/plain');
+			if( readAgain && readAgain !== text )return false;
+			now=new Date();
+			logElm.data='Test will run for '+parseInt( seconds - ((now.getTime() - start.getTime())/1000) )+' more seconds';
+			if( (now.getTime() - start.getTime()) > seconds * 1000 )break;
+		}
+	}
+	return true;
+}
+
+</script>
 </li>
 <li><p>Process the default action or the data from the script per the following instructions:</p>
 	<dl class="switch">
@@ -592,7 +652,7 @@ function test(e){
 						<dt>Otherwise</dt>
 						<dd>
 							<p>Do nothing, terminate this algorithm</p>
-<!-- 							<p class="issue">Should we update clipboard contents with data given by the script, if any? <b>Editor's opinion: to let a script that doesn't call preventDefault() have a different outcome depending on whether there happens to be a selection would not be a good idea.</b></p> -->
+ 							<p class="note">Calling setData() without calling preventDefault() has no effect, even if there is no selection and thus no default action.</p>
 						</dd>
 					</dl>
 				</dd>
@@ -716,7 +776,7 @@ function test(e){
 	<dt>attribute DOMStringList types</dt><dd>The types property returns a DOMStringList of MIME type strings [[!RFC2046]], see HTML5 for details [[!HTML5]].
 	<script>
 /** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
-/* Events: cut copy paste */
+/* Events: paste */
 /* paste data: "clipboard text" */
 function test(e){
 	var hasTextPlain=false;
@@ -837,47 +897,85 @@ function test(e){
 <p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [[!HTML5]]</p>
 <script>
 /** setData() method */
-/* Events: copy cut paste */
-/* External pass condition - clipboard data: "copycutpaste modified text" */
+/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
+/* Events: copy cut */
 /* paste data: "pasted text" */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
-	}
+	e.clipboardData.setData('text/plain', 'modified text');
 	e.preventDefault();
 }
 </script>
+<script>
+/** copy event when there is no selection and script uses setData()  */
+/* here we have a cursor in an editable context but no selection */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" autofocus value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+  e.clipboardData.setData('text/plain', 'modified text');
+	/* The default action is to do nothing (because there is no selection). 
+	 *  We thus need to prevent the default 'NOOP' action to make the implementation update the clipboard */
+  e.preventDefault();
+}
+</script>
+
+<script>
+/** setData() in cut event without preventDefault() has no effect when default action is noop */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	e.clipboardData.setData('text/plain', 'cut text');
+  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
+}
+</script>
+<script>
+/** modifying data for cut event in non-editable context with selection */
+/* Events: copy cut */
+/* Targets: document  */
+/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
+function test(e){
+	e.clipboardData.setData('text/plain', 'cut text');
+   e.preventDefault(); /* this event's default action is a NOOP since the selection can not be removed. */
+}
+</script>
+
 <p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
+<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard!</p>
 <script>
 /** setData() method does not throw when implementation does not know the type */
-/* Events: copy cut paste */
+/* Events: copy cut */
 /* External pass condition - clipboard data: "unmodified text" */
 /* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
-/* paste data: "pasted text" */
+/* paste data: "unmodified text" */
+//TODO: this test asserts a NOOP.
+// how this SHOULD work is, however, underspecified..
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.setData){
-		try{
-			e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text');
-      e.preventDefault();
-			passed=true;
-		}catch(e){
-		}
+	try{
+		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
+		e.preventDefault();
+		passed=true;
+	}catch(e){
 	}
 	return passed;
 }
 </script>
-<p>Calling setData() from a paste event handler <em>must not</em> modify the data that is inserted, and <em>must not</em> modify the data on the clipboard.</p>
+<p>Calling setData() from a <b>paste</b> event handler <em>must not</em> modify the data that is inserted, and <em>must not</em> modify the data on the clipboard.</p>
 <script>
 /** setData() does not modify text that is about to be inserted in a paste event */
 /* Events: paste */
 /* paste data: "pasted text" */
 /* Test HTML: <form><input autofocus></form> */
 function test(e){
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'modified text');
-	}
+	e.clipboardData.setData('text/plain', 'modified text');
 	setTimeout(function(){
 		var passed=false;
     passed=e.target.value==='pasted text';
@@ -918,7 +1016,7 @@ function test(e){
 <script>
 /** setData() method with text/html (experimental) */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "<p>copycut <b>modified</b> text</p>" */
+/* External pass condition - clipboard data: "data:text/html,<p>copycut <b>modified</b> text</p>" */
 /* IE's CF_HTML can not be emulated from JS with the existing clipboard API. The format includes quite some meta data:
 Version:1.0
 StartHTML:000000224
@@ -948,25 +1046,32 @@ function test(e){
 <p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [[!HTML5]].</p>
 <script>
 /** clearData() method without arguments */
-/* Events: copy cut paste */
+/* Events: copy cut */
 /* External pass condition - clipboard data: "" */
 /* paste data: "clipboard text" */
 function test(e){
 	var passed = false;
-	if(e.clipboardData && e.clipboardData.clearData){
-		e.clipboardData.clearData();
-	}
+	e.clipboardData.clearData();
+	e.preventDefault();
+}
+</script>
+<script>
+/** clearData() method is noop in paste event */
+/* Events: paste */
+/* External pass condition - clipboard data: "clipboard text" */
+/* paste data: "clipboard text" */
+function test(e){
+	e.clipboardData.clearData();
 	e.preventDefault();
 }
 </script>
 <script>
 /** clearData() method with text/plain argument */
-/* Events: copy cut paste */
+/* Events: copy cut */
 /* External pass condition - clipboard data: "" */
 /* paste data: "clipboard text" */
 // TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
 function test(e){
-	var passed = false;
 	if(e.clipboardData && e.clipboardData.clearData){
 		e.clipboardData.clearData('text/plain');
 	}
@@ -980,9 +1085,7 @@ function test(e){
 /* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
 	var passed = false;
-	if(e.clipboardData){
-		e.clipboardData.clearData();
-	}
+	e.clipboardData.clearData();
 	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 </script>
@@ -1390,6 +1493,67 @@ Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
 Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng.</p>
+
+<!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
+
+<script>
+/** ClipboardEvent and non-ASCII data I - Japanese */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: 'input_text' */
+/* External pass condition - clipboard data: "テスト" */
+
+function test(e){
+	e.clipboardData.setData( 'text/plain', 'テスト' );
+	e.preventDefault();
+}
+</script>
+<script>
+/** ClipboardEvent and non-ASCII data I - Japanese */
+/* Events: paste */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: 'input_text' */
+/* paste data: "テスト" */
+
+function test(e){
+	var passed = e.clipboardData.getData( 'text/plain') === 'テスト' ;
+	return passed;
+}
+</script>
+
+<script>
+/** ClipboardEvent and non-ASCII data II - random Unicode symbols */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> */
+/* Targets: 'input_text' */
+/* External pass condition - clipboard data: "☺✌☑☝" */
+
+function test(e){
+	e.clipboardData.setData( 'text/plain', '☺✌☑☝' );
+	e.preventDefault();
+}
+</script>
+
+<script>
+/** events fire inside SVG content  */
+/* Events: copy cut paste */
+/* Test HTML: <svg xmlns="http://www.w3.org/2000/svg"><text id="svg_text" x="0" y="15" fill="black">SVG text</text></svg><script>var rng=document.createRange();rng.selectNodeContents(document.getElementById('svg_text'));var sel=window.getSelection();sel.removeAllRanges();sel.addRange(rng);<\/script> */
+/* Targets: document 'svg_text' */
+function test(e){
+	var passed = e.target.id==='svg_text';
+	return passed;
+}
+</script>
+<script>
+/** events fire inside SVG content in contentEditable */
+/* Events: copy cut paste */
+/* Test HTML: <div contentEditable><svg xmlns="http://www.w3.org/2000/svg"><text id="svg_text" x="0" y="15" fill="black">SVG text</text></svg></div><script>var rng=document.createRange();rng.selectNodeContents(document.getElementById('svg_text'));var sel=window.getSelection();sel.removeAllRanges();sel.addRange(rng);<\/script> */
+/* Targets: document 'svg_text' */
+function test(e){
+	var passed = e.target.id==='svg_text';
+	return passed;
+}
+</script>
 
 
 </body>
