@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method does not throw when implementation does not know the type  - cut event on document</title>
+	<title>  modifying data for cut event in non-editable context with selection  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method does not throw when implementation does not know the type */
+/** modifying data for cut event in non-editable context with selection */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
-/* paste data: "unmodified text" */
-//TODO: this test asserts a NOOP.
-// how this SHOULD work is, however, underspecified..
+/* Targets: document  */
+/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
 function test(e){
-	var passed = false;
-	try{
-		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
-		e.preventDefault();
-		passed=true;
-	}catch(e){
-	}
-	return passed;
+	e.clipboardData.setData('text/plain', 'cut text');
+   e.preventDefault(); /* this event's default action is a NOOP since the selection can not be removed. */
 }
 
 	</script>
@@ -28,11 +21,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}</script>
 
 	<script>
-	var dataToPaste="unmodified text";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition="cut text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

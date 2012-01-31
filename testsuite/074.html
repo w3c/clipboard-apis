@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  Clipboard event's clipboardData API  - cut event on document</title>
+	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** Clipboard event's clipboardData API */
-/* Events: cut copy paste */
+/** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
+/* Events: copy cut */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	var passed = typeof e.clipboardData === 'object';
-	passed = passed && typeof  e.clipboardData.clearData === 'function';
-	passed = passed && typeof  e.clipboardData.setData === 'function';
-	passed = passed && typeof  e.clipboardData.getData === 'function';
-	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
-	return passed;
+
+}
+function onTestSetupReady(){
+	try{
+		var evt=document.createEvent('ClipboardEvent');
+		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+    if( window.eventType=='cut' )document.body.contentEditable='true';
+		/* make a selection to check if selected text is copied by the synthetic event.. */
+		var range=document.createRange();
+		range.selectNodeContents(document.body);
+		window.getSelection().addRange(range);
+		document.dispatchEvent(evt);
+		window.getSelection().removeAllRanges();
+    if( window.eventType=='cut' )document.body.contentEditable='false';
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
 }
 
 	</script>
@@ -21,15 +35,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

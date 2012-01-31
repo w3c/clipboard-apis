@@ -1,25 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events   - paste event on document</title>
+	<title>  clipboard modification when script uses both clearData() and setData()   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events  */
-/* Events: paste */
-/* paste data: "clipboard text" */
+/** clipboard modification when script uses both clearData() and setData()  */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: document */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
-	return e.clipboardData.getData('text/plain')=='synthetic event text';
-}
-function onTestSetupReady(){
-	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
-		document.dispatchEvent(evt);
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
-	}
+	e.clipboardData.clearData();
+  e.clipboardData.setData('text/plain', 'modified text');
+  e.preventDefault();
 }
 
 	</script>
@@ -27,15 +21,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var dataToPaste="";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

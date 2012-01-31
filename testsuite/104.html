@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method with text/plain argument  - copy event on document</title>
+	<title>  clearData() method without arguments  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method with text/plain argument */
+/** clearData() method without arguments */
 /* Events: copy cut */
 /* External pass condition - clipboard data: "" */
 /* paste data: "clipboard text" */
-// TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
 function test(e){
-	if(e.clipboardData && e.clipboardData.clearData){
-		e.clipboardData.clearData('text/plain');
-	}
+	var passed = false;
+	e.clipboardData.clearData();
 	e.preventDefault();
 }
 
@@ -28,9 +26,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

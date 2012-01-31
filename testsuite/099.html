@@ -1,32 +1,20 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method with text/html (experimental)  - copy event on document</title>
+	<title>  setData() method without preventing events's default action  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method with text/html (experimental) */
+/** setData() method without preventing events's default action */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "data:text/html,<p>copycut <b>modified</b> text</p>" */
-/* IE's CF_HTML can not be emulated from JS with the existing clipboard API. The format includes quite some meta data:
-Version:1.0
-StartHTML:000000224
-EndHTML:000007594
-StartFragment:000006999
-EndFragment:000007548
-StartSelection:000006999
-EndSelection:000007530
-SourceURL: ...
-and a document containing all parents of the selection, plus the full HEAD section. Plus magic <!--StartFragment--> and EndFragment comments.
-
-So..what should an implementation do if the script tries to place text/html data on the clipboard? Preferably support magically using the CF_HTML format. What is an implementation that doesn't support CF_HTML supposed to do?? //TODO!
-Note: IE throws.
-*/
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
 	var passed = false;
 	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/html', '<p>copycut <b>modified</b> text</p>');
+		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
 	}
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -34,11 +22,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="data:text/html,<p>copycut <b>modified</b> text</p>";
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){

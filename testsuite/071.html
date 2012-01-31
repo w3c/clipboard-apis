@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events with non-standard MIME type   - paste event on document</title>
+	<title>  reading clipboard data from looping script   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
+/** reading clipboard data from looping script  */
 /* Events: paste */
-/* paste data: "clipboard text" */
+/* paste data: "pasted text" */
+/* Targets: document */
+
 function test(e){
-	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
+	var last=new Date(),now=new Date(), interval=50, seconds=10;
+	var start=new Date();
+	var text=e.clipboardData.getData( 'text/plain' ), readAgain='';
+	document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode('Please copy "pasted text 2" to clipboard while the test runs.'));
+	var logElm=document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode(''));
+	while( now=new Date() ){
+		if( now.getTime() - last.getTime() > interval ){
+			readAgain=e.clipboardData.getData('text/plain');
+			if( readAgain && readAgain !== text )return false;
+			now=new Date();
+			logElm.data='Test will run for '+parseInt( seconds - ((now.getTime() - start.getTime())/1000) )+' more seconds';
+			if( (now.getTime() - start.getTime()) > seconds * 1000 )break;
+		}
+	}
+	return true;
 }
 
-function onTestSetupReady(){
-	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/foobarbogustype', 'synthetic event text' );
-		document.dispatchEvent(evt);
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
-	}
-}
 
 	</script>
 </head>
@@ -31,7 +37,7 @@ function onTestSetupReady(){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

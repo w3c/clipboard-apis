@@ -1,29 +1,22 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - cut event on document</title>
+	<title>  ClipboardEvent interface - synthetic events with non-standard MIME type   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
-/* Events: copy cut */
+/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
+/* Events: paste */
 /* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-
+	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
 }
+
 function onTestSetupReady(){
 	try{
 		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
-    if( window.eventType=='cut' )document.body.contentEditable='true';
-		/* make a selection to check if selected text is copied by the synthetic event.. */
-		var range=document.createRange();
-		range.selectNodeContents(document.body);
-		window.getSelection().addRange(range);
+		evt.initClipboardEvent( window.eventType, true, true, 'text/foobarbogustype', 'synthetic event text' );
 		document.dispatchEvent(evt);
-		window.getSelection().removeAllRanges();
-    if( window.eventType=='cut' )document.body.contentEditable='false';
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
 		return;
@@ -39,11 +32,11 @@ function onTestSetupReady(){
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

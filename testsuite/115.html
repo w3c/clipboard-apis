@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to key events   - cut event on 'input_text'</title>
+	<title>  integration with execCommand, can prevent default action  - paste event on 'ifr.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to key events  */
-/* Events: copy cut paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
-/* Targets: 'input_text' */
-
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
-},false);
-
+/** integration with execCommand, can prevent default action */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
 function test(e){
-  logEvent(e);
-	setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
-    result( passed, 'Got: '+eventsFired.join(',') );
-  }, 500);
+	window.eventFired=true;
+	e.preventDefault();
+}
+function triggerTestManually(){
+	var ifr=document.getElementById('ifr');
+	ifr.contentDocument.designMode='on';
+	ifr.contentWindow.focus();
+	try{
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		setTimeout(function(){
+			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
+			result(passed);
+		}, 10);
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
 }
 
 	</script>
@@ -31,15 +34,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
+	<iframe id="ifr"></iframe>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='cut';
+	var eventTarget='ifr.contentWindow';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

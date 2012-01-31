@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in cut and copy events should return undefined  - copy event on document</title>
+	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in cut and copy events should return undefined */
-/* Events: cut copy */
+/** getData() method in paste event retrieving plain text */
+/* Events: paste */
+/* paste data: "pasted text" */
 function test(e){
 	var passed = false;
 	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='')passed=true;
+		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
 	}
 	return passed;
 }
@@ -20,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

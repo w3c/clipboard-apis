@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  modifying data for cut event in non-editable context with selection  - cut event on document</title>
+	<title>  setData() in cut event without preventDefault() has no effect when default action is noop  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** modifying data for cut event in non-editable context with selection */
-/* Events: copy cut */
+/** setData() in cut event without preventDefault() has no effect when default action is noop */
+/* Events: cut */
 /* Targets: document  */
-/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
 /* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "cut text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
 	e.clipboardData.setData('text/plain', 'cut text');
-   e.preventDefault(); /* this event's default action is a NOOP since the selection can not be removed. */
+  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
 }
 
 	</script>
@@ -21,11 +20,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}</script>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="cut text";
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){
