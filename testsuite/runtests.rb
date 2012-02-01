@@ -35,6 +35,16 @@ def doSingleTest( counter )
       @browser.goto($base+fn+'.html') # once we have proper Ruby clipboard support rather than a hack goes to another page, we can remove this..
     end
   end
+  # Sometimes tests need the clipboard to be updated while the event processing is happening.
+  # The @browser.method(event).call needs to be synchronous for the *typical* test though,
+  # but if we see the "while the test runs" instruction we try to do this from a fork with a delay (Does this work on Windows??)
+  if (@browser.text.match( 'please copy "([^"]*)" to clipboard while the test runs' )) then
+    text=@browser.text.match( 'please copy "([^"]*)" to clipboard while the test runs' )[1]
+    fork do
+      sleep(4)
+      setClipboardData(text)
+    end
+  end
   if (@browser.text.match( 'waiting for (copy|cut|paste) event' ))
     event = @browser.text.match( 'waiting for (copy|cut|paste) event' )[1]
     if(@browser.text.match( 'please trigger event from keyboard' ))
@@ -48,14 +58,7 @@ def doSingleTest( counter )
       @browser.button(:index, 1).click
     end
   end
-  # Sometimes tests need the clipboard to be updated while the event processing is happening.
-  # The @browser.method(event).call above needs to be synchronous for the *typical* test though,
-  # so I'm not sure how to handle this well..
-  if (@browser.text.match( 'please copy "([^"]*)" to clipboard while the test runs' )) then
-    text=@browser.text.match( 'please copy "([^"]*)" to clipboard while the test runs' )[1]
-    setClipboardData(text)
-  end
-
+  sleep 0.5 # rich text formatted copy/cut
   if (@browser.text.match( 'This test passes if this text is now on the system clipboard: "([^"]*)"' ))
     expected = @browser.text.match( 'This test passes if this text is now on the system clipboard: "([^"]*)"' )[1]
     actual = getClipboardData()
