@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  cancelling default action of cut prevents removal of text from editable context   - cut event on 'input_text'</title>
+	<title>  default action of cut event when there is no selection - no text change  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** cancelling default action of cut prevents removal of text from editable context  */
-/* Events: cut */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
-/* Targets: document 'input_text' */
+/** default action of cut event when there is no selection - no text change */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>*/
+/* Targets: document */
+/* paste data: "clipboard text" */
 function test(e){
-	e.preventDefault();
-	var theTarget=e.target;
-	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
+	var elm=e.target;
+  setTimeout(
+		function(){
+			result(elm.value===elm.defaultValue);
+		},
+		50
+	);
 }
 
 	</script>
@@ -20,15 +25,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
+	<form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='cut';
+	var eventTarget=document;
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

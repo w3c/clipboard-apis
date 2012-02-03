@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData and clipboardData.items   - cut event on document</title>
+	<title>  getting data from clipboardData.items when clipboard has one single text/plain entry  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData and clipboardData.items  */
-/* Events: copy cut */
+/** getting data from clipboardData.items when clipboard has one single text/plain entry */
+/* Events: paste */
+/* paste data: "pasted text" */
 
 function test(e){
-	e.clipboardData.setData('text/plain', 'modified text');
-	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
-	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
-	return passed;
+	e.clipboardData.items[0].getAsString( function(s){
+		result( s==='pasted text' );
+	} );
 }
 
 	</script>
@@ -20,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

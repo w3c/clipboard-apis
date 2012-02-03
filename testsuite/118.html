@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to key events   - paste event on 'input_text'</title>
+	<title>  clipboard events relative to key events   - copy event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -37,9 +37,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='input_text';
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

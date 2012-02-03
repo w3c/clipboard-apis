@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target property - selection in document text   - paste event on document</title>
+	<title>  event target property - selection in document text   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -26,9 +26,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

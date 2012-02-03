@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy event when there is no selection and script uses setData()   - copy event on document</title>
+	<title>  setData() method  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy event when there is no selection and script uses setData()  */
-/* here we have a cursor in an editable context but no selection */
+/** setData() method */
+/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
 /* Events: copy cut */
-/* Test HTML: <form><input id="input_text" autofocus value="copied text"></form>*/
-/* Targets: document */
-/* paste data: "clipboard text" */
+/* paste data: "pasted text" */
 /* External pass condition - clipboard data: "modified text" */
 function test(e){
-  e.clipboardData.setData('text/plain', 'modified text');
-	/* The default action is to do nothing (because there is no selection). 
-	 *  We thus need to prevent the default 'NOOP' action to make the implementation update the clipboard */
-  e.preventDefault();
+	var passed = false;
+	e.clipboardData.setData('text/plain', 'modified text');
+	e.preventDefault();
 }
 
 	</script>
@@ -24,10 +21,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus value="copied text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="pasted text";
 	var externalPassCondition="modified text";
 	var eventTarget=document;
 	var eventType='copy';

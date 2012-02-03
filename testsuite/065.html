@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getting data from clipboardData.items when clipboard has one single text/plain entry  - paste event on document</title>
+	<title>  event target when no specific element has focus   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getting data from clipboardData.items when clipboard has one single text/plain entry */
-/* Events: paste */
-/* paste data: "pasted text" */
+/** event target when no specific element has focus  */
+/* Events: copy cut paste */
+/* Test HTML: <div>This is filler text</div>*/
+/* Targets: document */
 
 function test(e){
-	e.clipboardData.items[0].getAsString( function(s){
-		result( s==='pasted text' );
-	} );
+	var passed = e.target===document.body;
+	return passed;
 }
 
 	</script>
@@ -20,10 +20,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div>This is filler text</div>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

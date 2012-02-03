@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire on TEXTAREA  - paste event on document</title>
+	<title>  events fire on INPUT  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire on TEXTAREA */
+/** events fire on INPUT */
 /* Events: paste */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>*/
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
@@ -21,7 +21,7 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
 
 	<script>
 	var dataToPaste="pasted text";

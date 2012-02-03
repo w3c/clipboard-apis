@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() called outside event handler method  - paste event on document</title>
+	<title>  event listener that modifies focus  - cut event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() called outside event handler method */
-/* Events: copy cut paste */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/** event listener that modifies focus */
+/* Events: copy cut */
+/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
+/* Targets: 'input_text' */
+/* External pass condition - clipboard data: "input 2" */
+
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		cbData.setData('text/plain', 'Test failed');
-	}, 1 );
+	document.getElementById('second').focus();
 }
+
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget=document;
-	var eventType='paste';
+	var dataToPaste="";
+	var externalPassCondition="input 2";
+	var eventTarget='input_text';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

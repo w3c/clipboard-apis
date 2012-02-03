@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy event when there is no selection   - copy event on document</title>
+	<title>  default action of event when there is no selection is noop  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy event when there is no selection  */
-/* Events: copy */
-/* Test HTML: <form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>*/
+/** default action of event when there is no selection is noop */
+/* Events: copy cut */
+/* Test HTML: <form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>*/
 /* Targets: document */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
@@ -20,7 +20,7 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text"  onfocus="this.blur()" value="copied text"></form>
+	<form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";

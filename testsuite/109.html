@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without preventing events's default action  - cut event on document</title>
+	<title>  clearData() method with text/plain argument  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without preventing events's default action */
+/** clearData() method with text/plain argument */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "" */
+// TODO: not completely tested, this test requires making sure there are alternate formats on the clipboard..
 function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+	e.clipboardData.clearData('text/plain');
+	e.preventDefault();
 }
 
 	</script>
@@ -20,11 +20,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition="";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

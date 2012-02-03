@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event.clipboardData exists and inherits from DataTransfer  - cut event on document</title>
+	<title>  paste event fires even in non-editable context  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event.clipboardData exists and inherits from DataTransfer */
-/* Events: copy cut paste */
-/* Targets: document */
-
+/** paste event fires even in non-editable context */
+/* Events: paste */
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
+/* Test HTML: <p>&nbsp;</p> */
 function test(e){
-	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
+	var passed = e.type === 'paste';
 	return passed;
 }
 
@@ -19,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<p>&nbsp;</p> 
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget=document;
-	var eventType='cut';
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire on INPUT  - paste event on 'input_text'</title>
+	<title>  cut collapses selection   - cut event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire on INPUT */
-/* Events: paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
-/* Targets: document 'input_text' */
-/* paste data: "pasted text" */
+/** cut collapses selection  */
+/* Events: cut */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
+/* Targets: 'input_text' */
 function test(e){
-	var passed = e.type === window.eventType;
-	passed = passed && e.target.id==='input_text';
-	return passed;
+	setTimeout(function(){
+    var elm=document.getElementById('input_text');
+    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0 && elm.value === '';
+    result( passed );
+  }, 20);
 }
 
 	</script>
@@ -21,15 +22,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='input_text';
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

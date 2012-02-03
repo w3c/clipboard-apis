@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'json'
 begin 
   require "operawatir/helper"
 rescue 
@@ -52,13 +53,15 @@ def doSingleTest( counter )
       @browser.send_keys [:control, theKey]
     else
       @browser.method(event).call
+#      while @browser.text.match( 'waiting for (copy|cut|paste) event' )
+#        sleep 0.5 # rich text formatted copy/cut can be slower than other event processing, needs a bit of extra delay here
+#      end
     end
   else
     if( @browser.button(:index, 1) ) # test needs to be triggered "manually" (i.e. synthetic events tests)
       @browser.button(:index, 1).click
     end
   end
-  sleep 0.5 # rich text formatted copy/cut
   if (@browser.text.match( 'This test passes if this text is now on the system clipboard: "([^"]*)"' ))
     expected = @browser.text.match( 'This test passes if this text is now on the system clipboard: "([^"]*)"' )[1]
     actual = getClipboardData()
@@ -71,7 +74,7 @@ end
 
 
 def setClipboardData(str)
-  print 'Setting: '+str+"\n"
+  #print 'Setting: '+str+"\n"
   if $has_native_clipboard then
     Clipboard.copy str
   else
@@ -93,7 +96,7 @@ end
 def getClipboardData
   if $has_native_clipboard then
     str=Clipboard.paste
-    print 'Getting '+str+"\n"
+    #print 'Getting '+str+"\n"
     return str
   else
     #browser.goto 'data:text/html,<html contentEditable="true"><head><title>test</title></head><body></body></html>' 

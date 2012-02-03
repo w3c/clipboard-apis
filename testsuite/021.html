@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  cut collapses selection   - cut event on 'input_text'</title>
+	<title>  cut fires before text is removed   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** cut collapses selection  */
+/** cut fires before text is removed  */
 /* Events: cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
-/* Targets: 'input_text' */
+/* Targets: document 'input_text' */
 function test(e){
-	setTimeout(function(){
-    var elm=document.getElementById('input_text');
-    var passed = elm.selectionStart === 0 && elm.selectionEnd === 0 && elm.value === '';
-    result( passed );
-  }, 20);
+	return e.target.value === e.target.defaultValue;
 }
 
 	</script>
@@ -27,10 +23,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

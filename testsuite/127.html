@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() called outside event handler method  - copy event on document</title>
+	<title>  copy operation does not dispatch other events   - copy event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() called outside event handler method */
-/* Events: copy cut paste */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/** copy operation does not dispatch other events  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		cbData.setData('text/plain', 'Test failed');
-	}, 1 );
+  var otherEventsFired=[];
+  var events=[ 'input', 'textInput', 'change' ];
+  for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
+	setTimeout(function(){
+    var passed = otherEventsFired.length===0;
+    result(passed);
+  }, 50);
+  e.target.blur(); // might provoke a change event, but should not
 }
 
 	</script>
@@ -21,15 +25,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget=document;
+	var dataToPaste="";
+	var externalPassCondition=null;
+	var eventTarget='input_text';
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

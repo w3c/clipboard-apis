@@ -15,8 +15,8 @@ function setupTest( target, event, dataToPaste, externalPassCondition ){
 	}else if(target.attachEvent){
     target.attachEvent('on'+event, intermediateListener);
   }
-	if( dataToPaste ){
-		logNode.data+='Please place the following text on the clipboard before continuing the test: "'+dataToPaste+'"\n';
+	if( dataToPaste || event==='paste' ){
+		logNode.data+='Please place the following text on the clipboard before continuing the test: "'+(dataToPaste || 'clipboard text' )+'"\n';
     logNode.parentNode.style.whiteSpace='pre';
 	}
 	if(typeof triggerTestManually==='function'){

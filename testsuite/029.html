@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  preventing default action   - paste event on 'input_text'</title>
+	<title>  paste event fires before data is inserted  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** preventing default action  */
+/** paste event fires before data is inserted */
 /* Events: paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
-    e.preventDefault();
-	var theTarget=e.target;
-	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
+	var passed = e.type == 'paste' && document.getElementById('input_text').value=='original text';
+	return passed;
 }
 
 	</script>

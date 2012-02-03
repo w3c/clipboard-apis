@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  pasting a file  - paste event on document</title>
+	<title>  setData and clipboardData.items   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** pasting a file */
-/* Events: paste */
-/* Targets: document */
-/* 	Clipboard data type: file reference: /tmp/image.jpg */
-/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+/** setData and clipboardData.items  */
+/* Events: copy cut */
 
 function test(e){
+	e.clipboardData.setData('text/plain', 'modified text');
 	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
-	passed = passed && e.clipboardData.items[0].kind=='file' && ( /image\/jpe?g/i.test(e.clipboardData.items[0].type) );
+	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
 	return passed;
 }
-// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>
+	
 
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
