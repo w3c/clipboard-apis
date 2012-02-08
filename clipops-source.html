@@ -591,7 +591,7 @@ function test(e){
 	<p>Fire the event. Implementation requirements for access to data during event dispatch is defined in [[HTML5]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
 		<dt>If script calls clearData() or items.clear()</dt>
-		<dd>set the <code>clear-was-called flag</code> to true</dd>
+		<dd>set the <code>clear-was-called flag</code> to true <p class="issue">What if an argument was passed to clearData()? We need something more complex than the simple clear-was-called flag to capture the state we need to remember..</p></dd>
 		<dt>If script calls setData() or modifies items and the <code>clear-was-called</code> flag is true</dt>
 		<dd>set the <code>clear-was-called flag</code> to false</dd>
 <script>
