@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method is noop in paste event  - paste event on document</title>
+	<title>  setData() method with text/html (experimental)  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method is noop in paste event */
-/* Events: paste */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/** setData() method with text/html (experimental) */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "{'text/html': '<p>copycut <b>modified</b> text</p>', 'text/plain':'copycut modified text'}" */
+/* IE's CF_HTML can not be emulated from JS with the existing clipboard API. The format includes quite some meta data:
+Version:1.0
+StartHTML:000000224
+EndHTML:000007594
+StartFragment:000006999
+EndFragment:000007548
+StartSelection:000006999
+EndSelection:000007530
+SourceURL: ...
+and a document containing all parents of the selection, plus the full HEAD section. Plus magic <!--StartFragment--> and EndFragment comments.
+
+So..what should an implementation do if the script tries to place text/html data on the clipboard? Preferably support magically using the CF_HTML format. What is an implementation that doesn't support CF_HTML supposed to do? Is CF_HTML used on other platforms?
+Note: IE throws. Presumably it would use just "html", not "text/html" for the format argument if it supported this.
+*/
 function test(e){
-	e.clipboardData.clearData();
+	var passed = false;
+	e.clipboardData.setData('text/html', '<p>copycut <b>modified</b> text</p>');
+	e.clipboardData.setData('text/plain', 'copycut modified text');
 	e.preventDefault();
 }
 
@@ -19,15 +34,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
+	var dataToPaste="";
+	var externalPassCondition="{'text/html': '<p>copycut <b>modified</b> text</p>', 'text/plain':'copycut modified text'}";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

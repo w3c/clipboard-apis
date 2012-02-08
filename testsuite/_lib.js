@@ -17,7 +17,17 @@ function setupTest( target, event, dataToPaste, externalPassCondition ){
   }
 	if( dataToPaste || event==='paste' ){
 		logNode.data+='Please place the following text on the clipboard before continuing the test: "'+(dataToPaste || 'clipboard text' )+'"\n';
-    logNode.parentNode.style.whiteSpace='pre';
+    logNode.parentNode.style.whiteSpace='pre'; 
+		if(dataToPaste.indexOf('{')==0){ // sorry about the content sniffing, this is likely a JSON string with alternate clipboard formats
+			if(dataToPaste.indexOf('text/html')>-1){
+				logNode.parentNode.appendChild(document.createElement('br'));
+				logNode.parentNode.appendChild(document.createTextNode('Note: copy all body text from '));
+				var tmp=logNode.parentNode.appendChild(document.createElement('a'));
+				tmp.href='support/html_file.htm';
+				tmp.appendChild(document.createTextNode('this support file'));
+				logNode.parentNode.appendChild(document.createTextNode(' for this test.'));
+			}
+		}
 	}
 	if(typeof triggerTestManually==='function'){
 		logNode.parentNode.appendChild(document.createTextNode('  '));
@@ -32,7 +42,7 @@ function setupTest( target, event, dataToPaste, externalPassCondition ){
 		logNode.data+='Test in progress, waiting for '+event+' event';
 	} 
 	if(typeof onTestSetupReady==='function'){
-		onTestSetupReady();
+		onTestSetupReady(event);
 	}
 
 	function intermediateListener(e){

@@ -1,29 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, events are syncronous  - copy event on 'iframe.contentWindow'</title>
+	<title>  clearData() method with text/html argument  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
-/* Test HTML: <iframe id="iframe"></iframe>*/
-/* Targets: 'iframe.contentWindow' */
+/** clearData() method with text/html argument */
+/* Events: copy cut */
+/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
+/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
 function test(e){
-	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
-}
-function onTestSetupReady(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('iframe');
-	ifr.contentDocument.designMode='on';
-	ifr.contentWindow.focus();
-	try{
-		window.afterExecCommand=false;
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		window.afterExecCommand=true;
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
-	}
+	e.clipboardData.clearData('text/html');
+	e.preventDefault();
 }
 
 	</script>
@@ -31,15 +19,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="iframe"></iframe>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='iframe.contentWindow';
-	var eventType='copy';
+	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
+	var externalPassCondition="This is formatted HTML for copy/paste tests.";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'iframe.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

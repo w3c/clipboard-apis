@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire inside editable SVG content   - cut event on 'svg_text'</title>
+	<title>  events fire inside editable SVG content   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -24,10 +24,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='svg_text';
+	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'svg_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

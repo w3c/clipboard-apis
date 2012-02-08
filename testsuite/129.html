@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event listener that modifies focus  - cut event on 'input_text'</title>
+	<title>  copy operation does not dispatch other events   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event listener that modifies focus */
-/* Events: copy cut */
-/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
-/* Targets: 'input_text' */
-/* External pass condition - clipboard data: "input 2" */
-
+/** copy operation does not dispatch other events  */
+/* Events: copy */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
 function test(e){
-	document.getElementById('second').focus();
+  var otherEventsFired=[];
+  var events=[ 'input', 'textInput', 'change' ];
+  for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
+	setTimeout(function(){
+    var passed = otherEventsFired.length===0;
+    result(passed);
+  }, 50);
+  e.target.blur(); // might provoke a change event, but should not
 }
-
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="input 2";
-	var eventTarget='input_text';
-	var eventType='cut';
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

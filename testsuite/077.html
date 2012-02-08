@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - cut event on document</title>
+	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -41,9 +41,9 @@ function onTestSetupReady(){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

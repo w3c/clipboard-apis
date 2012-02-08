@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without arguments  - cut event on document</title>
+	<title>  setData() followed by clearData() in same event handler  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without arguments */
+/** setData() followed by clearData() in same event handler */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "" */
+/* Targets: document */
 /* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "" */
 function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.clipboardData.clearData( 'text/plain' );
 	e.preventDefault();
 }
 

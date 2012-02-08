@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method's type argument not case sensitive  - paste event on document</title>
+	<title>  getData() method when called outside event handler should return undefined  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method's type argument not case sensitive */
+/** getData() method when called outside event handler should return undefined */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if( e.clipboardData.getData('text/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('TEXT/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('Text/Plain')==='pasted text' &&
-			e.clipboardData.getData('TeXt/PlAin')==='pasted text'
-		)passed=true;
-	}
-	return passed;
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		var passed = cbData.getData('text/plain')==='';
+		result(passed);
+	}, 1 );
 }
 
 	</script>

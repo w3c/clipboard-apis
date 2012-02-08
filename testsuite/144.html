@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent and non-ASCII data II - random Unicode symbols  - copy event on 'input_text'</title>
+	<title>  ClipboardEvent and non-ASCII data I - Japanese  - copy event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent and non-ASCII data II - random Unicode symbols */
+/** ClipboardEvent and non-ASCII data I - Japanese */
 /* Events: copy cut */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
 /* Targets: 'input_text' */
-/* External pass condition - clipboard data: "☺✌☑☝" */
+/* External pass condition - clipboard data: "テスト" */
 
 function test(e){
-	e.clipboardData.setData( 'text/plain', '☺✌☑☝' );
+	e.clipboardData.setData( 'text/plain', 'テスト' );
 	e.preventDefault();
 }
 
@@ -21,11 +21,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> 
+	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="☺✌☑☝";
+	var externalPassCondition="テスト";
 	var eventTarget='input_text';
 	var eventType='copy';
 	window.onload=function(){

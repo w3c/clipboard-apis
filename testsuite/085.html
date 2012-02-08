@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when type is unsupported should return undefined  - paste event on document</title>
+	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method when type is unsupported should return undefined */
+/** getData() method in paste event retrieving plain text */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
 	var passed = false;
 	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/foobarbogustype')==='')passed=true;
+		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
 	}
 	return passed;
 }

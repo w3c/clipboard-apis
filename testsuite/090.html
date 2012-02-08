@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method  - copy event on document</title>
+	<title>  getData() method with wrong number of arguments  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method */
-/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
-/* Events: copy cut */
+/** getData() method with wrong number of arguments */
+/* Events: paste */
 /* paste data: "pasted text" */
-/* External pass condition - clipboard data: "modified text" */
 function test(e){
-	var passed = false;
-	e.clipboardData.setData('text/plain', 'modified text');
-	e.preventDefault();
+	var passed=true;
+	try{
+		e.clipboardData.getData();
+		passed=false;
+	}catch(e){}
+	try{
+		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
+		passed=false;
+	}catch(e){}
+	return passed;
 }
 
 	</script>
@@ -25,11 +30,11 @@ function test(e){
 
 	<script>
 	var dataToPaste="pasted text";
-	var externalPassCondition="modified text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

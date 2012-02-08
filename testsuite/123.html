@@ -1,36 +1,27 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to key events - preventDefault prevents clipboard events   - paste event on 'input_text'</title>
+	<title>  clipboard events relative to key events   - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to key events - preventDefault prevents clipboard events  */
+/** clipboard events relative to key events  */
 /* Events: copy cut paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
 /* Targets: 'input_text' */
 
-var eventsFired=[], timeout;
-function logEvent(e){
-	eventsFired.push(e.type);
-	if(e.type==='keydown')e.preventDefault(); // no clipboard events should fire if preventDefault() is called here
-};
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
 document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
   document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
   document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'cut', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'copy', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'paste', logEvent, false );
 },false);
-document.onkeyup = function(){
-	if(timeout)clearTimeout(timeout);
-	setTimeout(test, 500);
-}
+
 function test(e){
-  if(e)logEvent(e);
+  logEvent(e);
 	setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,keyup,keyup' ;
+    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
     result( passed, 'Got: '+eventsFired.join(',') );
   }, 500);
 }

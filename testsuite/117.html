@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - paste event on 'ifr.contentWindow'</title>
+	<title>  integration with execCommand, events are syncronous  - paste event on 'iframe.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, can prevent default action */
-/* Events: paste */
-/* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
+/** integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="iframe"></iframe>*/
+/* Targets: 'iframe.contentWindow' */
 function test(e){
-	window.eventFired=true;
-	e.preventDefault();
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
 }
-function triggerTestManually(){
-	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
+function onTestSetupReady( eventType ){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('iframe'), doc;
+	(doc=ifr.contentDocument).designMode='on';
+	doc.body.innerHTML='<p>Frame contents</p>';
 	ifr.contentWindow.focus();
+	if(eventType in { copy:1, cut:1 }){	// create a selection
+		var rng=doc.createRange();
+		rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
+		var sel=ifr.contentWindow.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(rng);
+	}
 	try{
+		window.afterExecCommand=false;
 		ifr.contentDocument.execCommand(window.eventType, false, false);
-		setTimeout(function(){
-			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
-			result(passed);
-		}, 10);
+		window.afterExecCommand=true;
 	}catch(e){
 		result('Can not test - exception from execCommand '+e);
 	}
@@ -34,15 +39,15 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<iframe id="iframe"></iframe>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='ifr.contentWindow';
+	var eventTarget='iframe.contentWindow';
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'iframe.contentWindow', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

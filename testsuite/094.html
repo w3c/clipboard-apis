@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() in cut event without preventDefault() has no effect when default action is noop  - cut event on document</title>
+	<title>  setData() method  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() in cut event without preventDefault() has no effect when default action is noop */
-/* Events: cut */
-/* Targets: document  */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/** setData() method */
+/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
+/* Events: copy cut */
+/* paste data: "pasted text" */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
-	e.clipboardData.setData('text/plain', 'cut text');
-  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
+	var passed = false;
+	e.clipboardData.setData('text/plain', 'modified text');
+	e.preventDefault();
 }
 
 	</script>
@@ -23,8 +24,8 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
+	var dataToPaste="pasted text";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

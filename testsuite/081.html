@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
+	<title>  Clipboard event's clipboardData API  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
-/* Events: paste */
-/* paste data: "clipboard text" */
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
 function test(e){
-	var hasTextPlain=false;
-	if(e.clipboardData.types){
-		for(var i=0; i<e.clipboardData.types.length;i++){
-			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
-		}
-	}
-	return hasTextPlain;
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
+	return passed;
 }
 
 	</script>
@@ -23,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

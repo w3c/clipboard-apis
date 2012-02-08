@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method supports legacy 'text' argument  - paste event on document</title>
+	<title>  getData() method when type is unsupported should return undefined  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method supports legacy 'text' argument */
+/** getData() method when type is unsupported should return undefined */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
 	var passed = false;
 	if(e.clipboardData && e.clipboardData.getData){
-		if(  e.clipboardData.getData('text')==='pasted text'
-		&& e.clipboardData.getData('tEXt')==='pasted text' )passed=true;
+		if(e.clipboardData.getData('text/foobarbogustype')==='')passed=true;
 	}
 	return passed;
 }

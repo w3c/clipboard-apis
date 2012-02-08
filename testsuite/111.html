@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without preventing events's default action  - cut event on document</title>
+	<title>  clearData() method with text/html argument  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without preventing events's default action */
+/** clearData() method with text/html argument */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
+/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
 function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+	e.clipboardData.clearData('text/html');
+	e.preventDefault();
 }
 
 	</script>
@@ -20,15 +19,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
+	var externalPassCondition="This is formatted HTML for copy/paste tests.";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

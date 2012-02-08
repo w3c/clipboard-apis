@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method  - cut event on document</title>
+	<title>  getData() method supports legacy 'text' argument  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method */
-/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
-/* Events: copy cut */
+/** getData() method supports legacy 'text' argument */
+/* Events: paste */
 /* paste data: "pasted text" */
-/* External pass condition - clipboard data: "modified text" */
 function test(e){
 	var passed = false;
-	e.clipboardData.setData('text/plain', 'modified text');
-	e.preventDefault();
+	if(e.clipboardData && e.clipboardData.getData){
+		if(  e.clipboardData.getData('text')==='pasted text'
+		&& e.clipboardData.getData('tEXt')==='pasted text' )passed=true;
+	}
+	return passed;
 }
 
 	</script>
@@ -25,11 +26,11 @@ function test(e){
 
 	<script>
 	var dataToPaste="pasted text";
-	var externalPassCondition="modified text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

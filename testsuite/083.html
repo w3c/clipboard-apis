@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in cut and copy events should return undefined  - cut event on document</title>
+	<title>  Clipboard event's clipboardData API  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in cut and copy events should return undefined */
-/* Events: cut copy */
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='')passed=true;
-	}
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
 	return passed;
 }
 
@@ -26,9 +27,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

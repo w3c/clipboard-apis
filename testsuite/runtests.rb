@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'json'
+require 'json' # multi-part clipboard data given in JSON format
 begin 
   require "operawatir/helper"
 rescue 
@@ -31,6 +31,9 @@ def doSingleTest( counter )
   @browser.goto($base+fn+'.html')
   if (@browser.text.match( 'Please place the following text on the clipboard before continuing the test: "([^"]*)"' )) then
     text=@browser.text.match( 'Please place the following text on the clipboard before continuing the test: "([^"]*)"' )[1]
+    if( text.match( '^\{.*\}$' ) ) then # JSON format content sniffing
+      text=JSON.parse(text)
+    end
     setClipboardData(text)
     if not $has_native_clipboard then 
       @browser.goto($base+fn+'.html') # once we have proper Ruby clipboard support rather than a hack goes to another page, we can remove this..
@@ -73,12 +76,23 @@ def doSingleTest( counter )
 end
 
 
-def setClipboardData(str)
+def setClipboardData(data)
   #print 'Setting: '+str+"\n"
   if $has_native_clipboard then
-    Clipboard.copy str
+    if data.is_a? String
+      Clipboard.copy data
+    else
+      begin
+        clearClipboard
+        data.each{ |type, data|
+          Clipboard.copy data, type, true
+        }
+      rescue # fall back to copy just plain text..
+        Clipboard.copy data['text/plain']
+      end
+    end
   else
-    @browser.goto 'data:,'+str
+    @browser.goto 'data:,'+data
     @browser.opera_action 'Select all'
     @browser.opera_action 'Copy'
     @browser.back

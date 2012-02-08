@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to key events   - cut event on 'input_text'</title>
+	<title>  integration with execCommand, can prevent default action  - cut event on 'ifr.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to key events  */
-/* Events: copy cut paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
-/* Targets: 'input_text' */
-
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
-},false);
+/** integration with execCommand, can prevent default action */
+/* Events: copy cut */
+/* paste data: "clipboard text" */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+/* External pass condition - clipboard data: "clipboard text" */
 
 function test(e){
-  logEvent(e);
-	setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
-    result( passed, 'Got: '+eventsFired.join(',') );
-  }, 500);
+	e.preventDefault();
+}
+
+function triggerTestManually(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('ifr');
+	var doc=ifr.contentDocument;
+	doc.designMode='on';
+	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
+	ifr.contentWindow.focus();
+	doc.body.innerHTML='<p>This is filler text</p>';
+	var range=doc.createRange();
+	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
+	doc.defaultView.getSelection().addRange(range);
+	try{
+		doc.execCommand(window.eventType, false, false);
+    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
+	}catch(e){
+		result('Can not test - exception from execCommand '+e);
+	}
 }
 
 	</script>
@@ -31,15 +40,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
+	<iframe id="ifr"></iframe>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget='ifr.contentWindow';
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'ifr.contentWindow', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
