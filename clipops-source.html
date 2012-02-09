@@ -40,6 +40,9 @@
 						if(!berjon.biblio['HTML5-DND']){
 							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/dnd.html\"><cite>HTML5 chapter 7: Drag and drop.</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/dnd.html\">http://www.w3.org/TR/html5/dnd.html</a> ";
 						}
+						if(!berjon.biblio['DOM-CORE-DRAFT']){
+							berjon.biblio['DOM-CORE-DRAFT']= "Anne van Kesteren, Aryeh Gregor, Ms2ger. <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\"><cite>DOM Core</cite></a>  6 February 2012. W3C Editor's Draft. (Work in progress.) URL: <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\">http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html</a> ";
+						}
 					}, function(){ // mark all SCRIPTs for removal
 						for( var script, scripts=document.getElementsByTagName('script'),i=2;script=scripts[i];i++ )script.className='remove';
 					}]
@@ -711,7 +714,7 @@ function test(e){
 </section>
 
 <section>
-<h2><a>Clipboard event</a> interface</h2>
+<h2><a>Clipboard event</a> interfaces</h2>
 <p>The ClipboardEvent interface extends the Event interface [[!DOM-LEVEL-2-EVENTS]].</p>
 
 <script>
@@ -836,9 +839,15 @@ function onTestSetupReady(){
 	}
 }
 </script>
+<dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
+	<dt>attribute DOMString data</dt>
+	<dd>The data of the synthetic clipboard event</dd>
+	<dt>attribute DOMString dataType</dt>
+	<dd>A MIME type [[!RFC2046]] describing the data the event is being initialized with</dd>
+</dl>
 
-<dl class="idl idl-code" title="[Constructor(DOMString type, optional EventInit eventInitDict)] interface ClipboardEvent : Event">
-    <dt>readonly attribute DataTransfer</dfn> clipboardData</dt>
+<dl class="idl idl-code" title="[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)] interface ClipboardEvent : Event">
+    <dt>readonly attribute DataTransfer clipboardData</dt>
     <dd>
       The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.
     </dd>
@@ -858,6 +867,12 @@ function onTestSetupReady(){
 				<dd>The data</dd>
 			</dl></dd>-->
 </dl>
+<p>The interface can be used to construct event objects per [[!DOM-CORE-DRAFT]]. An example is given below:</p>
+<pre class="example javascript">
+	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
+	document.dispatchEvent(pasteEvent);
+</pre>
+
 </section>
 
 <section>
@@ -1503,8 +1518,7 @@ function test(e){
 <section>
 <h4>General security policies</h4>
 <p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the FileList or <code>DataTransferItemList</code>.</p>
-<p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files.</p>
-<p class="example">For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
+<p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>may</em> apply a <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
 </section>
 <section>
@@ -1640,7 +1654,7 @@ documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-O
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
-Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth.</p>
+Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger.</p>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
 
