@@ -37,6 +37,9 @@
 						if(!berjon.biblio['MICROSOFT-CLIP-OP']){
 							berjon.biblio['MICROSOFT-CLIP-OP']= "Microsoft Developer Network. <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\"><cite>About DHTML Data Transfer.</cite></a>  URL: <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a> ";
 						}
+						if(!berjon.biblio['HTML5-DND']){
+							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/dnd.html\"><cite>HTML5 chapter 7: Drag and drop.</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/dnd.html\">http://www.w3.org/TR/html5/dnd.html</a> ";
+						}
 					}, function(){ // mark all SCRIPTs for removal
 						for( var script, scripts=document.getElementsByTagName('script'),i=2;script=scripts[i];i++ )script.className='remove';
 					}]
@@ -122,6 +125,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <h2>Events</h2>
 <section>
 <h3>Event types and details</h3>
+<!--<p>This section gives an overview of what events should fire when the user invokes particular operations, and their default actions. Further implementation details are given in the processing model section.</p>-->
 <section>
 <h4>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
@@ -344,9 +348,9 @@ function test(e){
 
 <section>
 <h3>Processing model</h3>
-<p>These are the general steps to follow when firing clipboard events</p>
+<p>These are the general steps to follow when firing clipboard events.</p>
 <ol>
-	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
+	<li>Initialise a <code>DataTransfer</code> object [[HTML5-DND]] which the <var>event.clipboardData</var> property will refer to</li>
 <script>
 /** event.clipboardData exists and inherits from DataTransfer */
 /* Events: copy cut paste */
@@ -357,11 +361,12 @@ function test(e){
 	return passed;
 }
 </script>
-	<li>Initialise an internal <code>clear-was-called flag</code> and set its value to <var>false</var></li>
-	<li>If the native OS clipboard supports a sequence number, let <code>clipboard-entry</code> be the sequence number of the current content</li>
+	<li>Initialise an internal <var>clear-was-called</var> flag and set its value to <var>false</var></li>
+	<li>Initialise an internal <var>types-to-clear</var> list which is initially empty</li>
+	<li>If the native OS clipboard supports a sequence number, let <var>clipboard-entry</var> be the sequence number of the current content</li>
 	<li id="the-target"><p>Determine the target node for the event as follows</p>
 		<ul>
-			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
+			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element [[HTML5]].</p>
 <script>
 /** event target when selection spans several elements  */
 /* Events: copy cut */
@@ -410,7 +415,7 @@ function test(e){
 </script>
 		</li>
 		<li>
-			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
+			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element [[HTML5]] if no other node has focus.</p>
 <script>
 /** event target when focused element has no text node inside  */
 /* Events: paste */
@@ -467,7 +472,7 @@ function test(e){
 	<dl class="switch">
 		<dt>Paste event</dt>
 		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
+			<p>Set the associated <code>DataTransfer</code> object's <var>drag data store mode</var> flag to <em>read-only</em></p>
 			<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
 			<p>For each part on the OS clipboard, carry out these steps:</p>
 			<dl class="switch">
@@ -475,7 +480,7 @@ function test(e){
 				<dd>
 					<ol>
 						<li>Ensure the text is in the encoding the scripting engine uses internally</li>
-						<li>Add one entry for the text to the DataTransferItemList with <code>kind</code> set to <var>string</var> and <code>type</code> set to <var>text/plain</var></li>
+						<li>Add one entry for the text to the DataTransferItemList with <var>drag data item kind</var> set to <em>string</em> and <var>drag data item type string</var> set to <em>text/plain</em></li>
 <script>
 /** clipboardData.items when clipboard has one single text/plain entry */
 /* Events: paste */
@@ -517,13 +522,13 @@ function test(e){
 					<ol>
 						<li>Determine MIME type of referenced files</li>
 						<li>
-							Add one entry per file reference to the <code>DataTransferItemList</code> with <code>kind</code> set to <var>file</var> and <code>type</code> set to the corresponding MIME type
+							Add one entry per file reference to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>file</em> and <var>drag data item type string</var> set to the corresponding MIME type
 
 <script>
 /** pasting a file */
 /* Events: paste */
 /* Targets: document */
-/* 	Clipboard data type: file reference: /tmp/image.jpg */
+/* 	Clipboard data type: file reference: ./support/image.jpg */
 /* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
 
 function test(e){
@@ -537,12 +542,12 @@ function test(e){
 							<p class="issue">What if the MIME type is unknown? Use application/octet-stream?</p></li>
 					</ol>
 				</dd>
-				<dt>If the current clipboard part contains HTML- or XHTML-formatted text</dt>
+				<dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
 				<dd id="processing-model-for-html-data">
 					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
 					<ol>
-						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
-						<li>Parse the code on the clipboard to a DOM tree</li>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>Plain Unicode string</em>, <var>drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
+						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
 						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
 						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
@@ -555,7 +560,7 @@ function test(e){
 										<dt>Otherwise</dt>
 										<dd>
 											<ol>
-												<li>Add a new entry to the <code>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <code>kind</code> set to "file", and <code>type</code> set to the MIME type of the file or clipboard part if known. </li>
+												<li>Add a new entry to the <code>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var>drag data item kind</var> set to "file", and <var>drag data item type string</var> set to the MIME type of the file or clipboard part if known. </li>
 												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 											</ol></dd>
@@ -572,7 +577,7 @@ function test(e){
 					<ol>
 						<li>Determine the MIME type of the data
 						</li>
-						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to "file", <code>type</code> set to the corresponding MIME type</li>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>file</em>, <var>drag data item type string</var> set to the corresponding MIME type</li>
 					</ol>
 				</dd>
 				<dt>Otherwise</dt>
@@ -583,17 +588,24 @@ function test(e){
 		</dd>
 		<dt>Copy / cut event</dt>
 		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read/write</em></p>
+			<p>Set the associated <code>DataTransfer</code> object's <var>drag data store mode</var> flag to <em>read/write</em></p>
 		</dd>
 	</dl>
 </li>
 <li>
-	<p>Fire the event. Implementation requirements for access to data during event dispatch is defined in [[HTML5]]. Some additional clipboard event-specific processing rules are given below:</p>
+	<p>Fire the event [[DOM-LEVEL-2-EVENTS]]. Implementation requirements for access to data during event dispatch is defined in [[HTML5-DND]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
-		<dt>If script calls clearData() or items.clear()</dt>
-		<dd>set the <code>clear-was-called flag</code> to true <p class="issue">What if an argument was passed to clearData()? We need something more complex than the simple clear-was-called flag to capture the state we need to remember..</p></dd>
-		<dt>If script calls setData() or modifies items and the <code>clear-was-called</code> flag is true</dt>
-		<dd>set the <code>clear-was-called flag</code> to false</dd>
+		<dt>If script calls clearData() or items.clear() and the <code>DataTransfer</code> object's <var>drag data store mode</var> flag is <em>read/write</em></dt>
+		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
+		<dt>If script calls setData() or modifies items and the <var>clear-was-called</var> flag is true</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the <var>types-to-clear</var> list is empty</dt>
+				<dd>set the <var>clear-was-called</var> flag to false</dd>
+				<dt>else, if setData()'s <code>type</code> argument or the new item's <var>drag data item type string</var> is found in the <var>types-to-clear</var> list</dt>
+				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
+			</dl>
+		</dd>
 <script>
 /** clipboard modification when script uses both clearData() and setData()  */
 /* Events: copy cut */
@@ -607,8 +619,8 @@ function test(e){
 }
 </script>
 
-		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <code>clipboard-entry</code> is set</dt>
-		<dd>check that the clipboard data's sequence number matches <code>clipboard-entry</code>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <i>mode</i> to the <i>disabled mode</i></dd>
+		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <var>clipboard-entry</var> is set</dt>
+		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <var>drag data store mode</var> to the <i>disabled mode</i></dd>
 	</dl>
 		<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
 <script>
@@ -657,8 +669,15 @@ function test(e){
 				<dd>
 					<p>Update the clipboard contents with the data from the script, as given by the <code>DataTransferItemList</code>. Process each part as follows:</p>
 					<dl class="switch">
-						<dt>If the list of items is empty and the <code>clear-was-called flag</code> is <i>true</i></dt>
-						<dd>Clear the clipboard</dd>
+						<dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
+						<dd>
+							<dl class="switch">
+								<dt>If the <var>types-to-clear</var> list is empty
+								<dd>Clear the clipboard</dd>
+								<dt>else</dt>
+								<dd>Remove given type from the clipboard in an operating system and implementation-specific way</dd>
+							</dl>
+						</dd>
 						<dt>If data type is <i>text/plain</i></dt>
 						<dd>
 							<ol>
@@ -818,12 +837,12 @@ function onTestSetupReady(){
 }
 </script>
 
-<dl class="idl idl-code" title="interface ClipboardEvent : Event">
+<dl class="idl idl-code" title="[Constructor(DOMString type, optional EventInit eventInitDict)] interface ClipboardEvent : Event">
     <dt>readonly attribute DataTransfer</dfn> clipboardData</dt>
     <dd>
       The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.
     </dd>
-    <dt>void initClipboardEvent()
+<!--    <dt>void initClipboardEvent()
 		</dt>
 		<dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
 			<dl class="parameters">
@@ -837,13 +856,13 @@ function onTestSetupReady(){
 				<dd>The type of data the event contains</dd>
 				<dt>DOMString data</dt>
 				<dd>The data</dd>
-			</dl></dd>
+			</dl></dd>-->
 </dl>
 </section>
 
 <section>
 <h2><dfn id="datatransfer">DataTransfer</dfn> interface</h2>
-<p>This section is informative, and describes only the parts of the DataTransfer interface that are relevant for clipboard events. The normative specification for the DataTransfer interface is found in [[HTML5]]'s <cite>Drag and Drop</cite> section.</p>
+<p>This section is informative, and describes only the parts of the DataTransfer interface that are relevant for clipboard events. The normative specification for the DataTransfer interface is found in [[HTML5-DND]]'s <cite>DataTransfer interface</cite> section.</p>
 <!-- <p class="issue"><a href="http://dev.w3.org/html5/spec/dnd.html#the-datatransfer-interface">Direct link to DataTransfer interface</a></p>
  --><script>
 /** Clipboard event's clipboardData API */
@@ -859,8 +878,8 @@ function test(e){
 </script>
 
 <dl class="idl" title="interface clipboardData : DataTransfer">
-	<dt>attribute <dfn id="datatransferitemlist">DataTransferItemList</dfn> items</dt><dd>The items property returns a DataTransferItemList of parts, making it possible to paste multi-part or non-textual data. See HTML5 for details [[!HTML5]].</dd>
-	<dt>attribute DOMStringList types</dt><dd>The types property returns a DOMStringList of MIME type strings [[!RFC2046]], see HTML5 for details [[!HTML5]].
+	<dt>attribute <dfn id="datatransferitemlist">DataTransferItemList</dfn> items</dt><dd>The items property returns a DataTransferItemList of parts, making it possible to paste multi-part or non-textual data. See HTML5 for details [[!HTML5-DND]].</dd>
+	<dt>attribute DOMStringList types</dt><dd>The types property returns a DOMStringList of MIME type strings [[!RFC2046]], see HTML5 for details [[!HTML5-DND]].
 	<script>
 /** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
 /* Events: paste */
@@ -876,11 +895,11 @@ function test(e){
 }
 </script>
 </dd>
-<dt> readonly attribute FileList files</dt><dd>A list of references to files being pasted, if applicable. See HTML5 for details [[!HTML5]].</dd>
+<dt> readonly attribute FileList files</dt><dd>A list of references to files being pasted, if applicable. See HTML5 for details [[!HTML5-DND]].</dd>
 
 	<dt>DOMString getData()</dt><dd>
 	<dl class="parameters"><dt>DOMString type</dt><dd>The type of data to get</dd></dl>
-<p>Calling getData() from within a paste event handler will return the clipboard data in the specified format. See HTML5 for details [[!HTML5]].</p>
+<p>Calling getData() from within a paste event handler will return the clipboard data in the specified format. See HTML5 for details [[!HTML5-DND]].</p>
 <p class="note">Implementations are encouraged to support 'text/html' to retrieve any HTML formatted data on the system clipboard, but see <a href="#security">the security section of this spec</a> for security and privacy concerns.</p>
 <script>
 /** getData() method in paste event retrieving plain text */
@@ -981,7 +1000,7 @@ function test(e){
 </dd>
 <dt>boolean setData()</dt><dd>
 <dl class="parameters"><dt>DOMString type</dt><dd>The type of data being placed on the clipboard</dd><dt>DOMString data</dt><dd>The data being added to the clipboard</dd></dl>
-<p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [[!HTML5]]</p>
+<p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [[!HTML5-DND]]</p>
 <script>
 /** setData() method */
 /* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
@@ -1130,7 +1149,7 @@ function test(e){
 <dt>boolean clearData()</dt>
 <dd>
 <dl class="parameters"><dt>optional DOMString type</dt><dd>The type of data to clear</dd></dl>
-<p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [[!HTML5]].</p>
+<p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [[!HTML5-DND]].</p>
 <script>
 /** clearData() method without arguments */
 /* Events: copy cut */
