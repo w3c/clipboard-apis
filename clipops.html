@@ -3,7 +3,7 @@
 <head>
 	<title> Clipboard API and events </title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	<style>.guerillatBTSmassProcSelectedRow td{background: yellow} form.guerillaBTS{display:none; position:absolute; width: 35%; background: #fff; border: 2px outset grey; padding: 10px;} form.guerillaBTS button{ border: 1px outset} form.btnidcontent button{content:attr(id);} div.guerillaUJSBtsDesc{ height: 150px; overflow: scroll; } </style>
+	
 	
 		<style type="text/css">.tmp-issue-table td{border: 1px solid red}</style>
 	<link href="http://www.w3.org/TR/DOM-Level-3-Events/geek.css" rel="stylesheet" type="text/css">
@@ -492,13 +492,13 @@ pre.sh_sourceCode .sh_attribute { color: #006400; }
 		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
 -->
 
-<body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a></p><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-editor-s-draft-08-february-2012"><acronym title="World Wide Web Consortium">W3C</acronym> Editor's Draft 08 February 2012</h2><dl><dt>This version:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
-</dl><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2010-2012 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. <acronym title="World Wide Web Consortium">W3C</acronym> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p><hr></div>
+<body lang="en" style="display: inherit"><div class="head"><p><a href="http://www.w3.org/"><img width="72" height="48" src="http://www.w3.org/Icons/w3c_home" alt="W3C"></a></p><h1 class="title" id="title">Clipboard API and events</h1><h2 id="w3c-editor-s-draft-09-february-2012"><acronym title="World Wide Web Consortium">W3C</acronym> Editor's Draft 09 February 2012</h2><dl><dt>This version:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Latest published version:</dt><dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd><dt>Latest editor's draft:</dt><dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd><dt>Previous version:</dt><dd>none</dd><dt>Editor:</dt><dd><a href="mailto:hallvord@opera.com">Hallvord R. M. Steen</a>, <a href="http://www.opera.com/">Opera Software</a></dd>
+</dl><p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> � 2010-2012 <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>�</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. <acronym title="World Wide Web Consortium">W3C</acronym> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p><hr></div>
 <div id="abstract" class="introductory section"><h2>Abstract</h2>
 	<p>This document describes APIs for clipboard operations such as copy, cut and
 	paste in web applications.</p>
 </div><div id="sotd" class="introductory section"><h2>Status of This Document</h2><p><em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <acronym title="World Wide Web Consortium">W3C</acronym> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><acronym title="World Wide Web Consortium">W3C</acronym> technical reports index</a> at http://www.w3.org/TR/.</em></p>
-<p>This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft. If you wish to make comments regarding this document, please send them to <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). All feedback is welcome.</p><p>Publication as an Editor's Draft does not imply endorsement by the <acronym title="World Wide Web Consortium">W3C</acronym> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p><p>This document was produced by a group operating under the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <acronym title="World Wide Web Consortium">W3C</acronym> Patent Policy</a>. <acronym title="World Wide Web Consortium">W3C</acronym> maintains a <a href="" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the <acronym title="World Wide Web Consortium">W3C</acronym> Patent Policy</a>.</p></div><div id="toc" class="section"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a href="#use-cases" class="tocxref"><span class="secno">3. </span>Use Cases</a></li><li class="tocline"><a href="#events" class="tocxref"><span class="secno">4. </span>Events</a><ul class="toc"><li class="tocline"><a href="#event-types-and-details" class="tocxref"><span class="secno">4.1 </span>Event types and details</a><ul class="toc"><li class="tocline"><a href="#copy-event" class="tocxref"><span class="secno">4.1.1 </span>copy event</a></li><li class="tocline"><a href="#cut-event" class="tocxref"><span class="secno">4.1.2 </span>cut event</a></li><li class="tocline"><a href="#paste-event" class="tocxref"><span class="secno">4.1.3 </span>paste event</a></li></ul></li></ul></li><li class="tocline"><a href="#processing-model" class="tocxref"><span class="secno">5. </span>Processing model</a></li><li class="tocline"><a href="#clipboard-event-interface" class="tocxref"><span class="secno">6. </span><span class="formerLink">Clipboard event</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes" class="tocxref"><span class="secno">6.1 </span>Attributes</a></li><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">6.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#datatransfer-interface" class="tocxref"><span class="secno">7. </span><span>DataTransfer</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes-1" class="tocxref"><span class="secno">7.1 </span>Attributes</a></li><li class="tocline"><a href="#methods-1" class="tocxref"><span class="secno">7.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#integration-with-other-scripts-and-events" class="tocxref"><span class="secno">8. </span>Integration with other scripts and events</a></li><li class="tocline"><a href="#pasting-html-and-multi-part-data" class="tocxref"><span class="secno">9. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a href="#security-risks" class="tocxref"><span class="secno">9.1 </span>Security risks</a></li><li class="tocline"><a href="#general-security-policies" class="tocxref"><span class="secno">9.2 </span>General security policies</a></li><li class="tocline"><a href="#cross-origin-html-paste-sanitization-algorithm" class="tocxref"><span class="secno">9.3 </span>Cross-origin HTML paste sanitization algorithm</a></li></ul></li><li class="tocline"><a href="#other-security-and-privacy-considerations" class="tocxref"><span class="secno">10. </span>Other security and privacy considerations</a></li><li class="tocline"><a href="#mandatory-data-types-1" class="tocxref"><span class="secno">11. </span>Mandatory data types</a></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></div>
+<p>This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft. If you wish to make comments regarding this document, please send them to <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). All feedback is welcome.</p><p>Publication as an Editor's Draft does not imply endorsement by the <acronym title="World Wide Web Consortium">W3C</acronym> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p><p>This document was produced by a group operating under the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <acronym title="World Wide Web Consortium">W3C</acronym> Patent Policy</a>. <acronym title="World Wide Web Consortium">W3C</acronym> maintains a <a href="" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the <acronym title="World Wide Web Consortium">W3C</acronym> Patent Policy</a>.</p></div><div id="toc" class="section"><h2 class="introductory">Table of Contents</h2><ul class="toc"><li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a href="#introduction" class="tocxref"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a href="#use-cases" class="tocxref"><span class="secno">3. </span>Use Cases</a></li><li class="tocline"><a href="#events" class="tocxref"><span class="secno">4. </span>Events</a><ul class="toc"><li class="tocline"><a href="#event-types-and-details" class="tocxref"><span class="secno">4.1 </span>Event types and details</a><ul class="toc"><li class="tocline"><a href="#copy-event" class="tocxref"><span class="secno">4.1.1 </span>copy event</a></li><li class="tocline"><a href="#cut-event" class="tocxref"><span class="secno">4.1.2 </span>cut event</a></li><li class="tocline"><a href="#paste-event" class="tocxref"><span class="secno">4.1.3 </span>paste event</a></li></ul></li></ul></li><li class="tocline"><a href="#processing-model" class="tocxref"><span class="secno">5. </span>Processing model</a></li><li class="tocline"><a href="#clipboard-event-interfaces" class="tocxref"><span class="secno">6. </span><span class="formerLink">Clipboard event</span> interfaces</a><ul class="toc"><li class="tocline"><a href="#dictionary-clipboardeventinit-members" class="tocxref"><span class="secno">6.1 </span>Dictionary <span class="idlType formerLink idlType"><code>ClipboardEventInit</code></span> Members</a></li><li class="tocline"><a href="#attributes" class="tocxref"><span class="secno">6.2 </span>Attributes</a></li></ul></li><li class="tocline"><a href="#datatransfer-interface" class="tocxref"><span class="secno">7. </span><span>DataTransfer</span> interface</a><ul class="toc"><li class="tocline"><a href="#attributes-1" class="tocxref"><span class="secno">7.1 </span>Attributes</a></li><li class="tocline"><a href="#methods" class="tocxref"><span class="secno">7.2 </span>Methods</a></li></ul></li><li class="tocline"><a href="#integration-with-other-scripts-and-events" class="tocxref"><span class="secno">8. </span>Integration with other scripts and events</a></li><li class="tocline"><a href="#pasting-html-and-multi-part-data" class="tocxref"><span class="secno">9. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a href="#security-risks" class="tocxref"><span class="secno">9.1 </span>Security risks</a></li><li class="tocline"><a href="#general-security-policies" class="tocxref"><span class="secno">9.2 </span>General security policies</a></li><li class="tocline"><a href="#cross-origin-html-paste-sanitization-algorithm" class="tocxref"><span class="secno">9.3 </span>Cross-origin HTML paste sanitization algorithm</a></li></ul></li><li class="tocline"><a href="#other-security-and-privacy-considerations" class="tocxref"><span class="secno">10. </span>Other security and privacy considerations</a></li><li class="tocline"><a href="#mandatory-data-types-1" class="tocxref"><span class="secno">11. </span>Mandatory data types</a></li><li class="tocline"><a href="#references" class="tocxref"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></div>
 
 
 
@@ -553,6 +553,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <!--OddPage--><h2><span class="secno">4. </span>Events</h2>
 <div id="event-types-and-details" class="section">
 <h3><span class="secno">4.1 </span>Event types and details</h3>
+<!--<p>This section gives an overview of what events should fire when the user invokes particular operations, and their default actions. Further implementation details are given in the processing model section.</p>-->
 <div id="copy-event" class="section">
 <h4><span class="secno">4.1.1 </span>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
@@ -614,22 +615,23 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 <div id="processing-model" class="section">
 <!--OddPage--><h2><span class="secno">5. </span>Processing model</h2>
-<p>These are the general steps to follow when firing clipboard events</p>
+<p>These are the general steps to follow when firing clipboard events.</p>
 <ol>
-	<li>Initialise a <code>DataTransfer</code> object which the <var>event.clipboardData</var> property will refer to</li>
+	<li>Initialise a <code>DataTransfer</code> object [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>] which the <var>event.clipboardData</var> property will refer to</li>
 
-	<li>Initialise an internal <code>clear-was-called flag</code> and set its value to <var>false</var></li>
-	<li>If the native OS clipboard supports a sequence number, let <code>clipboard-entry</code> be the sequence number of the current content</li>
+	<li>Initialise an internal <var>clear-was-called</var> flag and set its value to <var>false</var></li>
+	<li>Initialise an internal <var>types-to-clear</var> list which is initially empty</li>
+	<li>If the native OS clipboard supports a sequence number, let <var>clipboard-entry</var> be the sequence number of the current content</li>
 	<li id="the-target"><p>Determine the target node for the event as follows</p>
 		<ul>
-			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element.</p>
+			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</p>
 
 
 
 
 		</li>
 		<li>
-			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element if no other node has focus.</p>
+			<p>In a non-editable document, the event's target <em>must</em> refer to a node focused for example by clicking, using the tab key, or by an interactive cursor, or to the BODY element [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>] if no other node has focus.</p>
 
 
 
@@ -644,7 +646,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 	<dl class="switch">
 		<dt>Paste event</dt>
 		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read-only</em></p>
+			<p>Set the associated <code>DataTransfer</code> object's <var>drag data store mode</var> flag to <em>read-only</em></p>
 			<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
 			<p>For each part on the OS clipboard, carry out these steps:</p>
 			<dl class="switch">
@@ -652,7 +654,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 				<dd>
 					<ol>
 						<li>Ensure the text is in the encoding the scripting engine uses internally</li>
-						<li>Add one entry for the text to the DataTransferItemList with <code>kind</code> set to <var>string</var> and <code>type</code> set to <var>text/plain</var></li>
+						<li>Add one entry for the text to the DataTransferItemList with <var>drag data item kind</var> set to <em>string</em> and <var>drag data item type string</var> set to <em>text/plain</em></li>
 
 
 
@@ -664,19 +666,19 @@ could also be placed in the clipboard with the appropriate transformation occurr
 					<ol>
 						<li>Determine MIME type of referenced files</li>
 						<li>
-							Add one entry per file reference to the <code>DataTransferItemList</code> with <code>kind</code> set to <var>file</var> and <code>type</code> set to the corresponding MIME type
+							Add one entry per file reference to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>file</em> and <var>drag data item type string</var> set to the corresponding MIME type
 
 
 
 							<p class="issue">What if the MIME type is unknown? Use application/octet-stream?</p></li>
 					</ol>
 				</dd>
-				<dt>If the current clipboard part contains HTML- or XHTML-formatted text</dt>
+				<dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
 				<dd id="processing-model-for-html-data">
 					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
 					<ol>
-						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to <em>Plain Unicode string</em>, <code>type</code> set to <var>text/html</var>. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
-						<li>Parse the code on the clipboard to a DOM tree</li>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>Plain Unicode string</em>, <var>drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code>DataTransferItemList</code>.</li>
+						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
 						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
 						<li>If the markup's origin is from a local application or is unknown, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2392">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
@@ -689,7 +691,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 										<dt>Otherwise</dt>
 										<dd>
 											<ol>
-												<li>Add a new entry to the <code>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <code>kind</code> set to "file", and <code>type</code> set to the MIME type of the file or clipboard part if known. </li>
+												<li>Add a new entry to the <code>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var>drag data item kind</var> set to "file", and <var>drag data item type string</var> set to the MIME type of the file or clipboard part if known. </li>
 												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 											</ol></dd>
@@ -706,7 +708,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 					<ol>
 						<li>Determine the MIME type of the data
 						</li>
-						<li>Add one entry to the <code>DataTransferItemList</code> with <code>kind</code> set to "file", <code>type</code> set to the corresponding MIME type</li>
+						<li>Add one entry to the <code>DataTransferItemList</code> with <var>drag data item kind</var> set to <em>file</em>, <var>drag data item type string</var> set to the corresponding MIME type</li>
 					</ol>
 				</dd>
 				<dt>Otherwise</dt>
@@ -717,21 +719,28 @@ could also be placed in the clipboard with the appropriate transformation occurr
 		</dd>
 		<dt>Copy / cut event</dt>
 		<dd>
-			<p>Set the associated <code>DataTransfer</code> object's <code>mode</code> flag to <em>read/write</em></p>
+			<p>Set the associated <code>DataTransfer</code> object's <var>drag data store mode</var> flag to <em>read/write</em></p>
 		</dd>
 	</dl>
 </li>
 <li>
-	<p>Fire the event. Implementation requirements for access to data during event dispatch is defined in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
+	<p>Fire the event [<cite><a class="bibref" rel="biblioentry" href="#bib-DOM-LEVEL-2-EVENTS">DOM-LEVEL-2-EVENTS</a></cite>]. Implementation requirements for access to data during event dispatch is defined in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
-		<dt>If script calls clearData() or items.clear()</dt>
-		<dd>set the <code>clear-was-called flag</code> to true <p class="issue">What if an argument was passed to clearData()? We need something more complex than the simple clear-was-called flag to capture the state we need to remember..</p></dd>
-		<dt>If script calls setData() or modifies items and the <code>clear-was-called</code> flag is true</dt>
-		<dd>set the <code>clear-was-called flag</code> to false</dd>
+		<dt>If script calls clearData() or items.clear() and the <code>DataTransfer</code> object's <var>drag data store mode</var> flag is <em>read/write</em></dt>
+		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
+		<dt>If script calls setData() or modifies items and the <var>clear-was-called</var> flag is true</dt>
+		<dd>
+			<dl class="switch">
+				<dt>If the <var>types-to-clear</var> list is empty</dt>
+				<dd>set the <var>clear-was-called</var> flag to false</dd>
+				<dt>else, if setData()'s <code>type</code> argument or the new item's <var>drag data item type string</var> is found in the <var>types-to-clear</var> list</dt>
+				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
+			</dl>
+		</dd>
 
 
-		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <code>clipboard-entry</code> is set</dt>
-		<dd>check that the clipboard data's sequence number matches <code>clipboard-entry</code>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <i>mode</i> to the <i>disabled mode</i></dd>
+		<dt>If script calls getData() or accesses items in the <code>DataTransferItemList</code> and <var>clipboard-entry</var> is set</dt>
+		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code>DataTransferItemList</code> object's <var>drag data store mode</var> to the <i>disabled mode</i></dd>
 	</dl>
 		<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
 
@@ -756,8 +765,15 @@ could also be placed in the clipboard with the appropriate transformation occurr
 				<dd>
 					<p>Update the clipboard contents with the data from the script, as given by the <code>DataTransferItemList</code>. Process each part as follows:</p>
 					<dl class="switch">
-						<dt>If the list of items is empty and the <code>clear-was-called flag</code> is <i>true</i></dt>
-						<dd>Clear the clipboard</dd>
+						<dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
+						<dd>
+							<dl class="switch">
+								<dt>If the <var>types-to-clear</var> list is empty
+								</dt><dd>Clear the clipboard</dd>
+								<dt>else</dt>
+								<dd>Remove given type from the clipboard in an operating system and implementation-specific way</dd>
+							</dl>
+						</dd>
 						<dt>If data type is <i>text/plain</i></dt>
 						<dd>
 							<ol>
@@ -790,8 +806,8 @@ could also be placed in the clipboard with the appropriate transformation occurr
 </ol>
 </div>
 
-<div id="clipboard-event-interface" class="section">
-<!--OddPage--><h2><span class="secno">6. </span><a>Clipboard event</a> interface</h2>
+<div id="clipboard-event-interfaces" class="section">
+<!--OddPage--><h2><span class="secno">6. </span><a>Clipboard event</a> interfaces</h2>
 <p>The ClipboardEvent interface extends the Event interface [<cite><a class="bibref" rel="biblioentry" href="#bib-DOM-LEVEL-2-EVENTS">DOM-LEVEL-2-EVENTS</a></cite>].</p>
 
 
@@ -802,20 +818,28 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <p>The default action of a synthetic paste event with text/plain data when dispatched in an editable context, is to insert the data.</p>
 
 
-
-<pre class="idl"><span class="idlInterface" id="idl-def-ClipboardEvent">interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlSuperclass"><a>Event</a></span> {
-<span class="idlAttribute">    readonly attribute <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
-<span class="idlMethod">    <span class="idlMethType"><a>void</a></span> <span class="idlMethName"><a href="#widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data">initClipboardEvent</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">eventType</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">canBubble</span></span>, <span class="idlParam"><span class="idlParamType"><a>boolean</a></span> <span class="idlParamName">cancelable</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">dataType</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
+<pre class="idl"><span class="idlDictionary" id="idl-def-ClipboardEventInit">dictionary <span class="idlDictionaryID">ClipboardEventInit</span> : <span class="idlSuperclass"><a>EventInit</a></span> {
+<span class="idlMember">    <span class="idlMemberType"><a>attribute DOMString</a></span> <span class="idlMemberName"><a href="#widl-ClipboardEventInit-data">data</a></span>;</span>
+<span class="idlMember">    <span class="idlMemberType"><a>attribute DOMString</a></span> <span class="idlMemberName"><a href="#widl-ClipboardEventInit-dataType">dataType</a></span>;</span>
 };</span>
-</pre><div id="attributes" class="section"><h3><span class="secno">6.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly</dt><dd>
+</pre><div id="dictionary-clipboardeventinit-members" class="section"><h3><span class="secno">6.1 </span>Dictionary <a class="idlType" href="#idl-def-ClipboardEventInit"><code>ClipboardEventInit</code></a> Members</h3><dl class="dictionary-members"><dt id="widl-ClipboardEventInit-data"><code>data</code> of type <span class="idlMemberType"><a>attribute DOMString</a></span></dt><dd>The data of the synthetic clipboard event</dd><dt id="widl-ClipboardEventInit-dataType"><code>dataType</code> of type <span class="idlMemberType"><a>attribute DOMString</a></span></dt><dd>A MIME type [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2046">RFC2046</a></cite>] describing the data the event is being initialized with</dd></dl></div>
+
+<pre class="idl"><span class="idlInterface" id="idl-def-ClipboardEvent">[<span class="extAttr">Constructor(DOMString type, optional ClipboardEventInit eventInitDict)</span>]
+interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlSuperclass"><a>Event</a></span> {
+<span class="idlAttribute">    readonly attribute <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
+};</span>
+</pre><div id="attributes" class="section"><h3><span class="secno">6.2 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly</dt><dd>
       The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.
-    </dd></dl></div><div id="methods" class="section"><h3><span class="secno">6.2 </span>Methods</h3><dl class="methods"><dt id="widl-ClipboardEvent-initClipboardEvent-void-DOMString-eventType-boolean-canBubble-boolean-cancelable-DOMString-dataType-DOMString-data"><code>initClipboardEvent</code></dt><dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
-			<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">eventType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The event type, i.e. 'cut', 'copy' or 'paste'</td></tr><tr><td class="prmName">canBubble</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">Whether the event bubbles</td></tr><tr><td class="prmName">cancelable</td><td class="prmType"><code><a>boolean</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">Whether the event can be cancelled</td></tr><tr><td class="prmName">dataType</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The type of data the event contains</td></tr><tr><td class="prmName">data</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The data</td></tr></table><div><em>Return type: </em><code><a>void</a></code></div></dd></dl></div>
+    </dd></dl></div>
+<p>The interface can be used to construct event objects per [<cite><a class="bibref" rel="biblioentry" href="#bib-DOM-CORE-DRAFT">DOM-CORE-DRAFT</a></cite>]. An example is given below:</p>
+<pre class="example javascript">var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
+document.dispatchEvent(pasteEvent);</pre>
+
 </div>
 
 <div id="datatransfer-interface" class="section">
 <!--OddPage--><h2><span class="secno">7. </span><dfn id="datatransfer">DataTransfer</dfn> interface</h2>
-<p>This section is informative, and describes only the parts of the DataTransfer interface that are relevant for clipboard events. The normative specification for the DataTransfer interface is found in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]'s <cite>Drag and Drop</cite> section.</p>
+<p>This section is informative, and describes only the parts of the DataTransfer interface that are relevant for clipboard events. The normative specification for the DataTransfer interface is found in [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>]'s <cite>DataTransfer interface</cite> section.</p>
 <!-- <p class="issue"><a href="http://dev.w3.org/html5/spec/dnd.html#the-datatransfer-interface">Direct link to DataTransfer interface</a></p>
  -->
 
@@ -827,18 +851,18 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-setData-boolean-DOMString-type-DOMString-data">setData</a></span> (<span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>, <span class="idlParam"><span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">data</span></span>);</span>
 <span class="idlMethod">    <span class="idlMethType"><a>boolean</a></span>   <span class="idlMethName"><a href="#widl-clipboardData-clearData-boolean-DOMString-type">clearData</a></span> (<span class="idlParam">optional <span class="idlParamType"><a>DOMString</a></span> <span class="idlParamName">type</span></span>);</span>
 };</span>
-</pre><div id="attributes-1" class="section"><h3><span class="secno">7.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-clipboardData-files"><code>files</code> of type <span class="idlAttrType"><a>FileList</a></span>, readonly</dt><dd>A list of references to files being pasted, if applicable. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</dd><dt id="widl-clipboardData-items"><code>items</code> of type <span class="idlAttrType"><a>DataTransferItemList</a></span></dt><dd>The items property returns a DataTransferItemList of parts, making it possible to paste multi-part or non-textual data. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</dd><dt id="widl-clipboardData-types"><code>types</code> of type <span class="idlAttrType"><a>DOMStringList</a></span></dt><dd>The types property returns a DOMStringList of MIME type strings [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2046">RFC2046</a></cite>], see HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].
+</pre><div id="attributes-1" class="section"><h3><span class="secno">7.1 </span>Attributes</h3><dl class="attributes"><dt id="widl-clipboardData-files"><code>files</code> of type <span class="idlAttrType"><a>FileList</a></span>, readonly</dt><dd>A list of references to files being pasted, if applicable. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>].</dd><dt id="widl-clipboardData-items"><code>items</code> of type <span class="idlAttrType"><a>DataTransferItemList</a></span></dt><dd>The items property returns a DataTransferItemList of parts, making it possible to paste multi-part or non-textual data. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>].</dd><dt id="widl-clipboardData-types"><code>types</code> of type <span class="idlAttrType"><a>DOMStringList</a></span></dt><dd>The types property returns a DOMStringList of MIME type strings [<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2046">RFC2046</a></cite>], see HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>].
 	
-</dd></dl></div><div id="methods-1" class="section"><h3><span class="secno">7.2 </span>Methods</h3><dl class="methods"><dt id="widl-clipboardData-clearData-boolean-DOMString-type"><code>clearData</code></dt><dd>
+</dd></dl></div><div id="methods" class="section"><h3><span class="secno">7.2 </span>Methods</h3><dl class="methods"><dt id="widl-clipboardData-clearData-boolean-DOMString-type"><code>clearData</code></dt><dd>
 
-<p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</p>
-
-
+<p>Calling clearData() empties the system clipboard, or removes the specified type of data from the clipboard. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>].</p>
 
 
-<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptTrue">✔</td><td class="prmDesc">The type of data to clear</td></tr></table><div><em>Return type: </em><code><a>boolean</a></code></div></dd><dt id="widl-clipboardData-getData-DOMString-DOMString-type"><code>getData</code></dt><dd>
+
+
+<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptTrue">?</td><td class="prmDesc">The type of data to clear</td></tr></table><div><em>Return type: </em><code><a>boolean</a></code></div></dd><dt id="widl-clipboardData-getData-DOMString-DOMString-type"><code>getData</code></dt><dd>
 	
-<p>Calling getData() from within a paste event handler will return the clipboard data in the specified format. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>].</p>
+<p>Calling getData() from within a paste event handler will return the clipboard data in the specified format. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>].</p>
 <p class="note">Implementations are encouraged to support 'text/html' to retrieve any HTML formatted data on the system clipboard, but see <a href="#security">the security section of this spec</a> for security and privacy concerns.</p>
 
 <!-- <p>If getData() is not called from within a paste event handler, or if the type is not available, the method returns an empty string.</p> -->
@@ -850,9 +874,9 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <!-- <p class="note">Note: for compatibility purposes, the value 'text' (case-insensitive) must be treated as 'text/plain'.</p> -->
 
 
-<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The type of data to get</td></tr></table><div><em>Return type: </em><code><a>DOMString</a></code></div></dd><dt id="widl-clipboardData-setData-boolean-DOMString-type-DOMString-data"><code>setData</code></dt><dd>
+<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The type of data to get</td></tr></table><div><em>Return type: </em><code><a>DOMString</a></code></div></dd><dt id="widl-clipboardData-setData-boolean-DOMString-type-DOMString-data"><code>setData</code></dt><dd>
 
-<p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5">HTML5</a></cite>]</p>
+<p>Calling setData() from within an copy/cut event handler modifies the data which will be placed on the clipboard, for the specified format. See HTML5 for details [<cite><a class="bibref" rel="biblioentry" href="#bib-HTML5-DND">HTML5-DND</a></cite>]</p>
 
 
 
@@ -871,7 +895,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 
 
-<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The type of data being placed on the clipboard</td></tr><tr><td class="prmName">data</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">✘</td><td class="prmOptFalse">✘</td><td class="prmDesc">The data being added to the clipboard</td></tr></table><div><em>Return type: </em><code><a>boolean</a></code></div></dd></dl></div>
+<table class="parameters"><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">type</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The type of data being placed on the clipboard</td></tr><tr><td class="prmName">data</td><td class="prmType"><code><a>DOMString</a></code></td><td class="prmNullFalse">?</td><td class="prmOptFalse">?</td><td class="prmDesc">The data being added to the clipboard</td></tr></table><div><em>Return type: </em><code><a>boolean</a></code></div></dd></dl></div>
 
 
 </div>
@@ -1039,7 +1063,7 @@ documentation of Data Transfer functionalities from Microsoft [<cite><a class="b
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
-Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth.</p>
+Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger.</p>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
 
@@ -1056,10 +1080,12 @@ Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Bar
 
 
 
-<div id="references" class="appendix section"><!--OddPage--><h2><span class="secno">A. </span>References</h2><div id="normative-references" class="section"><h3><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography"><dt id="bib-DOM-LEVEL-2-EVENTS">[DOM-LEVEL-2-EVENTS]</dt><dd>Tom Pixley. <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113"><cite>Document Object Model (DOM) Level 2 Events Specification.</cite></a> 13 November 2000. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113">http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113</a> 
-</dd><dt id="bib-HTML5">[HTML5]</dt><dd>Ian Hickson; David Hyatt. <a href="http://www.w3.org/TR/html5"><cite>HTML5.</cite></a> 25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/html5">http://www.w3.org/TR/html5</a> 
+<div id="references" class="appendix section"><!--OddPage--><h2><span class="secno">A. </span>References</h2><div id="normative-references" class="section"><h3><span class="secno">A.1 </span>Normative references</h3><dl class="bibliography"><dt id="bib-DOM-CORE-DRAFT">[DOM-CORE-DRAFT]</dt><dd>Anne van Kesteren, Aryeh Gregor, Ms2ger. <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html"><cite>DOM Core</cite></a>  6 February 2012. W3C Editor's Draft. (Work in progress.) URL: <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html">http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html</a> 
+</dd><dt id="bib-DOM-LEVEL-2-EVENTS">[DOM-LEVEL-2-EVENTS]</dt><dd>Tom Pixley. <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113"><cite>Document Object Model (DOM) Level 2 Events Specification.</cite></a> 13 November 2000. W3C Recommendation. URL: <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113">http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113</a> 
+</dd><dt id="bib-HTML5-DND">[HTML5-DND]</dt><dd>Ian Hickson; David Hyatt. <a href="http://www.w3.org/TR/html5/dnd.html"><cite>HTML5 chapter 7: Drag and drop.</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/html5/dnd.html">http://www.w3.org/TR/html5/dnd.html</a> 
 </dd><dt id="bib-RFC2046">[RFC2046]</dt><dd>N. Freed; N. Borenstein. <a href="http://www.ietf.org/rfc/rfc2046.txt"><cite>Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types.</cite></a> November 1996. Internet RFC 2046. URL: <a href="http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a> 
 </dd><dt id="bib-RFC2119">[RFC2119]</dt><dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> 
 </dd><dt id="bib-RFC2392">[RFC2392]</dt><dd>E. Levinson. <a href="http://www.ietf.org/rfc/rfc2392.txt"><cite>Content-ID and Message-ID Uniform Resource Locators.</cite></a> August 1998. Internet RFC 2392. URL: <a href="http://www.ietf.org/rfc/rfc2392.txt">http://www.ietf.org/rfc/rfc2392.txt</a> 
-</dd></dl></div><div id="informative-references" class="section"><h3><span class="secno">A.2 </span>Informative references</h3><dl class="bibliography"><dt id="bib-MICROSOFT-CLIP-OP">[MICROSOFT-CLIP-OP]</dt><dd>Microsoft Developer Network. <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx"><cite>About DHTML Data Transfer.</cite></a>  URL: <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a> 
+</dd></dl></div><div id="informative-references" class="section"><h3><span class="secno">A.2 </span>Informative references</h3><dl class="bibliography"><dt id="bib-HTML5">[HTML5]</dt><dd>Ian Hickson; David Hyatt. <a href="http://www.w3.org/TR/html5"><cite>HTML5.</cite></a> 25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href="http://www.w3.org/TR/html5">http://www.w3.org/TR/html5</a> 
+</dd><dt id="bib-MICROSOFT-CLIP-OP">[MICROSOFT-CLIP-OP]</dt><dd>Microsoft Developer Network. <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx"><cite>About DHTML Data Transfer.</cite></a>  URL: <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a> 
 </dd></dl></div></div></body></html>
