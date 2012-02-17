@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to other input events   - paste event on 'input_text'</title>
+	<title>  clipboard events relative to other input events   - cut event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
 /** clipboard events relative to other input events  */
-/* Events:  paste */
+/* Events: cut */
 /* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
-/* paste data: "clipboard text" */
 /* Targets: 'input_text' */
 
 var eventsFired=[];
@@ -28,10 +27,10 @@ function test(e){
   }, 10);
 	setTimeout(function(){
     var evString = eventsFired.join(',')
-    var passed =  evString ==='paste,paste handler done,textInput,input,change' || evString ==='paste,paste handler done,input,change' ;
+    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
     result( passed, 'Got: '+evString );
   }, 500);
-  logEvent( {type: e.type+' handler done'} );  
+  logEvent( {type: e.type+' handler done'} );
 }
 
 	</script>
@@ -42,12 +41,12 @@ function test(e){
 	<form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='input_text';
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

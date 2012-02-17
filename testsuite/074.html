@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events   - paste event on document</title>
+	<title>  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events  */
+/** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
 /* Events: paste */
 /* paste data: "clipboard text" */
 function test(e){
@@ -13,8 +13,7 @@ function test(e){
 }
 function onTestSetupReady(){
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
 		document.dispatchEvent(evt);
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);

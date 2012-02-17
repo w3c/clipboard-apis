@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in cut and copy events should return undefined  - copy event on document</title>
+	<title>  getData() method in cut and copy events should return undefined  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -26,9 +26,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

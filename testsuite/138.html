@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  items.add() called outside event handler method  - copy event on document</title>
+	<title>  setData() called outside event handler method  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** items.add() called outside event handler method */
+/** setData() called outside event handler method */
 /* Events: copy cut paste */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
 function test(e){
 	var cbData=e.clipboardData;
 	setTimeout( function(){
-		cbData.items.add( 'Test failed', 'text/plain');
+		cbData.setData('text/plain', 'Test failed');
 	}, 1 );
 }
 
@@ -27,9 +27,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

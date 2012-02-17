@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method without preventing events's default action  - copy event on document</title>
+	<title>  setData() doesn't modify text on the clipboard when called from a paste event  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method without preventing events's default action */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/** setData() doesn't modify text on the clipboard when called from a paste event */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Test HTML: <form><input autofocus id="input_text"></form> */
+/* External pass condition - clipboard data: "pasted text" */
+/* Targets:  'input_text' */
+
 function test(e){
-	var passed = false;
 	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
+		e.clipboardData.setData('text/plain', 'modified text');
 	}
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -22,15 +23,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form> 
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="unmodified text";
-	var eventTarget=document;
-	var eventType='copy';
+	var dataToPaste="pasted text";
+	var externalPassCondition="pasted text";
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

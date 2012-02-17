@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method does not throw when implementation does not know the type  - cut event on document</title>
+	<title>  setData() method does not throw when implementation does not know the type  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -34,9 +34,9 @@ function test(e){
 	var dataToPaste="unmodified text";
 	var externalPassCondition="unmodified text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

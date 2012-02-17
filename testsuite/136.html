@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() called outside event handler method  - cut event on document</title>
+	<title>  setData() called outside event handler method  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -27,9 +27,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

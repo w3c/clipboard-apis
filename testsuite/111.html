@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method with text/html argument  - copy event on document</title>
+	<title>  clearData() method is noop in paste event  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method with text/html argument */
-/* Events: copy cut */
-/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
-/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
+/** clearData() method is noop in paste event */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	e.clipboardData.clearData('text/html');
+	e.clipboardData.clearData();
 	e.preventDefault();
 }
 
@@ -22,12 +22,12 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
-	var externalPassCondition="This is formatted HTML for copy/paste tests.";
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

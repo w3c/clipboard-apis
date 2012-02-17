@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to other input events   - cut event on 'input_text'</title>
+	<title>  clipboard events relative to key events - preventDefault prevents clipboard events   - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to other input events  */
-/* Events: cut */
-/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
+/** clipboard events relative to key events - preventDefault prevents clipboard events  */
+/* Events: copy cut paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
 /* Targets: 'input_text' */
 
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
+var eventsFired=[], timeout;
+function logEvent(e){
+	eventsFired.push(e.type);
+	if(e.type==='keydown')e.preventDefault(); // no clipboard events should fire if preventDefault() is called here
+};
 document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'cut', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'copy', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'paste', logEvent, false );
 },false);
-
+document.onkeyup = function(){
+	if(timeout)clearTimeout(timeout);
+	setTimeout(test, 500);
+}
 function test(e){
-  logEvent(e);
-  setTimeout(function(){
-    e.target.blur(); // causes change event
-    e.target.form.checkValidity(); // causes invalid event
-  }, 10);
+  if(e)logEvent(e);
 	setTimeout(function(){
-    var evString = eventsFired.join(',')
-    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
-    result( passed, 'Got: '+evString );
+    var passed = eventsFired.join(',') === 'keydown,keydown,keyup,keyup' ;
+    result( passed, 'Got: '+eventsFired.join(',') );
   }, 500);
-  logEvent( {type: e.type+' handler done'} );
 }
 
 	</script>
@@ -38,15 +40,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
 
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='input_text';
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

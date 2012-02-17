@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events inserts data into TEXTAREA   - paste event on document</title>
+	<title>  ClipboardEvent interface - synthetic paste event inserts data into INPUT   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events inserts data into TEXTAREA  */
+/** ClipboardEvent interface - synthetic paste event inserts data into INPUT  */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <form><textarea autofocus></textarea></form>*/
+/* Test HTML: <form><input autofocus></form>*/
 /* Targets: document */
 function test(e){ }
 function onTestSetupReady(){
 	try{
 		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
 		setTimeout( function(){
-			result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' )>-1);
+			result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )>-1);
 		}, 50 );
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
@@ -29,7 +29,7 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea autofocus></textarea></form>
+	<form><input autofocus></form>
 
 	<script>
 	var dataToPaste="clipboard text";

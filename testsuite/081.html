@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  Clipboard event's clipboardData API  - cut event on document</title>
+	<title>  ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** Clipboard event's clipboardData API */
-/* Events: cut copy paste */
-function test(e){
-	var passed = typeof e.clipboardData === 'object';
-	passed = passed && typeof  e.clipboardData.clearData === 'function';
-	passed = passed && typeof  e.clipboardData.setData === 'function';
-	passed = passed && typeof  e.clipboardData.getData === 'function';
-	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
-	return passed;
+/** ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').getElementsByTagName('em')[0].firstChild.data.indexOf( 'synthetic event text' )>-1);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
 }
 
 	</script>
@@ -21,15 +33,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

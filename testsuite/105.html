@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method without preventing events's default action  - cut event on document</title>
+	<title>  setData() method without preventing events's default action  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -28,9 +28,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition="unmodified text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

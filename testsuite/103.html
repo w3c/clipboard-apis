@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() doesn't modify text on the clipboard when called from a paste event  - paste event on 'input_text'</title>
+	<title>  setData() does not modify text that is about to be inserted in a paste event  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() doesn't modify text on the clipboard when called from a paste event */
+/** setData() does not modify text that is about to be inserted in a paste event */
 /* Events: paste */
 /* paste data: "pasted text" */
-/* Test HTML: <form><input autofocus id="input_text"></form> */
-/* External pass condition - clipboard data: "pasted text" */
-/* Targets:  'input_text' */
-
+/* Test HTML: <form><input autofocus></form> */
 function test(e){
-	if(e.clipboardData && e.clipboardData.setData){
-		e.clipboardData.setData('text/plain', 'modified text');
-	}
+	e.clipboardData.setData('text/plain', 'modified text');
+	setTimeout(function(){
+		var passed=false;
+    passed=e.target.value==='pasted text';
+		result(passed);
+	}, 10);
 }
 
 	</script>
@@ -23,15 +23,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form> 
+	<form><input autofocus></form> 
 
 	<script>
 	var dataToPaste="pasted text";
-	var externalPassCondition="pasted text";
-	var eventTarget='input_text';
+	var externalPassCondition=null;
+	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

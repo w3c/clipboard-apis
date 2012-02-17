@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy event when there is no selection and script uses setData()   - cut event on document</title>
+	<title>  copy event when there is no selection and script uses setData()   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -30,9 +30,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

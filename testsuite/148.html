@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent and non-ASCII data II - random Unicode symbols  - cut event on 'input_text'</title>
+	<title>  ClipboardEvent and non-ASCII data II - random Unicode symbols  - copy event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -27,9 +27,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition="☺✌☑☝";
 	var eventTarget='input_text';
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

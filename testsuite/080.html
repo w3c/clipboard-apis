@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events inserts data into INPUT   - paste event on document</title>
+	<title>  ClipboardEvent interface - synthetic paste event inserts plain text data into contentEditable element   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events inserts data into INPUT  */
+/** ClipboardEvent interface - synthetic paste event inserts plain text data into contentEditable element  */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <form><input autofocus></form>*/
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
 /* Targets: document */
 function test(e){ }
 function onTestSetupReady(){
@@ -16,7 +16,11 @@ function onTestSetupReady(){
 		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
 		document.getElementsByTagName('input')[0].dispatchEvent(evt);
 		setTimeout( function(){
-			result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )>-1);
+			try{
+				result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )>-1);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
 		}, 50 );
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
@@ -29,7 +33,7 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus></form>
+	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
 
 	<script>
 	var dataToPaste="clipboard text";

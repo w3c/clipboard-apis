@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy operation does not dispatch other events   - copy event on 'input_text'</title>
+	<title>  copy operation does not dispatch other events   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -30,10 +30,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

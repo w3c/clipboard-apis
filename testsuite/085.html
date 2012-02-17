@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
+	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in paste event retrieving plain text */
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
 /* Events: paste */
-/* paste data: "pasted text" */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
 	}
-	return passed;
+	return hasTextPlain;
 }
 
 	</script>
@@ -24,7 +26,7 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

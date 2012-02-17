@@ -1,37 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, events are syncronous  - copy event on 'iframe.contentWindow'</title>
+	<title>  clearData() method without preventing events's default action  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
-/* Test HTML: <iframe id="iframe"></iframe>*/
-/* Targets: 'iframe.contentWindow' */
+/** clearData() method without preventing events's default action */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
-	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
-}
-function onTestSetupReady( eventType ){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('iframe'), doc;
-	(doc=ifr.contentDocument).designMode='on';
-	doc.body.innerHTML='<p>Frame contents</p>';
-	ifr.contentWindow.focus();
-	if(eventType in { copy:1, cut:1 }){	// create a selection
-		var rng=doc.createRange();
-		rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
-		var sel=ifr.contentWindow.getSelection();
-		sel.removeAllRanges();
-		sel.addRange(rng);
-	}
-	try{
-		window.afterExecCommand=false;
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		window.afterExecCommand=true;
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
-	}
+	var passed = false;
+	e.clipboardData.clearData();
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -39,15 +20,15 @@ function onTestSetupReady( eventType ){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="iframe"></iframe>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='iframe.contentWindow';
-	var eventType='copy';
+	var externalPassCondition="unmodified text";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'iframe.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

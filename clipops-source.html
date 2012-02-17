@@ -128,10 +128,10 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <h2>Events</h2>
 <section>
 <h3>Event types and details</h3>
-<!--<p>This section gives an overview of what events should fire when the user invokes particular operations, and their default actions. Further implementation details are given in the processing model section.</p>-->
+<p>This section is informative. Implementation details are given in the processing model section.</p>
 <section>
 <h4>copy event</h4>
-<p>When the user initiates a copy operation, the implementation <em>must</em> fire a copy event. Its default action is to place the selected data on the clipboard. </p>
+<p>When the user initiates a copy operation, the implementation fires a copy event. Its default action is to place the selected data on the clipboard. </p>
 <script>
 /** ClipboardEvent - events fire on INPUT */
 /* Events: copy cut */
@@ -166,7 +166,7 @@ function test(e){
 }
 </script>
 
-<p>The current selection <em>must not</em> be affected.</p>
+<p>The current selection is not affected.</p>
 <script>
 /** copy event does not modify selection  */
 /* Events: copy */
@@ -182,7 +182,7 @@ function test(e){
 }
 </script>
 
-<p>If there is no selection, the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
+<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>, for example by calling the setData() method.</p>
 <script>
 /** default action of event when there is no selection is noop */
 /* Events: copy cut */
@@ -716,25 +716,12 @@ function test(e){
 <section>
 <h2><a>Clipboard event</a> interfaces</h2>
 <p>The ClipboardEvent interface extends the Event interface [[!DOM-LEVEL-2-EVENTS]].</p>
+<p>The interface can be used to construct event objects per [[!DOM-CORE-DRAFT]]. An example is given below:</p>
+<pre class="example javascript">
+	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
+	document.dispatchEvent(pasteEvent);
+</pre>
 
-<script>
-/** ClipboardEvent interface - synthetic events  */
-/* Events: paste */
-/* paste data: "clipboard text" */
-function test(e){
-	return e.clipboardData.getData('text/plain')=='synthetic event text';
-}
-function onTestSetupReady(){
-	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
-		document.dispatchEvent(evt);
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
-	}
-}
-</script>
 <script>
 /** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
 /* Events: paste */
@@ -762,8 +749,7 @@ function test(e){
 
 function onTestSetupReady(){
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/foobarbogustype', 'synthetic event text' );
+		var evt=new ClipboardEvent( 'paste', {bubbles:true, cancelable:true, dataType: 'text/foobarbogustype', data:'synthetic event text'} );
 		document.dispatchEvent(evt);
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
@@ -782,8 +768,7 @@ function test(e){
 }
 function onTestSetupReady(){
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		var evt=new ClipboardEvent( window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'} );
     if( window.eventType=='cut' )document.body.contentEditable='true';
 		/* make a selection to check if selected text is copied by the synthetic event.. */
 		var range=document.createRange();
@@ -798,9 +783,9 @@ function onTestSetupReady(){
 	}
 }
 </script>
-<p>The default action of a synthetic paste event with text/plain data when dispatched in an editable context, is to insert the data.</p>
+<p>The default action of a synthetic paste event with text/plain data when dispatched in an editable context, is to insert the data. If a synthetic event with text/html data is dispatched to a rich text editing context, the default action is to parse the HTML and insert the elements into the DOM.</p>
 <script>
-/** ClipboardEvent interface - synthetic events inserts data into TEXTAREA  */
+/** ClipboardEvent interface - synthetic paste event inserts data into TEXTAREA  */
 /* Events: paste */
 /* paste data: "clipboard text" */
 /* Test HTML: <form><textarea autofocus></textarea></form>*/
@@ -820,7 +805,7 @@ function onTestSetupReady(){
 }
 </script>
 <script>
-/** ClipboardEvent interface - synthetic events inserts data into INPUT  */
+/** ClipboardEvent interface - synthetic paste event inserts data into INPUT  */
 /* Events: paste */
 /* paste data: "clipboard text" */
 /* Test HTML: <form><input autofocus></form>*/
@@ -839,6 +824,55 @@ function onTestSetupReady(){
 	}
 }
 </script>
+<script>
+/** ClipboardEvent interface - synthetic paste event inserts plain text data into contentEditable element  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )>-1);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+</script>
+<script>
+/** ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').getElementsByTagName('em')[0].firstChild.data.indexOf( 'synthetic event text' )>-1);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
+}
+</script>
+
 <dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
 	<dt>attribute DOMString data</dt>
 	<dd>The data of the synthetic clipboard event</dd>
@@ -851,27 +885,7 @@ function onTestSetupReady(){
     <dd>
       The clipboardData attribute is an instance of the <a href="#datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.
     </dd>
-<!--    <dt>void initClipboardEvent()
-		</dt>
-		<dd>This method initializes attributes of an Event created through the DocumentEvent.createEvent() method. [<a href="#refsDOMEVENTS ">DOMEVENTS</a>]. The dataType argument is a string, for example but not limited to a MIME type, which describes the format of the data. Event listeners triggered by the synthetic event can get access to the data by calling DataTransfer.getData() with a string which case-insensitively matches the dataType argument.
-			<dl class="parameters">
-				<dt>DOMString eventType</dt>
-				<dd>The event type, i.e. 'cut', 'copy' or 'paste'</dd>
-				<dt>boolean canBubble</dt>
-				<dd>Whether the event bubbles</dd>
-				<dt>boolean cancelable</dt>
-				<dd>Whether the event can be cancelled</dd>
-				<dt>DOMString dataType</dt>
-				<dd>The type of data the event contains</dd>
-				<dt>DOMString data</dt>
-				<dd>The data</dd>
-			</dl></dd>-->
 </dl>
-<p>The interface can be used to construct event objects per [[!DOM-CORE-DRAFT]]. An example is given below:</p>
-<pre class="example javascript">
-	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
-	document.dispatchEvent(pasteEvent);
-</pre>
 
 </section>
 
@@ -941,7 +955,7 @@ function test(e){
 }
 </script>
 <script>
-/** getData() method when type is unsupported should return undefined */
+/** getData() method when type is unsupported should return an empty string */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
@@ -953,7 +967,7 @@ function test(e){
 }
 </script>
 <script>
-/** getData() method when called outside event handler should return undefined */
+/** getData() method when called outside event handler should return an empty string */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
@@ -1069,7 +1083,7 @@ function test(e){
 </script>
 
 <p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
-<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard!</p>
+<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! <em>ClipboardEvent.isTypeSupported('mime/type')</em> or <em>DataTransfer.isTypeSupported('mime/type')</em>??</p>
 <script>
 /** setData() method does not throw when implementation does not know the type */
 /* Events: copy cut */
@@ -1089,7 +1103,7 @@ function test(e){
 	return passed;
 }
 </script>
-<p>Calling setData() from a <b>paste</b> event handler <em>must not</em> modify the data that is inserted, and <em>must not</em> modify the data on the clipboard.</p>
+<p>When pasting, the <em>drag data store mode</em> flag is <em>read-only</em>, hence calling setData() from a <b>paste</b> event handler will not modify the data that is inserted, and not modify the data on the clipboard.</p>
 <script>
 /** setData() does not modify text that is about to be inserted in a paste event */
 /* Events: paste */
@@ -1149,8 +1163,8 @@ EndSelection:000007530
 SourceURL: ...
 and a document containing all parents of the selection, plus the full HEAD section. Plus magic <!--StartFragment--> and EndFragment comments.
 
-So..what should an implementation do if the script tries to place text/html data on the clipboard? Preferably support magically using the CF_HTML format. What is an implementation that doesn't support CF_HTML supposed to do? Is CF_HTML used on other platforms?
-Note: IE throws. Presumably it would use just "html", not "text/html" for the format argument if it supported this.
+If the script tries to place text/html data on the clipboard, a conforming implementation that supports writing HTML to clipboard must supply all the relevant meta data in a platform-specific way.
+Note: IE throws for this test. Presumably it would use just "html", not "text/html" for the format argument if it supported this.
 */
 function test(e){
 	var passed = false;
@@ -1209,8 +1223,6 @@ function test(e){
 </script>
 </dd>
 </dl>
-
-
 </section>
 
 <section>
@@ -1222,6 +1234,7 @@ function test(e){
 /* Events: copy cut paste */
 /* Test HTML: <iframe id="iframe"></iframe>*/
 /* Targets: 'iframe.contentWindow' */
+/* This assertation is based on Gecko's implementation. */
 function test(e){
 	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
 }
@@ -1507,7 +1520,7 @@ function test(e){
   <li>The origin of data sub-parts such as referenced images</li>
   <li>The origin of the running script</li>
 </ul>
-<p>This is an overview of the scenarios and the intended security policies:</p>
+<p>This is an overview of the scenarios and the possible security policies:</p>
 <table summary="security policies" class="simple">
   <tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
@@ -1517,7 +1530,7 @@ function test(e){
 </section>
 <section>
 <h4>General security policies</h4>
-<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the FileList or <code>DataTransferItemList</code>.</p>
+<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code>FileList</code> or <code>DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 <p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>may</em> apply a <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
 </section>

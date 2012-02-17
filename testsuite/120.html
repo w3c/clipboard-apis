@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - paste event on 'ifr.contentWindow'</title>
+	<title>  integration with execCommand, can prevent default action  - cut event on 'ifr.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
 /** integration with execCommand, can prevent default action */
-/* Events: paste */
+/* Events: copy cut */
 /* paste data: "clipboard text" */
 /* Test HTML: <iframe id="ifr"></iframe>*/
 /* Targets: 'ifr.contentWindow' */
+/* External pass condition - clipboard data: "clipboard text" */
+
 function test(e){
-	window.eventFired=true;
 	e.preventDefault();
 }
+
 function triggerTestManually(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
 	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
+	var doc=ifr.contentDocument;
+	doc.designMode='on';
+	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
 	ifr.contentWindow.focus();
+	doc.body.innerHTML='<p>This is filler text</p>';
+	var range=doc.createRange();
+	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
+	doc.defaultView.getSelection().addRange(range);
 	try{
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		setTimeout(function(){
-			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
-			result(passed);
-		}, 10);
+		doc.execCommand(window.eventType, false, false);
+    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
 	}catch(e){
 		result('Can not test - exception from execCommand '+e);
 	}
@@ -38,11 +44,11 @@ function triggerTestManually(){
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var externalPassCondition="clipboard text";
 	var eventTarget='ifr.contentWindow';
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'ifr.contentWindow', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

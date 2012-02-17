@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when type is unsupported should return undefined  - paste event on document</title>
+	<title>  getData() method in cut and copy events should return undefined  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method when type is unsupported should return undefined */
-/* Events: paste */
-/* paste data: "pasted text" */
+/** getData() method in cut and copy events should return undefined */
+/* Events: cut copy */
 function test(e){
 	var passed = false;
 	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/foobarbogustype')==='')passed=true;
+		if(e.clipboardData.getData('text/plain')==='')passed=true;
 	}
 	return passed;
 }
@@ -21,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

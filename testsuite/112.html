@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method with text/html argument  - cut event on document</title>
+	<title>  clearData() method with text/html argument  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -25,9 +25,9 @@ function test(e){
 	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
 	var externalPassCondition="This is formatted HTML for copy/paste tests.";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

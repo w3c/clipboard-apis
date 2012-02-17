@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - copy event on document</title>
+	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -14,8 +14,7 @@ function test(e){
 }
 function onTestSetupReady(){
 	try{
-		var evt=document.createEvent('ClipboardEvent');
-		evt.initClipboardEvent( window.eventType, true, true, 'text/plain', 'synthetic event text' );
+		var evt=new ClipboardEvent( window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'} );
     if( window.eventType=='cut' )document.body.contentEditable='true';
 		/* make a selection to check if selected text is copied by the synthetic event.. */
 		var range=document.createRange();
@@ -41,9 +40,9 @@ function onTestSetupReady(){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
