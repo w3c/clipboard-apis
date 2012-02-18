@@ -182,7 +182,7 @@ function test(e){
 }
 </script>
 
-<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>, for example by calling the setData() method.</p>
+<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>, for example by calling the setData() <!-- TODO: xref--> method.</p>
 <script>
 /** default action of event when there is no selection is noop */
 /* Events: copy cut */
@@ -217,7 +217,7 @@ function test(e){
 <section>
 
 <h4>cut event</h4>
-<p>When the user initiates a cut operation, the implementation <em>must</em> fire a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
+<p>When the user initiates a cut operation, the implementation fires a cut event. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 <script>
 /** cancelling default action of cut prevents removal of text from editable context  */
@@ -230,7 +230,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
-<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation <em>must</em> fire the event regardless. If the default action is to do nothing, the clipboard <em>must not</em> be modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
+<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless. If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code>DataTransferItemList</code>.</p>
 <script>
 /** no default action for cut in non-editable context */
 /* Events: cut */
@@ -245,7 +245,7 @@ function test(e){
 
 
 
-<p>The cut event <em>must</em> fire before the selected data is removed.
+<p>The cut event fires before the selected data is removed.
 <script>
 /** cut fires before text is removed  */
 /* Events: cut */
@@ -256,7 +256,7 @@ function test(e){
 }
 </script>
 
- When the cut operation is completed, the selection <em>must</em> be collapsed.</p>
+ When the cut operation is completed, the selection is collapsed.</p>
 <script>
 /** cut collapses selection  */
 /* Events: cut */
@@ -276,7 +276,7 @@ function test(e){
 
 
 <h4>paste event</h4>
-<p>When the user initiates a paste operation, the implementation <em>must</em> fire a paste event. The event <em>must</em> fire before any clipboard data is inserted.</p>
+<p>When the user initiates a paste operation, the implementation fires a paste event. The event fires before any clipboard data is inserted.</p>
 <script>
 /** events fire on INPUT */
 /* Events: paste */
@@ -328,7 +328,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
 }
 </script>
-<p> The paste event has no default action in a non-editable context, but implementations <em>must</em> fire the event regardless.</p>
+<p> The paste event has no default action in a non-editable context, but the event fires regardless.</p>
 
 <script>
 /** paste event fires even in non-editable context */
@@ -364,9 +364,9 @@ function test(e){
 	return passed;
 }
 </script>
-	<li>Initialise an internal <var>clear-was-called</var> flag and set its value to <var>false</var></li>
-	<li>Initialise an internal <var>types-to-clear</var> list which is initially empty</li>
-	<li>If the native OS clipboard supports a sequence number, let <var>clipboard-entry</var> be the sequence number of the current content</li>
+	<li>Let <var>clear-was-called</var> be <var>false</var></li>
+	<li>Let <var>types-to-clear</var> be an empty list</li>
+	<li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
 	<li id="the-target"><p>Determine the target node for the event as follows</p>
 		<ul>
 			<li><p>In an editable context, the event object's target property <em>must</em> refer to the element that contains the start of the selection in document order, i.e. the end that is closer to the beginning of the document. If there is no selection or cursor, the target is the BODY element [[HTML5]].</p>
