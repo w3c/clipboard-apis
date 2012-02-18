@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event listener that modifies focus  - paste event on 'input_text'</title>
+	<title>  ClipboardEvent and non-ASCII data II - random Unicode symbols  - cut event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event listener that modifies focus */
-/* Events: paste */
-/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
+/** ClipboardEvent and non-ASCII data II - random Unicode symbols */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> */
 /* Targets: 'input_text' */
-/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "☺✌☑☝" */
 
 function test(e){
-	document.getElementById('second').focus();
-  setTimeout( function(){ 
-    var passed = document.getElementById('second').value==='clipboard text';
-    result( passed );
-  }, 20 );
+	e.clipboardData.setData( 'text/plain', '☺✌☑☝' );
+	e.preventDefault();
 }
 
 	</script>
@@ -24,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
+	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> 
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var dataToPaste="";
+	var externalPassCondition="☺✌☑☝";
 	var eventTarget='input_text';
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

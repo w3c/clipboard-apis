@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target when focused element has no text node inside   - paste event on document</title>
+	<title>  event.clipboardData exists and inherits from DataTransfer  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event target when focused element has no text node inside  */
-/* Events: paste */
-/* Test HTML: <form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()<\/script>*/
-/* paste data: "pasted text" */
-/* Targets: document 'input_img' */
+/** event.clipboardData exists and inherits from DataTransfer */
+/* Events: copy cut paste */
+/* Targets: document */
 
 function test(e){
-  if(document.activeElement.id!='input_img')return 'Not testable, input.focus() has not focused the input type=image';
-	var passed = e.target.id==='input_img';
+	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
 	return passed;
 }
 
@@ -22,10 +19,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_img" autofocus onfocus="this.select()" type="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAI0lEQVR4nGNkYNjCgARYGBgY/v/3hnAYGbcyMaACdD4jmn4A7CkEc/PaWSMAAAAASUVORK5CYII="></form><script>document.getElementById('input_img').focus()</script>
+	
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

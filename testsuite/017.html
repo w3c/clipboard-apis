@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  default action of cut event when there is no selection - no text change  - copy event on document</title>
+	<title>  copy event does not modify selection   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** default action of cut event when there is no selection - no text change */
+/** copy event does not modify selection  */
 /* Events: copy */
-/* Test HTML: <form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>*/
-/* Targets: document */
-/* paste data: "clipboard text" */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
+/* Targets: document 'input_text' */
 function test(e){
-	var elm=e.target;
-  setTimeout(
-		function(){
-			result(elm.value===elm.defaultValue);
-		},
-		50
-	);
+	setTimeout(function(){
+    /* what is the "most standardised" way to test this? */
+    var passed = document.activeElement == document.getElementById('input_text') ;
+    passed = passed && document.activeElement.selectionStart == 0 && document.activeElement.selectionEnd == document.activeElement.value.length;
+    result(passed);
+  }, 10);
 }
 
 	</script>
@@ -25,10 +23,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';

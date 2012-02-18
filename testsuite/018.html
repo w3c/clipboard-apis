@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  cancelling default action of cut prevents removal of text from editable context   - cut event on document</title>
+	<title>  copy event does not modify selection   - copy event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** cancelling default action of cut prevents removal of text from editable context  */
-/* Events: cut */
+/** copy event does not modify selection  */
+/* Events: copy */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
 function test(e){
-	e.preventDefault();
-	var theTarget=e.target;
-	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
+	setTimeout(function(){
+    /* what is the "most standardised" way to test this? */
+    var passed = document.activeElement == document.getElementById('input_text') ;
+    passed = passed && document.activeElement.selectionStart == 0 && document.activeElement.selectionEnd == document.activeElement.value.length;
+    result(passed);
+  }, 10);
 }
 
 	</script>
@@ -25,10 +28,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget=document;
-	var eventType='cut';
+	var eventTarget='input_text';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

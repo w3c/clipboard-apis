@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire inside SVG content in contentEditable  - cut event on 'svg_text'</title>
+	<title>  clearData() method with text/html argument  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire inside SVG content in contentEditable */
-/* Events: copy cut paste */
-/* Test HTML: <div contentEditable><svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg></div><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text')); <\/script> */
-/* Targets: document 'svg_text' */
+/** clearData() method with text/html argument */
+/* Events: copy cut */
+/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
+/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
 function test(e){
-	var passed = e.target.id==='svg_text';
-	return passed;
+	e.clipboardData.clearData('text/html');
+	e.preventDefault();
 }
 
 	</script>
@@ -19,15 +19,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div contentEditable><svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg></div><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text')); </script> 
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='svg_text';
-	var eventType='cut';
+	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
+	var externalPassCondition="This is formatted HTML for copy/paste tests.";
+	var eventTarget=document;
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'svg_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

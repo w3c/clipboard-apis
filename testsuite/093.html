@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method's type argument not case sensitive  - paste event on document</title>
+	<title>  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method's type argument not case sensitive */
+/** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
 /* Events: paste */
-/* paste data: "pasted text" */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if( e.clipboardData.getData('text/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('TEXT/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('Text/Plain')==='pasted text' &&
-			e.clipboardData.getData('TeXt/PlAin')==='pasted text'
-		)passed=true;
+	return e.clipboardData.getData('text/plain')=='synthetic event text';
+}
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+		document.dispatchEvent(evt);
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
 	}
-	return passed;
 }
 
 	</script>
@@ -28,7 +29,7 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

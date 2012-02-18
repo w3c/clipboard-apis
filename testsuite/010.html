@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  cancelling default action, basic test   - cut event on document</title>
+	<title>  setData() method  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** cancelling default action, basic test  */
+/** setData() method */
+/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
 /* Events: copy cut */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
-/* Targets: document 'input_text' */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+/* paste data: "pasted text" */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
+	var passed = false;
+	e.clipboardData.setData('text/plain', 'modified text');
 	e.preventDefault();
 }
 
@@ -20,11 +21,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
+	var dataToPaste="pasted text";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event.clipboardData exists and inherits from DataTransfer  - cut event on document</title>
+	<title>  setData() method without preventing events's default action  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event.clipboardData exists and inherits from DataTransfer */
-/* Events: copy cut paste */
-/* Targets: document */
-
+/** setData() method without preventing events's default action */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
-	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
-	return passed;
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.setData){
+		e.clipboardData.setData('text/plain', 'copycutpaste modified text');
+	}
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -19,11 +22,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition=null;
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){

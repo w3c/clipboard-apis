@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  paste event fires even in non-editable context  - paste event on document</title>
+	<title>  modifying data for cut event in non-editable context with selection  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** paste event fires even in non-editable context */
-/* Events: paste */
-/* Targets: document 'input_text' */
-/* paste data: "pasted text" */
-/* Test HTML: <p>&nbsp;</p> */
+/** modifying data for cut event in non-editable context with selection */
+/* Events: copy cut */
+/* Targets: document  */
+/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "cut text" */
 function test(e){
-	var passed = e.type === 'paste';
-	return passed;
+	e.clipboardData.setData('text/plain', 'cut text');
+   e.preventDefault(); /* this event's default action is a NOOP since the selection can not be removed. */
 }
 
 	</script>
@@ -20,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<p>&nbsp;</p> 
+	<script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}</script>
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition=null;
+	var dataToPaste="clipboard text";
+	var externalPassCondition="cut text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

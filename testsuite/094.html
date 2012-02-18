@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method  - copy event on document</title>
+	<title>  ClipboardEvent interface - synthetic events with non-standard MIME type   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method */
-/* This test has no selection or cursor, but events should fire anyway (some UAs might require a BeforeCut "preflight" event?) */
-/* Events: copy cut */
-/* paste data: "pasted text" */
-/* External pass condition - clipboard data: "modified text" */
+/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
+/* Events: paste */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	e.clipboardData.setData('text/plain', 'modified text');
-	e.preventDefault();
+	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
+}
+
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', {bubbles:true, cancelable:true, dataType: 'text/foobarbogustype', data:'synthetic event text'} );
+		document.dispatchEvent(evt);
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
 }
 
 	</script>
@@ -24,12 +30,12 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition="modified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

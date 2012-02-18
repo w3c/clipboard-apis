@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - paste event on 'ifr.contentWindow'</title>
+	<title>  setData() called outside event handler method  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, can prevent default action */
-/* Events: paste */
+/** setData() called outside event handler method */
+/* Events: copy cut paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	window.eventFired=true;
-	e.preventDefault();
-}
-function triggerTestManually(){
-	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
-	ifr.contentWindow.focus();
-	try{
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		setTimeout(function(){
-			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
-			result(passed);
-		}, 10);
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
-	}
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.setData('text/plain', 'Test failed');
+	}, 1 );
 }
 
 	</script>
@@ -34,15 +21,15 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
-	var eventTarget='ifr.contentWindow';
-	var eventType='paste';
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event.clipboardData exists and inherits from DataTransfer  - paste event on document</title>
+	<title>  events fire on INPUT  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event.clipboardData exists and inherits from DataTransfer */
-/* Events: copy cut paste */
-/* Targets: document */
-
+/** events fire on INPUT */
+/* Events: paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
+/* Targets: document 'input_text' */
+/* paste data: "pasted text" */
 function test(e){
-	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
+	var passed = e.type === window.eventType;
+	passed = passed && e.target.id==='input_text';
 	return passed;
 }
 
@@ -19,10 +21,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

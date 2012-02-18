@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy event does not modify selection   - copy event on 'input_text'</title>
+	<title>  cancelling default action, basic test   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy event does not modify selection  */
-/* Events: copy */
+/** cancelling default action, basic test  */
+/* Events: copy cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	setTimeout(function(){
-    /* what is the "most standardised" way to test this? */
-    var passed = document.activeElement == document.getElementById('input_text') ;
-    passed = passed && document.activeElement.selectionStart == 0 && document.activeElement.selectionEnd == document.activeElement.value.length;
-    result(passed);
-  }, 10);
+	e.preventDefault();
 }
 
 	</script>
@@ -26,12 +23,12 @@ function test(e){
 	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='copy';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

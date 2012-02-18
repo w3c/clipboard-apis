@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target when selection spans several elements   - paste event on 'b'</title>
+	<title>  paste event fires even in non-editable context  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event target when selection spans several elements  */
+/** paste event fires even in non-editable context */
 /* Events: paste */
-/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } <\/script> */
+/* Targets: document 'input_text' */
 /* paste data: "pasted text" */
-/* Targets: document 'a' 'b' */
-
+/* Test HTML: <p>&nbsp;</p> */
 function test(e){
-	var passed = e.target.id === 'b';
+	var passed = e.type === 'paste';
 	return passed;
 }
 
@@ -21,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStartBefore(document.getElementsByTagName('b')[0].firstChild);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('b')[0] ); range.moveEnd('character', 9); range.select(); } </script> 
+	<p>&nbsp;</p> 
 
 	<script>
 	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget='b';
+	var eventTarget='input_text';
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'b', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

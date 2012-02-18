@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire on TEXTAREA  - paste event on 'input_text'</title>
+	<title>  no default action for cut in non-editable context  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire on TEXTAREA */
-/* Events: paste */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>*/
-/* Targets: document 'input_text' */
-/* paste data: "pasted text" */
+/** no default action for cut in non-editable context */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	var passed = e.type === window.eventType;
-	passed = passed && e.target.id==='input_text';
-	return passed;
+	/* the point of the test is to make sure that the event fires but the clipboard data is not altered */
+	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 
 	</script>
@@ -21,15 +20,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='paste';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

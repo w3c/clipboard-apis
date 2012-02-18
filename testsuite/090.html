@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when called outside event handler should return an empty string  - paste event on document</title>
+	<title>  clipboard modification when script uses both clearData() and setData()   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method when called outside event handler should return an empty string */
-/* Events: paste */
-/* paste data: "pasted text" */
+/** clipboard modification when script uses both clearData() and setData()  */
+/* Events: copy cut */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: document */
+/* External pass condition - clipboard data: "modified text" */
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		var passed = cbData.getData('text/plain')==='';
-		result(passed);
-	}, 1 );
+	e.clipboardData.clearData();
+  e.clipboardData.setData('text/plain', 'modified text');
+  e.preventDefault();
 }
 
 	</script>
@@ -21,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition=null;
+	var dataToPaste="";
+	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when type is unsupported should return an empty string  - paste event on document</title>
+	<title>  pasting a file  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method when type is unsupported should return an empty string */
+/** pasting a file */
 /* Events: paste */
-/* paste data: "pasted text" */
+/* Targets: document */
+/* 	Clipboard data type: file reference: ./support/image.jpg */
+/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/foobarbogustype')==='')passed=true;
-	}
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='file' && ( /image\/jpe?g/i.test(e.clipboardData.items[0].type) );
 	return passed;
 }
+// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

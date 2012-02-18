@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  modifying data for cut event in non-editable context with selection  - cut event on document</title>
+	<title>  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** modifying data for cut event in non-editable context with selection */
-/* Events: copy cut */
-/* Targets: document  */
-/* Test HTML: <script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}<\/script>*/
+/** ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  */
+/* Events: paste */
 /* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "cut text" */
-function test(e){
-	e.clipboardData.setData('text/plain', 'cut text');
-   e.preventDefault(); /* this event's default action is a NOOP since the selection can not be removed. */
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
+	try{
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').getElementsByTagName('em').length == 0);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
+	}catch(e){
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
+	}
 }
 
 	</script>
@@ -21,15 +33,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<script> function onTestSetupReady(){ if(document.createRange){ var range=document.createRange(); range.selectNodeContents(document.body); window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.body ); range.select(); }}</script>
+	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="cut text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

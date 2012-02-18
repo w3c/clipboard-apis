@@ -1,36 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to other input events   - cut event on 'input_text'</title>
+	<title>  clearData() called outside event handler method  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to other input events  */
-/* Events: cut */
-/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
-/* Targets: 'input_text' */
-
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
-},false);
-
+/** clearData() called outside event handler method */
+/* Events: copy cut paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-  logEvent(e);
-  setTimeout(function(){
-    e.target.blur(); // causes change event
-    e.target.form.checkValidity(); // causes invalid event
-  }, 10);
-	setTimeout(function(){
-    var evString = eventsFired.join(',')
-    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
-    result( passed, 'Got: '+evString );
-  }, 500);
-  logEvent( {type: e.type+' handler done'} );
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.clearData();
+	}, 1 );
 }
 
 	</script>
@@ -38,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

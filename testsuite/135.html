@@ -1,34 +1,29 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event listener that modifies selection  - copy event on document</title>
+	<title>  events fire inside SVG content   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event listener that modifies selection */
-/* Events: copy */
-/* Test HTML: <div>This is demo text</div>*/
-/* Targets: document */
-/* External pass condition - clipboard data: "This is demo text" */
-
+/** events fire inside SVG content  */
+/* Events: copy cut paste */
+/* Test HTML: <svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text'));<\/script> */
+/* Targets: document 'svg_text' */
 function test(e){
-	var range=document.createRange();
-  range.selectNodeContents(document.getElementsByTagName('div')[0]);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
+	var passed = e.target.id==='svg_text';
+	return passed;
 }
-
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div>This is demo text</div>
+	<svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text'));</script> 
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="This is demo text";
+	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){

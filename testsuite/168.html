@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() followed by clearData() in same event handler  - copy event on document</title>
+	<title>  clearData() method without preventing events's default action  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() followed by clearData() in same event handler */
+/** clearData() method without preventing events's default action */
 /* Events: copy cut */
-/* Targets: document */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "" */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
 function test(e){
-	e.clipboardData.setData( 'text/plain', 'modified text' );
-	e.clipboardData.clearData( 'text/plain' );
-	e.preventDefault();
+	var passed = false;
+	e.clipboardData.clearData();
+	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
 }
 
 	</script>
@@ -21,11 +20,11 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var dataToPaste="";
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){

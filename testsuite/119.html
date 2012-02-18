@@ -1,38 +1,22 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - copy event on 'ifr.contentWindow'</title>
+	<title>  event listener that modifies focus  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, can prevent default action */
-/* Events: copy cut */
+/** event listener that modifies focus */
+/* Events: paste */
+/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
+/* Targets: 'input_text' */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
-/* External pass condition - clipboard data: "clipboard text" */
 
 function test(e){
-	e.preventDefault();
-}
-
-function triggerTestManually(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('ifr');
-	var doc=ifr.contentDocument;
-	doc.designMode='on';
-	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
-	ifr.contentWindow.focus();
-	doc.body.innerHTML='<p>This is filler text</p>';
-	var range=doc.createRange();
-	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
-	doc.defaultView.getSelection().addRange(range);
-	try{
-		doc.execCommand(window.eventType, false, false);
-    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
-	}catch(e){
-		result('Can not test - exception from execCommand '+e);
-	}
+	document.getElementById('second').focus();
+  setTimeout( function(){ 
+    var passed = document.getElementById('second').value==='clipboard text';
+    result( passed );
+  }, 20 );
 }
 
 	</script>
@@ -40,15 +24,15 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget='ifr.contentWindow';
-	var eventType='copy';
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

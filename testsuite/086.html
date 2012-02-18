@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
+	<title>  getting data from clipboardData.items when clipboard has one single text/plain entry  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in paste event retrieving plain text */
+/** getting data from clipboardData.items when clipboard has one single text/plain entry */
 /* Events: paste */
 /* paste data: "pasted text" */
+
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
-	}
-	return passed;
+	e.clipboardData.items[0].getAsString( function(s){
+		result( s==='pasted text' );
+	} );
 }
 
 	</script>

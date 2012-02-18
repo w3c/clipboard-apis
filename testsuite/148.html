@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent and non-ASCII data II - random Unicode symbols  - copy event on 'input_text'</title>
+	<title>  events fire inside SVG content in contentEditable  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent and non-ASCII data II - random Unicode symbols */
-/* Events: copy cut */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> */
-/* Targets: 'input_text' */
-/* External pass condition - clipboard data: "☺✌☑☝" */
-
+/** events fire inside SVG content in contentEditable */
+/* Events: copy cut paste */
+/* Test HTML: <div contentEditable><svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg></div><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text')); <\/script> */
+/* Targets: document 'svg_text' */
 function test(e){
-	e.clipboardData.setData( 'text/plain', '☺✌☑☝' );
-	e.preventDefault();
+	var passed = e.target.id==='svg_text';
+	return passed;
 }
 
 	</script>
@@ -21,15 +19,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form> 
+	<div contentEditable><svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg></div><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text')); </script> 
 
 	<script>
 	var dataToPaste="";
-	var externalPassCondition="☺✌☑☝";
-	var eventTarget='input_text';
-	var eventType='copy';
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
+	<title>  clipboardData.items when clipboard has one single text/plain entry  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/** clipboardData.items when clipboard has one single text/plain entry */
 /* Events: paste */
-/* paste data: "clipboard text" */
+/* paste data: "pasted text" */
+
 function test(e){
-	var hasTextPlain=false;
-	if(e.clipboardData.types){
-		for(var i=0; i<e.clipboardData.types.length;i++){
-			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
-		}
-	}
-	return hasTextPlain;
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
+	return passed;
 }
 
 	</script>
@@ -26,7 +23,7 @@ function test(e){
 	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

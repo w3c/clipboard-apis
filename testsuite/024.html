@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire on INPUT  - paste event on document</title>
+	<title>  getData() method when type is unsupported should return an empty string  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire on INPUT */
+/** getData() method when type is unsupported should return an empty string */
 /* Events: paste */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
-/* Targets: document 'input_text' */
 /* paste data: "pasted text" */
 function test(e){
-	var passed = e.type === window.eventType;
-	passed = passed && e.target.id==='input_text';
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(e.clipboardData.getData('text/foobarbogustype')==='')passed=true;
+	}
 	return passed;
 }
 
@@ -21,7 +21,7 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="pasted text";

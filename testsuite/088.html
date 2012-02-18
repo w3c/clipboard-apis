@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in cut and copy events should return undefined  - copy event on document</title>
+	<title>  setData and clipboardData.items   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in cut and copy events should return undefined */
-/* Events: cut copy */
+/** setData and clipboardData.items  */
+/* Events: copy cut */
+
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='')passed=true;
-	}
+	e.clipboardData.setData('text/plain', 'modified text');
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
 	return passed;
 }
 
@@ -26,9 +26,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

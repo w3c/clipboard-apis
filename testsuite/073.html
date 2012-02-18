@@ -1,48 +1,35 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  reading clipboard data from looping script   - paste event on document</title>
+	<title>  event target when selection spans several elements - reversed selection   - paste event on 'b'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** reading clipboard data from looping script  */
+/** event target when selection spans several elements - reversed selection  */
 /* Events: paste */
+/* Test HTML: <p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} <\/script> */
 /* paste data: "pasted text" */
-/* Targets: document */
+/* Targets: document 'a' 'b' */
 
 function test(e){
-	var last=new Date(),now=new Date(), interval=50, seconds=10;
-	var start=new Date();
-	var text=e.clipboardData.getData( 'text/plain' ), readAgain='';
-	document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode('Please copy "pasted text 2" to clipboard while the test runs.'));
-	var logElm=document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode(''));
-	while( now=new Date() ){
-		if( now.getTime() - last.getTime() > interval ){
-			readAgain=e.clipboardData.getData('text/plain');
-			if( readAgain && readAgain !== text )return false;
-			now=new Date();
-			logElm.data='Test will run for '+parseInt( seconds - ((now.getTime() - start.getTime())/1000) )+' more seconds';
-			if( (now.getTime() - start.getTime()) > seconds * 1000 )break;
-		}
-	}
-	return true;
+	var passed = e.target.id === 'b';
+	return passed;
 }
-
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<p id="a" contentEditable="true">This<b id="b"> is </b>filler <b>text</b></p><script>if(document.createRange){var range=document.createRange();range.setStart(document.getElementsByTagName('b')[0].firstChild, 1);range.setEnd(document.getElementById('a').childNodes[3].firstChild,2);var sel=window.getSelection(); var reversedRange=range.cloneRange(); reversedRange.collapse(false); sel.removeAllRanges(); sel.addRange(reversedRange); sel.extend( range.startContainer, range.startOffset );}else if(document.selection){ document.body.appendChild(document.createTextNode('NOTE: this test case requires document.createRange() and window.getSelection() support'));} </script> 
 
 	<script>
 	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget=document;
+	var eventTarget='b';
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'b', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
