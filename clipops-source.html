@@ -263,8 +263,6 @@ function test(e){
 }
 </script>
 
-<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
-
 </section>
 
 <section>
@@ -838,7 +836,7 @@ function test(e){
 		<dt>Paste event</dt>
 		<dd>
 			<dl class="switch">
-				<dt>If the default action was prevented</dt>
+				<dt>If the event was cancelled</dt>
 				<dd>Do nothing, terminate this algorithm.
 				</dd>
 				<dt>Otherwise</dt>
@@ -849,7 +847,7 @@ function test(e){
 		<dt>Copy / cut event</dt>
 		<dd>
 			<dl class="switch">
-				<dt>If the default action was prevented</dt>
+				<dt>If the event was cancelled</dt>
 				<dd>
 					<p>Update the clipboard contents with the data from the script, as given by the <code data-anolis-spec="html">DataTransferItemList</code>. Process each part as follows:</p>
 					<dl class="switch">
@@ -871,7 +869,9 @@ function test(e){
 							</ol>
 						</dd>
 						<dt>Otherwise</dt>
-						<dd>Place part on clipboard with the appropriate OS clipboard format description</dd>
+						<dd><p>Place part on clipboard with the appropriate OS clipboard format description</p>
+						<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
+						</dd>
 					</dl>
 				</dd>
 				<dt>Otherwise</dt>

@@ -568,12 +568,6 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code class="external"><a href="http://www.w3.org/TR/html5/dnd.html#datatransferitemlist">DataTransferItemList</a></code>, for example by calling the <code class="external"><a href="http://www.w3.org/TR/html5/dnd.html#dom-datatransfer-setdata">setData()</a></code> method.</p>
 
 
-
-
-
-
-<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
-
 </div>
 
 <div class="section" id="cut-event">
@@ -759,7 +753,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 		<dt>Paste event</dt>
 		<dd>
 			<dl class="switch">
-				<dt>If the default action was prevented</dt>
+				<dt>If the event was cancelled</dt>
 				<dd>Do nothing, terminate this algorithm.
 				</dd>
 				<dt>Otherwise</dt>
@@ -770,7 +764,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 		<dt>Copy / cut event</dt>
 		<dd>
 			<dl class="switch">
-				<dt>If the default action was prevented</dt>
+				<dt>If the event was cancelled</dt>
 				<dd>
 					<p>Update the clipboard contents with the data from the script, as given by the <code class="external"><a href="http://www.w3.org/TR/html5/dnd.html#datatransferitemlist">DataTransferItemList</a></code>. Process each part as follows:</p>
 					<dl class="switch">
@@ -792,7 +786,9 @@ could also be placed in the clipboard with the appropriate transformation occurr
 							</ol>
 						</dd>
 						<dt>Otherwise</dt>
-						<dd>Place part on clipboard with the appropriate OS clipboard format description</dd>
+						<dd><p>Place part on clipboard with the appropriate OS clipboard format description</p>
+						<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
+						</dd>
 					</dl>
 				</dd>
 				<dt>Otherwise</dt>
@@ -821,7 +817,9 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <p>The interface can be used to construct event objects per [<cite><a class="bibref" href="#bib-DOM-CORE-DRAFT" rel="biblioentry">DOM-CORE-DRAFT</a></cite>]. An example is given below:</p>
 <pre class="example javascript">var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
 document.dispatchEvent(pasteEvent);</pre>
-<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')?</p>
+<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')? 
+"Supported" means: if you give me data labelled as this type, I know the OS description and (if applicable) the relevant meta data and formatting for this type, and can write it to the clipboard so that other native apps can make use of it. If data labelled with the OS's native name or constant for this type is on the clipboard, I can map it to the mime type and extract the data in a way the script can use. Additionally, if a blob of data in this format is dropped on my window, I'll know what to do about it, and if you drag this data *from* my window to another application on the system, I can format and label it in a way the targe app will understand."
+</p>
 
 
 
