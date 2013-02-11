@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when called outside event handler should return an empty string  - paste event on document</title>
+	<title>  getData() method with wrong number of arguments  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method when called outside event handler should return an empty string */
+/** getData() method with wrong number of arguments */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		var passed = cbData.getData('text/plain')==='';
-		result(passed);
-	}, 1 );
+	var passed=true;
+	try{
+		e.clipboardData.getData();
+		passed=false;
+	}catch(e){}
+	try{
+		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
+		passed=false;
+	}catch(e){}
+	return passed;
 }
 
 	</script>

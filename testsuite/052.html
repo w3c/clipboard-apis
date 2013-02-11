@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method's type argument not case sensitive  - paste event on document</title>
+	<title>  event.clipboardData exists and inherits from DataTransfer  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method's type argument not case sensitive */
-/* Events: paste */
-/* paste data: "pasted text" */
+/** event.clipboardData exists and inherits from DataTransfer */
+/* Events: copy cut paste */
+/* Targets: document */
+
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if( e.clipboardData.getData('text/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('TEXT/PLAIN')==='pasted text' &&
-			e.clipboardData.getData('Text/Plain')==='pasted text' &&
-			e.clipboardData.getData('TeXt/PlAin')==='pasted text'
-		)passed=true;
-	}
+	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
 	return passed;
 }
 
@@ -25,15 +19,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

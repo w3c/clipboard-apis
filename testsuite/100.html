@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element   - paste event on document</title>
+	<title>  clearData() method without arguments  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  */
-/* Events: paste */
+/** clearData() method without arguments */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "" */
 /* paste data: "clipboard text" */
-/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
-/* Targets: document */
-function test(e){ }
-function onTestSetupReady(){
-	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
-		document.getElementsByTagName('input')[0].dispatchEvent(evt);
-		setTimeout( function(){
-			try{
-				result(document.getElementById('editable').getElementsByTagName('em').length == 0);
-			}catch(e){
-				result('Unexpected exception when looking for inserted HTML data: '+e);
-			}
-		}, 50 );
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
-	}
+function test(e){
+	var passed = false;
+	e.clipboardData.clearData();
+	e.preventDefault();
 }
 
 	</script>
@@ -33,15 +20,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var externalPassCondition="";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

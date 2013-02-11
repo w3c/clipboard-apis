@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in paste event retrieving plain text  - paste event on document</title>
+	<title>  getData() method when called outside event handler should return an empty string  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method in paste event retrieving plain text */
+/** getData() method when called outside event handler should return an empty string */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
-	var passed = false;
-	if(e.clipboardData && e.clipboardData.getData){
-		if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
-	}
-	return passed;
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		var passed = cbData.getData('text/plain')==='';
+		result(passed);
+	}, 1 );
 }
 
 	</script>

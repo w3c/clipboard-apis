@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target when selection spans several elements - reversed selection   - cut event on 'a'</title>
+	<title>  event target when selection spans several elements - reversed selection   - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -25,10 +25,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='a';
+	var eventTarget=document;
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'a', 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

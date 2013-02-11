@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without arguments  - cut event on document</title>
+	<title>  setData() method does not throw when implementation does not know the type  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without arguments */
+/** setData() method does not throw when implementation does not know the type */
 /* Events: copy cut */
-/* External pass condition - clipboard data: "" */
-/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "unmodified text" */
+/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/* paste data: "unmodified text" */
+//TODO: this test asserts a NOOP.
+// how this SHOULD work is, however, underspecified..
 function test(e){
 	var passed = false;
-	e.clipboardData.clearData();
-	e.preventDefault();
+	try{
+		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
+		e.preventDefault();
+		passed=true;
+	}catch(e){
+	}
+	return passed;
 }
 
 	</script>
@@ -20,15 +28,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var dataToPaste="unmodified text";
+	var externalPassCondition="unmodified text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

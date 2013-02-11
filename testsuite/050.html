@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method with wrong number of arguments  - paste event on document</title>
+	<title>  getData() method supports legacy 'text' argument  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** getData() method with wrong number of arguments */
+/** getData() method supports legacy 'text' argument */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
-	var passed=true;
-	try{
-		e.clipboardData.getData();
-		passed=false;
-	}catch(e){}
-	try{
-		e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
-		passed=false;
-	}catch(e){}
+	var passed = false;
+	if(e.clipboardData && e.clipboardData.getData){
+		if(  e.clipboardData.getData('text')==='pasted text'
+		&& e.clipboardData.getData('tEXt')==='pasted text' )passed=true;
+	}
 	return passed;
 }
 

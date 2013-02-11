@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  copy operation does not dispatch other events   - copy event on document</title>
+	<title>  integration with execCommand, can prevent default action  - cut event on 'ifr.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** copy operation does not dispatch other events  */
-/* Events: copy */
-/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
-/* Targets: document 'input_text' */
+/** integration with execCommand, can prevent default action */
+/* Events: copy cut */
+/* paste data: "clipboard text" */
+/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Targets: 'ifr.contentWindow' */
+/* External pass condition - clipboard data: "clipboard text" */
+
 function test(e){
-  var otherEventsFired=[];
-  var events=[ 'input', 'textInput', 'change' ];
-  for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
-	setTimeout(function(){
-    var passed = otherEventsFired.length===0;
-    result(passed);
-  }, 50);
-  e.target.blur(); // might provoke a change event, but should not
+	e.preventDefault();
+}
+
+function triggerTestManually(){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('ifr');
+	var doc=ifr.contentDocument;
+	doc.designMode='on';
+	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
+	ifr.contentWindow.focus();
+	doc.body.innerHTML='<p>This is filler text</p>';
+	var range=doc.createRange();
+	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
+	doc.defaultView.getSelection().addRange(range);
+	try{
+		doc.execCommand(window.eventType, false, false);
+    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
+	}catch(e){
+		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
+	}
 }
 
 	</script>
@@ -25,15 +40,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
+	<iframe id="ifr"></iframe>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition=null;
-	var eventTarget=document;
-	var eventType='copy';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget='ifr.contentWindow';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( 'ifr.contentWindow', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

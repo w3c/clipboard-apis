@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic paste event does not insert data into INPUT   - paste event on document</title>
+	<title>  reading clipboard data from looping script   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic paste event does not insert data into INPUT  */
+/** reading clipboard data from looping script  */
 /* Events: paste */
-/* paste data: "clipboard text" */
-/* Test HTML: <form><input autofocus></form>*/
+/* paste data: "pasted text" */
 /* Targets: document */
-function test(e){ }
-function onTestSetupReady(){
-	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.getElementsByTagName('input')[0].dispatchEvent(evt);
-		setTimeout( function(){
-			result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )==-1);
-		}, 50 );
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
+
+function test(e){
+	var last=new Date(),now=new Date(), interval=50, seconds=10;
+	var start=new Date();
+	var text=e.clipboardData.getData( 'text/plain' ), readAgain='';
+	document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode('Please copy "pasted text 2" to clipboard while the test runs.'));
+	var logElm=document.body.appendChild( document.createElement('p') ).appendChild(document.createTextNode(''));
+	while( now=new Date() ){
+		if( now.getTime() - last.getTime() > interval ){
+			readAgain=e.clipboardData.getData('text/plain');
+			if( readAgain && readAgain !== text )return false;
+			now=new Date();
+			logElm.data='Test will run for '+parseInt( seconds - ((now.getTime() - start.getTime())/1000) )+' more seconds';
+			if( (now.getTime() - start.getTime()) > seconds * 1000 )break;
+		}
 	}
+	return true;
 }
+
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="pasted text";
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';

@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  paste event fires even in non-editable context  - paste event on 'input_text'</title>
+	<title>  setData() does not modify text that is about to be inserted in a paste event  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** paste event fires even in non-editable context */
+/** setData() does not modify text that is about to be inserted in a paste event */
 /* Events: paste */
-/* Targets: document 'input_text' */
 /* paste data: "pasted text" */
-/* Test HTML: <p>&nbsp;</p> */
+/* Test HTML: <form><input autofocus></form> */
 function test(e){
-	var passed = e.type === 'paste';
-	return passed;
+	e.clipboardData.setData('text/plain', 'modified text');
+	setTimeout(function(){
+		var passed=false;
+    passed=e.target.value==='pasted text';
+		result(passed);
+	}, 10);
 }
 
 	</script>
@@ -20,15 +23,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<p>&nbsp;</p> 
+	<form><input autofocus></form> 
 
 	<script>
 	var dataToPaste="pasted text";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
+	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

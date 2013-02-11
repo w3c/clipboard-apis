@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard events relative to other input events   - cut event on 'input_text'</title>
+	<title>  integration with execCommand, events are syncronous  - paste event on 'iframe.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard events relative to other input events  */
-/* Events: cut */
-/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
-/* Targets: 'input_text' */
-
-var eventsFired=[];
-function logEvent(e){eventsFired.push(e.type);};
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
-  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
-},false);
-
+/** integration with execCommand, events are syncronous */
+/* Events: copy cut paste */
+/* Test HTML: <iframe id="iframe"></iframe>*/
+/* Targets: 'iframe.contentWindow' */
+/* This assertation is based on Gecko's implementation. */
 function test(e){
-  logEvent(e);
-  setTimeout(function(){
-    e.target.blur(); // causes change event
-    e.target.form.checkValidity(); // causes invalid event
-  }, 10);
-	setTimeout(function(){
-    var evString = eventsFired.join(',')
-    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
-    result( passed, 'Got: '+evString );
-  }, 500);
-  logEvent( {type: e.type+' handler done'} );
+	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
+}
+function onTestSetupReady( eventType ){
+  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
+	var ifr=document.getElementById('iframe'), doc;
+	(doc=ifr.contentDocument).designMode='on';
+	doc.body.innerHTML='<p>Frame contents</p>';
+	ifr.contentWindow.focus();
+	if(eventType in { copy:1, cut:1 }){	// create a selection
+		var rng=doc.createRange();
+		rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
+		var sel=ifr.contentWindow.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(rng);
+	}
+	try{
+		window.afterExecCommand=false;
+		ifr.contentDocument.execCommand(window.eventType, false, false);
+		window.afterExecCommand=true;
+	}catch(e){
+		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
+	}
 }
 
 	</script>
@@ -38,15 +40,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>
+	<iframe id="iframe"></iframe>
 
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='input_text';
-	var eventType='cut';
+	var eventTarget='iframe.contentWindow';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'iframe.contentWindow', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

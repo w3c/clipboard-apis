@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event.clipboardData exists and inherits from DataTransfer  - paste event on document</title>
+	<title>  Clipboard event's clipboardData API  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event.clipboardData exists and inherits from DataTransfer */
-/* Events: copy cut paste */
-/* Targets: document */
-
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
 function test(e){
-	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
 	return passed;
 }
 
@@ -25,9 +27,9 @@ function test(e){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

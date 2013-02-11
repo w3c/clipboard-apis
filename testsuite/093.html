@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor   - paste event on document</title>
+	<title>  setData() followed by clearData() in same event handler  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
-/* Events: paste */
+/** setData() followed by clearData() in same event handler */
+/* Events: copy cut */
+/* Targets: document */
 /* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "" */
 function test(e){
-	return e.clipboardData.getData('text/plain')=='synthetic event text';
-}
-function onTestSetupReady(){
-	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.dispatchEvent(evt);
-	}catch(e){
-		result('Unexpected Exception when initiating ClipboardEvent: '+e);
-		return;
-	}
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.clipboardData.clearData( 'text/plain' );
+	e.preventDefault();
 }
 
 	</script>
@@ -30,11 +25,11 @@ function onTestSetupReady(){
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var externalPassCondition="";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

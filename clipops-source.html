@@ -38,7 +38,7 @@
 							berjon.biblio['MICROSOFT-CLIP-OP']= "Microsoft Developer Network. <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\"><cite>About DHTML Data Transfer.</cite></a>  URL: <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a> ";
 						}
 						if(!berjon.biblio['HTML5-DND']){
-							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/dnd.html\"><cite>HTML5 chapter 7: Drag and drop.</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/dnd.html\">http://www.w3.org/TR/html5/dnd.html</a> ";
+							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/editing.html\"><cite>HTML5 chapter 7: User interaction</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/editing.html\">http://www.w3.org/TR/html5/editing.html</a> ";
 						}
 						if(!berjon.biblio['DOM-CORE-DRAFT']){
 							berjon.biblio['DOM-CORE-DRAFT']= "Anne van Kesteren, Aryeh Gregor, Ms2ger. <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\"><cite>DOM Core</cite></a>  6 February 2012. W3C Editor's Draft. (Work in progress.) URL: <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\">http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html</a> ";
@@ -422,7 +422,7 @@ function test(e){
 <script>
 /** paste event fires even in non-editable context */
 /* Events: paste */
-/* Targets: document 'input_text' */
+/* Targets: document */
 /* paste data: "pasted text" */
 /* Test HTML: <p>&nbsp;</p> */
 function test(e){
@@ -531,6 +531,17 @@ function test(e){
 </script>
 
 </section>
+<section>
+<h4>beforecopy event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a copy operation, what state such controls should be in can be determined by firing a beforecopy event.</p>
+</section>
+<section>
+<h4>beforecut event</h4>
+</section>
+<section>
+<h4>beforepaste event</h4>
+</section>
+</section>
 
 </section>
 </section>
@@ -538,9 +549,9 @@ function test(e){
 
 <section>
 <h3>Processing model</h3>
-<p>These are the general steps to follow when <dfn id="fire-a-clipboard-event">firing clipboard events</dfn>.</p>
+<p>To <dfn id="fire-a-clipboard-event">fire a clipboard event named <em>e</em></dfn>,</p>
 <ol>
-	<li>Let the event object's clipboardData property be a <code data-anolis-spec="html">DataTransfer</code> object [[!HTML5-DND]]</li>
+	<li>Let the <em>data transfer</em> be a <code data-anolis-spec="html">DataTransfer</code> object [[!HTML5-DND]]</li>
 <script>
 /** event.clipboardData exists and inherits from DataTransfer */
 /* Events: copy cut paste */
@@ -551,6 +562,19 @@ function test(e){
 	return passed;
 }
 </script>
+ <script>
+/** Clipboard event's clipboardData API */
+/* Events: cut copy paste */
+function test(e){
+	var passed = typeof e.clipboardData === 'object';
+	passed = passed && typeof  e.clipboardData.clearData === 'function';
+	passed = passed && typeof  e.clipboardData.setData === 'function';
+	passed = passed && typeof  e.clipboardData.getData === 'function';
+	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
+	return passed;
+}
+</script>
+
 	<li>Let <var>clear-was-called</var> be <var>false</var></li>
 	<li>Let <var>types-to-clear</var> be an empty list</li>
 	<li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
@@ -652,7 +676,7 @@ function test(e){
 </li>
 <li>
 	<dl class="switch">
-		<dt>If the event type is paste</dt>
+		<dt>If <em>e</em> is <var>paste</var></dt>
 		<dd>
 			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read-only</em></p>
 			<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
@@ -731,7 +755,7 @@ function test(e){
 						<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>Plain Unicode string</em>, <var  data-anolis-spec="html">drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code data-anolis-spec="html">DataTransferItemList</code>.</li>
 						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a></li>
+						<li class="issue">If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a><p class="issue">This feature is at risk and may be removed due to lack of implementations</p></li>
 						<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 							<ol>
 								<li>Let <var>itemNumber</var> be the number of items on the <code data-anolis-spec="html">DataTransferItemList</code></li>
@@ -768,22 +792,46 @@ function test(e){
 		<p>Update the <code>files</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 		<p>Update the <code>types</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 		</dd>
-		<dt>Copy / cut event</dt>
+		<dt>If <em>e</em> is <var>copy</var> or <var>cut</var></dt>
 		<dd>
 			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read/write</em></p>
 		</dd>
 	</dl>
 </li>
-<li>
-	<p>Fire the event [[DOM-LEVEL-2-EVENTS]]. Implementation requirements for access to data during event dispatch are defined in [[!HTML5-DND]]. Some additional clipboard event-specific processing rules are given below:</p>
+<li> Dispatch an event using the <code>ClipboardEvent</code> interface, with its type attribute initialized to <em>e</em>, its <code>isTrusted</code> attribute initialized to <em>true</em>, and its <code>clipboardData</code> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+	<p>Implementation requirements for access to data during event dispatch are defined in [[!HTML5-DND]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
 		<dt>If script calls <code data-anolis-spec="html">clearData()</code> or <code data-anolis-spec="html">items.clear()</code> and the <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag is <em>read/write</em></dt>
 		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
+<script>
+/** setData() followed by clearData() in same event handler */
+/* Events: copy cut */
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "" */
+function test(e){
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.clipboardData.clearData( 'text/plain' );
+	e.preventDefault();
+}
+</script>
 		<dt>If script calls <code data-anolis-spec="html">setData()</code> or modifies items and the <var>clear-was-called</var> flag is true</dt>
 		<dd>
 			<dl class="switch">
 				<dt>If the <var>types-to-clear</var> list is empty</dt>
 				<dd>set the <var>clear-was-called</var> flag to false</dd>
+<script>
+/** clearData() followed by setData() in same event handler */
+/* Events: copy cut */
+/* Targets: document */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+	e.clipboardData.clearData( 'text/plain' );
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.preventDefault();
+}
+</script>
 				<dt>else, if <code data-anolis-spec="html">setData()</code>'s <code>type</code> argument or the new item's <var  data-anolis-spec="html">drag data item type string</var> is found in the <var>types-to-clear</var> list</dt>
 				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
 			</dl>
@@ -831,20 +879,20 @@ function test(e){
 
 </script>
 </li>
-<li><p>Process the default action or the data from the script per the following instructions:</p>
+<li>
 	<dl class="switch">
-		<dt>Paste event</dt>
+		<dt>If <em>e</em> is <var>paste</var></dt>
 		<dd>
 			<dl class="switch">
 				<dt>If the event was cancelled</dt>
 				<dd>Do nothing, terminate this algorithm.
 				</dd>
 				<dt>Otherwise</dt>
-				<dd>If the cursor or selection is in an editable context, insert the data from the clipboard and queue tasks to fire any events that should fire due to the modification, see <a href="#interaction-with-other-events">interaction with other events</a> for details
+				<dd>If the cursor or selection is in an editable context, insert the data from the clipboard and queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details
 				</dd>
 			</dl>
 		</dd>
-		<dt>Copy / cut event</dt>
+		<dt>Else, if <em>e</em> is <var>copy</var> or <var>cut</var></dt>
 		<dd>
 			<dl class="switch">
 				<dt>If the event was cancelled</dt>
@@ -856,8 +904,29 @@ function test(e){
 							<dl class="switch">
 								<dt>If the <var>types-to-clear</var> list is empty
 								<dd>Clear the clipboard</dd>
+<script>
+/** clearData() method without arguments */
+/* Events: copy cut */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
+function test(e){
+	var passed = false;
+	e.clipboardData.clearData();
+	e.preventDefault();
+}
+</script>
 								<dt>else</dt>
 								<dd>Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way</dd>
+<script>
+/** clearData() method with text/html argument */
+/* Events: copy cut */
+/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
+/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
+function test(e){
+	e.clipboardData.clearData('text/html');
+	e.preventDefault();
+}
+</script>
 							</dl>
 						</dd>
 						<dt>If data type is <i>text/plain</i></dt>
@@ -895,7 +964,7 @@ function test(e){
 </section>
 
 <section>
-<h2><a>Clipboard event</a> interfaces</h2>
+<h2><dfn id="clipboardevent">Clipboard event</dfn> interfaces</h2>
 <p>The ClipboardEvent interface extends the Event interface [[!DOM-LEVEL-2-EVENTS]].</p>
 <p>The interface can be used to construct event objects per [[!DOM-CORE-DRAFT]]. An example is given below:</p>
 <pre class="example javascript">
@@ -1016,7 +1085,7 @@ function test(e){ }
 function onTestSetupReady(){
 	try{
 		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		document.getElementById('editable').dispatchEvent(evt);
 		setTimeout( function(){
 			try{
 				result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )==-1);
@@ -1040,7 +1109,7 @@ function test(e){ }
 function onTestSetupReady(){
 	try{
 		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
-		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		document.getElementById('editable').dispatchEvent(evt);
 		setTimeout( function(){
 			try{
 				result(document.getElementById('editable').getElementsByTagName('em').length == 0);
@@ -1103,7 +1172,7 @@ function onTestSetupReady( eventType ){
 		ifr.contentDocument.execCommand(window.eventType, false, false);
 		window.afterExecCommand=true;
 	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
 	}
 }
 </script>
@@ -1134,7 +1203,7 @@ function triggerTestManually(){
 		doc.execCommand(window.eventType, false, false);
     // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
 	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
 	}
 }
 </script>
@@ -1160,7 +1229,7 @@ function triggerTestManually(){
 			result(passed);
 		}, 10);
 	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard access in preferences for '+location.hostname+' before running this test)');
 	}
 }
 </script>
@@ -1383,6 +1452,7 @@ function test(e){
 </section>
 <section>
 <h4 id="cross-origin-html-paste">Cross-origin HTML paste sanitization algorithm</h4>
+<p class="issue">This section may be removed due to lack of implementations</p>
 <p><em>This section is informative</em></p>
 <p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. Implementations <em>may</em> therefore decide to use a cross-origin paste sanitization algorithm to attempt removing hidden data the user is likely not aware of pasting. One example of such an algorithm might be the following:</p>
 <ol>
@@ -1514,7 +1584,7 @@ documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-O
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
-Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger.</p>
+Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard.</p>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
 
@@ -1588,30 +1658,6 @@ function test(e){
 </script>
 
 <script>
-/** setData() followed by clearData() in same event handler */
-/* Events: copy cut */
-/* Targets: document */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "" */
-function test(e){
-	e.clipboardData.setData( 'text/plain', 'modified text' );
-	e.clipboardData.clearData( 'text/plain' );
-	e.preventDefault();
-}
-</script>
- <script>
-/** Clipboard event's clipboardData API */
-/* Events: cut copy paste */
-function test(e){
-	var passed = typeof e.clipboardData === 'object';
-	passed = passed && typeof  e.clipboardData.clearData === 'function';
-	passed = passed && typeof  e.clipboardData.setData === 'function';
-	passed = passed && typeof  e.clipboardData.getData === 'function';
-	passed = passed && typeof  e.clipboardData.types != 'undefined'; // TODO...
-	return passed;
-}
-</script>
-<script>
 /** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
 /* Events: paste */
 /* paste data: "clipboard text" */
@@ -1673,33 +1719,12 @@ function test(e){
 }
 </script>
 <script>
-/** clearData() method without arguments */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "" */
-/* paste data: "clipboard text" */
-function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
-	e.preventDefault();
-}
-</script>
-<script>
 /** clearData() method is noop in paste event */
 /* Events: paste */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
 function test(e){
 	e.clipboardData.clearData();
-	e.preventDefault();
-}
-</script>
-<script>
-/** clearData() method with text/html argument */
-/* Events: copy cut */
-/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
-/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
-function test(e){
-	e.clipboardData.clearData('text/html');
 	e.preventDefault();
 }
 </script>

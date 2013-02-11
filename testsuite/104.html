@@ -1,37 +1,24 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - copy event on 'ifr.contentWindow'</title>
+	<title>  ClipboardEvent interface - synthetic events with non-standard MIME type   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, can prevent default action */
-/* Events: copy cut */
+/** ClipboardEvent interface - synthetic events with non-standard MIME type  */
+/* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
-/* External pass condition - clipboard data: "clipboard text" */
-
 function test(e){
-	e.preventDefault();
+	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
 }
 
-function triggerTestManually(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('ifr');
-	var doc=ifr.contentDocument;
-	doc.designMode='on';
-	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
-	ifr.contentWindow.focus();
-	doc.body.innerHTML='<p>This is filler text</p>';
-	var range=doc.createRange();
-	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
-	doc.defaultView.getSelection().addRange(range);
+function onTestSetupReady(){
 	try{
-		doc.execCommand(window.eventType, false, false);
-    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
+		var evt=new ClipboardEvent( 'paste', {bubbles:true, cancelable:true, dataType: 'text/foobarbogustype', data:'synthetic event text'} );
+		document.dispatchEvent(evt);
 	}catch(e){
-		result('Can not test - exception from execCommand '+e);
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
 	}
 }
 
@@ -40,15 +27,15 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget='ifr.contentWindow';
-	var eventType='copy';
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

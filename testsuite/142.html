@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  events fire inside editable SVG content   - cut event on document</title>
+	<title>  ClipboardEvent and non-ASCII data I - Japanese  - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** events fire inside editable SVG content  */
-/* Events: copy cut paste */
-/* Test HTML: <svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" editable="simple" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text'));<\/script> */
-/* Targets: document 'svg_text' */
+/** ClipboardEvent and non-ASCII data I - Japanese */
+/* Events: paste */
+/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
+/* Targets: 'input_text' */
+/* paste data: "テスト" */
+
 function test(e){
-	var passed = e.target.id==='svg_text';
+	var passed = e.clipboardData.getData( 'text/plain') === 'テスト' ;
 	return passed;
 }
 
@@ -19,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<svg xmlns="http://www.w3.org/2000/svg"><text focusable="true" editable="simple" id="svg_text" x="0" y="15" fill="black">SVG text</text></svg><script>document.getElementsByTagName('svg')[0].setFocus(document.getElementById('svg_text'));</script> 
+	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="テスト";
 	var externalPassCondition=null;
-	var eventTarget=document;
-	var eventType='cut';
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

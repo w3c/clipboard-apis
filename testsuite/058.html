@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target when selection spans several elements   - copy event on 'a'</title>
+	<title>  event target when selection spans several elements   - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -25,10 +25,10 @@ function test(e){
 	<script>
 	var dataToPaste="";
 	var externalPassCondition=null;
-	var eventTarget='a';
+	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'a', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

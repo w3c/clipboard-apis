@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without arguments  - copy event on document</title>
+	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() method without arguments */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "" */
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/* Events: paste */
 /* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
-	e.preventDefault();
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
+	}
+	return hasTextPlain;
 }
 
 	</script>
@@ -24,11 +27,11 @@ function test(e){
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

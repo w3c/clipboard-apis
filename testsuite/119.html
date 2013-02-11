@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event listener that modifies focus  - paste event on 'input_text'</title>
+	<title>  clipboard events relative to key events   - paste event on 'input_text'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** event listener that modifies focus */
-/* Events: paste */
-/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
+/** clipboard events relative to key events  */
+/* Events: copy cut paste */
+/* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>*/
 /* Targets: 'input_text' */
-/* paste data: "clipboard text" */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'keydown', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keyup', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
+},false);
 
 function test(e){
-	document.getElementById('second').focus();
-  setTimeout( function(){ 
-    var passed = document.getElementById('second').value==='clipboard text';
-    result( passed );
-  }, 20 );
+  logEvent(e);
+	setTimeout(function(){
+    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
+    result( passed, 'Got: '+eventsFired.join(',') );
+  }, 500);
 }
 
 	</script>
@@ -24,10 +31,10 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form><p>Note: please trigger event from keyboard (ctrl+x/c/v) for this test</p>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='input_text';
 	var eventType='paste';
