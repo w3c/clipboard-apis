@@ -1157,7 +1157,7 @@ function onTestSetupReady(){
 <section>
 <h2>Integration with other scripts and events</h2>
 <h3>Integration with rich text editing APIs</h3>
-<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
+<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and if its default action is prevented, <em>must</em> prevent the execCommand() call from having its normal effect.</p>
 <script>
 /** integration with execCommand, events are syncronous */
 /* Events: copy cut paste */
@@ -1246,6 +1246,8 @@ function triggerTestManually(){
 	}
 }
 </script>
+
+<p>In implementations that support calling document.execCommand() with arguments 'cut', 'copy' or 'paste', this method can be used to trigger real cut, copy and paste actions.</p>
 
 <h3 id="otherevents">Interaction with other events</h3>
 <p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
@@ -1453,7 +1455,7 @@ function test(e){
 <table summary="security policies" class="simple">
   <tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
-  <tr><td>Different origin</td><td>Sanitize content. Do not access any local files.</td></tr>
+  <tr><td>Different origin</td><td>Optionally sanitize content. Do not access any local files.</td></tr>
   <tr><td>Originates from local application</td><td>Any</td><td>Do not sanitize HTML. Grant access to local files</td></tr>
 </table>
 </section>
@@ -1514,6 +1516,7 @@ function test(e){
 </script>
 </li>
 <li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data.</li>
+<li>Implementations <em>should not</em> let scripts call document.execCommand('paste') unless the user has explicitly allowed it.</li>
 </ul>
 <p>Implementations may choose to further limit the functionality provided by the DataTransfer interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
 <h3 id="nuisances">Nuisance considerations</h3>
