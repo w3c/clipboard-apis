@@ -769,7 +769,6 @@ function test(e){
 						<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>Plain Unicode string</em>, <var  data-anolis-spec="html">drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code data-anolis-spec="html">DataTransferItemList</code>.</li>
 						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-						<li class="issue">If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href="#cross-origin-html-paste">cross-origin HTML paste sanitization algorithm</a><p class="issue">This feature is at risk and may be removed due to lack of implementations</p></li>
 						<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 							<ol>
 								<li>Let <var>itemNumber</var> be the number of items on the <code data-anolis-spec="html">DataTransferItemList</code></li>
@@ -1462,28 +1461,6 @@ function test(e){
 <h4>General security policies</h4>
 <p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code>FileList</code> or <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
-<p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>may</em> apply a <a href="#cross-origin-html-paste">sanitization algorithm</a> before exposing HTML data.</p>
-</section>
-<section>
-<h4 id="cross-origin-html-paste">Cross-origin HTML paste sanitization algorithm</h4>
-<p class="issue">This section may be removed due to lack of implementations</p>
-<p><em>This section is informative</em></p>
-<p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. Implementations <em>may</em> therefore decide to use a cross-origin paste sanitization algorithm to attempt removing hidden data the user is likely not aware of pasting. One example of such an algorithm might be the following:</p>
-<ol>
-	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, INPUT with type set to &quot;hidden&quot;, EMBED and KEYGEN. For all mentioned elements, also remove any child nodes.</li>
-	<li>Remove the value attribute from any INPUT tag with type set to &quot;password&quot;</li>
-  <li>Remove any elements whose computed style's display property is 'none'</li>
-  <li>Remove any elements whose computed style's visibility property is 'hidden'</li>
-	<li>Remove all data- attributes from all elements</li>
-  <li>Remove comment nodes</li>
-</ol>
-<p>In order to protect the target site from script injection, the implementation <em>may</em> process the markup to remove scripting languages. One example of such an algorithm might be the following:</p>
-<ol>
- 	<li>Remove all event handler attributes from all elements</li>
- 	<li>Remove all javascript: URLs from link HREF attributes, changing the HREF to an empty string instead</li>
-  <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
-</ol>
-<p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
 </section>
 </section>
 
