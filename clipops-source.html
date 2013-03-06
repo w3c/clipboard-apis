@@ -281,7 +281,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
-<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless. If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
+<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless.
 <script>
 /** no default action for cut in non-editable context */
 /* Events: cut */
@@ -293,7 +293,19 @@ function test(e){
 	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 </script>
+If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 
+<script>
+/** setData() in cut event without preventDefault() has no effect when default action is noop */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	e.clipboardData.setData('text/plain', 'cut text');
+  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
+}
+</script>
 
 
 <p>The cut event fires before the selected data is removed.
@@ -322,17 +334,6 @@ function test(e){
 }
 </script>
 <p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard and remove it from the document. Hence, the script calling setData() also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
-<script>
-/** setData() in cut event without preventDefault() has no effect when default action is noop */
-/* Events: cut */
-/* Targets: document  */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
-function test(e){
-	e.clipboardData.setData('text/plain', 'cut text');
-  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
-}
-</script>
 <script>
 /** modifying data for cut event in non-editable context with selection */
 /* Events: copy cut */
@@ -537,9 +538,11 @@ function test(e){
 </section>
 <section>
 <h4>beforecut event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a cut operation, what state such controls should be in can be determined by firing a beforecut event.</p>
 </section>
 <section>
 <h4>beforepaste event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a paste operation, what state such controls should be in can be determined by firing a beforepaste event.</p>
 </section>
 </section>
 
@@ -1540,7 +1543,7 @@ function test(e){
 <li>application/xml, text/xml</li>
 <li>application/javascript</li>
 <li>application/json</li>
-<li></li>
+<li>application/octet-stream</li>
 </ul>
 <!-- TODO:
 <p class="issue">What about audio and video types? BMP?
