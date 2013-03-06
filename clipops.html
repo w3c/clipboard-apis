@@ -36,7 +36,7 @@
 							berjon.biblio['MICROSOFT-CLIP-OP']= "Microsoft Developer Network. <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\"><cite>About DHTML Data Transfer.</cite></a>  URL: <a href=\"http://msdn.microsoft.com/en-us/library/ms537658.aspx\">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a> ";
 						}
 						if(!berjon.biblio['HTML5-DND']){
-							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/editing.html\"><cite>HTML5 chapter 7: User interaction.</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/editing.html\">http://www.w3.org/TR/html5/editing.html</a> ";
+							berjon.biblio['HTML5-DND']= "Ian Hickson; David Hyatt. <a href=\"http://www.w3.org/TR/html5/editing.html\"><cite>HTML5 chapter 7: User interaction</cite></a>  25 May 2011. W3C Working Draft. (Work in progress.) URL: <a href=\"http://www.w3.org/TR/html5/editing.html\">http://www.w3.org/TR/html5/editing.html</a> ";
 						}
 						if(!berjon.biblio['DOM-CORE-DRAFT']){
 							berjon.biblio['DOM-CORE-DRAFT']= "Anne van Kesteren, Aryeh Gregor, Ms2ger. <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\"><cite>DOM Core</cite></a>  6 February 2012. W3C Editor's Draft. (Work in progress.) URL: <a href=\"http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\">http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html</a> ";
@@ -529,9 +529,20 @@ function test(e){
 </script>
 
 </section>
+<section>
+<h4 id=beforecopy-event><span class=secno>3.1.4 </span>beforecopy event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a copy operation, what state such controls should be in can be determined by firing a beforecopy event.</p>
+</section>
+<section>
+<h4 id=beforecut-event><span class=secno>3.1.5 </span>beforecut event</h4>
+</section>
+<section>
+<h4 id=beforepaste-event><span class=secno>3.1.6 </span>beforepaste event</h4>
+</section>
+</section>
 
 </section>
-</section>
+
 
 
 <section>
@@ -715,7 +726,7 @@ function test(e){
 					<ol>
 						<li>Determine MIME type of referenced files</li>
 						<li>
-							Add one entry per file reference to the <code data-anolis-spec=html>DataTransferItemList</code> with <var data-anolis-spec=html>drag data item kind</var> set to <em>file</em> and <var data-anolis-spec=html>drag data item type string</var> set to the corresponding MIME type
+							Add one entry per file reference to the <code data-anolis-spec=html>DataTransferItemList</code> with <var data-anolis-spec=html>drag data item kind</var> set to <em>file</em> and <var data-anolis-spec=html>drag data item type string</var> set to the corresponding MIME type,
 
 <script>
 /** pasting a file */
@@ -732,7 +743,21 @@ function test(e){
 // TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 </script>
 
-							<p class=issue>What if the MIME type is unknown? Use application/octet-stream?</p></li>
+							or <code>application/octet-stream</code> if the file's type is unknown.</li>
+<script>
+/** pasting a file of unknown type */
+/* Events: paste */
+/* Targets: document */
+/* 	Clipboard data type: file reference: ./support/test */
+/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+
+function test(e){
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='file' && ( /application\/octet-stream/.test(e.clipboardData.items[0].type) );
+	return passed;
+}
+// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
+</script>
 					</ol>
 				</dd>
 				<dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
@@ -742,7 +767,6 @@ function test(e){
 						<li>Add one entry to the <code data-anolis-spec=html>DataTransferItemList</code> with <var data-anolis-spec=html>drag data item kind</var> set to <em>Plain Unicode string</em>, <var data-anolis-spec=html>drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code data-anolis-spec=html>DataTransferItemList</code>.</li>
 						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-						<li>If the markup's source URL is known, and the origin differs from the origin of the document the paste event will fire on, the user agent <em>may</em> apply a <a href=#cross-origin-html-paste>cross-origin HTML paste sanitization algorithm</a></li>
 						<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 							<ol>
 								<li>Let <var>itemNumber</var> be the number of items on the <code data-anolis-spec=html>DataTransferItemList</code></li>
@@ -753,7 +777,7 @@ function test(e){
 										<dt>Otherwise</dt>
 										<dd>
 											<ol>
-												<li>Add a new entry to the <code data-anolis-spec=html>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var data-anolis-spec=html>drag data item kind</var> set to "file", and <var data-anolis-spec=html>drag data item type string</var> set to the MIME type of the file or clipboard part if known. <p class=issue>If unknown..? Should we simply ignore embeds with file types we don't "know"?</p></li>
+												<li>Add a new entry to the <code data-anolis-spec=html>DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var data-anolis-spec=html>drag data item kind</var> set to "file", and <var data-anolis-spec=html>drag data item type string</var> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
 												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 											</ol></dd>
@@ -957,7 +981,7 @@ function test(e){
 <pre class="example javascript">	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
 	document.dispatchEvent(pasteEvent);
 </pre>
-<p class=issue>There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')?</p>
+<!-- TODO: <p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
 
 <script>
 /** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
@@ -1434,27 +1458,6 @@ function test(e){
 <h4 id=general-security-policies><span class=secno>7.2 </span>General security policies</h4>
 <p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code>FileList</code> or <code data-anolis-spec=html>DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
-<p>If the data originates from a web site, and the origin of the web site and the origin of the document associated with the script that created the event listener differs, the implementation <em>may</em> apply a <a href=#cross-origin-html-paste>sanitization algorithm</a> before exposing HTML data.</p>
-</section>
-<section>
-<h4 id=cross-origin-html-paste><span class=secno>7.3 </span>Cross-origin HTML paste sanitization algorithm</h4>
-<p><em>This section is informative</em></p>
-<p>Pasting HTML and other markup-based content copied from one site into another site might compromise the security of the former site, for example by giving the second site access to passwords, nonces and other sensitive data that might be embedded in the markup. Implementations <em>may</em> therefore decide to use a cross-origin paste sanitization algorithm to attempt removing hidden data the user is likely not aware of pasting. One example of such an algorithm might be the following:</p>
-<ol>
-	<li>Remove all of the following elements: SCRIPT, APPLET, OBJECT, INPUT with type set to "hidden", EMBED and KEYGEN. For all mentioned elements, also remove any child nodes.</li>
-	<li>Remove the value attribute from any INPUT tag with type set to "password"</li>
-  <li>Remove any elements whose computed style's display property is 'none'</li>
-  <li>Remove any elements whose computed style's visibility property is 'hidden'</li>
-	<li>Remove all data- attributes from all elements</li>
-  <li>Remove comment nodes</li>
-</ol>
-<p>In order to protect the target site from script injection, the implementation <em>may</em> process the markup to remove scripting languages. One example of such an algorithm might be the following:</p>
-<ol>
- 	<li>Remove all event handler attributes from all elements</li>
- 	<li>Remove all javascript: URLs from link HREF attributes, changing the HREF to an empty string instead</li>
-  <li>If the implementation supports embedding javascript: URLs or other forms of scripting inside CSS instructions, such scripts must be removed.</li>
-</ol>
-<p>Implementations <em>may</em> let the user indicate that an app is trusted to not attack other apps and apply its own safety measures, thus bypass the above algorithm. Implementations <em>may</em> also implement additional restrictions, for example only support text/plain if the user does a cross-origin paste, or only support text/plain if content from an encrypted origin is pasted into a non-encrypted page.</p>
 </section>
 </section>
 
@@ -1533,11 +1536,13 @@ function test(e){
 <li>application/json</li>
 <li></li>
 </ul>
-<p class=issue>What about audio and video types? BMP?
+<!-- TODO:
+<p class="issue">What about audio and video types? BMP?
 RTF? RTF was requested due to embedded images possibility (but this spec allows access to local images referenced in HTML fragments by design..).
 </p>
 
-<pre class=issue>Some standard Windows formats we don't handle
+<pre class="issue">
+Some standard Windows formats we don't handle
 
 DataFormats.CF_RTFTEXT 
 
@@ -1552,7 +1557,7 @@ DataFormats.CF_PALETTE
 DataFormats.CF_TIFF 
 
 </pre>
-
+-->
 </section>
 
 <h2 id=Acknowledg>Acknowledgements</h2>

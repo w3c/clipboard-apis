@@ -984,7 +984,7 @@ function test(e){
 	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
 	document.dispatchEvent(pasteEvent);
 </pre>
-<p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p>
+<!-- TODO: <p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
 
 <script>
 /** ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  */
@@ -1539,6 +1539,7 @@ function test(e){
 <li>application/json</li>
 <li></li>
 </ul>
+<!-- TODO:
 <p class="issue">What about audio and video types? BMP?
 RTF? RTF was requested due to embedded images possibility (but this spec allows access to local images referenced in HTML fragments by design..).
 </p>
@@ -1559,7 +1560,7 @@ DataFormats.CF_PALETTE
 DataFormats.CF_TIFF 
 
 </pre>
-
+-->
 </section>
 
 <h2 id="Acknowledg">Acknowledgements</h2>
