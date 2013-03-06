@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() called outside event handler method  - paste event on document</title>
+	<title>  clearData() called outside event handler method  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -27,9 +27,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

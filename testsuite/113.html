@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, events are syncronous  - paste event on 'iframe.contentWindow'</title>
+	<title>  integration with execCommand, events are syncronous  - cut event on 'iframe.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -46,9 +46,9 @@ function onTestSetupReady( eventType ){
 	var dataToPaste="";
 	var externalPassCondition=null;
 	var eventTarget='iframe.contentWindow';
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'iframe.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( 'iframe.contentWindow', 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

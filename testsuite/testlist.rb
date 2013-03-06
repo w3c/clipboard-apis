@@ -112,7 +112,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 27
 	end
 
-	it "28  cut fires before text is removed  " do 
+	it "28  setData() in cut event without preventDefault() has no effect when default action is noop " do 
 		doSingleTest 28
 	end
 
@@ -120,11 +120,11 @@ describe "Clipboard events testsuite" do
 		doSingleTest 29
 	end
 
-	it "30  cut collapses selection  " do 
+	it "30  cut fires before text is removed  " do 
 		doSingleTest 30
 	end
 
-	it "31  setData() in cut event without preventDefault() has no effect when default action is noop " do 
+	it "31  cut collapses selection  " do 
 		doSingleTest 31
 	end
 
@@ -368,7 +368,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 91
 	end
 
-	it "92  setData() followed by clearData() in same event handler " do 
+	it "92  pasting a file of unknown type " do 
 		doSingleTest 92
 	end
 
@@ -376,7 +376,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 93
 	end
 
-	it "94  clearData() followed by setData() in same event handler " do 
+	it "94  setData() followed by clearData() in same event handler " do 
 		doSingleTest 94
 	end
 
@@ -384,7 +384,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 95
 	end
 
-	it "96  clipboard modification when script uses both clearData() and setData()  " do 
+	it "96  clearData() followed by setData() in same event handler " do 
 		doSingleTest 96
 	end
 
@@ -392,11 +392,11 @@ describe "Clipboard events testsuite" do
 		doSingleTest 97
 	end
 
-	it "98  reading clipboard data from looping script  " do 
+	it "98  clipboard modification when script uses both clearData() and setData()  " do 
 		doSingleTest 98
 	end
 
-	it "99  clearData() method without arguments " do 
+	it "99  reading clipboard data from looping script  " do 
 		doSingleTest 99
 	end
 
@@ -404,7 +404,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 100
 	end
 
-	it "101  clearData() method with text/html argument " do 
+	it "101  clearData() method without arguments " do 
 		doSingleTest 101
 	end
 
@@ -412,15 +412,15 @@ describe "Clipboard events testsuite" do
 		doSingleTest 102
 	end
 
-	it "103  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  " do 
+	it "103  clearData() method with text/html argument " do 
 		doSingleTest 103
 	end
 
-	it "104  ClipboardEvent interface - synthetic events with non-standard MIME type  " do 
+	it "104  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  " do 
 		doSingleTest 104
 	end
 
-	it "105  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard " do 
+	it "105  ClipboardEvent interface - synthetic events with non-standard MIME type  " do 
 		doSingleTest 105
 	end
 
@@ -428,23 +428,23 @@ describe "Clipboard events testsuite" do
 		doSingleTest 106
 	end
 
-	it "107  ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA  " do 
+	it "107  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard " do 
 		doSingleTest 107
 	end
 
-	it "108  ClipboardEvent interface - synthetic paste event does not insert data into INPUT  " do 
+	it "108  ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA  " do 
 		doSingleTest 108
 	end
 
-	it "109  ClipboardEvent interface - synthetic paste event does not insert plain text data into contentEditable element  " do 
+	it "109  ClipboardEvent interface - synthetic paste event does not insert data into INPUT  " do 
 		doSingleTest 109
 	end
 
-	it "110  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  " do 
+	it "110  ClipboardEvent interface - synthetic paste event does not insert plain text data into contentEditable element  " do 
 		doSingleTest 110
 	end
 
-	it "111  integration with execCommand, events are syncronous " do 
+	it "111  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  " do 
 		doSingleTest 111
 	end
 
@@ -456,7 +456,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 113
 	end
 
-	it "114  integration with execCommand, can prevent default action " do 
+	it "114  integration with execCommand, events are syncronous " do 
 		doSingleTest 114
 	end
 
@@ -468,7 +468,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 116
 	end
 
-	it "117  clipboard events relative to key events  " do 
+	it "117  integration with execCommand, can prevent default action " do 
 		doSingleTest 117
 	end
 
@@ -480,7 +480,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 119
 	end
 
-	it "120  clipboard events relative to key events - preventDefault prevents clipboard events  " do 
+	it "120  clipboard events relative to key events  " do 
 		doSingleTest 120
 	end
 
@@ -492,7 +492,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 122
 	end
 
-	it "123  clipboard events relative to other input events  " do 
+	it "123  clipboard events relative to key events - preventDefault prevents clipboard events  " do 
 		doSingleTest 123
 	end
 
@@ -500,7 +500,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 124
 	end
 
-	it "125  copy operation does not dispatch other events  " do 
+	it "125  clipboard events relative to other input events  " do 
 		doSingleTest 125
 	end
 
@@ -508,7 +508,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 126
 	end
 
-	it "127  event listener that modifies focus " do 
+	it "127  copy operation does not dispatch other events  " do 
 		doSingleTest 127
 	end
 
@@ -520,11 +520,11 @@ describe "Clipboard events testsuite" do
 		doSingleTest 129
 	end
 
-	it "130  event listener that modifies selection " do 
+	it "130  event listener that modifies focus " do 
 		doSingleTest 130
 	end
 
-	it "131  setData() called outside event handler method " do 
+	it "131  event listener that modifies selection " do 
 		doSingleTest 131
 	end
 
@@ -536,7 +536,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 133
 	end
 
-	it "134  items.add() called outside event handler method " do 
+	it "134  setData() called outside event handler method " do 
 		doSingleTest 134
 	end
 
@@ -548,7 +548,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 136
 	end
 
-	it "137  clearData() called outside event handler method " do 
+	it "137  items.add() called outside event handler method " do 
 		doSingleTest 137
 	end
 
@@ -560,7 +560,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 139
 	end
 
-	it "140  ClipboardEvent and non-ASCII data I - Japanese " do 
+	it "140  clearData() called outside event handler method " do 
 		doSingleTest 140
 	end
 
@@ -572,7 +572,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 142
 	end
 
-	it "143  ClipboardEvent and non-ASCII data II - random Unicode symbols " do 
+	it "143  ClipboardEvent and non-ASCII data I - Japanese " do 
 		doSingleTest 143
 	end
 
@@ -580,7 +580,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 144
 	end
 
-	it "145  events fire inside SVG content  " do 
+	it "145  ClipboardEvent and non-ASCII data II - random Unicode symbols " do 
 		doSingleTest 145
 	end
 
@@ -604,7 +604,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 150
 	end
 
-	it "151  events fire inside editable SVG content  " do 
+	it "151  events fire inside SVG content  " do 
 		doSingleTest 151
 	end
 
@@ -628,7 +628,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 156
 	end
 
-	it "157  events fire inside SVG content in contentEditable " do 
+	it "157  events fire inside editable SVG content  " do 
 		doSingleTest 157
 	end
 
@@ -652,11 +652,11 @@ describe "Clipboard events testsuite" do
 		doSingleTest 162
 	end
 
-	it "163  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard " do 
+	it "163  events fire inside SVG content in contentEditable " do 
 		doSingleTest 163
 	end
 
-	it "164  setData() method does not throw when implementation does not know the type " do 
+	it "164  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard " do 
 		doSingleTest 164
 	end
 
@@ -664,7 +664,7 @@ describe "Clipboard events testsuite" do
 		doSingleTest 165
 	end
 
-	it "166  setData() method with text/html (experimental) " do 
+	it "166  setData() method does not throw when implementation does not know the type " do 
 		doSingleTest 166
 	end
 
@@ -672,16 +672,20 @@ describe "Clipboard events testsuite" do
 		doSingleTest 167
 	end
 
-	it "168  clearData() method is noop in paste event " do 
+	it "168  setData() method with text/html (experimental) " do 
 		doSingleTest 168
 	end
 
-	it "169  clearData() method without preventing events's default action " do 
+	it "169  clearData() method is noop in paste event " do 
 		doSingleTest 169
 	end
 
 	it "170  clearData() method without preventing events's default action " do 
 		doSingleTest 170
+	end
+
+	it "171  clearData() method without preventing events's default action " do 
+		doSingleTest 171
 	end
 
 end

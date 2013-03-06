@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - cut event on 'ifr.contentWindow'</title>
+	<title>  integration with execCommand, can prevent default action  - copy event on 'ifr.contentWindow'</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -46,9 +46,9 @@ function triggerTestManually(){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="clipboard text";
 	var eventTarget='ifr.contentWindow';
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'cut', dataToPaste, externalPassCondition );
+		setupTest( 'ifr.contentWindow', 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

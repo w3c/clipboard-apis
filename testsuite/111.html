@@ -1,37 +1,30 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, events are syncronous  - copy event on 'iframe.contentWindow'</title>
+	<title>  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element   - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
-/* Test HTML: <iframe id="iframe"></iframe>*/
-/* Targets: 'iframe.contentWindow' */
-/* This assertation is based on Gecko's implementation. */
-function test(e){
-	return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
-}
-function onTestSetupReady( eventType ){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('iframe'), doc;
-	(doc=ifr.contentDocument).designMode='on';
-	doc.body.innerHTML='<p>Frame contents</p>';
-	ifr.contentWindow.focus();
-	if(eventType in { copy:1, cut:1 }){	// create a selection
-		var rng=doc.createRange();
-		rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
-		var sel=ifr.contentWindow.getSelection();
-		sel.removeAllRanges();
-		sel.addRange(rng);
-	}
+/** ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  */
+/* Events: paste */
+/* paste data: "clipboard text" */
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
 	try{
-		window.afterExecCommand=false;
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		window.afterExecCommand=true;
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementById('editable').dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').getElementsByTagName('em').length == 0);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
 	}catch(e){
-		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
 	}
 }
 
@@ -40,15 +33,15 @@ function onTestSetupReady( eventType ){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="iframe"></iframe>
+	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="clipboard text";
 	var externalPassCondition=null;
-	var eventTarget='iframe.contentWindow';
-	var eventType='copy';
+	var eventTarget=document;
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'iframe.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

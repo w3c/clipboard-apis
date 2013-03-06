@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA   - paste event on document</title>
+	<title>  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA  */
-/* Events: paste */
+/** ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard */
+/* Events: copy cut */
 /* paste data: "clipboard text" */
-/* Test HTML: <form><textarea autofocus></textarea></form>*/
-/* Targets: document */
-function test(e){ }
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+
+}
 function onTestSetupReady(){
 	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
-		setTimeout( function(){
-			result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' )==-1);
-		}, 50 );
+		var evt=new ClipboardEvent( window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'} );
+    if( window.eventType=='cut' )document.body.contentEditable='true';
+		/* make a selection to check if selected text is copied by the synthetic event.. */
+		var range=document.createRange();
+		range.selectNodeContents(document.body);
+		window.getSelection().addRange(range);
+		document.dispatchEvent(evt);
+		window.getSelection().removeAllRanges();
+    if( window.eventType=='cut' )document.body.contentEditable='false';
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
 		return;
@@ -29,15 +34,15 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea autofocus></textarea></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var externalPassCondition="clipboard text";
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() method does not throw when implementation does not know the type  - copy event on document</title>
+	<title>  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** setData() method does not throw when implementation does not know the type */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
-/* paste data: "unmodified text" */
-//TODO: this test asserts a NOOP.
-// how this SHOULD work is, however, underspecified..
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/* Events: paste */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	try{
-		e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text'); 
-		e.preventDefault();
-		passed=true;
-	}catch(e){
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
 	}
-	return passed;
+	return hasTextPlain;
 }
 
 	</script>
@@ -28,15 +23,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="unmodified text";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text";
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

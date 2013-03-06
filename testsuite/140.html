@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent and non-ASCII data I - Japanese  - copy event on 'input_text'</title>
+	<title>  clearData() called outside event handler method  - paste event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** ClipboardEvent and non-ASCII data I - Japanese */
-/* Events: copy cut */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
-/* Targets: 'input_text' */
-/* External pass condition - clipboard data: "テスト" */
-
+/** clearData() called outside event handler method */
+/* Events: copy cut paste */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
 function test(e){
-	e.clipboardData.setData( 'text/plain', 'テスト' );
-	e.preventDefault();
+	var cbData=e.clipboardData;
+	setTimeout( function(){
+		cbData.clearData();
+	}, 1 );
 }
 
 	</script>
@@ -21,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="テスト";
-	var eventTarget='input_text';
-	var eventType='copy';
+	var dataToPaste="clipboard text";
+	var externalPassCondition="clipboard text";
+	var eventTarget=document;
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'paste', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

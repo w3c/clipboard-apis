@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard modification when script uses both clearData() and setData()   - copy event on document</title>
+	<title>  clearData() followed by setData() in same event handler  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clipboard modification when script uses both clearData() and setData()  */
+/** clearData() followed by setData() in same event handler */
 /* Events: copy cut */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
 /* Targets: document */
+/* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "modified text" */
 function test(e){
-	e.clipboardData.clearData();
-  e.clipboardData.setData('text/plain', 'modified text');
-  e.preventDefault();
+	e.clipboardData.clearData( 'text/plain' );
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.preventDefault();
 }
 
 	</script>
@@ -21,15 +21,15 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
+	<form><input autofocus id="input_text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="clipboard text";
 	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

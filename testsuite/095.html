@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() followed by setData() in same event handler  - cut event on document</title>
+	<title>  clearData() followed by setData() in same event handler  - copy event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
@@ -27,9 +27,9 @@ function test(e){
 	var dataToPaste="clipboard text";
 	var externalPassCondition="modified text";
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( document, 'copy', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -279,7 +279,7 @@ function test(e){
 	setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
-<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless. If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec=html>DataTransferItemList</code>.</p>
+<p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless.
 <script>
 /** no default action for cut in non-editable context */
 /* Events: cut */
@@ -291,7 +291,19 @@ function test(e){
 	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 </script>
+If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec=html>DataTransferItemList</code>.</p>
 
+<script>
+/** setData() in cut event without preventDefault() has no effect when default action is noop */
+/* Events: cut */
+/* Targets: document  */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "clipboard text" */
+function test(e){
+	e.clipboardData.setData('text/plain', 'cut text');
+  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
+}
+</script>
 
 
 <p>The cut event fires before the selected data is removed.
@@ -320,17 +332,6 @@ function test(e){
 }
 </script>
 <p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard and remove it from the document. Hence, the script calling setData() also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
-<script>
-/** setData() in cut event without preventDefault() has no effect when default action is noop */
-/* Events: cut */
-/* Targets: document  */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
-function test(e){
-	e.clipboardData.setData('text/plain', 'cut text');
-  /* NO e.preventDefault() call here. This event's default action is to do nothing since there is no selection. The test verifies that nothing happens to clipboard content. */
-}
-</script>
 <script>
 /** modifying data for cut event in non-editable context with selection */
 /* Events: copy cut */
@@ -535,9 +536,11 @@ function test(e){
 </section>
 <section>
 <h4 id=beforecut-event><span class=secno>3.1.5 </span>beforecut event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a cut operation, what state such controls should be in can be determined by firing a beforecut event.</p>
 </section>
 <section>
 <h4 id=beforepaste-event><span class=secno>3.1.6 </span>beforepaste event</h4>
+<p>If the implementation has user interface controls that users can use to initiate a paste operation, what state such controls should be in can be determined by firing a beforepaste event.</p>
 </section>
 </section>
 
@@ -1154,7 +1157,7 @@ function onTestSetupReady(){
 <section>
 <h2 id=integration-with-other-scripts-and-events><span class=secno>6 </span>Integration with other scripts and events</h2>
 <h3 id=integration-with-rich-text-editing-apis><span class=secno>6.1 </span>Integration with rich text editing APIs</h3>
-<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and may prevent the execCommand() call from having its normal effect.</p>
+<p>If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> fire the corresponding events. The event is syncronous and if its default action is prevented, <em>must</em> prevent the execCommand() call from having its normal effect.</p>
 <script>
 /** integration with execCommand, events are syncronous */
 /* Events: copy cut paste */
@@ -1243,6 +1246,8 @@ function triggerTestManually(){
 	}
 }
 </script>
+
+<p>In implementations that support calling document.execCommand() with arguments 'cut', 'copy' or 'paste', this method can be used to trigger real cut, copy and paste actions.</p>
 
 <h3 id=otherevents><span class=secno>6.2 </span>Interaction with other events</h3>
 <p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
@@ -1450,7 +1455,7 @@ function test(e){
 <table class=simple summary="security policies">
   <tbody><tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan=2>Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
-  <tr><td>Different origin</td><td>Sanitize content. Do not access any local files.</td></tr>
+  <tr><td>Different origin</td><td>Optionally sanitize content. Do not access any local files.</td></tr>
   <tr><td>Originates from local application</td><td>Any</td><td>Do not sanitize HTML. Grant access to local files</td></tr>
 </tbody></table>
 </section>
@@ -1511,6 +1516,7 @@ function test(e){
 </script>
 </li>
 <li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data.</li>
+<li>Implementations <em>should not</em> let scripts call document.execCommand('paste') unless the user has explicitly allowed it.</li>
 </ul>
 <p>Implementations may choose to further limit the functionality provided by the DataTransfer interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
 <h3 id=nuisances><span class=secno>8.2 </span>Nuisance considerations</h3>
@@ -1534,7 +1540,7 @@ function test(e){
 <li>application/xml, text/xml</li>
 <li>application/javascript</li>
 <li>application/json</li>
-<li></li>
+<li>application/octet-stream</li>
 </ul>
 <!-- TODO:
 <p class="issue">What about audio and video types? BMP?

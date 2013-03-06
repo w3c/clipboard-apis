@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() followed by setData() in same event handler  - copy event on document</title>
+	<title>  setData() followed by clearData() in same event handler  - cut event on document</title>
 	<script src="_lib.js"></script>
 	<script>
 	
-/** clearData() followed by setData() in same event handler */
+/** setData() followed by clearData() in same event handler */
 /* Events: copy cut */
 /* Targets: document */
 /* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "modified text" */
+/* External pass condition - clipboard data: "" */
 function test(e){
-	e.clipboardData.clearData( 'text/plain' );
 	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.clipboardData.clearData( 'text/plain' );
 	e.preventDefault();
 }
 
@@ -25,11 +25,11 @@ function test(e){
 
 	<script>
 	var dataToPaste="clipboard text";
-	var externalPassCondition="modified text";
+	var externalPassCondition="";
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( document, 'cut', dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
