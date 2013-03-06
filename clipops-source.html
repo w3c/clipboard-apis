@@ -780,7 +780,7 @@ function test(e){
 										<dt>Otherwise</dt>
 										<dd>
 											<ol>
-												<li>Add a new entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var  data-anolis-spec="html">drag data item kind</var> set to "file", and <var  data-anolis-spec="html">drag data item type string</var> set to the MIME type of the file or clipboard part if known. <p class="issue">If unknown..? Should we simply ignore embeds with file types we don't "know"?</p></li>
+												<li>Add a new entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var  data-anolis-spec="html">drag data item kind</var> set to "file", and <var  data-anolis-spec="html">drag data item type string</var> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
 												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 											</ol></dd>
