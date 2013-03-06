@@ -728,7 +728,7 @@ function test(e){
 					<ol>
 						<li>Determine MIME type of referenced files</li>
 						<li>
-							Add one entry per file reference to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>file</em> and <var data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type
+							Add one entry per file reference to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>file</em> and <var data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type,
 
 <script>
 /** pasting a file */
@@ -745,7 +745,21 @@ function test(e){
 // TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 </script>
 
-							<p class="issue">What if the MIME type is unknown? Use application/octet-stream?</p></li>
+							or <code>application/octet-stream</code> if the file's type is unknown.</li>
+<script>
+/** pasting a file of unknown type */
+/* Events: paste */
+/* Targets: document */
+/* 	Clipboard data type: file reference: ./support/test */
+/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+
+function test(e){
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='file' && ( /application\/octet-stream/.test(e.clipboardData.items[0].type) );
+	return passed;
+}
+// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
+</script>
 					</ol>
 				</dd>
 				<dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
