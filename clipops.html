@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
-<html lang="en" dir="ltr">
-<head>
+<!doctype html>
+<html lang="en" dir="ltr"><head>
 	<title> Clipboard API and events </title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	
@@ -45,7 +44,7 @@ div.issue-title, div.note-title {
     color: #b9ab2d;
 }
 div.issue-title { color: #e05252; }
-div.note-title { color: #52e052; }
+div.note-title { color: #2b2; }
 div.issue-title span, div.note-title span {
     text-transform: uppercase;
 }
@@ -60,7 +59,7 @@ div.note, div.issue {
     border-left-style: solid;
 }
 div.issue, div.note {
-    padding: 0.5em;
+    padding: 1em 1.2em 0.5em;
     margin: 1em 0;
     position: relative;
     clear: both;
@@ -422,7 +421,7 @@ table.simple {
 .section dl.attrs dd, .section dl.eldef dd {
     margin-bottom:  0;
 }
-</style><link href="http://www.w3.org/StyleSheets/TR/W3C-WD" rel="stylesheet"><!--[if lt IE 9]><script src='http://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+</style><link rel="stylesheet" href="http://www.w3.org/StyleSheets/TR/W3C-ED"></head>
 <!--
 	The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
 		each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
@@ -446,11 +445,11 @@ table.simple {
   </p>
   <h1 class="title" id="title">Clipboard API and events</h1>
   
-  <h2 id="w3c-working-draft-02-april-2013"><abbr title="World Wide Web Consortium">W3C</abbr> Working Draft 09 April 2013</h2>
+  <h2 id="w3c-editor-s-draft-11-april-2013"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft 11 April 2013</h2>
   <dl>
     
       <dt>This version:</dt>
-      <dd><a href="http://www.w3.org/TR/2013/WD-clipboard-apis-20130409/">http://www.w3.org/TR/2013/WD-clipboard-apis-20130409/</a></dd>
+      <dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd>
     
@@ -461,9 +460,8 @@ table.simple {
     
     
     
+      
     
-      <dt>Previous version:</dt>
-      <dd><a href="http://www.w3.org/TR/2012/WD-clipboard-apis-20120223/">http://www.w3.org/TR/2012/WD-clipboard-apis-20120223/</a></dd>
     
     
     <dt>Editor:</dt>
@@ -478,7 +476,7 @@ table.simple {
     
       <p class="copyright">
         <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 
-        2010-2013
+        2013
         
         <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> 
         (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
@@ -508,9 +506,7 @@ table.simple {
         
 
         <p>
-          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Draft.
-          
-            This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft.
           
           
           If you wish to make comments regarding this document, please send them to 
@@ -525,7 +521,7 @@ table.simple {
         
         
           </p><p>
-            Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership.
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership.
             This is a draft document and may be updated, replaced or obsoleted by other documents at 
             any time. It is inappropriate to cite this document as other than work in progress.
           </p>
@@ -630,7 +626,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <p>The current selection is not affected.</p>
 
 
-<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>, for example by calling the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-setdata">setData()</a></code> method.</p>
+<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>, for example by calling the <code data-anolis-spec="html">setData()</code> method.</p>
 
 
 
@@ -647,7 +643,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 <p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless.
 
-If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>.</p>
+If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 
 
 
@@ -679,7 +675,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 <p> The paste event has no default action in a non-editable context, but the event fires regardless.</p>
 
 
-<p>When pasting, the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#drag-data-store-mode">drag data store mode</a></code> flag is <em>read-only</em>, hence calling <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-setdata">setData()</a></code> from a <b>paste</b> event handler will not modify the data that is inserted, and not modify the data on the clipboard.</p>
+<p>When pasting, the <code data-anolis-spec="html">drag data store mode</code> flag is <em>read-only</em>, hence calling <code data-anolis-spec="html">setData()</code> from a <b>paste</b> event handler will not modify the data that is inserted, and not modify the data on the clipboard.</p>
 
 
 
@@ -711,14 +707,14 @@ If the default action is to do nothing, the clipboard is not modified except if 
 <!--OddPage--><h2><span class="secno">5. </span>Processing model</h2>
 <p>To <dfn id="fire-a-clipboard-event">fire a clipboard event named <em>e</em></dfn>,</p>
 <ol>
-	<li>Let the <em>data transfer</em> be a <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> object [<cite><a class="bibref" href="#bib-HTML5-DND">HTML5-DND</a></cite>]</li>
+	<li>Let the <em>data transfer</em> be a <code data-anolis-spec="html">DataTransfer</code> object [<cite><a class="bibref" href="#bib-HTML5-DND">HTML5-DND</a></cite>]</li>
 
  
 
 	<li>Let <var>clear-was-called</var> be <var>false</var></li>
 	<li>Let <var>types-to-clear</var> be an empty list</li>
 	<li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
-	<li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <code>the BODY element</code> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <code>the BODY element</code> if no node has focus.</li>
+	<li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <code data-anolis-spec="html">the BODY element</code> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <code data-anolis-spec="html">the BODY element</code> if no node has focus.</li>
 
 
 
@@ -734,7 +730,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 	<dl class="switch">
 		<dt>If <em>e</em> is <var>paste</var></dt>
 		<dd>
-			<p>Set the associated <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> object's <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#drag-data-store-mode">drag data store mode</a></var> flag to <em>read-only</em></p>
+			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read-only</em></p>
 			<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
 			<p>For each part on the OS clipboard, carry out these steps:</p>
 			<dl class="switch">
@@ -742,7 +738,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 				<dd>
 					<ol>
 						<li>Ensure the text is in the encoding the scripting engine uses internally</li>
-						<li>Add one entry for the text to the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-kind">drag data item kind</a></var> set to <em>string</em> and <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> set to <em>text/plain</em></li>
+						<li>Add one entry for the text to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>string</em> and <var data-anolis-spec="html">drag data item type string</var> set to <em>text/plain</em></li>
 
 
 
@@ -754,7 +750,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 					<ol>
 						<li>Determine MIME type of referenced files</li>
 						<li>
-							Add one entry per file reference to the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-kind">drag data item kind</a></var> set to <em>file</em> and <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> set to the corresponding MIME type,
+							Add one entry per file reference to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>file</em> and <var data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type,
 
 
 
@@ -766,20 +762,20 @@ If the default action is to do nothing, the clipboard is not modified except if 
 				<dd id="processing-model-for-html-data">
 					<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
 					<ol>
-						<li>Add one entry to the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-kind">drag data item kind</a></var> set to <em>Plain Unicode string</em>, <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>.</li>
+						<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>Plain Unicode string</em>, <var data-anolis-spec="html">drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code data-anolis-spec="html">DataTransferItemList</code>.</li>
 						<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 						<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
 						<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a class="bibref" href="#bib-RFC2392">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 							<ol>
-								<li>Let <var>itemNumber</var> be the number of items on the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code></li>
+								<li>Let <var>itemNumber</var> be the number of items on the <code data-anolis-spec="html">DataTransferItemList</code></li>
 								<li><p>Choose the appropriate steps from this list:</p>
 									<dl class="switch">
-										<dt>If the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> of the current <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> object already contains an entry for the referenced file or clipboard part</dt>
+										<dt>If the <code data-anolis-spec="html">DataTransferItemList</code> of the current <code data-anolis-spec="html">DataTransfer</code> object already contains an entry for the referenced file or clipboard part</dt>
 										<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
 										<dt>Otherwise</dt>
 										<dd>
 											<ol>
-												<li>Add a new entry to the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with <code>index</code> set to <var>itemNumber</var>, <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-kind">drag data item kind</a></var> set to "file", and <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
+												<li>Add a new entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var data-anolis-spec="html">drag data item kind</var> set to "file", and <var data-anolis-spec="html">drag data item type string</var> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
 												<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 												<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 											</ol></dd>
@@ -788,7 +784,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 								<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
 							</ol>
 						</li>
-						<li>Serialize the processed DOM and update the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
+						<li>Serialize the processed DOM and update the <code data-anolis-spec="html">DataTransferItemList</code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
 					</ol>
 				</dd>
 				<dt>If the current clipboard part contains data in <a href="#mandatory-data-types">another supported binary or text-based format</a>:</dt>
@@ -796,41 +792,41 @@ If the default action is to do nothing, the clipboard is not modified except if 
 					<ol>
 						<li>Determine the MIME type of the data
 						</li>
-						<li>Add one entry to the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-kind">drag data item kind</a></var> set to <em>file</em>, <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> set to the corresponding MIME type</li>
+						<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>file</em>, <var data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type</li>
 					</ol>
 				</dd>
 				<dt>Otherwise</dt>
 				<dd>Do nothing</dd>
 			</dl>
-		<p>Update the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-files">files</a></code> property to match entries in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>.</p>
-		<p>Update the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-types">types</a></code> property to match entries in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>.</p>
+		<p>Update the <code data-anolis-spec="html">files</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
+		<p>Update the <code data-anolis-spec="html">types</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 		</dd>
 		<dt>If <em>e</em> is <var>copy</var> or <var>cut</var></dt>
 		<dd>
-			<p>Set the associated <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> object's <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#drag-data-store-mode">drag data store mode</a></var> flag to <em>read/write</em></p>
+			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read/write</em></p>
 		</dd>
 	</dl>
 </li>
-<li> Dispatch an event using the <code><a href="http://www.w3.org/TR/clipboard-apis/#clipboard-event-interfaces">ClipboardEvent</a></code> interface, with its <code><a href="https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-event-type">type</a></code> attribute initialized to <em>e</em>, its <code><a href="https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-event-istrusted">isTrusted</a></code> attribute initialized to <em>true</em>, and its <code><a href="http://www.w3.org/TR/clipboard-apis/#widl-ClipboardEvent-clipboardData">clipboardData</a></code> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <code data-anolis-spec="clipops">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <em>true</em>, and its <code data-anolis-spec="clipops">clipboardData</code> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
 	<p>Implementation requirements for access to data during event dispatch are defined in [<cite><a class="bibref" href="#bib-HTML5-DND">HTML5-DND</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
-		<dt>If script calls <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-cleardata">clearData()</a></code> or <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitemlist-clear">items.clear()</a></code> and the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> object's <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#drag-data-store-mode">drag data store mode</a></var> flag is <em>read/write</em></dt>
+		<dt>If script calls <code data-anolis-spec="html">clearData()</code> or <code data-anolis-spec="html">items.clear()</code> and the <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag is <em>read/write</em></dt>
 		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
 
-		<dt>If script calls <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-setdata">setData()</a></code> or modifies items and the <var>clear-was-called</var> flag is true</dt>
+		<dt>If script calls <code data-anolis-spec="html">setData()</code> or modifies items and the <var>clear-was-called</var> flag is true</dt>
 		<dd>
 			<dl class="switch">
 				<dt>If the <var>types-to-clear</var> list is empty</dt>
 				<dd>set the <var>clear-was-called</var> flag to false</dd>
 
-				<dt>else, if <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-setdata">setData()</a></code>'s <code>type</code> argument or the new item's <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransferitem-type">drag data item type string</a></var> is found in the <var>types-to-clear</var> list</dt>
+				<dt>else, if <code data-anolis-spec="html">setData()</code>'s <code>type</code> argument or the new item's <var data-anolis-spec="html">drag data item type string</var> is found in the <var>types-to-clear</var> list</dt>
 				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
 			</dl>
 		</dd>
 
 
-		<dt>If script calls <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-getdata">getData()</a></code> or accesses items in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> and <var>clipboard-entry</var> is set</dt>
-		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> object's <var><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#drag-data-store-mode">drag data store mode</a></var> to the <i>disabled mode</i></dd>
+		<dt>If script calls <code data-anolis-spec="html">getData()</code> or accesses items in the <code data-anolis-spec="html">DataTransferItemList</code> and <var>clipboard-entry</var> is set</dt>
+		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code data-anolis-spec="html">DataTransferItemList</code> object's <var data-anolis-spec="html">drag data store mode</var> to the <i>disabled mode</i></dd>
 	</dl>
 		<p class="warning">Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
 
@@ -853,7 +849,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 			<dl class="switch">
 				<dt>If the event was cancelled</dt>
 				<dd>
-					<p>Update the clipboard contents with the data from the script, as given by the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>. Process each part as follows:</p>
+					<p>Update the clipboard contents with the data from the script, as given by the <code data-anolis-spec="html">DataTransferItemList</code>. Process each part as follows:</p>
 					<dl class="switch">
 						<dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
 						<dd>
@@ -876,7 +872,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 						</dd>
 						<dt>Otherwise</dt>
 						<dd><p>Place part on clipboard with the appropriate OS clipboard format description</p>
-						<div class="note"><div class="note-title"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
+						<div class="note"><div class="note-title" role="heading" aria-level="3"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
 						</dd>
 					</dl>
 				</dd>
@@ -889,7 +885,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 						<dt>Otherwise</dt>
 						<dd>
 							<p>Do nothing, terminate this algorithm</p>
- 							<div class="note"><div class="note-title"><span>Note</span></div><p class="">Calling setData() without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
+ 							<div class="note"><div class="note-title" role="heading" aria-level="3"><span>Note</span></div><p class="">Calling setData() without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
 						</dd>
 					</dl>
 				</dd>
@@ -927,7 +923,7 @@ document.dispatchEvent(pasteEvent);</pre></div>
 interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlSuperclass"><a>Event</a></span> {
 <span class="idlAttribute">    readonly    attribute <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
 };</span></pre><section id="attributes"><h3><span class="secno">6.2 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly   </dt><dd>
-     <p>The clipboardData attribute is an instance of the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
+     <p>The clipboardData attribute is an instance of the <code data-anolis-spec="html">DataTransfer</code> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
 			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
     </dd></dl></section>
 
@@ -995,7 +991,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 </section>
 <section id="general-security-policies">
 <h3><span class="secno">8.2 </span>General security policies</h3>
-<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#dom-datatransfer-files">files</a></code> list or <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code>.</p>
+<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code data-anolis-spec="html">files</code> list or <code data-anolis-spec="html">DataTransferItemList</code>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 </section>
 </section>
@@ -1010,8 +1006,8 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <h2 id="privacy">Privacy concerns</h2>
 <p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the user agent's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
 <ul>
-<li>Objects implementing the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.</li>
-<li>If a script stores a reference to an object implementing the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
+<li>Objects implementing the <code data-anolis-spec="html">DataTransfer</code> interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.</li>
+<li>If a script stores a reference to an object implementing the <code data-anolis-spec="html">DataTransfer</code> interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
 
 
 
@@ -1019,14 +1015,14 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data.</li>
 <li>Implementations <em>should not</em> let scripts call document.execCommand('paste') unless the user has explicitly allowed it.</li>
 </ul>
-<p>Implementations may choose to further limit the functionality provided by the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
+<p>Implementations may choose to further limit the functionality provided by the <code data-anolis-spec="html">DataTransfer</code> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
 <h2 id="nuisances">Nuisance considerations</h2>
-<p>Scripts may use the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#datatransfer">DataTransfer</a></code> API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
+<p>Scripts may use the <code data-anolis-spec="html">DataTransfer</code> API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 </section>
 <section id="mandatory-data-types-1">
 <!--OddPage--><h2 id="mandatory-data-types"><span class="secno">10. </span>Mandatory data types</h2>
-<p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <code><a href="http://www.w3.org/html/wg/drafts/html/master/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></code> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
+<p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <code data-anolis-spec="html">DataTransferItemList</code> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
 <ul>
 <li>text/plain</li>
 <li>text/uri-list</li>
