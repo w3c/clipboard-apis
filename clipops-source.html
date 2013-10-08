@@ -1136,14 +1136,14 @@ function onTestSetupReady(){
 </script>
 
 <dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
-	<dt>attribute DOMString data</dt>
+	<dt>DOMString data = ""</dt>
 	<dd>The data of the synthetic clipboard event</dd>
-	<dt>attribute DOMString dataType</dt>
+	<dt>DOMString dataType = ""</dt>
 	<dd>A MIME type [[!RFC2046]] describing the data the event is being initialized with</dd>
 </dl>
 
 <dl class="idl idl-code" title="[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)] interface ClipboardEvent : Event">
-    <dt>readonly attribute DataTransfer clipboardData</dt>
+    <dt>readonly DataTransfer clipboardData</dt>
     <dd>
      <p>The clipboardData attribute is an instance of the <code data-anolis-spec="html">DataTransfer</code> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
 			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
