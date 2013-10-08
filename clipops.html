@@ -921,7 +921,7 @@ document.dispatchEvent(pasteEvent);</pre></div>
 
 <pre class="idl"><span class="idlInterface" id="idl-def-ClipboardEvent">[<span class="extAttr">Constructor(DOMString type, optional ClipboardEventInit eventInitDict)</span>]
 interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlSuperclass"><a>Event</a></span> {
-<span class="idlAttribute">    readonly <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
+<span class="idlAttribute">    readonly attribute <span class="idlAttrType"><a>DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
 };</span></pre><section id="attributes"><h3><span class="secno">6.2 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a>DataTransfer</a></span>, readonly   </dt><dd>
      <p>The clipboardData attribute is an instance of the <code data-anolis-spec="html">DataTransfer</code> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
 			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
