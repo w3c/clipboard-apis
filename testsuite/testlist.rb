@@ -1,691 +1,356 @@
+
 describe "Clipboard events testsuite" do
   before(:all) do
     @browser = OperaWatir::Browser.new
     $base = 'file://localhost/d:/projects/spec-dev/copy-paste/W3C-repo/clipops/testsuite/'
   end
-	
-	it "1  ClipboardEvent - events fire on INPUT " do 
+
+	it "1 ClipboardEvent - events fire on INPUT " do
 		doSingleTest 1
 	end
 
-	it "2  ClipboardEvent - events fire on INPUT " do 
-		doSingleTest 2
-	end
-
-	it "3  ClipboardEvent - events fire on INPUT " do 
-		doSingleTest 3
-	end
-
-	it "4  ClipboardEvent - events fire on INPUT " do 
-		doSingleTest 4
-	end
-
-	it "5  ClipboardEvent - events fire on TEXTAREA " do 
+	it "5 ClipboardEvent - events fire on TEXTAREA " do
 		doSingleTest 5
 	end
 
-	it "6  ClipboardEvent - events fire on TEXTAREA " do 
-		doSingleTest 6
-	end
-
-	it "7  ClipboardEvent - events fire on TEXTAREA " do 
-		doSingleTest 7
-	end
-
-	it "8  ClipboardEvent - events fire on TEXTAREA " do 
-		doSingleTest 8
-	end
-
-	it "9  setData() method " do 
+	it "9 setData() method " do
 		doSingleTest 9
 	end
 
-	it "10  setData() method " do 
-		doSingleTest 10
-	end
-
-	it "11  copy event when there is no selection and script uses setData()  " do 
+	it "11 copy event when there is no selection and script uses setData()  " do
 		doSingleTest 11
 	end
 
-	it "12  copy event when there is no selection and script uses setData()  " do 
-		doSingleTest 12
-	end
-
-	it "13  cancelling default action, basic test  " do 
+	it "13 cancelling default action, basic test  " do
 		doSingleTest 13
 	end
 
-	it "14  cancelling default action, basic test  " do 
-		doSingleTest 14
-	end
-
-	it "15  cancelling default action, basic test  " do 
-		doSingleTest 15
-	end
-
-	it "16  cancelling default action, basic test  " do 
-		doSingleTest 16
-	end
-
-	it "17  copy event does not modify selection  " do 
+	it "17 copy event does not modify selection  " do
 		doSingleTest 17
 	end
 
-	it "18  copy event does not modify selection  " do 
-		doSingleTest 18
-	end
-
-	it "19  default action of event when there is no selection is noop " do 
+	it "19 default action of event when there is no selection is noop " do
 		doSingleTest 19
 	end
 
-	it "20  default action of event when there is no selection is noop " do 
-		doSingleTest 20
-	end
-
-	it "21  default action of cut event when there is no selection - no text change " do 
+	it "21 default action of cut event when there is no selection - no text change " do
 		doSingleTest 21
 	end
 
-	it "22  getData() method in cut and copy events should return an empty string " do 
+	it "22 getData() method in cut and copy events should return an empty string " do
 		doSingleTest 22
 	end
 
-	it "23  getData() method in cut and copy events should return an empty string " do 
-		doSingleTest 23
-	end
-
-	it "24  getData() method when type is unsupported should return an empty string " do 
+	it "24 getData() method when type is unsupported should return an empty string " do
 		doSingleTest 24
 	end
 
-	it "25  cancelling default action of cut prevents removal of text from editable context  " do 
+	it "25 cancelling default action of cut prevents removal of text from editable context  " do
 		doSingleTest 25
 	end
 
-	it "26  cancelling default action of cut prevents removal of text from editable context  " do 
-		doSingleTest 26
-	end
-
-	it "27  no default action for cut in non-editable context " do 
+	it "27 no default action for cut in non-editable context " do
 		doSingleTest 27
 	end
 
-	it "28  setData() in cut event without preventDefault() has no effect when default action is noop " do 
+	it "28 setData() in cut event without preventDefault() has no effect when default action is noop " do
 		doSingleTest 28
 	end
 
-	it "29  cut fires before text is removed  " do 
+	it "29 cut fires before text is removed  " do
 		doSingleTest 29
 	end
 
-	it "30  cut fires before text is removed  " do 
-		doSingleTest 30
-	end
-
-	it "31  cut collapses selection  " do 
+	it "31 cut collapses selection  " do
 		doSingleTest 31
 	end
 
-	it "32  modifying data for cut event in non-editable context with selection " do 
+	it "32 modifying data for cut event in non-editable context with selection " do
 		doSingleTest 32
 	end
 
-	it "33  modifying data for cut event in non-editable context with selection " do 
-		doSingleTest 33
-	end
-
-	it "34  setData() method without preventing events's default action " do 
+	it "34 setData() method without preventing events's default action " do
 		doSingleTest 34
 	end
 
-	it "35  setData() method without preventing events's default action " do 
-		doSingleTest 35
-	end
-
-	it "36  events fire on INPUT " do 
+	it "36 events fire on INPUT " do
 		doSingleTest 36
 	end
 
-	it "37  events fire on INPUT " do 
-		doSingleTest 37
-	end
-
-	it "38  events fire on TEXTAREA " do 
+	it "38 events fire on TEXTAREA " do
 		doSingleTest 38
 	end
 
-	it "39  events fire on TEXTAREA " do 
-		doSingleTest 39
-	end
-
-	it "40  paste event fires before data is inserted " do 
+	it "40 paste event fires before data is inserted " do
 		doSingleTest 40
 	end
 
-	it "41  paste event fires before data is inserted " do 
-		doSingleTest 41
-	end
-
-	it "42  preventing default action  " do 
+	it "42 preventing default action  " do
 		doSingleTest 42
 	end
 
-	it "43  preventing default action  " do 
-		doSingleTest 43
-	end
-
-	it "44  paste event fires even in non-editable context " do 
+	it "44 paste event fires even in non-editable context " do
 		doSingleTest 44
 	end
 
-	it "45  setData() does not modify text that is about to be inserted in a paste event " do 
+	it "45 setData() does not modify text that is about to be inserted in a paste event " do
 		doSingleTest 45
 	end
 
-	it "46  setData() doesn't modify text on the clipboard when called from a paste event " do 
+	it "46 setData() doesn't modify text on the clipboard when called from a paste event " do
 		doSingleTest 46
 	end
 
-	it "47  getData() method in paste event retrieving plain text " do 
+	it "47 getData() method in paste event retrieving plain text " do
 		doSingleTest 47
 	end
 
-	it "48  getData() method when called outside event handler should return an empty string " do 
+	it "48 getData() method when called outside event handler should return an empty string " do
 		doSingleTest 48
 	end
 
-	it "49  getData() method with wrong number of arguments " do 
+	it "49 getData() method with wrong number of arguments " do
 		doSingleTest 49
 	end
 
-	it "50  getData() method supports legacy 'text' argument " do 
+	it "50 getData() method supports legacy 'text' argument " do
 		doSingleTest 50
 	end
 
-	it "51  getData() method's type argument not case sensitive " do 
+	it "51 getData() method's type argument not case sensitive " do
 		doSingleTest 51
 	end
 
-	it "52  event.clipboardData exists and inherits from DataTransfer " do 
+	it "52 Using beforecopy to enable 'copy' UI that would otherwise be disabled " do
 		doSingleTest 52
 	end
 
-	it "53  event.clipboardData exists and inherits from DataTransfer " do 
+	it "53 Using beforecut to enable 'cut' UI that would otherwise be disabled " do
 		doSingleTest 53
 	end
 
-	it "54  event.clipboardData exists and inherits from DataTransfer " do 
+	it "54 Using beforepaste to enable 'paste' UI that would otherwise be disabled " do
 		doSingleTest 54
 	end
 
-	it "55  Clipboard event's clipboardData API " do 
+	it "55 event.clipboardData exists and inherits from DataTransfer " do
 		doSingleTest 55
 	end
 
-	it "56  Clipboard event's clipboardData API " do 
-		doSingleTest 56
-	end
-
-	it "57  Clipboard event's clipboardData API " do 
-		doSingleTest 57
-	end
-
-	it "58  event target when selection spans several elements  " do 
+	it "58 Clipboard event's clipboardData API " do
 		doSingleTest 58
 	end
 
-	it "59  event target when selection spans several elements  " do 
-		doSingleTest 59
-	end
-
-	it "60  event target when selection spans several elements  " do 
-		doSingleTest 60
-	end
-
-	it "61  event target when selection spans several elements  " do 
+	it "61 event target when selection spans several elements  " do
 		doSingleTest 61
 	end
 
-	it "62  event target when selection spans several elements  " do 
-		doSingleTest 62
-	end
-
-	it "63  event target when selection spans several elements  " do 
-		doSingleTest 63
-	end
-
-	it "64  event target when selection spans several elements  " do 
-		doSingleTest 64
-	end
-
-	it "65  event target when selection spans several elements  " do 
-		doSingleTest 65
-	end
-
-	it "66  event target when selection spans several elements  " do 
-		doSingleTest 66
-	end
-
-	it "67  event target when selection spans several elements - reversed selection  " do 
+	it "67 event target when selection spans several elements  " do
 		doSingleTest 67
 	end
 
-	it "68  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 68
-	end
-
-	it "69  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 69
-	end
-
-	it "70  event target when selection spans several elements - reversed selection  " do 
+	it "70 event target when selection spans several elements - reversed selection  " do
 		doSingleTest 70
 	end
 
-	it "71  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 71
-	end
-
-	it "72  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 72
-	end
-
-	it "73  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 73
-	end
-
-	it "74  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 74
-	end
-
-	it "75  event target when selection spans several elements - reversed selection  " do 
-		doSingleTest 75
-	end
-
-	it "76  event target when focused element has no text node inside  " do 
+	it "76 event target when selection spans several elements - reversed selection  " do
 		doSingleTest 76
 	end
 
-	it "77  event target when focused element has no text node inside  " do 
-		doSingleTest 77
-	end
-
-	it "78  copy event target property - selection in input  " do 
-		doSingleTest 78
-	end
-
-	it "79  copy event target property - selection in input  " do 
+	it "79 event target when focused element has no text node inside  " do
 		doSingleTest 79
 	end
 
-	it "80  copy event target property - selection in input  " do 
-		doSingleTest 80
-	end
-
-	it "81  event target property - selection in document text  " do 
+	it "81 copy event target property - selection in input  " do
 		doSingleTest 81
 	end
 
-	it "82  event target property - selection in document text  " do 
-		doSingleTest 82
-	end
-
-	it "83  event target property - selection in document text  " do 
-		doSingleTest 83
-	end
-
-	it "84  event target when no specific element has focus  " do 
+	it "84 event target property - selection in document text  " do
 		doSingleTest 84
 	end
 
-	it "85  event target when no specific element has focus  " do 
-		doSingleTest 85
-	end
-
-	it "86  event target when no specific element has focus  " do 
-		doSingleTest 86
-	end
-
-	it "87  clipboardData.items when clipboard has one single text/plain entry " do 
+	it "87 event target when no specific element has focus  " do
 		doSingleTest 87
 	end
 
-	it "88  getting data from clipboardData.items when clipboard has one single text/plain entry " do 
-		doSingleTest 88
-	end
-
-	it "89  setData and clipboardData.items  " do 
-		doSingleTest 89
-	end
-
-	it "90  setData and clipboardData.items  " do 
+	it "90 clipboardData.items when clipboard has one single text/plain entry " do
 		doSingleTest 90
 	end
 
-	it "91  pasting a file " do 
+	it "91 getting data from clipboardData.items when clipboard has one single text/plain entry " do
 		doSingleTest 91
 	end
 
-	it "92  pasting a file of unknown type " do 
+	it "92 setData and clipboardData.items  " do
 		doSingleTest 92
 	end
 
-	it "93  setData() followed by clearData() in same event handler " do 
-		doSingleTest 93
-	end
-
-	it "94  setData() followed by clearData() in same event handler " do 
+	it "94 pasting a file " do
 		doSingleTest 94
 	end
 
-	it "95  clearData() followed by setData() in same event handler " do 
+	it "95 pasting a file of unknown type " do
 		doSingleTest 95
 	end
 
-	it "96  clearData() followed by setData() in same event handler " do 
+	it "96 setData() followed by clearData() in same event handler " do
 		doSingleTest 96
 	end
 
-	it "97  clipboard modification when script uses both clearData() and setData()  " do 
-		doSingleTest 97
-	end
-
-	it "98  clipboard modification when script uses both clearData() and setData()  " do 
+	it "98 clearData() followed by setData() in same event handler " do
 		doSingleTest 98
 	end
 
-	it "99  reading clipboard data from looping script  " do 
-		doSingleTest 99
-	end
-
-	it "100  clearData() method without arguments " do 
+	it "100 clipboard modification when script uses both clearData() and setData()  " do
 		doSingleTest 100
 	end
 
-	it "101  clearData() method without arguments " do 
-		doSingleTest 101
-	end
-
-	it "102  clearData() method with text/html argument " do 
+	it "102 reading clipboard data from looping script  " do
 		doSingleTest 102
 	end
 
-	it "103  clearData() method with text/html argument " do 
+	it "103 clearData() method without arguments " do
 		doSingleTest 103
 	end
 
-	it "104  ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  " do 
-		doSingleTest 104
-	end
-
-	it "105  ClipboardEvent interface - synthetic events with non-standard MIME type  " do 
+	it "105 clearData() method with text/html argument " do
 		doSingleTest 105
 	end
 
-	it "106  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard " do 
-		doSingleTest 106
-	end
-
-	it "107  ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard " do 
+	it "107 ClipboardEvent interface - synthetic events with new ClipboardEvent constructor  " do
 		doSingleTest 107
 	end
 
-	it "108  ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA  " do 
+	it "108 ClipboardEvent interface - synthetic events with non-standard MIME type  " do
 		doSingleTest 108
 	end
 
-	it "109  ClipboardEvent interface - synthetic paste event does not insert data into INPUT  " do 
+	it "109 ClipboardEvent interface - synthetic copy/cut events must not affect system clipboard " do
 		doSingleTest 109
 	end
 
-	it "110  ClipboardEvent interface - synthetic paste event does not insert plain text data into contentEditable element  " do 
-		doSingleTest 110
-	end
-
-	it "111  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  " do 
+	it "111 ClipboardEvent interface - synthetic copy/cut events dispatched from trusted events do affect system clipboard " do
 		doSingleTest 111
 	end
 
-	it "112  integration with execCommand, events are syncronous " do 
-		doSingleTest 112
-	end
-
-	it "113  integration with execCommand, events are syncronous " do 
+	it "113 ClipboardEvent interface - synthetic paste event inserts payload data into TEXTAREA  " do
 		doSingleTest 113
 	end
 
-	it "114  integration with execCommand, events are syncronous " do 
+	it "114 ClipboardEvent interface - synthetic paste event inserts payload data into INPUT  " do
 		doSingleTest 114
 	end
 
-	it "115  integration with execCommand, can prevent default action " do 
+	it "115 ClipboardEvent interface - synthetic paste event does not insert text/html payload data into INPUT  " do
 		doSingleTest 115
 	end
 
-	it "116  integration with execCommand, can prevent default action " do 
+	it "116 ClipboardEvent interface - synthetic paste event inserts plain text data into contentEditable element  " do
 		doSingleTest 116
 	end
 
-	it "117  integration with execCommand, can prevent default action " do 
+	it "117 ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element  " do
 		doSingleTest 117
 	end
 
-	it "118  clipboard events relative to key events  " do 
+	it "118 integration with execCommand, events are syncronous " do
 		doSingleTest 118
 	end
 
-	it "119  clipboard events relative to key events  " do 
-		doSingleTest 119
-	end
-
-	it "120  clipboard events relative to key events  " do 
-		doSingleTest 120
-	end
-
-	it "121  clipboard events relative to key events - preventDefault prevents clipboard events  " do 
+	it "121 integration with execCommand, can prevent default action " do
 		doSingleTest 121
 	end
 
-	it "122  clipboard events relative to key events - preventDefault prevents clipboard events  " do 
-		doSingleTest 122
-	end
-
-	it "123  clipboard events relative to key events - preventDefault prevents clipboard events  " do 
+	it "123 integration with execCommand, can prevent default action " do
 		doSingleTest 123
 	end
 
-	it "124  clipboard events relative to other input events  " do 
+	it "124 clipboard events relative to key events  " do
 		doSingleTest 124
 	end
 
-	it "125  clipboard events relative to other input events  " do 
-		doSingleTest 125
-	end
-
-	it "126  copy operation does not dispatch other events  " do 
-		doSingleTest 126
-	end
-
-	it "127  copy operation does not dispatch other events  " do 
+	it "127 clipboard events relative to key events - preventDefault prevents clipboard events  " do
 		doSingleTest 127
 	end
 
-	it "128  event listener that modifies focus " do 
-		doSingleTest 128
-	end
-
-	it "129  event listener that modifies focus " do 
-		doSingleTest 129
-	end
-
-	it "130  event listener that modifies focus " do 
+	it "130 clipboard events relative to other input events  " do
 		doSingleTest 130
 	end
 
-	it "131  event listener that modifies selection " do 
+	it "131 clipboard events relative to other input events  " do
 		doSingleTest 131
 	end
 
-	it "132  setData() called outside event handler method " do 
+	it "132 copy operation does not dispatch other events  " do
 		doSingleTest 132
 	end
 
-	it "133  setData() called outside event handler method " do 
-		doSingleTest 133
-	end
-
-	it "134  setData() called outside event handler method " do 
+	it "134 event listener that modifies focus " do
 		doSingleTest 134
 	end
 
-	it "135  items.add() called outside event handler method " do 
-		doSingleTest 135
-	end
-
-	it "136  items.add() called outside event handler method " do 
+	it "136 event listener that modifies focus " do
 		doSingleTest 136
 	end
 
-	it "137  items.add() called outside event handler method " do 
+	it "137 event listener that modifies selection " do
 		doSingleTest 137
 	end
 
-	it "138  clearData() called outside event handler method " do 
+	it "138 setData() called outside event handler method " do
 		doSingleTest 138
 	end
 
-	it "139  clearData() called outside event handler method " do 
-		doSingleTest 139
-	end
-
-	it "140  clearData() called outside event handler method " do 
-		doSingleTest 140
-	end
-
-	it "141  ClipboardEvent and non-ASCII data I - Japanese " do 
+	it "141 items.add() called outside event handler method " do
 		doSingleTest 141
 	end
 
-	it "142  ClipboardEvent and non-ASCII data I - Japanese " do 
-		doSingleTest 142
-	end
-
-	it "143  ClipboardEvent and non-ASCII data I - Japanese " do 
-		doSingleTest 143
-	end
-
-	it "144  ClipboardEvent and non-ASCII data II - random Unicode symbols " do 
+	it "144 clearData() called outside event handler method " do
 		doSingleTest 144
 	end
 
-	it "145  ClipboardEvent and non-ASCII data II - random Unicode symbols " do 
-		doSingleTest 145
-	end
-
-	it "146  events fire inside SVG content  " do 
-		doSingleTest 146
-	end
-
-	it "147  events fire inside SVG content  " do 
+	it "147 ClipboardEvent and non-ASCII data I - Japanese " do
 		doSingleTest 147
 	end
 
-	it "148  events fire inside SVG content  " do 
-		doSingleTest 148
-	end
-
-	it "149  events fire inside SVG content  " do 
+	it "149 ClipboardEvent and non-ASCII data I - Japanese " do
 		doSingleTest 149
 	end
 
-	it "150  events fire inside SVG content  " do 
+	it "150 ClipboardEvent and non-ASCII data II - random Unicode symbols " do
 		doSingleTest 150
 	end
 
-	it "151  events fire inside SVG content  " do 
-		doSingleTest 151
-	end
-
-	it "152  events fire inside editable SVG content  " do 
+	it "152 events fire inside SVG content  " do
 		doSingleTest 152
 	end
 
-	it "153  events fire inside editable SVG content  " do 
-		doSingleTest 153
-	end
-
-	it "154  events fire inside editable SVG content  " do 
-		doSingleTest 154
-	end
-
-	it "155  events fire inside editable SVG content  " do 
-		doSingleTest 155
-	end
-
-	it "156  events fire inside editable SVG content  " do 
-		doSingleTest 156
-	end
-
-	it "157  events fire inside editable SVG content  " do 
-		doSingleTest 157
-	end
-
-	it "158  events fire inside SVG content in contentEditable " do 
+	it "158 events fire inside editable SVG content  " do
 		doSingleTest 158
 	end
 
-	it "159  events fire inside SVG content in contentEditable " do 
-		doSingleTest 159
-	end
-
-	it "160  events fire inside SVG content in contentEditable " do 
-		doSingleTest 160
-	end
-
-	it "161  events fire inside SVG content in contentEditable " do 
-		doSingleTest 161
-	end
-
-	it "162  events fire inside SVG content in contentEditable " do 
-		doSingleTest 162
-	end
-
-	it "163  events fire inside SVG content in contentEditable " do 
-		doSingleTest 163
-	end
-
-	it "164  types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard " do 
+	it "164 events fire inside SVG content in contentEditable " do
 		doSingleTest 164
 	end
 
-	it "165  setData() method does not throw when implementation does not know the type " do 
-		doSingleTest 165
-	end
-
-	it "166  setData() method does not throw when implementation does not know the type " do 
-		doSingleTest 166
-	end
-
-	it "167  setData() method with text/html (experimental) " do 
-		doSingleTest 167
-	end
-
-	it "168  setData() method with text/html (experimental) " do 
-		doSingleTest 168
-	end
-
-	it "169  clearData() method is noop in paste event " do 
-		doSingleTest 169
-	end
-
-	it "170  clearData() method without preventing events's default action " do 
+	it "170 types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard " do
 		doSingleTest 170
 	end
 
-	it "171  clearData() method without preventing events's default action " do 
+	it "171 setData() method does not throw when implementation does not know the type " do
 		doSingleTest 171
+	end
+
+	it "173 setData() method with text/html (experimental) " do
+		doSingleTest 173
+	end
+
+	it "175 clearData() method is noop in paste event " do
+		doSingleTest 175
+	end
+
+	it "176 clearData() method without preventing events's default action " do
+		doSingleTest 176
 	end
 
 end

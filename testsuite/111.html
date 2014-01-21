@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element   - paste event on document</title>
+	<title>  ClipboardEvent - ClipboardEvent interface - synthetic copy/cut events dispatched from trusted events do affect system clipboard </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** ClipboardEvent interface - synthetic paste event does not insert HTML data into contentEditable element  */
-/* Events: paste */
+/** ClipboardEvent interface - synthetic copy/cut events dispatched from trusted events do affect system clipboard  */
+/* Events: copy cut */
 /* paste data: "clipboard text" */
-/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
-/* Targets: document */
-function test(e){ }
+/* External pass condition - clipboard data: "modified text" */
+function test(e){
+	e.clipboardData.setData('text/plain', 'modified text');
+	e.preventDefault();
+}
 function onTestSetupReady(){
 	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
-		document.getElementById('editable').dispatchEvent(evt);
-		setTimeout( function(){
-			try{
-				result(document.getElementById('editable').getElementsByTagName('em').length == 0);
-			}catch(e){
-				result('Unexpected exception when looking for inserted HTML data: '+e);
-			}
-		}, 50 );
+		var evt=new ClipboardEvent( window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'} );
+    if( window.eventType=='cut' )document.body.contentEditable='true';
+		/* make a selection to check if selected text is copied by the synthetic event.. */
+		var range=document.createRange();
+		range.selectNodeContents(document.body);
+		window.getSelection().addRange(range);
+		document.dispatchEvent(evt);
+		window.getSelection().removeAllRanges();
+    if( window.eventType=='cut' )document.body.contentEditable='false';
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
 		return;
@@ -33,15 +36,16 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();</script>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition=null;
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition="modified text" ;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

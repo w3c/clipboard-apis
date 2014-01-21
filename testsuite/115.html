@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - copy event on 'ifr.contentWindow'</title>
+	<title>  ClipboardEvent - ClipboardEvent interface - synthetic paste event does not insert text/html payload data into INPUT  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** integration with execCommand, can prevent default action */
-/* Events: copy cut */
+/** ClipboardEvent interface - synthetic paste event does not insert text/html payload data into INPUT   */
+/* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
-/* External pass condition - clipboard data: "clipboard text" */
-
-function test(e){
-	e.preventDefault();
-}
-
-function triggerTestManually(){
-  document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-	var ifr=document.getElementById('ifr');
-	var doc=ifr.contentDocument;
-	doc.designMode='on';
-	ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
-	ifr.contentWindow.focus();
-	doc.body.innerHTML='<p>This is filler text</p>';
-	var range=doc.createRange();
-	range.selectNodeContents(doc.getElementsByTagName('p')[0]);
-	doc.defaultView.getSelection().addRange(range);
+/* Test HTML: <form><input autofocus></form>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
 	try{
-		doc.execCommand(window.eventType, false, false);
-    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementsByTagName('input')[0].dispatchEvent(evt);
+		setTimeout( function(){
+			result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )>-1);
+		}, 50 );
 	}catch(e){
-		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard accesss in preferences for '+location.hostname+' before running this test)');
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
 	}
 }
 
@@ -40,15 +30,16 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<div id="log"></div>
+	<form><input autofocus></form>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget='ifr.contentWindow';
-	var eventType='copy';
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition=null;
+	var eventTarget=document;
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

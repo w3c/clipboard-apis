@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method in cut and copy events should return an empty string  - copy event on document</title>
+	<title>  ClipboardEvent - getData() method in cut and copy events should return an empty string </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** getData() method in cut and copy events should return an empty string */
+/** getData() method in cut and copy events should return an empty string  */
 /* Events: cut copy */
 function test(e){
 	var passed = false;
@@ -20,15 +21,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste='';
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

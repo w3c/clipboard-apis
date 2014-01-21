@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  default action of cut event when there is no selection - no text change  - copy event on document</title>
+	<title>  ClipboardEvent - default action of cut event when there is no selection - no text change </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** default action of cut event when there is no selection - no text change */
+/** default action of cut event when there is no selection - no text change  */
 /* Events: copy */
 /* Test HTML: <form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>*/
 /* Targets: document */
@@ -25,15 +26,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div id="log"></div>
 	<form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="clipboard text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  preventing default action   - paste event on 'input_text'</title>
+	<title>  ClipboardEvent - preventing default action  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** preventing default action  */
+/** preventing default action   */
 /* Events: paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
@@ -21,15 +22,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div id="log"></div>
 	<form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="pasted text" ;
 	var externalPassCondition=null;
 	var eventTarget='input_text';
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

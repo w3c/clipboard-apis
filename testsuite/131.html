@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event listener that modifies selection  - copy event on document</title>
+	<title>  ClipboardEvent - clipboard events relative to other input events  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** event listener that modifies selection */
-/* Events: copy */
-/* Test HTML: <div>This is demo text</div>*/
-/* Targets: document */
-/* External pass condition - clipboard data: "This is demo text" */
+/** clipboard events relative to other input events   */
+/* Events:  paste */
+/* Test HTML: <form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>*/
+/* paste data: "clipboard text" */
+/* Targets: 'input_text' */
+
+var eventsFired=[];
+function logEvent(e){eventsFired.push(e.type);};
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('input_text').addEventListener( 'change', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'input', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'invalid', logEvent, false );
+  document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
+},false);
 
 function test(e){
-	var range=document.createRange();
-  range.selectNodeContents(document.getElementsByTagName('div')[0]);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
+  logEvent(e);
+  setTimeout(function(){
+    e.target.blur(); // causes change event
+    e.target.form.checkValidity(); // causes invalid event
+  }, 10);
+	setTimeout(function(){
+    var evString = eventsFired.join(',')
+    var passed =  evString ==='paste,paste handler done,textInput,input,change' || evString ==='paste,paste handler done,input,change' ;
+    result( passed, 'Got: '+evString );
+  }, 500);
+  logEvent( {type: e.type+' handler done'} );  
 }
-
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div>This is demo text</div>
+	<div id="log"></div>
+	<form action=""><input id="input_text" autofocus onfocus="this.select()" value="copied text" required></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="This is demo text";
-	var eventTarget=document;
-	var eventType='copy';
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

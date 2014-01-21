@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  items.add() called outside event handler method  - cut event on document</title>
+	<title>  ClipboardEvent - event listener that modifies focus </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** items.add() called outside event handler method */
-/* Events: copy cut paste */
+/** event listener that modifies focus  */
+/* Events: paste */
+/* Test HTML: <input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">*/
+/* Targets: 'input_text' */
 /* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "clipboard text" */
+
 function test(e){
-	var cbData=e.clipboardData;
-	setTimeout( function(){
-		cbData.items.add( 'Test failed', 'text/plain');
-	}, 1 );
+	document.getElementById('second').focus();
+  setTimeout( function(){ 
+    var passed = document.getElementById('second').value==='clipboard text';
+    result( passed );
+  }, 20 );
 }
 
 	</script>
@@ -21,15 +25,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div id="log"></div>
+	<input id="input_text" onfocus="this.select()" autofocus value="input 1"><input id="second" onfocus="this.select()" value="input 2">
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="clipboard text";
-	var eventTarget=document;
-	var eventType='cut';
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition=null;
+	var eventTarget='input_text';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

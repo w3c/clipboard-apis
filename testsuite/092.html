@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  pasting a file of unknown type  - paste event on document</title>
+	<title>  ClipboardEvent - setData and clipboardData.items  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** pasting a file of unknown type */
-/* Events: paste */
-/* Targets: document */
-/* 	Clipboard data type: file reference: ./support/test */
-/* Test HTML: <p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>*/
+/** setData and clipboardData.items   */
+/* Events: copy cut */
 
 function test(e){
+	e.clipboardData.setData('text/plain', 'modified text');
 	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
-	passed = passed && e.clipboardData.items[0].kind=='file' && ( /application\/octet-stream/.test(e.clipboardData.items[0].type) );
+	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
+	passed = passed && e.isTrusted;
 	return passed;
 }
-// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<p>To complete this test, copy a JPG file from the OS file manager and paste into this page</p>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste='';
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='paste';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

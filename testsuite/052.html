@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event.clipboardData exists and inherits from DataTransfer  - copy event on document</title>
+	<title>  ClipboardEvent - Using beforecopy to enable 'copy' UI that would otherwise be disabled </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** event.clipboardData exists and inherits from DataTransfer */
-/* Events: copy cut paste */
-/* Targets: document */
-
+/** Using beforecopy to enable 'copy' UI that would otherwise be disabled  */
+/* Events: copy */
+/* paste data: "pasted text" */
+/* Test HTML: <p>The "copy" menu UI state is enabled on this page even when there is no selection.</p> */
+document.onbeforecopy = function(){return true;}
 function test(e){
-	var passed = typeof e.clipboardData === 'object' && e.clipboardData instanceof DataTransfer;
-	return passed;
+	result('UI test: passes if "copy" menu UI state is enabled');
 }
 
 	</script>
@@ -19,15 +20,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<div id="log"></div>
+	<p>The "copy" menu UI state is enabled on this page even when there is no selection.</p> 
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

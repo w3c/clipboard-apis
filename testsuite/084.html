@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  event target when no specific element has focus   - copy event on document</title>
+	<title>  ClipboardEvent - event target property - selection in document text  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** event target when no specific element has focus  */
+/** event target property - selection in document text   */
 /* Events: copy cut paste */
-/* Test HTML: <div>This is filler text</div>*/
+/* Test HTML: <div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>*/
 /* Targets: document */
 
 function test(e){
-	var passed = e.target===document.body;
-	return passed;
+  var passed = e.target === document.getElementsByTagName('div')[0];
+  return passed;
 }
 
 	</script>
@@ -20,15 +21,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div>This is filler text</div>
+	<div id="log"></div>
+	<div>This text should be selected</div><script>if(document.createRange){var range=document.createRange();range.selectNodeContents(document.getElementsByTagName('div')[0]);window.getSelection().addRange(range);}else if(document.selection){ var range=document.selection.createRange(); range.moveToElementText( document.getElementsByTagName('div')[0] ); range.select(); } <\/script>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste='';
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

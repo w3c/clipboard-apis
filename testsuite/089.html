@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData and clipboardData.items   - copy event on document</title>
+	<title>  ClipboardEvent - event target when no specific element has focus  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** setData and clipboardData.items  */
-/* Events: copy cut */
+/** event target when no specific element has focus   */
+/* Events: copy cut paste */
+/* Test HTML: <div>This is filler text</div>*/
+/* Targets: document */
 
 function test(e){
-	e.clipboardData.setData('text/plain', 'modified text');
-	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
-	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
+	var passed = e.target===document.body;
 	return passed;
 }
 
@@ -20,15 +21,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<div id="log"></div>
+	<div>This is filler text</div>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste='';
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

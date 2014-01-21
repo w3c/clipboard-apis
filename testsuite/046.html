@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData() doesn't modify text on the clipboard when called from a paste event  - paste event on 'input_text'</title>
+	<title>  ClipboardEvent - setData() doesn't modify text on the clipboard when called from a paste event </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** setData() doesn't modify text on the clipboard when called from a paste event */
+/** setData() doesn't modify text on the clipboard when called from a paste event  */
 /* Events: paste */
 /* paste data: "pasted text" */
 /* Test HTML: <form><input autofocus id="input_text"></form> */
@@ -23,15 +24,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div id="log"></div>
 	<form><input autofocus id="input_text"></form> 
 
 	<script>
-	var dataToPaste="pasted text";
-	var externalPassCondition="pasted text";
+	var dataToPaste="pasted text" ;
+	var externalPassCondition="pasted text" ;
 	var eventTarget='input_text';
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'input_text', 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

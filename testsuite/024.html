@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  getData() method when type is unsupported should return an empty string  - paste event on document</title>
+	<title>  ClipboardEvent - getData() method when type is unsupported should return an empty string </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** getData() method when type is unsupported should return an empty string */
+/** getData() method when type is unsupported should return an empty string  */
 /* Events: paste */
 /* paste data: "pasted text" */
 function test(e){
@@ -21,15 +22,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="pasted text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

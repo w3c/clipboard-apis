@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clipboard modification when script uses both clearData() and setData()   - copy event on document</title>
+	<title>  ClipboardEvent - setData() followed by clearData() in same event handler </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** clipboard modification when script uses both clearData() and setData()  */
+/** setData() followed by clearData() in same event handler  */
 /* Events: copy cut */
-/* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
 /* Targets: document */
-/* External pass condition - clipboard data: "modified text" */
+/* paste data: "clipboard text" */
+/* External pass condition - clipboard data: "" */
 function test(e){
-	e.clipboardData.clearData();
-  e.clipboardData.setData('text/plain', 'modified text');
-  e.preventDefault();
+	e.clipboardData.setData( 'text/plain', 'modified text' );
+	e.clipboardData.clearData( 'text/plain' );
+	e.preventDefault();
 }
 
 	</script>
@@ -21,15 +22,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="modified text";
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition="" ;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='cut';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

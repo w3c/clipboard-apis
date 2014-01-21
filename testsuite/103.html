@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method with text/html argument  - cut event on document</title>
+	<title>  ClipboardEvent - clearData() method without arguments </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** clearData() method with text/html argument */
+/** clearData() method without arguments  */
 /* Events: copy cut */
-/* paste data: "{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}" */
-/* External pass condition - clipboard data: "This is formatted HTML for copy/paste tests." */
+/* External pass condition - clipboard data: "" */
+/* paste data: "clipboard text" */
 function test(e){
-	e.clipboardData.clearData('text/html');
+	var passed = false;
+	e.clipboardData.clearData();
 	e.preventDefault();
 }
 
@@ -19,15 +21,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="{'text/html':'<p>This is <b>formatted HTML</b> for copy/paste tests.</p>', 'text/plain': 'This is formatted HTML for copy/paste tests.'}";
-	var externalPassCondition="This is formatted HTML for copy/paste tests.";
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition="" ;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='copy';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

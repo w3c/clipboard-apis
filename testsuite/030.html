@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  cut fires before text is removed   - cut event on 'input_text'</title>
+	<title>  ClipboardEvent - cut fires before text is removed  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** cut fires before text is removed  */
+/** cut fires before text is removed   */
 /* Events: cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
 /* Targets: document 'input_text' */
@@ -18,15 +19,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div id="log"></div>
 	<form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste='';
 	var externalPassCondition=null;
 	var eventTarget='input_text';
 	var eventType='cut';
 	window.onload=function(){
-		setupTest( 'input_text', 'cut', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  integration with execCommand, can prevent default action  - paste event on 'ifr.contentWindow'</title>
+	<title>  ClipboardEvent - ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** integration with execCommand, can prevent default action */
+/** ClipboardEvent interface - synthetic paste event inserts HTML data into contentEditable element   */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
-/* Targets: 'ifr.contentWindow' */
-function test(e){
-	window.eventFired=true;
-	e.preventDefault();
-}
-function triggerTestManually(){
-	var ifr=document.getElementById('ifr');
-	ifr.contentDocument.designMode='on';
-	ifr.contentWindow.focus();
+/* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
+/* Targets: document */
+function test(e){ }
+function onTestSetupReady(){
 	try{
-		ifr.contentDocument.execCommand(window.eventType, false, false);
-		setTimeout(function(){
-			var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
-			result(passed);
-		}, 10);
+		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+		document.getElementById('editable').dispatchEvent(evt);
+		setTimeout( function(){
+			try{
+				result(document.getElementById('editable').getElementsByTagName('em').length == 1);
+			}catch(e){
+				result('Unexpected exception when looking for inserted HTML data: '+e);
+			}
+		}, 50 );
 	}catch(e){
-		result('Can not test - exception from execCommand '+e+' (Note: enable clipboard access in preferences for '+location.hostname+' before running this test)');
+		result('Unexpected Exception when initiating ClipboardEvent: '+e);
+		return;
 	}
 }
 
@@ -34,15 +34,16 @@ function triggerTestManually(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<iframe id="ifr"></iframe>
+	<div id="log"></div>
+	<div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="clipboard text" ;
 	var externalPassCondition=null;
-	var eventTarget='ifr.contentWindow';
+	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( 'ifr.contentWindow', 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

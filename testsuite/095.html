@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() followed by setData() in same event handler  - copy event on document</title>
+	<title>  ClipboardEvent - pasting a file of unknown type </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** clearData() followed by setData() in same event handler */
-/* Events: copy cut */
+/** pasting a file of unknown type  */
+/* Events: paste */
 /* Targets: document */
-/* paste data: "clipboard text" */
-/* External pass condition - clipboard data: "modified text" */
+/* 	Clipboard data type: file reference: ./support/test */
+/* Test HTML: <p>To complete this test, copy the "./support/test" file from the OS file manager and paste into this page</p>*/
+
 function test(e){
-	e.clipboardData.clearData( 'text/plain' );
-	e.clipboardData.setData( 'text/plain', 'modified text' );
-	e.preventDefault();
+	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
+	passed = passed && e.clipboardData.items[0].kind=='file' && ( /application\/octet-stream/.test(e.clipboardData.items[0].type) );
+	return passed;
 }
+// TODO: figure out how to automate this test (i.e. find a better cross-platform clipboard library for JRuby..)
 
 	</script>
 </head>
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus id="input_text"></form>
+	<div id="log"></div>
+	<p>To complete this test, copy the "./support/test" file from the OS file manager and paste into this page</p>
 
 	<script>
-	var dataToPaste="clipboard text";
-	var externalPassCondition="modified text";
+	var dataToPaste='';
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

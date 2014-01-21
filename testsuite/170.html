@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  clearData() method without preventing events's default action  - copy event on document</title>
+	<title>  ClipboardEvent - types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** clearData() method without preventing events's default action */
-/* Events: copy cut */
-/* External pass condition - clipboard data: "unmodified text" */
-/* Test HTML: <form><input autofocus onfocus="this.select()" value="unmodified text"></form>*/
+/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard  */
+/* Events: paste */
+/* paste data: "clipboard text" */
 function test(e){
-	var passed = false;
-	e.clipboardData.clearData();
-	//e.preventDefault(); // The point of this test is that we do NOT call preventDefault() here.
+	var hasTextPlain=false;
+	if(e.clipboardData.types){
+		for(var i=0; i<e.clipboardData.types.length;i++){
+			if(e.clipboardData.types[i]==='text/plain')hasTextPlain=true;
+		}
+	}
+	return hasTextPlain;
 }
 
 	</script>
@@ -20,15 +24,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><input autofocus onfocus="this.select()" value="unmodified text"></form>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
-	var externalPassCondition="unmodified text";
+	var dataToPaste="clipboard text" ;
+	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='copy';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'copy', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

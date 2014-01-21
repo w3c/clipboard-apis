@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  setData and clipboardData.items   - cut event on document</title>
+	<title>  ClipboardEvent - clipboardData.items when clipboard has one single text/plain entry </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** setData and clipboardData.items  */
-/* Events: copy cut */
+/** clipboardData.items when clipboard has one single text/plain entry  */
+/* Events: paste */
+/* paste data: "pasted text" */
 
 function test(e){
-	e.clipboardData.setData('text/plain', 'modified text');
 	var passed = e.clipboardData.items && e.clipboardData.items.length === 1;
 	passed = passed && e.clipboardData.items[0].kind=='string' &&  e.clipboardData.items[0].type=='text/plain';
+	passed = passed && e.isTrusted;
 	return passed;
 }
 
@@ -20,15 +22,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="";
+	var dataToPaste="pasted text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
-	var eventType='cut';
+	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'cut', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

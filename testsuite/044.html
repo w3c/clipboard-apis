@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  paste event fires even in non-editable context  - paste event on document</title>
+	<title>  ClipboardEvent - paste event fires even in non-editable context </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** paste event fires even in non-editable context */
+/** paste event fires even in non-editable context  */
 /* Events: paste */
 /* Targets: document */
 /* paste data: "pasted text" */
@@ -20,15 +21,16 @@ function test(e){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
+	<div id="log"></div>
 	<p>&nbsp;</p> 
 
 	<script>
-	var dataToPaste="pasted text";
+	var dataToPaste="pasted text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>

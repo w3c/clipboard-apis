@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html><head>
 	<meta charset="UTF-8">
-	<title>  ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA   - paste event on document</title>
+	<title>  ClipboardEvent - ClipboardEvent interface - synthetic events with non-standard MIME type  </title>
+	<script src="http://w3c-test.org/resources/testharness.js"></script>
+	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
 	<script src="_lib.js"></script>
 	<script>
-	
-/** ClipboardEvent interface - synthetic paste event does not insert data into TEXTAREA  */
+/** ClipboardEvent interface - synthetic events with non-standard MIME type   */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <form><textarea autofocus></textarea></form>*/
-/* Targets: document */
-function test(e){ }
+function test(e){
+	return e.clipboardData.getData('text/foobarbogustype')=='synthetic event text';
+}
+
 function onTestSetupReady(){
 	try{
-		var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-		document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
-		setTimeout( function(){
-			result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' )==-1);
-		}, 50 );
+		var evt=new ClipboardEvent( 'paste', {bubbles:true, cancelable:true, dataType: 'text/foobarbogustype', data:'synthetic event text'} );
+		document.dispatchEvent(evt);
 	}catch(e){
 		result('Unexpected Exception when initiating ClipboardEvent: '+e);
 		return;
@@ -29,15 +28,16 @@ function onTestSetupReady(){
 <body>
 
 	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<form><textarea autofocus></textarea></form>
+	<div id="log"></div>
+	<form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>
 
 	<script>
-	var dataToPaste="clipboard text";
+	var dataToPaste="clipboard text" ;
 	var externalPassCondition=null;
 	var eventTarget=document;
 	var eventType='paste';
 	window.onload=function(){
-		setupTest( document, 'paste', dataToPaste, externalPassCondition );
+		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
 	}
 	</script>
 </body></html>
