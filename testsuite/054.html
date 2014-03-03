@@ -10,7 +10,7 @@
 /* Events: paste */
 /* paste data: "pasted text" */
 /* Test HTML: <p>The "paste" menu UI state is enabled on this page even when there is no editable context.</p> */
-document.onbeforepaste = function(){return true;}
+document.onbeforepaste = function(){return false;}
 function test(e){
 	result('UI test: passes if "paste" menu UI state is enabled');
 }

@@ -82,10 +82,9 @@
 
 <section id="conformance"></section>
 
-<section>
+<section class="informative">
 <h2 id="secintro">Introduction</h2>
 
-<p>This section is informative</p>
 
 <p>This specification defines the common clipboard operations of cutting,
 copying and pasting, in such a way that they are exposed to Web Applications
@@ -93,35 +92,54 @@ and can be adapted to provide advanced functionalities. Its goal is to
 provide for compatibility where possible with existing implementations.</p>
 </section>
 
-<section>
+<section class="informative">
 <h2 id="Cases">Use Cases</h2>
-
-<p>This section is informative</p>
 
 <p>There are many use cases for being able to change the default clipboard
 operations (cut/copy/paste). We have collected
 a few samples to demonstrate possible uses, although these may not all be
 supported by this specification.</p>
 
-<h3 id="Rich">Rich content editing</h3>
+<section><h3 id="Rich">Rich content editing</h3>
 
 <p>When copying text which contains hyperlinks or other structure,
 it is often useful to be able to reformat the content to preserve important
 information.</p>
+</section>
 
-<h3>Graphics with built-in semantics</h3>
+<section><h3>Graphics with built-in semantics</h3>
 <p>In order to make web applications which allow the manipulation of rich
 text, or of graphic content such as SVG, it is useful to provide a mechanism
 that allows for copying more than just the rendered content.</p>
+</section>
 
-<h3 id="Mathematic">Mathematical information</h3>
+<section><h3 id="Mathematic">Mathematical information</h3>
 
 <p>With content such as mathematics, simply copying rendered text and pasting
 it into another application generally leads to most of the semantics being
 lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. The XML source
 could also be placed in the clipboard with the appropriate transformation occurring at paste time.</p>
-
 </section>
+</section>
+<section>
+<h2>APIs from other specifications</h2>
+<p>The following items are defined in the HTML specification. [[!HTML5]]</p>
+<ul>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#the-datatransferitemlist-interface">DataTransferItemList</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-setdata">setData()</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-getdata">getData()</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#drag-data-store-mode">drag data store mode</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#the-datatransfer-interface">DataTransfer</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/sections.html#the-body-element">the BODY element</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#the-drag-data-item-kind">drag data item kind</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#the-drag-data-item-type-string">drag data item type string</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-files">files</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-types">types</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-cleardata">clearData()</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransferitemlist-clear">items.clear()</a></dfn></li>
+</ul>
+</section>
+
 
 <section>
 
@@ -129,7 +147,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <h2>Events</h2>
 <section>
 <h3>Event types and details</h3>
-<p>This section is informative. Implementation details are given in the processing model section.</p>
+<p>This section contains a high-level description of how clipboard events work. Further implementation details are given in the <a href="#processing-model">processing model section</a>.</p>
 <section>
 <h4>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>copy</em>. Its default action is to place the selected data on the clipboard. </p>
@@ -216,7 +234,9 @@ function test(e){
 }
 </script>
 
-<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>, for example by calling the <code data-anolis-spec="html">setData()</code> method.</p>
+<p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. Any script which uses the clipboardData API to control what the cut event will write to the clipboard also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
+<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <a>DataTransferItemList</a>, for example by calling the <a>setData()</a> method.</p>
+
 <script>
 /** default action of event when there is no selection is noop */
 /* Events: copy cut */
@@ -299,7 +319,7 @@ function test(e){
 	/* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 </script>
-If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
+If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <a>DataTransferItemList</a>.</p>
 
 <script>
 /** setData() in cut event without preventDefault() has no effect when default action is noop */
@@ -339,7 +359,7 @@ function test(e){
   }, 20);
 }
 </script>
-<p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard and remove it from the document. Hence, the script calling setData() also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
+<p>If content is selected and the selection is in an editable context, the default action of a cut event is to place the selection on the clipboard and remove it from the document. Any script which uses the clipboardData API to control what the cut event will write to the clipboard also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
 <script>
 /** modifying data for cut event in non-editable context with selection */
 /* Events: copy cut */
@@ -437,7 +457,7 @@ function test(e){
 	return passed;
 }
 </script>
-<p>When pasting, the <code data-anolis-spec="html">drag data store mode</code> flag is <em>read-only</em>, hence calling <code data-anolis-spec="html">setData()</code> from a <b>paste</b> event handler will not modify the data that is inserted, and not modify the data on the clipboard.</p>
+<p>When pasting, the <a>drag data store mode</a> flag is <em>read-only</em>, hence calling <a>setData()</a> from a <b>paste</b> event handler will not modify the data that is inserted, and not modify the data on the clipboard.</p>
 <script>
 /** setData() does not modify text that is about to be inserted in a paste event */
 /* Events: paste */
@@ -546,7 +566,7 @@ function test(e){
 /* Events: copy */
 /* paste data: "pasted text" */
 /* Test HTML: <p>The "copy" menu UI state is enabled on this page even when there is no selection.</p> */
-document.onbeforecopy = function(){return true;}
+document.onbeforecopy = function(){return false;}
 function test(e){
 	result('UI test: passes if "copy" menu UI state is enabled');
 }
@@ -560,7 +580,7 @@ function test(e){
 /* Events: cut */
 /* paste data: "pasted text" */
 /* Test HTML: <p>The "cut" menu UI state is enabled on this page even when there is no editable selection.</p> */
-document.onbeforecut = function(){return true;}
+document.onbeforecut = function(){return false;}
 function test(e){
 	result('UI test: passes if "cut" menu UI state is enabled');
 }
@@ -574,7 +594,7 @@ function test(e){
 /* Events: paste */
 /* paste data: "pasted text" */
 /* Test HTML: <p>The "paste" menu UI state is enabled on this page even when there is no editable context.</p> */
-document.onbeforepaste = function(){return true;}
+document.onbeforepaste = function(){return false;}
 function test(e){
 	result('UI test: passes if "paste" menu UI state is enabled');
 }
@@ -590,7 +610,7 @@ function test(e){
 <h3>Processing model</h3>
 <p>To <dfn id="dispatch-a-clipboard-event">dispatch a clipboard event of type <em>e</em></dfn>,</p>
 <ol>
-	<li>Let the <em>data transfer</em> be a <code data-anolis-spec="html">DataTransfer</code> object [[!HTML5]]</li>
+	<li>Let the <em>data transfer</em> be a <a>DataTransfer</a> object [[!HTML5]]</li>
 <script>
 /** event.clipboardData exists and inherits from DataTransfer */
 /* Events: copy cut paste */
@@ -619,7 +639,7 @@ function test(e){
 	<li>If the event is not trusted, let <var>semi-trusted</var> be <var>true</var> or <var>false</var> according to the <a href="#semi-trusted-event">semi-trusted events</a> rules</li>
 	<li>Let <var>types-to-clear</var> be an empty list</li>
 	<li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
-	<li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <code data-anolis-spec="html">the BODY element</code> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <code data-anolis-spec="html">the BODY element</code> if no node has focus.</li>
+	<li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <a>the BODY element</a> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <a>the BODY element</a> if no node has focus.</li>
 <script>
 /** event target when selection spans several elements  */
 /* Events: copy cut */
@@ -719,10 +739,10 @@ function test(e){
 	<dl class="switch">
 		<dt>If <em>e</em> is <var>paste</var></dt>
 		<dd>
-			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read-only</em></p>
+			<p>Set the associated <a>DataTransfer</a> object's <a>drag data store mode</a> flag to <em>read-only</em></p>
 			<dl class="switch">
 				<dt>If <var>trusted</var> is <var>true</var></dt>
-				<dt>If the implementation is configured to allow scripted paste actions and the <var>data</var> and <var>dataType</var> properties were not set on the <code data-anolis-spec="clipops">ClipboardEventInit</code> object passed to the event constructor:</dt>
+				<dt>If the implementation is configured to allow scripted paste actions and the <var>data</var> and <var>dataType</var> properties were not set on the <a href="#dictionary-clipboardeventinit-members">ClipboardEventInit</a> object passed to the event constructor:</dt>
 				<dd>
 					<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
 					<p>For each part on the OS clipboard, carry out these steps:</p>
@@ -731,7 +751,7 @@ function test(e){
 						<dd>
 							<ol>
 								<li>Ensure the text is in the encoding the scripting engine uses internally</li>
-								<li>Add one entry for the text to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>string</em> and <var  data-anolis-spec="html">drag data item type string</var> set to <em>text/plain</em></li>
+								<li>Add one entry for the text to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>string</em> and <a>drag data item type string</a> set to <em>text/plain</em></li>
 <script>
 /** clipboardData.items when clipboard has one single text/plain entry */
 /* Events: paste */
@@ -775,7 +795,7 @@ function test(e){
 							<ol>
 								<li>Determine MIME type of referenced files</li>
 								<li>
-									Add one entry per file reference to the <code data-anolis-spec="html">DataTransferItemList</code> with <var data-anolis-spec="html">drag data item kind</var> set to <em>file</em> and <var data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type,
+									Add one entry per file reference to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>file</em> and <a>drag data item type string</a> set to the corresponding MIME type,
 
 <script>
 /** pasting a file */
@@ -813,20 +833,20 @@ function test(e){
 						<dd id="processing-model-for-html-data">
 							<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
 							<ol>
-								<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>Plain Unicode string</em>, <var  data-anolis-spec="html">drag data item type string</var> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code data-anolis-spec="html">DataTransferItemList</code>.</li>
+								<li>Add one entry to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>Plain Unicode string</em>, <a>drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <a>DataTransferItemList</a>.</li>
 								<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
 								<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
 								<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 									<ol>
-										<li>Let <var>itemNumber</var> be the number of items on the <code data-anolis-spec="html">DataTransferItemList</code></li>
+										<li>Let <var>itemNumber</var> be the number of items on the <a>DataTransferItemList</a></li>
 										<li><p>Choose the appropriate steps from this list:</p>
 											<dl class="switch">
-												<dt>If the <code data-anolis-spec="html">DataTransferItemList</code> of the current <code data-anolis-spec="html">DataTransfer</code> object already contains an entry for the referenced file or clipboard part</dt>
+												<dt>If the <a>DataTransferItemList</a> of the current <a>DataTransfer</a> object already contains an entry for the referenced file or clipboard part</dt>
 												<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
 												<dt>Otherwise</dt>
 												<dd>
 													<ol>
-														<li>Add a new entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <code>index</code> set to <var>itemNumber</var>, <var  data-anolis-spec="html">drag data item kind</var> set to "file", and <var  data-anolis-spec="html">drag data item type string</var> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
+														<li>Add a new entry to the <a>DataTransferItemList</a> with <code>index</code> set to <var>itemNumber</var>, <a>drag data item kind</a> set to "file", and <a>drag data item type string</a> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
 														<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
 														<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
 													</ol></dd>
@@ -835,7 +855,7 @@ function test(e){
 										<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
 									</ol>
 								</li>
-								<li>Serialize the processed DOM and update the <code data-anolis-spec="html">DataTransferItemList</code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
+								<li>Serialize the processed DOM and update the <a>DataTransferItemList</a> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
 							</ol>
 						</dd>
 						<dt>If the current clipboard part contains data in <a href="#mandatory-data-types">another supported binary or text-based format</a>:</dt>
@@ -843,7 +863,7 @@ function test(e){
 							<ol>
 								<li>Determine the MIME type of the data
 								</li>
-								<li>Add one entry to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>file</em>, <var  data-anolis-spec="html">drag data item type string</var> set to the corresponding MIME type</li>
+								<li>Add one entry to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>file</em>, <a>drag data item type string</a> set to the corresponding MIME type</li>
 							</ol>
 						</dd>
 
@@ -852,26 +872,26 @@ function test(e){
 				<dt>Otherwise, the event is untrusted. Follow the steps in this algorithm:</dt>
 				<dd>
 					<dl class="switch">
-						<dt>If the arguments data and dataType were passed to the <code data-anolis-spec="clipops">ClipboardEvent</code> constructor</dt>
-						<dd>Add one entry for the data to the <code data-anolis-spec="html">DataTransferItemList</code> with <var  data-anolis-spec="html">drag data item kind</var> set to <em>string</em> and <var  data-anolis-spec="html">drag data item type string</var> set to the value of the <em>dataType</em> argument</dd>
+						<dt>If the arguments data and dataType were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor</dt>
+						<dd>Add one entry for the data to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>string</em> and <a>drag data item type string</a> set to the value of the <em>dataType</em> argument</dd>
 						<dt>Otherwise,</dt>
-						<dd>Leave the <code data-anolis-spec="html">DataTransferItemList</code> empty</dd>
+						<dd>Leave the <a>DataTransferItemList</a> empty</dd>
 					</dl>
 				</dd>
 			</dl>
-		<p>Update the <code data-anolis-spec="html">files</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
-		<p>Update the <code data-anolis-spec="html">types</code> property to match entries in the <code data-anolis-spec="html">DataTransferItemList</code>.</p>
+		<p>Update the <a>files</a> property to match entries in the <a>DataTransferItemList</a>.</p>
+		<p>Update the <a>types</a> property to match entries in the <a>DataTransferItemList</a>.</p>
 		</dd>
 		<dt>If <em>e</em> is <var>copy</var> or <var>cut</var></dt>
 		<dd>
-			<p>Set the associated <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag to <em>read/write</em></p>
+			<p>Set the associated <a>DataTransfer</a> object's <a>drag data store mode</a> flag to <em>read/write</em></p>
 		</dd>
 	</dl>
 </li>
-<li> Dispatch an event using the <code data-anolis-spec="clipops">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its <code data-anolis-spec="clipops">clipboardData</code> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its <a href="##widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
 	<p>Implementation requirements for access to data during event dispatch are defined in [[!HTML5]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
-		<dt>If a script calls <code data-anolis-spec="html">clearData()</code> or <code data-anolis-spec="html">items.clear()</code> and the <code data-anolis-spec="html">DataTransfer</code> object's <var data-anolis-spec="html">drag data store mode</var> flag is <em>read/write</em></dt>
+		<dt>If a script calls <a>clearData()</a> or <a>items.clear()</a> and the <a>DataTransfer</a> object's <a>drag data store mode</a> flag is <em>read/write</em></dt>
 		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
 <script>
 /** setData() followed by clearData() in same event handler */
@@ -885,7 +905,7 @@ function test(e){
 	e.preventDefault();
 }
 </script>
-		<dt>If a script calls <code data-anolis-spec="html">setData()</code> or modifies items and the <var>clear-was-called</var> flag is true</dt>
+		<dt>If a script calls <a>setData()</a> or modifies items and the <var>clear-was-called</var> flag is true</dt>
 		<dd>
 			<dl class="switch">
 				<dt>If the <var>types-to-clear</var> list is empty</dt>
@@ -902,7 +922,7 @@ function test(e){
 	e.preventDefault();
 }
 </script>
-				<dt>else, if <code data-anolis-spec="html">setData()</code>'s <code>type</code> argument or the new item's <var  data-anolis-spec="html">drag data item type string</var> is found in the <var>types-to-clear</var> list</dt>
+				<dt>else, if <a>setData()</a>'s <code>type</code> argument or the new item's <a>drag data item type string</a> is found in the <var>types-to-clear</var> list</dt>
 				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
 			</dl>
 		</dd>
@@ -919,8 +939,8 @@ function test(e){
 }
 </script>
 
-		<dt>If a script calls <code data-anolis-spec="html">getData()</code> or accesses items in the <code data-anolis-spec="html">DataTransferItemList</code> and <var>clipboard-entry</var> is set</dt>
-		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code data-anolis-spec="html">DataTransferItemList</code> object's <var data-anolis-spec="html">drag data store mode</var> to the <i>disabled mode</i></dd>
+		<dt>If a script calls <a>getData()</a> or accesses items in the <a>DataTransferItemList</a> and <var>clipboard-entry</var> is set</dt>
+		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <a>DataTransferItemList</a> object's <a>drag data store mode</a> to the <i>disabled mode</i></dd>
 	</dl>
 		<p class="warning"><strong>Warning!</strong> A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
 <script>
@@ -958,8 +978,8 @@ function test(e){
 				<dd>Do nothing, terminate this algorithm.
 				<dt>Otherwise</dt>
 				<dd>			
-					<p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <code data-anolis-spec="html">DataTransferItemList</code>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
-					<p class="note">The <code data-anolis-spec="html">DataTransferItemList</code> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <code data-anolis-spec="clipops">ClipboardEvent</code> constructor.</p>
+					<p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a>DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
+					<p class="note">The <a>DataTransferItemList</a> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor.</p>
 				</dd>
 				</dd>
 			</dl>
@@ -970,7 +990,7 @@ function test(e){
 			<dl class="switch">
 				<dt>If the event was cancelled</dt>
 				<dd>
-					<p>Update the clipboard contents with the data from the script, as given by the <code data-anolis-spec="html">DataTransferItemList</code>. Process each part as follows:</p>
+					<p>Update the clipboard contents with the data from the script, as given by the <a>DataTransferItemList</a>. Process each part as follows:</p>
 					<dl class="switch">
 						<dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
 						<dd>
@@ -1015,7 +1035,7 @@ function test(e){
 						<dd><ol>
 								<li>Remove current clipboard contents</li>
 								<li>Place part on clipboard with the appropriate OS clipboard format description</li></ol>
-						<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for setData()'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
+						<p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a>setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
 						</dd>
 					</dl>
 				</dd>
@@ -1036,7 +1056,7 @@ function test(e){
 						<dt>Otherwise</dt>
 						<dd>
 							<p>Do nothing, terminate this algorithm</p>
- 							<p class="note">Calling setData() without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p>
+ 							<p class="note">Calling <a>setData()</a> without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p>
 						</dd>
 					</dl>
 				</dd>
@@ -1092,8 +1112,28 @@ function onTestSetupReady(){
 	}
 }
 </script>
-<p class="note">Synthetic events and events triggered from document.execCommand() will only affect the contents of the real clipboard if the user agent is configured to trust the script, or (for copy and cut events only) if the synthetic event is dispatched from an event that is trusted and whitelisted.</p>
-<h3>Semi-trusted events</h3>
+
+
+<dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
+	<dt>DOMString data = ""</dt>
+	<dd>The data of the synthetic clipboard event</dd>
+	<dt>DOMString dataType = ""</dt>
+	<dd>A MIME type [[!RFC2046]] describing the data the event is being initialized with</dd>
+</dl>
+
+<dl class="idl idl-code" title="[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)] interface ClipboardEvent : Event">
+    <dt>readonly attribute DataTransfer clipboardData</dt>
+    <dd>
+     <p>The clipboardData attribute is an instance of the <a>DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
+			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
+    </dd>
+</dl>
+
+</section>
+
+<section>
+<h2>Integration with other scripts and events</h2>
+<section><h3>Semi-trusted events</h3>
 <p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from a <code data-anolis-spec="dom-events">trusted event</code> thread whose event type is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
 <p>Events that are allowed to trigger semi-trusted events are:</p>
 <ul><li>keydown</li>
@@ -1266,28 +1306,11 @@ function onTestSetupReady(){
 	}
 }
 </script>
-
-<dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
-	<dt>DOMString data = ""</dt>
-	<dd>The data of the synthetic clipboard event</dd>
-	<dt>DOMString dataType = ""</dt>
-	<dd>A MIME type [[!RFC2046]] describing the data the event is being initialized with</dd>
-</dl>
-
-<dl class="idl idl-code" title="[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)] interface ClipboardEvent : Event">
-    <dt>readonly attribute DataTransfer clipboardData</dt>
-    <dd>
-     <p>The clipboardData attribute is an instance of the <code data-anolis-spec="html">DataTransfer</code> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
-			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
-    </dd>
-</dl>
-
 </section>
-
-<section>
-<h2>Integration with other scripts and events</h2>
-<h3>Integration with rich text editing APIs</h3>
+<section><h3>Integration with rich text editing APIs</h3>
 <p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> dispatch corresponding synthetic clipboard events. Such events are not trusted, but may be <a href="#semi-trusted-event">semi-trusted events</a>.</p>
+<p class="note">Synthetic events and events triggered from document.execCommand() will only affect the contents of the real clipboard if the user agent is configured to trust the script, or (for copy and cut events only) if the synthetic event is dispatched from an event that is trusted and whitelisted.</p>
+
 <script>
 /** integration with execCommand, events are syncronous */
 /* Events: copy cut paste */
@@ -1376,7 +1399,8 @@ function triggerTestManually(){
 	}
 }
 </script>
-
+</section>
+<section>
 <h3 id="otherevents">Interaction with other events</h3>
 <p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
 
@@ -1514,8 +1538,9 @@ function test(e){
   }, 50);
   e.target.blur(); // might provoke a change event, but should not
 }
-</script>
+</script></section>
 
+<section>
 <h3 id="selection-mod">Event listeners that modify selection or focus</h3>
 <p>If the event listener modifies the selection or focus, the clipboard action <em>must</em> be completed on the modified selection.</p>
 <script>
@@ -1561,12 +1586,12 @@ function test(e){
 
 </script>
 </section>
+</section>
 
 <section>
 <h3 id="pasting-html">Pasting HTML and multi-part data</h3>
-<section>
+<section class="informative">
 <h4>Security risks</h4>
-<p><i>This section is informative.</i></p>
 <p>There are certain security risks associated with pasting formatted or multi-part data.</p>
 <ul>
   <li>The user might paste hidden data without realising is there. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.</li>
@@ -1590,7 +1615,7 @@ function test(e){
 </section>
 <section>
 <h4>General security policies</h4>
-<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <code data-anolis-spec="html">files</code> list or <code data-anolis-spec="html">DataTransferItemList</code>.</p>
+<p>The implementation <em>must not</em> download referenced online resources, or expose their contents in the <a>files</a> list or <a>DataTransferItemList</a>.</p>
 <p>If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.</p>
 </section>
 </section>
@@ -1602,11 +1627,12 @@ function test(e){
 
 <p>An example scenario of a problem is where a user selects a link and copies it, but a different link is copied to the clipboard. The effect of this can range from an unexpected result on pasting to an attempted "phishing" attack.</p>
 
+<section>
 <h3 id="privacy">Privacy concerns</h3>
 <p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the user agent's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
 <ul>
-<li>Objects implementing the <code data-anolis-spec="html">DataTransfer</code> interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.</li>
-<li>If a script stores a reference to an object implementing the <code data-anolis-spec="html">DataTransfer</code> interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
+<li>Objects implementing the <a>DataTransfer</a> interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.</li>
+<li>If a script stores a reference to an object implementing the <a>DataTransfer</a> interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
 <script>
 /** setData() called outside event handler method */
 /* Events: copy cut paste */
@@ -1644,17 +1670,20 @@ function test(e){
 }
 </script>
 </li>
-<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data.</li>
+<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data except when configured to do so.</li>
 <li>Implementations <em>should not</em> let scripts call document.execCommand('paste') unless the user has explicitly allowed it.</li>
 </ul>
-<p>Implementations may choose to further limit the functionality provided by the <code data-anolis-spec="html">DataTransfer</code> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
-<h3 id="nuisances">Nuisance considerations</h3>
-<p>Scripts may use the <code data-anolis-spec="html">DataTransfer</code> API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
+<p>Implementations may choose to further limit the functionality provided by the <a>DataTransfer</a> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
+</section>
+
+<section><h3 id="nuisances">Nuisance considerations</h3>
+<p>Scripts may use the <a>DataTransfer</a> API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
+</section>
 </section>
 <section>
 <h2 id="mandatory-data-types">Mandatory data types</h2>
-<p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <code data-anolis-spec="html">DataTransferItemList</code> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
+<p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <a>DataTransferItemList</a> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
 <ul>
 <li>text/plain</li>
 <li>text/uri-list</li>
@@ -1695,6 +1724,7 @@ DataFormats.CF_TIFF
 -->
 </section>
 
+<section>
 <h2 id="Acknowledg">Acknowledgements</h2>
 
 <p>This section is informative</p>
@@ -1709,6 +1739,7 @@ Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
 Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham.</p>
+</section>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
 

@@ -16,6 +16,11 @@ function test(e){
 	e.clipboardData.setData('text/plain', 'modified text');
 	e.preventDefault();
 }
+/* TODO: should this (and similar) tests only work if we have "preflight" events? */
+/*
+document.onbeforecopy = function(){return false;}
+document.onbeforecut = function(){return false;}
+*/
 
 	</script>
 </head>

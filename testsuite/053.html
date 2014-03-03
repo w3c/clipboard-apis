@@ -10,7 +10,7 @@
 /* Events: cut */
 /* paste data: "pasted text" */
 /* Test HTML: <p>The "cut" menu UI state is enabled on this page even when there is no editable selection.</p> */
-document.onbeforecut = function(){return true;}
+document.onbeforecut = function(){return false;}
 function test(e){
 	result('UI test: passes if "cut" menu UI state is enabled');
 }
