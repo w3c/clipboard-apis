@@ -151,6 +151,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <section>
 <h4>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>copy</em>. Its default action is to place the selected data on the clipboard. </p>
+<p>The event bubbles and is cancelable.</p>
 <script>
 /** ClipboardEvent - events fire on INPUT */
 /* Events: copy cut */
@@ -288,13 +289,13 @@ function test(e){
 	return passed;
 }
 </script>
-
 </section>
 
 <section>
 
 <h4>cut event</h4>
 <p>When the user initiates a cut operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>cut</em>. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
+<p>The event bubbles and is cancelable.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 <script>
 /** cancelling default action of cut prevents removal of text from editable context  */
@@ -386,13 +387,13 @@ function test(e){
 }
 </script>
 
-
 </section>
 <section>
 
 
 <h4>paste event</h4>
 <p>When the user initiates a paste operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>paste</em>. The event fires before any clipboard data is inserted.</p>
+<p>The event bubbles and is cancelable.</p>
 <script>
 /** events fire on INPUT */
 /* Events: paste */
@@ -1738,7 +1739,7 @@ documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-O
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
-Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham.</p>
+Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham, James Greene, Boris Zbarsky.</p>
 </section>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
