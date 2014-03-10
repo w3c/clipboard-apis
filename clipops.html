@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en">
+<html lang="en" dir="ltr" typeof="bibo:Document w3p:WD" about="" property="dcterms:language" content="en">
 <head>
 	<title> Clipboard API and events </title>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -422,7 +422,7 @@ table.simple {
         display: none;
     }
 }
-</style><link href="https://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+</style><link href="https://www.w3.org/StyleSheets/TR/W3C-WD" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
 <!--
 	The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
 		each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
@@ -449,11 +449,11 @@ table.simple {
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
   
-  <h2 id="w3c-editor-s-draft-03-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-03T06:35:34.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-03-03">03 March 2014</time></h2>
+  <h2 id="w3c-working-draft-11-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T15:00:00.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Working Draft <time class="dt-published" datetime="2014-03-11">11 March 2014</time></h2>
   <dl>
     
       <dt>This version:</dt>
-      <dd><a class="u-url" href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-clipboard-apis-20140311/">http://www.w3.org/TR/2014/WD-clipboard-apis-20140311/</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd>
     
@@ -465,8 +465,9 @@ table.simple {
     
     
     
-      
     
+      <dt>Previous version:</dt>
+      <dd><a rel="dcterms:replaces" href="http://www.w3.org/TR/2013/WD-clipboard-apis-20130411/">http://www.w3.org/TR/2013/WD-clipboard-apis-20130411/</a></dd>
     
     
     <dt>Editor:</dt>
@@ -519,7 +520,9 @@ table.simple {
         
 
         <p>
-          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft.
+          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Draft.
+          
+            This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
           
           
             If you wish to make comments regarding this document, please send them to 
@@ -536,7 +539,7 @@ table.simple {
         
         
           <p>
-            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
             Membership. This is a draft document and may be updated, replaced or obsoleted by other
             documents at any time. It is inappropriate to cite this document as other than work in
             progress.
@@ -662,12 +665,11 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 
 
-<p>The current selection is not affected.</p>
+<p>The current selection is not affected. The event bubbles and is cancelable.</p>
 
 
 <p>If content in the document is selected, the default action of a copy event is to place the selection on the clipboard. Any script which uses the clipboardData API to control what the cut event will write to the clipboard also needs to cancel the default action of the event with event.preventDefault(). Otherwise, the data the script intends to place on the clipboard will be overwritten by the default action.</p>
 <p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>, for example by calling the <a class="internalDFN" href="#dfn-setdata">setData()</a> method.</p>
-
 
 
 
@@ -680,6 +682,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 <h4 id="h4_cut-event" role="heading" aria-level="3"><span class="secno">5.1.2 </span>cut event</h4>
 <p>When the user initiates a cut operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>cut</em>. In an editable context, its default action is to place the selected data on the clipboard and remove the selection from the document.</p>
+<p>The event bubbles and is cancelable.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 
 <p>In a non-editable context, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless.
@@ -698,13 +701,13 @@ If the default action is to do nothing, the clipboard is not modified except if 
 
 
 
-
 </section>
 <section id="paste-event">
 
 
 <h4 id="h4_paste-event" role="heading" aria-level="3"><span class="secno">5.1.3 </span>paste event</h4>
 <p>When the user initiates a paste operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>paste</em>. The event fires before any clipboard data is inserted.</p>
+<p>The event bubbles and is cancelable.</p>
 
 
 
@@ -1173,7 +1176,7 @@ documentation of Data Transfer functionalities from Microsoft [<cite><a href="#b
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
-Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham.</p>
+Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham, James Greene, Boris Zbarsky.</p>
 </section>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
