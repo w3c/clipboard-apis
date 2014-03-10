@@ -151,7 +151,6 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <section>
 <h4>copy event</h4>
 <p>When the user initiates a copy operation, the implementation <a href="#dispatch-a-clipboard-event">fires a clipboard event</a> named <em>copy</em>. Its default action is to place the selected data on the clipboard. </p>
-<p>The event bubbles and is cancelable.</p>
 <script>
 /** ClipboardEvent - events fire on INPUT */
 /* Events: copy cut */
@@ -219,7 +218,7 @@ function test(e){
 }
 </script>
 
-<p>The current selection is not affected.</p>
+<p>The current selection is not affected. The event bubbles and is cancelable.</p>
 <script>
 /** copy event does not modify selection  */
 /* Events: copy */
