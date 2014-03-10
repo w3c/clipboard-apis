@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" typeof="bibo:Document w3p:WD" about="" property="dcterms:language" content="en">
+<html lang="en" dir="ltr" typeof="bibo:Document " about="" property="dcterms:language" content="en">
 <head>
-	<title> Clipboard API and events </title>
-	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-	
-	
-		<style type="text/css">.tmp-issue-table td{border: 1px solid red}</style>
-	<style>/* --- EXAMPLES --- */
+    <title> Clipboard API and events </title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+    
+        <style type="text/css">.tmp-issue-table td{border: 1px solid red}</style>
+    <style>/* --- EXAMPLES --- */
 div.example-title {
     min-width: 7.5em;
     color: #b9ab2d;
@@ -422,23 +422,23 @@ table.simple {
         display: none;
     }
 }
-</style><link href="https://www.w3.org/StyleSheets/TR/W3C-WD" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+</style><link href="https://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
 <!--
-	The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
-		each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
-		extra inline HTML code for test case can be given with Test HTML: comment (defaults to single input)
-		defines test method that returns true for pass, false for failure and string for other unexpected statuses.
-		framework must set up a listener for the relevant event(s) that calls the test() method with the event object as argument, and check return value
-		framework will then focus suitable element and trigger relevant event. For paste, data will be given in 'paste data:' comment.
-		(If there is no "paste data:" instruction, the framework shall clear the clipboard before each test is run)
-		for cut/copy, framework will select element contents before triggering command
-		if test function returns undefined, the test is async and will call a result() method the framework must define with pass/fail
-		An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
-		If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
-		If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
+    The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
+        each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
+        extra inline HTML code for test case can be given with Test HTML: comment (defaults to single input)
+        defines test method that returns true for pass, false for failure and string for other unexpected statuses.
+        framework must set up a listener for the relevant event(s) that calls the test() method with the event object as argument, and check return value
+        framework will then focus suitable element and trigger relevant event. For paste, data will be given in 'paste data:' comment.
+        (If there is no "paste data:" instruction, the framework shall clear the clipboard before each test is run)
+        for cut/copy, framework will select element contents before triggering command
+        if test function returns undefined, the test is async and will call a result() method the framework must define with pass/fail
+        An "External pass condition - clipboard data:" comment indicates that the pass/fail result of the test can not be checked from JavaScript, and the framework must check if the expected data is on the clipboard to know if the test passed or failed
+        If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
+        If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
 
-		Note on automation: if there is an external pass condition, the automation framework must check it and inject script that calls result() method
-		with true or false respectively
+        Note on automation: if there is an external pass condition, the automation framework must check it and inject script that calls result() method
+        with true or false respectively
 -->
 
 <body id="respecDocument" role="document" class="h-entry" lang="en"><div id="respecHeader" role="contentinfo" class="head">
@@ -449,11 +449,11 @@ table.simple {
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
   
-  <h2 id="w3c-working-draft-11-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T15:00:00.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Working Draft <time class="dt-published" datetime="2014-03-11">11 March 2014</time></h2>
+  <h2 id="w3c-editor-s-draft-10-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T00:50:30.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-03-10">10 March 2014</time></h2>
   <dl>
     
       <dt>This version:</dt>
-      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-clipboard-apis-20140311/">http://www.w3.org/TR/2014/WD-clipboard-apis-20140311/</a></dd>
+      <dd><a class="u-url" href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd>
     
@@ -465,9 +465,8 @@ table.simple {
     
     
     
+      
     
-      <dt>Previous version:</dt>
-      <dd><a rel="dcterms:replaces" href="http://www.w3.org/TR/2013/WD-clipboard-apis-20130411/">http://www.w3.org/TR/2013/WD-clipboard-apis-20130411/</a></dd>
     
     
     <dt>Editor:</dt>
@@ -505,8 +504,8 @@ table.simple {
   <hr>
 </div>
 <section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" datatype="" property="dcterms:abstract" class="introductory" id="abstract"><h2 id="h2_abstract" role="heading" aria-level="1">Abstract</h2>
-	<p>This document describes APIs for clipboard operations such as copy, cut and
-	paste in web applications.</p>
+    <p>This document describes APIs for clipboard operations such as copy, cut and
+    paste in web applications.</p>
 </section><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="sotd" class="introductory"><h2 id="h2_sotd" role="heading" aria-level="1">Status of This Document</h2>
   
     
@@ -520,9 +519,7 @@ table.simple {
         
 
         <p>
-          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Draft.
-          
-            This document is intended to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+          This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft.
           
           
             If you wish to make comments regarding this document, please send them to 
@@ -539,7 +536,7 @@ table.simple {
         
         
           <p>
-            Publication as a Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
             Membership. This is a draft document and may be updated, replaced or obsoleted by other
             documents at any time. It is inappropriate to cite this document as other than work in
             progress.
@@ -754,16 +751,16 @@ If the default action is to do nothing, the clipboard is not modified except if 
 <!--OddPage--><h2 id="h2_processing-model" role="heading" aria-level="1"><span class="secno">6. </span>Processing model</h2>
 <p>To <dfn id="dispatch-a-clipboard-event">dispatch a clipboard event of type <em>e</em></dfn>,</p>
 <ol>
-	<li>Let the <em>data transfer</em> be a <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]</li>
+    <li>Let the <em>data transfer</em> be a <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]</li>
 
  
 
-	<li>Let <var>clear-was-called</var> be <var>false</var></li>
-	<li>Let <var>trusted</var> be <var>true</var> if the event is generated by the user agent, <var>false</var> otherwise</li>
-	<li>If the event is not trusted, let <var>semi-trusted</var> be <var>true</var> or <var>false</var> according to the <a href="#semi-trusted-event">semi-trusted events</a> rules</li>
-	<li>Let <var>types-to-clear</var> be an empty list</li>
-	<li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
-	<li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if no node has focus.</li>
+    <li>Let <var>clear-was-called</var> be <var>false</var></li>
+    <li>Let <var>trusted</var> be <var>true</var> if the event is generated by the user agent, <var>false</var> otherwise</li>
+    <li>If the event is not trusted, let <var>semi-trusted</var> be <var>true</var> or <var>false</var> according to the <a href="#semi-trusted-event">semi-trusted events</a> rules</li>
+    <li>Let <var>types-to-clear</var> be an empty list</li>
+    <li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
+    <li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if no node has focus.</li>
 
 
 
@@ -776,199 +773,197 @@ If the default action is to do nothing, the clipboard is not modified except if 
 
 
 <li>
-	<dl class="switch">
-		<dt>If <em>e</em> is <var>paste</var></dt>
-		<dd>
-			<p>Set the associated <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
-			<dl class="switch">
-				<dt>If <var>trusted</var> is <var>true</var></dt>
-				<dt>If the implementation is configured to allow scripted paste actions and the <var>data</var> and <var>dataType</var> properties were not set on the <a href="#dictionary-clipboardeventinit-members">ClipboardEventInit</a> object passed to the event constructor:</dt>
-				<dd>
-					<!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
-					<p>For each part on the OS clipboard, carry out these steps:</p>
-					<dl class="switch">
-						<dt>If the current clipboard part contains plain text:</dt>
-						<dd>
-							<ol>
-								<li>Ensure the text is in the encoding the scripting engine uses internally</li>
-								<li>Add one entry for the text to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></li>
+    <dl class="switch">
+        <dt>If <em>e</em> is <var>paste</var></dt>
+        <dd>
+            <p>Set the associated <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
+            <dl class="switch">
+                <dt>If <var>trusted</var> is <var>true</var></dt>
+                <dt>If the implementation is configured to allow scripted paste actions and the <var>data</var> and <var>dataType</var> properties were not set on the <a href="#dictionary-clipboardeventinit-members">ClipboardEventInit</a> object passed to the event constructor:</dt>
+                <dd>
+                    <!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
+                    <p>For each part on the OS clipboard, carry out these steps:</p>
+                    <dl class="switch">
+                        <dt>If the current clipboard part contains plain text:</dt>
+                        <dd>
+                            <ol>
+                                <li>Ensure the text is in the encoding the scripting engine uses internally</li>
+                                <li>Add one entry for the text to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></li>
 
 
 
-							</ol>
-						</dd>
-						<!-- CF_HDROP -->
-						<dt>If the current clipboard part represents file references:</dt>
-						<dd>
-							<ol>
-								<li>Determine MIME type of referenced files</li>
-								<li>
-									Add one entry per file reference to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type,
+                            </ol>
+                        </dd>
+                        <!-- CF_HDROP -->
+                        <dt>If the current clipboard part represents file references:</dt>
+                        <dd>
+                            <ol>
+                                <li>Determine MIME type of referenced files</li>
+                                <li>
+                                    Add one entry per file reference to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type,
 
 
 
-									or <code>application/octet-stream</code> if the file's type is unknown.</li>
+                                    or <code>application/octet-stream</code> if the file's type is unknown.</li>
 
-							</ol>
-						</dd>
-						<dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
-						<dd id="processing-model-for-html-data">
-							<p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
-							<ol>
-								<li>Add one entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</li>
-								<li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
-								<li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
-								<li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a href="#bib-RFC2392" class="bibref">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
-									<ol>
-										<li>Let <var>itemNumber</var> be the number of items on the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a></li>
-										<li><p>Choose the appropriate steps from this list:</p>
-											<dl class="switch">
-												<dt>If the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> of the current <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object already contains an entry for the referenced file or clipboard part</dt>
-												<dd>set <var>itemNumber</var> to the index of the existing entry</dd>
-												<dt>Otherwise</dt>
-												<dd>
-													<ol>
-														<li>Add a new entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <code>index</code> set to <var>itemNumber</var>, <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to "file", and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
-														<li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
-														<li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
-													</ol></dd>
-											</dl>
-										</li>
-										<li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
-									</ol>
-								</li>
-								<li>Serialize the processed DOM and update the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
-							</ol>
-						</dd>
-						<dt>If the current clipboard part contains data in <a href="#mandatory-data-types">another supported binary or text-based format</a>:</dt>
-						<dd>
-							<ol>
-								<li>Determine the MIME type of the data
-								</li>
-								<li>Add one entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</li>
-							</ol>
-						</dd>
+                            </ol>
+                        </dd>
+                        <dt>If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats </dt>
+                        <dd id="processing-model-for-html-data">
+                            <p>If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:</p>
+                            <ol>
+                                <li>Add one entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</li>
+                                <li>Extract the markup from the clipboard and use the relevant parser to construct a DOM tree</li>
+                                <li>If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL</li>
+                                <li>If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [<cite><a href="#bib-RFC2392" class="bibref">RFC2392</a></cite>]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
+                                    <ol>
+                                        <li>Let <var>itemNumber</var> be the number of items on the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a></li>
+                                        <li><p>Choose the appropriate steps from this list:</p>
+                                            <dl class="switch">
+                                                <dt>If the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> of the current <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object already contains an entry for the referenced file or clipboard part</dt>
+                                                <dd>set <var>itemNumber</var> to the index of the existing entry</dd>
+                                                <dt>Otherwise</dt>
+                                                <dd>
+                                                    <ol>
+                                                        <li>Add a new entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <code>index</code> set to <var>itemNumber</var>, <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to "file", and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.</li>
+                                                        <li>Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents</li>
+                                                        <li>Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part</li>
+                                                    </ol></dd>
+                                            </dl>
+                                        </li>
+                                        <li>Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</li>
+                                    </ol>
+                                </li>
+                                <li>Serialize the processed DOM and update the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</li>
+                            </ol>
+                        </dd>
+                        <dt>If the current clipboard part contains data in <a href="#mandatory-data-types">another supported binary or text-based format</a>:</dt>
+                        <dd>
+                            <ol>
+                                <li>Determine the MIME type of the data
+                                </li>
+                                <li>Add one entry to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</li>
+                            </ol>
+                        </dd>
 
-					</dl>
-				</dd>
-				<dt>Otherwise, the event is untrusted. Follow the steps in this algorithm:</dt>
-				<dd>
-					<dl class="switch">
-						<dt>If the arguments data and dataType were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor</dt>
-						<dd>Add one entry for the data to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the value of the <em>dataType</em> argument</dd>
-						<dt>Otherwise,</dt>
-						<dd>Leave the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> empty</dd>
-					</dl>
-				</dd>
-			</dl>
-		<p>Update the <a class="internalDFN" href="#dfn-files">files</a> property to match entries in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</p>
-		<p>Update the <a class="internalDFN" href="#dfn-types">types</a> property to match entries in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</p>
-		</dd>
-		<dt>If <em>e</em> is <var>copy</var> or <var>cut</var></dt>
-		<dd>
-			<p>Set the associated <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag to <em>read/write</em></p>
-		</dd>
-	</dl>
+                    </dl>
+                </dd>
+                <dt>Otherwise, the event is untrusted. Follow the steps in this algorithm:</dt>
+                <dd>
+                    <dl class="switch">
+                        <dt>If the arguments data and dataType were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor</dt>
+                        <dd>Add one entry for the data to the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with <a class="internalDFN" href="#dfn-drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> set to the value of the <em>dataType</em> argument</dd>
+                        <dt>Otherwise,</dt>
+                        <dd>Leave the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> empty</dd>
+                    </dl>
+                </dd>
+            </dl>
+        <p>Update the <a class="internalDFN" href="#dfn-files">files</a> property to match entries in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</p>
+        <p>Update the <a class="internalDFN" href="#dfn-types">types</a> property to match entries in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>.</p>
+        </dd>
+        <dt>If <em>e</em> is <var>copy</var> or <var>cut</var></dt>
+        <dd>
+            <p>Set the associated <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag to <em>read/write</em></p>
+        </dd>
+    </dl>
 </li>
-<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its </a><a href="##widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
-	<p>Implementation requirements for access to data during event dispatch are defined in [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
-	<dl class="switch">
-		<dt>If a script calls <a class="internalDFN" href="#dfn-cleardata">clearData()</a> or <a class="internalDFN" href="#dfn-items.clear">items.clear()</a> and the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em></dt>
-		<dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its </a><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+    <p>Implementation requirements for access to data during event dispatch are defined in [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
+    <dl class="switch">
+        <dt>If a script calls <a class="internalDFN" href="#dfn-cleardata">clearData()</a> or <a class="internalDFN" href="#dfn-items.clear">items.clear()</a> and the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em></dt>
+        <dd>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</dd>
 
-		<dt>If a script calls <a class="internalDFN" href="#dfn-setdata">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true</dt>
-		<dd>
-			<dl class="switch">
-				<dt>If the <var>types-to-clear</var> list is empty</dt>
-				<dd>set the <var>clear-was-called</var> flag to false</dd>
+        <dt>If a script calls <a class="internalDFN" href="#dfn-setdata">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true</dt>
+        <dd>
+            <dl class="switch">
+                <dt>If the <var>types-to-clear</var> list is empty</dt>
+                <dd>set the <var>clear-was-called</var> flag to false</dd>
 
-				<dt>else, if <a class="internalDFN" href="#dfn-setdata">setData()</a>'s <code>type</code> argument or the new item's <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> is found in the <var>types-to-clear</var> list</dt>
-				<dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
-			</dl>
-		</dd>
+                <dt>else, if <a class="internalDFN" href="#dfn-setdata">setData()</a>'s <code>type</code> argument or the new item's <a class="internalDFN" href="#dfn-drag-data-item-type-string">drag data item type string</a> is found in the <var>types-to-clear</var> list</dt>
+                <dd>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</dd>
+            </dl>
+        </dd>
 
 
-		<dt>If a script calls <a class="internalDFN" href="#dfn-getdata">getData()</a> or accesses items in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> and <var>clipboard-entry</var> is set</dt>
-		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> to the <i>disabled mode</i></dd>
-	</dl>
-		<p class="warning"><strong>Warning!</strong> A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
+        <dt>If a script calls <a class="internalDFN" href="#dfn-getdata">getData()</a> or accesses items in the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> and <var>clipboard-entry</var> is set</dt>
+        <dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> to the <i>disabled mode</i></dd>
+    </dl>
+        <p class="warning"><strong>Warning!</strong> A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
 
 </li>
 <li>When event processing is complete, follow these steps:
-	<dl class="switch">
-		<dt>If <em>e</em> is <var>paste</var></dt>
-		<dd>
-			<dl class="switch">
-				<dt>If the event was cancelled</dt>
-				<dd>Do nothing, terminate this algorithm.
-				</dd><dt>Otherwise</dt>
-				<dd>			
-					<p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
-					<div class="note"><div id="h_note_2" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">The <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor.</p></div>
-				</dd>
-				</dl></dd>
-			</dl>
-			
-		
-		<dt>Else, if <em>e</em> is <var>copy</var> or <var>cut</var></dt>
-		<dd>
-			<dl class="switch">
-				<dt>If the event was cancelled</dt>
-				<dd>
-					<p>Update the clipboard contents with the data from the script, as given by the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Process each part as follows:</p>
-					<dl class="switch">
-						<dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
-						<dd>
-							<dl class="switch">
-								<dt>If the <var>types-to-clear</var> list is empty
-								</dt><dd>Clear the clipboard</dd>
+    <dl class="switch">
+        <dt>If <em>e</em> is <var>paste</var></dt>
+        <dd>
+            <dl class="switch">
+                <dt>If the event was cancelled</dt>
+                <dd>Do nothing, terminate this algorithm.</dd>
+                <dt>Otherwise</dt>
+                <dd>            
+                    <p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
+                    <div class="note"><div id="h_note_2" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">The <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor.</p></div>
+                </dd>
+            </dl>
+        </dd>
+        <dt>Else, if <em>e</em> is <var>copy</var> or <var>cut</var></dt>
+        <dd>
+            <dl class="switch">
+                <dt>If the event was cancelled</dt>
+                <dd>
+                    <p>Update the clipboard contents with the data from the script, as given by the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Process each part as follows:</p>
+                    <dl class="switch">
+                        <dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
+                        <dd>
+                            <dl class="switch">
+                                <dt>If the <var>types-to-clear</var> list is empty
+                                </dt><dd>Clear the clipboard</dd>
 
-								<dt>else</dt>
-								<dd>Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way</dd>
+                                <dt>else</dt>
+                                <dd>Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way</dd>
 
-							</dl>
-						</dd>
-						<dt>If data type is <i>text/plain</i></dt>
-						<dd>
-							<ol>
-								<li>Ensure encoding is correct per OS and locale conventions</li>
-								<li>Normalize line endings according to platform conventions</li>
-								<li>Remove current clipboard contents</li>
-								<li>Place text on clipboard</li>
-							</ol>
-						</dd>
-						<dt>Otherwise</dt>
-						<dd><ol>
-								<li>Remove current clipboard contents</li>
-								<li>Place part on clipboard with the appropriate OS clipboard format description</li></ol>
-						<div class="note"><div id="h_note_3" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a class="internalDFN" href="#dfn-setdata">setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
-						</dd>
-					</dl>
-				</dd>
-				<dt>Otherwise</dt>
-				<dd>
-					<dl class="switch">
-						<dt>If there is a selection</dt>
-						<dd>Remove current clipboard contents</dd>
-						<dd>
-							<dl class="switch"><dt>If the event was a <em>copy</em> event</dt>
-								<dd>Place contents of selection on the clipboard</dd>
-								<dt>If the event was a <em>cut</em> event and the context is editable</dt>
-								<dd>Place contents of selection on the clipboard</dd>
-								<dd>Remove selection contents and collapse the selection</dd>
-							</dl>
-						</dd>
+                            </dl>
+                        </dd>
+                        <dt>If data type is <i>text/plain</i></dt>
+                        <dd>
+                            <ol>
+                                <li>Ensure encoding is correct per OS and locale conventions</li>
+                                <li>Normalize line endings according to platform conventions</li>
+                                <li>Remove current clipboard contents</li>
+                                <li>Place text on clipboard</li>
+                            </ol>
+                        </dd>
+                        <dt>Otherwise</dt>
+                        <dd><ol>
+                                <li>Remove current clipboard contents</li>
+                                <li>Place part on clipboard with the appropriate OS clipboard format description</li></ol>
+                        <div class="note"><div id="h_note_3" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a class="internalDFN" href="#dfn-setdata">setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
+                        </dd>
+                    </dl>
+                </dd>
+                <dt>Otherwise</dt>
+                <dd>
+                    <dl class="switch">
+                        <dt>If there is a selection</dt>
+                        <dd>Remove current clipboard contents</dd>
+                        <dd>
+                            <dl class="switch"><dt>If the event was a <em>copy</em> event</dt>
+                                <dd>Place contents of selection on the clipboard</dd>
+                                <dt>If the event was a <em>cut</em> event and the context is editable</dt>
+                                <dd>Place contents of selection on the clipboard</dd>
+                                <dd>Remove selection contents and collapse the selection</dd>
+                            </dl>
+                        </dd>
 
-						<dt>Otherwise</dt>
-						<dd>
-							<p>Do nothing, terminate this algorithm</p>
- 							<div class="note"><div id="h_note_4" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Calling <a class="internalDFN" href="#dfn-setdata">setData()</a> without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
-						</dd>
-					</dl>
-				</dd>
-			</dl>
+                        <dt>Otherwise</dt>
+                        <dd>
+                            <p>Do nothing, terminate this algorithm</p>
+                            <div class="note"><div id="h_note_4" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Calling <a class="internalDFN" href="#dfn-setdata">setData()</a> without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
 </dd>
-	
+    </dl>
 </li>
 </ol>
 </section>
@@ -995,7 +990,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <span class="idlAttribute">    readonly    attribute <span class="idlAttrType"><a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a></span> <span class="idlAttrName"><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a></span>;</span>
 };</span></pre><section id="attributes"><h3 id="h3_attributes" role="heading" aria-level="2"><span class="secno">7.2 </span>Attributes</h3><dl class="attributes"><dt id="widl-ClipboardEvent-clipboardData"><code>clipboardData</code> of type <span class="idlAttrType"><a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a></span>, readonly   </dt><dd>
      <p>The clipboardData attribute is an instance of the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access.</p>
-			<p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
+            <p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
     </dd></dl></section>
 
 </section>
@@ -1076,7 +1071,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
   <li>The origin of the running script</li>
 </ul>
 <p>This is an overview of the scenarios and the possible security policies:</p>
-<table summary="security policies" class="simple">
+<table class="simple">
   <tbody><tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
   <tr><td>Different origin</td><td>Optionally sanitize content. Do not access any local files.</td></tr>

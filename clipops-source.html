@@ -888,7 +888,7 @@ function test(e){
 		</dd>
 	</dl>
 </li>
-<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its <a href="##widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
 	<p>Implementation requirements for access to data during event dispatch are defined in [[!HTML5]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
 		<dt>If a script calls <a>clearData()</a> or <a>items.clear()</a> and the <a>DataTransfer</a> object's <a>drag data store mode</a> flag is <em>read/write</em></dt>
@@ -975,14 +975,12 @@ function test(e){
 		<dd>
 			<dl class="switch">
 				<dt>If the event was cancelled</dt>
-				<dd>Do nothing, terminate this algorithm.
+				<dd>Do nothing, terminate this algorithm.</dd>
 				<dt>Otherwise</dt>
 				<dd>			
 					<p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a>DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
 					<p class="note">The <a>DataTransferItemList</a> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor.</p>
 				</dd>
-				</dd>
-			</dl>
 			</dl>
 		</dd>
 		<dt>Else, if <em>e</em> is <var>copy</var> or <var>cut</var></dt>
@@ -1605,7 +1603,7 @@ function test(e){
   <li>The origin of the running script</li>
 </ul>
 <p>This is an overview of the scenarios and the possible security policies:</p>
-<table summary="security policies" class="simple">
+<table class="simple">
   <tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
   <tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
   <tr><td>Different origin</td><td>Optionally sanitize content. Do not access any local files.</td></tr>
