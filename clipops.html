@@ -449,7 +449,7 @@ table.simple {
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
   
-  <h2 id="w3c-editor-s-draft-10-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T00:50:30.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-03-10">10 March 2014</time></h2>
+  <h2 id="w3c-editor-s-draft-10-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T02:35:39.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-03-10">10 March 2014</time></h2>
   <dl>
     
       <dt>This version:</dt>
@@ -641,6 +641,16 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <li><dfn id="dfn-types"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-types">types</a></dfn></li>
 <li><dfn id="dfn-cleardata"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-cleardata">clearData()</a></dfn></li>
 <li><dfn id="dfn-items.clear"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransferitemlist-clear">items.clear()</a></dfn></li>
+</ul>
+<p>The following items are defined in the DOM specification [<cite><a href="#bib-DOM" class="bibref">DOM</a></cite>]</p>
+<ul>
+<li><dfn id="dfn-type"><a href="http://www.w3.org/TR/dom/#dom-event-type">type</a></dfn></li>
+<li><dfn id="dfn-istrusted"><a href="http://www.w3.org/TR/dom/#dom-event-istrusted">isTrusted</a></dfn></li>
+<li><dfn id="dfn-bubbles"><a href="http://www.w3.org/TR/dom/#dom-event-bubbles">bubbles</a></dfn></li>
+<li><dfn id="dfn-cancelable"><a href="http://www.w3.org/TR/dom/#dom-event-cancelable">cancelable</a></dfn></li>
+<li><dfn id="dfn-event-interface"><a href="http://www.w3.org/TR/dom/#interface-event">event interface</a></dfn></li>
+<li><dfn id="dfn-construct-events"><a href="http://www.w3.org/TR/dom/#constructing-events">construct events</a></dfn></li>
+
 </ul>
 </section>
 
@@ -867,7 +877,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
         </dd>
     </dl>
 </li>
-<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its </a><a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent interface, with its </a><a class="internalDFN" href="#dfn-type">type</a> attribute initialized to <em>e</em>, its <a class="internalDFN" href="#dfn-istrusted">isTrusted</a> attribute initialized to <var>trusted</var>, its <a class="internalDFN" href="#dfn-bubbles">bubbles</a> attribute set to <em>true</em>, its <a class="internalDFN" href="#dfn-cancelable">cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
     <p>Implementation requirements for access to data during event dispatch are defined in [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]. Some additional clipboard event-specific processing rules are given below:</p>
     <dl class="switch">
         <dt>If a script calls <a class="internalDFN" href="#dfn-cleardata">clearData()</a> or <a class="internalDFN" href="#dfn-items.clear">items.clear()</a> and the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em></dt>
@@ -970,9 +980,9 @@ If the default action is to do nothing, the clipboard is not modified except if 
 
 <section id="clipboard-event-interfaces">
 <!--OddPage--><h2 id="h2_clipboard-event-interfaces" role="heading" aria-level="1"><span class="secno">7. </span><dfn id="clipboardevent">Clipboard event</dfn> interfaces</h2>
-<p>The ClipboardEvent interface extends the Event interface [<cite><a href="#bib-DOM-LEVEL-2-EVENTS" class="bibref">DOM-LEVEL-2-EVENTS</a></cite>].</p>
-<p>The interface can be used to construct event objects per [<cite><a href="#bib-DOM-CORE-DRAFT" class="bibref">DOM-CORE-DRAFT</a></cite>]. An example is given below:</p>
-<div class="example"><div class="example-title"><span>Example 1</span></div><pre class="example javascript">var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
+<p>The ClipboardEvent interface extends the <a class="internalDFN" href="#dfn-event-interface">Event interface</a>.</p>
+<p>The interface can be used to <a class="internalDFN" href="#dfn-construct-events">construct events</a>. An example is given below:</p>
+<div class="example"><div class="example-title"><span>Example 1</span></div><pre class="example javascript">var pasteEvent = new ClipboardEvent('paste', { dataType: 'text/plain', data: 'My string' } );
 document.dispatchEvent(pasteEvent);</pre></div>
 <!-- TODO: <p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
 
@@ -998,7 +1008,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <section id="integration-with-other-scripts-and-events">
 <!--OddPage--><h2 id="h2_integration-with-other-scripts-and-events" role="heading" aria-level="1"><span class="secno">8. </span>Integration with other scripts and events</h2>
 <section id="semi-trusted-events"><h3 id="h3_semi-trusted-events" role="heading" aria-level="2"><span class="secno">8.1 </span>Semi-trusted events</h3>
-<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from a <code data-anolis-spec="dom-events">trusted event</code> thread whose event type is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
+<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from an event thread with the <a class="internalDFN" href="#dfn-istrusted">isTrusted</a> attribute set to true and whose event <a class="internalDFN" href="#dfn-type">type</a> is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
 <p>Events that are allowed to trigger semi-trusted events are:</p>
 <ul><li>keydown</li>
  <li>keypress</li>
@@ -1196,8 +1206,7 @@ Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Bar
 
 
 
-<section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="references" class="appendix"><!--OddPage--><h2 id="h2_references" role="heading" aria-level="1"><span class="secno">A. </span>References</h2><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="normative-references"><h3 id="h3_normative-references" role="heading" aria-level="2"><span class="secno">A.1 </span>Normative references</h3><dl about="" class="bibliography"><dt id="bib-DOM-CORE-DRAFT">[DOM-CORE-DRAFT]</dt><dd rel="dcterms:requires">Anne van Kesteren; Aryeh Gregor; Ms2ger. <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html"><cite>DOM Core</cite></a>. URL: <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html">http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html</a>
-</dd><dt id="bib-DOM-LEVEL-2-EVENTS">[DOM-LEVEL-2-EVENTS]</dt><dd rel="dcterms:requires">Tom Pixley. <a href="http://www.w3.org/TR/DOM-Level-2-Events/"><cite>Document Object Model (DOM) Level 2 Events Specification</cite></a>. 13 November 2000. W3C Recommendation. URL: <a href="http://www.w3.org/TR/DOM-Level-2-Events/">http://www.w3.org/TR/DOM-Level-2-Events/</a>
+<section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="references" class="appendix"><!--OddPage--><h2 id="h2_references" role="heading" aria-level="1"><span class="secno">A. </span>References</h2><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="normative-references"><h3 id="h3_normative-references" role="heading" aria-level="2"><span class="secno">A.1 </span>Normative references</h3><dl about="" class="bibliography"><dt id="bib-DOM">[DOM]</dt><dd rel="dcterms:requires">Anne van Kesteren; Aryeh Gregor; Ms2ger. <a href="http://dom.spec.whatwg.org"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="http://dom.spec.whatwg.org">http://dom.spec.whatwg.org</a>
 </dd><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:requires">Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 4 February 2014. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a>
 </dd><dt id="bib-RFC2046">[RFC2046]</dt><dd rel="dcterms:requires">N. Freed; N. Borenstein. <a href="http://www.ietf.org/rfc/rfc2046.txt"><cite>Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types (RFC 2046)</cite></a>. November 1996. RFC. URL: <a href="http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a>
 </dd><dt id="bib-RFC2119">[RFC2119]</dt><dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> 

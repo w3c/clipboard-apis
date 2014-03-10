@@ -37,12 +37,7 @@
 					 },
 			'MICROSOFT-CLIP-OP': {
 				title: 'About DHTML Data Transfer. Microsoft Developer Network.', 
-				href: 'http://msdn.microsoft.com/en-us/library/ms537658.aspx'},
-			'DOM-CORE-DRAFT':{
-				title: 'DOM Core',
-				authors:['Anne van Kesteren', 'Aryeh Gregor', 'Ms2ger'],
-				href:'http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html'
-			}
+				href: 'http://msdn.microsoft.com/en-us/library/ms537658.aspx'}
 		},
 		wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/42538/status",
 		preProcess: [ function(){ // mark all SCRIPTs for removal
@@ -137,6 +132,16 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-types">types</a></dfn></li>
 <li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-cleardata">clearData()</a></dfn></li>
 <li><dfn><a href="http://www.w3.org/TR/html/editing.html#dom-datatransferitemlist-clear">items.clear()</a></dfn></li>
+</ul>
+<p>The following items are defined in the DOM specification [[!DOM]]</p>
+<ul>
+<li><dfn><a href="http://www.w3.org/TR/dom/#dom-event-type">type</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/dom/#dom-event-istrusted">isTrusted</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/dom/#dom-event-bubbles">bubbles</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/dom/#dom-event-cancelable">cancelable</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/dom/#interface-event">event interface</a></dfn></li>
+<li><dfn><a href="http://www.w3.org/TR/dom/#constructing-events">construct events</a></dfn></li>
+
 </ul>
 </section>
 
@@ -888,7 +893,7 @@ function test(e){
 		</dd>
 	</dl>
 </li>
-<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <code data-anolis-spec="domcore">type</code> attribute initialized to <em>e</em>, its <code data-anolis-spec="domcore">isTrusted</code> attribute initialized to <var>trusted</var>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <a>type</a> attribute initialized to <em>e</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
 	<p>Implementation requirements for access to data during event dispatch are defined in [[!HTML5]]. Some additional clipboard event-specific processing rules are given below:</p>
 	<dl class="switch">
 		<dt>If a script calls <a>clearData()</a> or <a>items.clear()</a> and the <a>DataTransfer</a> object's <a>drag data store mode</a> flag is <em>read/write</em></dt>
@@ -1067,10 +1072,10 @@ function test(e){
 
 <section>
 <h2><dfn id="clipboardevent">Clipboard event</dfn> interfaces</h2>
-<p>The ClipboardEvent interface extends the Event interface [[!DOM-LEVEL-2-EVENTS]].</p>
-<p>The interface can be used to construct event objects per [[!DOM-CORE-DRAFT]]. An example is given below:</p>
+<p>The ClipboardEvent interface extends the <a>Event interface</a>.</p>
+<p>The interface can be used to <a>construct events</a>. An example is given below:</p>
 <pre class="example javascript">
-	var pasteEvent = new ClipboardEvent('paste', { bubbles: true, cancelable: true, dataType: 'text/plain', data: 'My string' } );
+	var pasteEvent = new ClipboardEvent('paste', { dataType: 'text/plain', data: 'My string' } );
 	document.dispatchEvent(pasteEvent);
 </pre>
 <!-- TODO: <p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
@@ -1132,7 +1137,7 @@ function onTestSetupReady(){
 <section>
 <h2>Integration with other scripts and events</h2>
 <section><h3>Semi-trusted events</h3>
-<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from a <code data-anolis-spec="dom-events">trusted event</code> thread whose event type is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
+<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from an event thread with the <a>isTrusted</a> attribute set to true and whose event <a>type</a> is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
 <p>Events that are allowed to trigger semi-trusted events are:</p>
 <ul><li>keydown</li>
  <li>keypress</li>
