@@ -1,40 +1,41 @@
 # TC-gen.py
-# This script extracts all tests from the spec text and 
+# This script extracts all tests from the spec text and
 # builds the test suite
 
 import os, re, codecs
 
-spec_path = os.path.abspath(os.path.dirname(__file__)+'..'+os.sep+'clipops-source.html')
-tc_path = os.path.abspath(os.path.dirname(__file__)+'..'+os.sep+'testsuite')+os.sep
+spec_path = os.path.abspath(os.path.dirname(__file__)+os.sep+'..'+os.sep+'clipops-source.html')
+tc_path = os.path.abspath(os.path.dirname(__file__)+os.sep+'..'+os.sep+'testsuite')+os.sep
 
+tc_path = "C:\\mozilla\\web-platform-tests\\clipboard-apis\\" #
 
 template = u"""<!DOCTYPE html>
 <html><head>
-	<meta charset="UTF-8">
-	<title>  ClipboardEvent - {title}</title>
-	<script src="http://w3c-test.org/resources/testharness.js"></script>
-	<script src="http://w3c-test.org/resources/testharnessreport.js"></script>
-	<script src="_lib.js"></script>
-	<script>
+    <meta charset="UTF-8">
+    <title>  ClipboardEvent - {title}</title>
+    <script src="/resources/testharness.js"></script>
+    <script src="/resources/testharnessreport.js"></script>
+    <script src="support/_lib.js"></script>
+    <script>
 {test_javascript_code}
-	</script>
+    </script>
 </head>
 <body>
 
-	<p>FAILED (This TC requires JavaScript enabled)</p>
-	<div id="log"></div>
-	{test_html}
-
-	<script>
-	var dataToPaste={data_to_paste};
-	var externalPassCondition={external_pass_condition};
-	var eventTarget={event_target};
-	var eventType='{event_type}';
-	window.onload=function(){{
-		setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
-	}}
-	</script>
-</body></html>"""
+    <p>FAILED (This TC requires JavaScript enabled)</p>
+    {test_html}
+    <div id="log"></div>
+    <script>
+    var dataToPaste={data_to_paste};
+    var externalPassCondition={external_pass_condition};
+    var eventTarget={event_target};
+    var eventType='{event_type}';
+    window.onload=function(){{
+        setupTest( eventTarget, eventType, dataToPaste, externalPassCondition );
+    }}
+    </script>
+</body></html>
+"""
 
 
 default_event_target = 'document' # Note: include quotes in string if passing a string..
@@ -69,6 +70,8 @@ for match in re.finditer(r, spec_text):
 		rx = re.compile(r"\/\*\s*"+name+": (.+?)\*\/", re.S)
 		try:
 			test_info[value] = re.search(rx, test_info['test_javascript_code']).group(1)
+			if name is 'Test HTML' and '<\\/script' in test_info[value]:
+				test_info[value] = test_info[value].replace('<\\/script', '</script')
 		except Exception, e:
 			test_info.setdefault(value, '')
 			continue
@@ -78,17 +81,19 @@ for match in re.finditer(r, spec_text):
 		test_info['targets'] = test_info['targets'].strip().split(' ')
 	rubycode += rbatom % (testcounter, test_info['title'], testcounter)
 	#print test_info
+	base_title = test_info['title']
 	for event in test_info['events']:
 		for target in test_info['targets']:
 			test_info['event_type'] = event
 			test_info['event_target'] = target
+			test_info['title'] = base_title + ' - ' + event + ' on ' + target
 			#print template.format(**test_info)
 			fn = tc_path+("%03d"%testcounter)+'.html'
 			f = codecs.open(fn, 'w', 'UTF-8')
 			f.write(template.format(**test_info))
 			f.close()
 			testcounter += 1
-			print 'wrote %s'%fn
+			print 'wrote %s, %s'%(fn, test_info['title'])
 	#print match.groupdict()
 
 f=open(tc_path+'testlist.rb', 'w')

@@ -3,16 +3,13 @@
 <head>
     <title> Clipboard API and events </title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    
-    
-        <style type="text/css">.tmp-issue-table td{border: 1px solid red}</style>
     <style>/* --- EXAMPLES --- */
 div.example-title {
     min-width: 7.5em;
     color: #b9ab2d;
 }
 div.example-title span {
-    text-transform: uppercase;   
+    text-transform: uppercase;
 }
 aside.example, div.example, div.illegal-example {
     padding: 0.5em;
@@ -27,7 +24,7 @@ aside.example, div.example {
     border-left-width: .5em;
     border-left-style: solid;
     border-color: #e0cb52;
-    background: #fcfaee;    
+    background: #fcfaee;
 }
 
 aside.example div.example {
@@ -313,7 +310,7 @@ table.exceptions table {
  *****************************************************************/
 
 /* --- INLINES --- */
-em.rfc2119 { 
+em.rfc2119 {
     text-transform:     lowercase;
     font-variant:       small-caps;
     font-style:         normal;
@@ -350,7 +347,7 @@ cite .bibref {
 }
 
 code {
-    color:  #ff4500;
+    color:  #C83500;
 }
 
 /* --- TOC --- */
@@ -427,8 +424,8 @@ table.simple {
     The source of this spec contains a number of tests for extraction. Here are some requirements for the test framework:
         each SCRIPT in this file will be turned into one test case per listed event in Events: comment and per Targets: comment
         extra inline HTML code for test case can be given with Test HTML: comment (defaults to single input)
-        defines test method that returns true for pass, false for failure and string for other unexpected statuses.
-        framework must set up a listener for the relevant event(s) that calls the test() method with the event object as argument, and check return value
+        defines clipboard_api_test() method that returns true for pass, false for failure and string for other unexpected statuses.
+        framework must set up a listener for the relevant event(s) that calls the clipboard_api_test() method with the event object as argument, and check return value
         framework will then focus suitable element and trigger relevant event. For paste, data will be given in 'paste data:' comment.
         (If there is no "paste data:" instruction, the framework shall clear the clipboard before each test is run)
         for cut/copy, framework will select element contents before triggering command
@@ -437,125 +434,124 @@ table.simple {
         If the test code defines triggerTestManually() the tester or framework needs to do specific actions before the test runs.
         If the test code defines onTestSetupReady() it must be called after event listeners were defined to trigger the actual test
 
-        Note on automation: if there is an external pass condition, the automation framework must check it and inject script that calls result() method
-        with true or false respectively
+        Note on automation: if there is an external pass condition, the automation framework must check it and inject script that calls result() method with true or false respectively
 -->
 
 <body id="respecDocument" role="document" class="h-entry" lang="en"><div id="respecHeader" role="contentinfo" class="head">
   <p>
-    
+
       <a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
-    
+
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
-  
-  <h2 id="w3c-editor-s-draft-10-march-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-03-10T02:35:39.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-03-10">10 March 2014</time></h2>
+
+  <h2 id="w3c-editor-s-draft-13-september-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-09-13T13:57:26.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-09-13">13 September 2014</time></h2>
   <dl>
-    
+
       <dt>This version:</dt>
       <dd><a class="u-url" href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd>
       <dt>Latest published version:</dt>
       <dd><a href="http://www.w3.org/TR/clipboard-apis/">http://www.w3.org/TR/clipboard-apis/</a></dd>
-    
-    
+
+
       <dt>Latest editor's draft:</dt>
       <dd><a href="http://dev.w3.org/2006/webapi/clipops/clipops.html">http://dev.w3.org/2006/webapi/clipops/clipops.html</a></dd>
-    
-    
-    
-    
-    
-      
-    
-    
-    
+
+
+
+
+
+
+
+
+
     <dt>Editor:</dt>
     <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><a class="u-url url p-name fn" rel="foaf:homepage" property="foaf:name" content="Hallvord R. M. Steen" href="mailto:hsteen@mozilla.com">Hallvord R. M. Steen</a>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.mozilla.com/">Mozilla</a></span>
 </dd>
 
-    
-    
+
+
   </dl>
-  
-  
-  
-  
-    
+
+
+
+
+
       <p class="copyright">
         <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
         2014
-        
+
         <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
         (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
         <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
-        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
-        
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>),
+
         All Rights Reserved.
-        
+
         <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
         <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
-        
+
           <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
-        
+
         rules apply.
       </p>
-    
-  
+
+
   <hr>
 </div>
-<section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" datatype="" property="dcterms:abstract" class="introductory" id="abstract"><h2 id="h2_abstract" role="heading" aria-level="1">Abstract</h2>
+<section rel="bibo:Chapter" resource="#abstract" typeof="bibo:Chapter" datatype="" property="dcterms:abstract" class="introductory" id="abstract"><h2 id="h2_abstract" role="heading" aria-level="1">Abstract</h2>
     <p>This document describes APIs for clipboard operations such as copy, cut and
     paste in web applications.</p>
-</section><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="sotd" class="introductory"><h2 id="h2_sotd" role="heading" aria-level="1">Status of This Document</h2>
-  
-    
-      
+</section><section rel="bibo:Chapter" resource="#sotd" typeof="bibo:Chapter" id="sotd" class="introductory"><h2 id="h2_sotd" role="heading" aria-level="1">Status of This Document</h2>
+
+
+
         <p>
           <em>This section describes the status of this document at the time of its publication.
           Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
           latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
           http://www.w3.org/TR/.</em>
         </p>
-        
+
 
         <p>
           This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as an Editor's Draft.
-          
-          
-            If you wish to make comments regarding this document, please send them to 
-            <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> 
+
+
+            If you wish to make comments regarding this document, please send them to
+            <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a>
             (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>,
             <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>).
-          
-          
-          
-          
+
+
+
+
             All comments are welcome.
-          
+
         </p>
-        
-        
+
+
           <p>
             Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
             Membership. This is a draft document and may be updated, replaced or obsoleted by other
             documents at any time. It is inappropriate to cite this document as other than work in
             progress.
           </p>
-        
-        
-        
+
+
+
         <p>
-          
-            This document was produced by a group operating under the 
+
+            This document was produced by a group operating under the
             <a id="sotd_patent" about="" rel="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
             Policy</a>.
-          
-          
-          
-            
+
+
+
+
               <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/2004/01/pp-impl/42538/status" rel="disclosure">public list of any patent
-              disclosures</a> 
-            
+              disclosures</a>
+
             made in connection with the deliverables of the group; that page also includes
             instructions for disclosing a patent. An individual who has actual knowledge of a patent
             which the individual believes contains
@@ -563,18 +559,22 @@ table.simple {
             Claim(s)</a> must disclose the information in accordance with
             <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
             6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
-          
-          
+
+
         </p>
-        
-      
-    
-  
-</section><section id="toc"><h2 id="h2_toc" role="heading" aria-level="1" class="introductory">Table of Contents</h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#conformance"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a class="tocxref" href="#introduction"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a class="tocxref" href="#use-cases"><span class="secno">3. </span>Use Cases</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#rich-content-editing"><span class="secno">3.1 </span>Rich content editing</a></li><li class="tocline"><a class="tocxref" href="#graphics-with-built-in-semantics"><span class="secno">3.2 </span>Graphics with built-in semantics</a></li><li class="tocline"><a class="tocxref" href="#mathematical-information"><span class="secno">3.3 </span>Mathematical information</a></li></ul></li><li class="tocline"><a class="tocxref" href="#apis-from-other-specifications"><span class="secno">4. </span>APIs from other specifications</a></li><li class="tocline"><a class="tocxref" href="#events"><span class="secno">5. </span>Events</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#event-types-and-details"><span class="secno">5.1 </span>Event types and details</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#copy-event"><span class="secno">5.1.1 </span>copy event</a></li><li class="tocline"><a class="tocxref" href="#cut-event"><span class="secno">5.1.2 </span>cut event</a></li><li class="tocline"><a class="tocxref" href="#paste-event"><span class="secno">5.1.3 </span>paste event</a></li><li class="tocline"><a class="tocxref" href="#beforecopy-event"><span class="secno">5.1.4 </span>beforecopy event</a></li><li class="tocline"><a class="tocxref" href="#beforecut-event"><span class="secno">5.1.5 </span>beforecut event</a></li><li class="tocline"><a class="tocxref" href="#beforepaste-event"><span class="secno">5.1.6 </span>beforepaste event</a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#processing-model"><span class="secno">6. </span>Processing model</a></li><li class="tocline"><a class="tocxref" href="#clipboard-event-interfaces"><span class="secno">7. </span><span>Clipboard event</span> interfaces</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-clipboardeventinit-members"><span class="secno">7.1 </span>Dictionary <span class="formerLink"><code>ClipboardEventInit</code></span> Members</a></li><li class="tocline"><a class="tocxref" href="#attributes"><span class="secno">7.2 </span>Attributes</a></li></ul></li><li class="tocline"><a class="tocxref" href="#integration-with-other-scripts-and-events"><span class="secno">8. </span>Integration with other scripts and events</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#semi-trusted-events"><span class="secno">8.1 </span>Semi-trusted events</a></li><li class="tocline"><a class="tocxref" href="#integration-with-rich-text-editing-apis"><span class="secno">8.2 </span>Integration with rich text editing APIs</a></li><li class="tocline"><a class="tocxref" href="#interaction-with-other-events"><span class="secno">8.3 </span>Interaction with other events</a></li><li class="tocline"><a class="tocxref" href="#event-listeners-that-modify-selection-or-focus"><span class="secno">8.4 </span>Event listeners that modify selection or focus</a></li></ul></li><li class="tocline"><a class="tocxref" href="#pasting-html-and-multi-part-data"><span class="secno">9. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#security-risks"><span class="secno">9.1 </span>Security risks</a></li><li class="tocline"><a class="tocxref" href="#general-security-policies"><span class="secno">9.2 </span>General security policies</a></li></ul></li><li class="tocline"><a class="tocxref" href="#other-security-and-privacy-considerations"><span class="secno">10. </span>Other security and privacy considerations</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#privacy-concerns"><span class="secno">10.1 </span>Privacy concerns</a></li><li class="tocline"><a class="tocxref" href="#nuisance-considerations"><span class="secno">10.2 </span>Nuisance considerations</a></li></ul></li><li class="tocline"><a class="tocxref" href="#mandatory-data-types-1"><span class="secno">11. </span>Mandatory data types</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><span class="secno">12. </span>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#references"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></section>
+
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
 
 
 
-<section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="conformance"><!--OddPage--><h2 id="h2_conformance" role="heading" aria-level="1"><span class="secno">1. </span>Conformance</h2>
+
+
+</section><section id="toc"><h2 id="h2_toc" role="heading" aria-level="1" class="introductory">Table of Contents</h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#conformance"><span class="secno">1. </span>Conformance</a></li><li class="tocline"><a class="tocxref" href="#introduction"><span class="secno">2. </span>Introduction</a></li><li class="tocline"><a class="tocxref" href="#use-cases"><span class="secno">3. </span>Use Cases</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#rich-content-editing"><span class="secno">3.1 </span>Rich content editing</a></li><li class="tocline"><a class="tocxref" href="#graphics-with-built-in-semantics"><span class="secno">3.2 </span>Graphics with built-in semantics</a></li><li class="tocline"><a class="tocxref" href="#mathematical-information"><span class="secno">3.3 </span>Mathematical information</a></li></ul></li><li class="tocline"><a class="tocxref" href="#apis-from-other-specifications"><span class="secno">4. </span>APIs from other specifications</a></li><li class="tocline"><a class="tocxref" href="#events"><span class="secno">5. </span>Events</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#event-types-and-details"><span class="secno">5.1 </span>Event types and details</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#copy-event"><span class="secno">5.1.1 </span>copy event</a></li><li class="tocline"><a class="tocxref" href="#cut-event"><span class="secno">5.1.2 </span>cut event</a></li><li class="tocline"><a class="tocxref" href="#paste-event"><span class="secno">5.1.3 </span>paste event</a></li><li class="tocline"><a class="tocxref" href="#beforecopy-event"><span class="secno">5.1.4 </span>beforecopy event</a></li><li class="tocline"><a class="tocxref" href="#beforecut-event"><span class="secno">5.1.5 </span>beforecut event</a></li><li class="tocline"><a class="tocxref" href="#beforepaste-event"><span class="secno">5.1.6 </span>beforepaste event</a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#processing-model"><span class="secno">6. </span>Processing model</a></li><li class="tocline"><a class="tocxref" href="#clipboard-event-interfaces"><span class="secno">7. </span><span>Clipboard event</span> interfaces</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-clipboardeventinit-members"><span class="secno">7.1 </span>Dictionary <span class="formerLink"><code>ClipboardEventInit</code></span> Members</a></li><li class="tocline"><a class="tocxref" href="#attributes"><span class="secno">7.2 </span>Attributes</a></li></ul></li><li class="tocline"><a class="tocxref" href="#integration-with-other-scripts-and-events"><span class="secno">8. </span>Integration with other scripts and events</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#events-that-are-allowed-to-modify-the-clipboard"><span class="secno">8.1 </span>Events that are <span>allowed to modify the clipboard</span></a></li><li class="tocline"><a class="tocxref" href="#integration-with-rich-text-editing-apis"><span class="secno">8.2 </span>Integration with rich text editing APIs</a></li><li class="tocline"><a class="tocxref" href="#interaction-with-other-events"><span class="secno">8.3 </span>Interaction with other events</a></li><li class="tocline"><a class="tocxref" href="#event-listeners-that-modify-selection-or-focus"><span class="secno">8.4 </span>Event listeners that modify selection or focus</a></li></ul></li><li class="tocline"><a class="tocxref" href="#pasting-html-and-multi-part-data"><span class="secno">9. </span>Pasting HTML and multi-part data</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#security-risks"><span class="secno">9.1 </span>Security risks</a></li><li class="tocline"><a class="tocxref" href="#general-security-policies"><span class="secno">9.2 </span>General security policies</a></li></ul></li><li class="tocline"><a class="tocxref" href="#other-security-and-privacy-considerations"><span class="secno">10. </span>Other security and privacy considerations</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#privacy-concerns"><span class="secno">10.1 </span>Privacy concerns</a></li><li class="tocline"><a class="tocxref" href="#nuisance-considerations"><span class="secno">10.2 </span>Nuisance considerations</a></li></ul></li><li class="tocline"><a class="tocxref" href="#mandatory-data-types-1"><span class="secno">11. </span>Mandatory data types</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><span class="secno">12. </span>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#references"><span class="secno">A. </span>References</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><span class="secno">A.1 </span>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><span class="secno">A.2 </span>Informative references</a></li></ul></li></ul></section>
+
+
+
+<section rel="bibo:Chapter" resource="#conformance" typeof="bibo:Chapter" id="conformance"><!--OddPage--><h2 id="h2_conformance" role="heading" aria-level="1"><span class="secno">1. </span>Conformance</h2>
 <p>
   As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,
   and notes in this specification are non-normative. Everything else in this specification is
@@ -586,7 +586,7 @@ table.simple {
 </p>
 </section>
 
-<section id="introduction" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" class="informative">
+<section id="introduction" rel="bibo:Chapter" resource="#secintro" typeof="bibo:Chapter" class="informative">
 <!--OddPage--><h2 role="heading" aria-level="1" id="secintro"><span class="secno">2. </span>Introduction</h2><p><em>This section is non-normative.</em></p>
 
 
@@ -596,7 +596,7 @@ and can be adapted to provide advanced functionalities. Its goal is to
 provide for compatibility where possible with existing implementations.</p>
 </section>
 
-<section id="use-cases" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" class="informative">
+<section id="use-cases" rel="bibo:Chapter" resource="#Cases" typeof="bibo:Chapter" class="informative">
 <!--OddPage--><h2 role="heading" aria-level="1" id="Cases"><span class="secno">3. </span>Use Cases</h2><p><em>This section is non-normative.</em></p>
 
 <p>There are many use cases for being able to change the default clipboard
@@ -604,7 +604,7 @@ operations (cut/copy/paste). We have collected
 a few samples to demonstrate possible uses, although these may not all be
 supported by this specification.</p>
 
-<section id="rich-content-editing" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="Rich"><span class="secno">3.1 </span>Rich content editing</h3>
+<section id="rich-content-editing" rel="bibo:Chapter" resource="#Rich" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="Rich"><span class="secno">3.1 </span>Rich content editing</h3>
 
 <p>When copying text which contains hyperlinks or other structure,
 it is often useful to be able to reformat the content to preserve important
@@ -617,7 +617,7 @@ text, or of graphic content such as SVG, it is useful to provide a mechanism
 that allows for copying more than just the rendered content.</p>
 </section>
 
-<section id="mathematical-information" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="Mathematic"><span class="secno">3.3 </span>Mathematical information</h3>
+<section id="mathematical-information" rel="bibo:Chapter" resource="#Mathematic" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="Mathematic"><span class="secno">3.3 </span>Mathematical information</h3>
 
 <p>With content such as mathematics, simply copying rendered text and pasting
 it into another application generally leads to most of the semantics being
@@ -641,6 +641,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <li><dfn id="dfn-types"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-types">types</a></dfn></li>
 <li><dfn id="dfn-cleardata"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransfer-cleardata">clearData()</a></dfn></li>
 <li><dfn id="dfn-items.clear"><a href="http://www.w3.org/TR/html/editing.html#dom-datatransferitemlist-clear">items.clear()</a></dfn></li>
+<li>The <dfn id="dfn-allowed-to-show-a-popup"><a href="http://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup">allowed to show a popup</a></dfn> logic</li>
 </ul>
 <p>The following items are defined in the DOM specification [<cite><a href="#bib-DOM" class="bibref">DOM</a></cite>]</p>
 <ul>
@@ -735,6 +736,9 @@ If the default action is to do nothing, the clipboard is not modified except if 
 
 
 
+
+
+
 </section>
 <section id="beforecopy-event">
 <h4 id="h4_beforecopy-event" role="heading" aria-level="3"><span class="secno">5.1.4 </span>beforecopy event</h4>
@@ -763,11 +767,10 @@ If the default action is to do nothing, the clipboard is not modified except if 
 <ol>
     <li>Let the <em>data transfer</em> be a <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object [<cite><a href="#bib-HTML5" class="bibref">HTML5</a></cite>]</li>
 
- 
+
 
     <li>Let <var>clear-was-called</var> be <var>false</var></li>
     <li>Let <var>trusted</var> be <var>true</var> if the event is generated by the user agent, <var>false</var> otherwise</li>
-    <li>If the event is not trusted, let <var>semi-trusted</var> be <var>true</var> or <var>false</var> according to the <a href="#semi-trusted-event">semi-trusted events</a> rules</li>
     <li>Let <var>types-to-clear</var> be an empty list</li>
     <li>Let <var>clipboard-entry</var> be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers</li>
     <li>If the context is editable, let <var>event target</var> be the element that contains the start of the selection in document order, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if there is no selection or cursor. If the context is not editable, let <var>event target</var> be the focused node, or <a class="internalDFN" href="#dfn-the-body-element">the BODY element</a> if no node has focus.</li>
@@ -789,7 +792,6 @@ If the default action is to do nothing, the clipboard is not modified except if 
             <p>Set the associated <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> object's <a class="internalDFN" href="#dfn-drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
             <dl class="switch">
                 <dt>If <var>trusted</var> is <var>true</var></dt>
-                <dt>If the implementation is configured to allow scripted paste actions and the <var>data</var> and <var>dataType</var> properties were not set on the <a href="#dictionary-clipboardeventinit-members">ClipboardEventInit</a> object passed to the event constructor:</dt>
                 <dd>
                     <!-- tests: setData() does not modify text that is about to be inserted in a paste event ++ below  -->
                     <p>For each part on the OS clipboard, carry out these steps:</p>
@@ -909,68 +911,81 @@ If the default action is to do nothing, the clipboard is not modified except if 
                 <dt>If the event was cancelled</dt>
                 <dd>Do nothing, terminate this algorithm.</dd>
                 <dt>Otherwise</dt>
-                <dd>            
-                    <p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
-                    <div class="note"><div id="h_note_2" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">The <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> of an untrusted paste event will only contain data if <var>data</var> and <var>dataType</var> arguments were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor.</p></div>
-                </dd>
+                <dd>
+                    <dl class="switch">
+                        <dt>If the event was trusted</dt>
+                        <dd>
+                           <p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
+                        </dd>
+                        <dt>Otherwise</dt>
+                        <dd>Do nothing, terminate this algorithm</dd>
+                </dl></dd>
             </dl>
         </dd>
         <dt>Else, if <em>e</em> is <var>copy</var> or <var>cut</var></dt>
         <dd>
             <dl class="switch">
-                <dt>If the event was cancelled</dt>
+                <dt>If the event was trusted and is <a class="internalDFN" href="#dfn-allowed-to-modify-the-clipboard">allowed to modify the clipboard</a></dt>
                 <dd>
-                    <p>Update the clipboard contents with the data from the script, as given by the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Process each part as follows:</p>
                     <dl class="switch">
-                        <dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
+                        <dt>If the event was cancelled</dt>
                         <dd>
                             <dl class="switch">
-                                <dt>If the <var>types-to-clear</var> list is empty
-                                </dt><dd>Clear the clipboard</dd>
+                                <dt>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></dt>
+                                <dd>
+                                    <dl class="switch">
+                                        <dt>If the <var>types-to-clear</var> list is empty
+                                        </dt><dd>Clear the clipboard</dd>
+                                        <dt>Else</dt>
+                                        <dd>Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way</dd>
+                                    </dl>
+                                </dd>
+                                <dt>Else, if the list of items is not empty:</dt>
 
-                                <dt>else</dt>
-                                <dd>Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way</dd>
 
-                            </dl>
-                        </dd>
-                        <dt>If data type is <i>text/plain</i></dt>
-                        <dd>
-                            <ol>
-                                <li>Ensure encoding is correct per OS and locale conventions</li>
-                                <li>Normalize line endings according to platform conventions</li>
-                                <li>Remove current clipboard contents</li>
-                                <li>Place text on clipboard</li>
-                            </ol>
-                        </dd>
-                        <dt>Otherwise</dt>
-                        <dd><ol>
-                                <li>Remove current clipboard contents</li>
-                                <li>Place part on clipboard with the appropriate OS clipboard format description</li></ol>
-                        <div class="note"><div id="h_note_3" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a class="internalDFN" href="#dfn-setdata">setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
-                        </dd>
-                    </dl>
-                </dd>
-                <dt>Otherwise</dt>
-                <dd>
-                    <dl class="switch">
-                        <dt>If there is a selection</dt>
-                        <dd>Remove current clipboard contents</dd>
-                        <dd>
-                            <dl class="switch"><dt>If the event was a <em>copy</em> event</dt>
-                                <dd>Place contents of selection on the clipboard</dd>
-                                <dt>If the event was a <em>cut</em> event and the context is editable</dt>
-                                <dd>Place contents of selection on the clipboard</dd>
-                                <dd>Remove selection contents and collapse the selection</dd>
-                            </dl>
-                        </dd>
+                            <dd>Clear the clipboard</dd>
+                            <dd>Update the clipboard contents with the data from the script, as given by the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Process each part as follows</dd>
+                            <dd>
+                                <dl class="switch">
+                                    <dt>If data type is <i>text/plain</i></dt>
+                                    <dd>
+                                        <ol>
+                                            <li>Ensure encoding is correct per OS and locale conventions</li>
+                                            <li>Normalize line endings according to platform conventions</li>
+                                            <li>Place text on clipboard</li>
+                                        </ol>
+                                    </dd>
+                                    <dt>Otherwise</dt>
+                                    <dd><ol>
+                                            <li>Place part on clipboard with the appropriate OS clipboard format description</li></ol>
+                                    <div class="note"><div id="h_note_2" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a class="internalDFN" href="#dfn-setdata">setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p></div>
+                                    </dd>
+                                </dl>
+                            </dd>
+                    </dl></dd>
+                    <dt>Otherwise, the event was not cancelled</dt>
+                    <dd>
+                        <dl class="switch">
+                            <dt>If there is a selection</dt>
+                            <dd>Remove current clipboard contents</dd>
+                            <dd>Place contents of selection on the clipboard</dd>
+                            <dd>
+                                <dl class="switch">
+                                    <dt>If the event was a <em>cut</em> event and the context is editable</dt>
+                                    <dd>Remove selection contents and collapse the selection</dd>
+                                </dl>
+                            </dd>
 
-                        <dt>Otherwise</dt>
-                        <dd>
-                            <p>Do nothing, terminate this algorithm</p>
-                            <div class="note"><div id="h_note_4" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Calling <a class="internalDFN" href="#dfn-setdata">setData()</a> without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
-                        </dd>
-                    </dl>
-                </dd>
+                            <dt>Otherwise</dt>
+                            <dd>
+                                <p>Do nothing, terminate this algorithm</p>
+                                <div class="note"><div id="h_note_3" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Calling <a class="internalDFN" href="#dfn-setdata">setData()</a> without calling preventDefault() has no effect, even if there is no selection - the default action is to do nothing.</p></div>
+                            </dd>
+                        </dl>
+                    </dd>
+                </dl></dd>
+                <dt>Otherwise, the event is untrusted or not allowed to modify the clipboard</dt>
+                <dd>Do nothing, terminate this algorithm</dd>
             </dl>
 </dd>
     </dl>
@@ -984,6 +999,7 @@ If the default action is to do nothing, the clipboard is not modified except if 
 <p>The interface can be used to <a class="internalDFN" href="#dfn-construct-events">construct events</a>. An example is given below:</p>
 <div class="example"><div class="example-title"><span>Example 1</span></div><pre class="example javascript">var pasteEvent = new ClipboardEvent('paste', { dataType: 'text/plain', data: 'My string' } );
 document.dispatchEvent(pasteEvent);</pre></div>
+<div class="note"><div id="h_note_4" role="heading" aria-level="2" class="note-title"><span>Note</span></div><p class="">Synthetic events do not have default actions. In other words, while the script above will fire a paste event, the data will not actually be pasted into the document.</p></div>
 <!-- TODO: <p class="issue">There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
 
 
@@ -1007,21 +1023,14 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 
 <section id="integration-with-other-scripts-and-events">
 <!--OddPage--><h2 id="h2_integration-with-other-scripts-and-events" role="heading" aria-level="1"><span class="secno">8. </span>Integration with other scripts and events</h2>
-<section id="semi-trusted-events"><h3 id="h3_semi-trusted-events" role="heading" aria-level="2"><span class="secno">8.1 </span>Semi-trusted events</h3>
-<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched from an event thread with the <a class="internalDFN" href="#dfn-istrusted">isTrusted</a> attribute set to true and whose event <a class="internalDFN" href="#dfn-type">type</a> is found in the list below, is a <dfn id="semi-trusted-event">semi-trusted event</dfn>. Event listeners for such events may modify the data on the clipboard.</p>
-<p>Events that are allowed to trigger semi-trusted events are:</p>
-<ul><li>keydown</li>
- <li>keypress</li>
- <li>keyup</li>
- <li>click</li>
- <li>dblclick</li></ul>
- <p>The implementation <em>may</em> allow other trusted event types to trigger semi-trusted events if the implementation authors believe that those event types are likely to express user intention.</p>
- <p>Synthetic paste events <em>must not</em> give a script access to data on the real system clipboard, unless the user agent is configured to allow scripted paste actions.</p>
-<p>Synthetic cut and copy events whose <var>semi-trusted</var> property is <var>false</var> <em>must not</em> modify data on the system clipboard.</p>
+<section id="events-that-are-allowed-to-modify-the-clipboard"><h3 id="h3_events-that-are-allowed-to-modify-the-clipboard" role="heading" aria-level="2"><span class="secno">8.1 </span>Events that are <dfn id="dfn-allowed-to-modify-the-clipboard">allowed to modify the clipboard</dfn></h3>
+<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched because document.execCommand() is called in a thread which is <a class="internalDFN" href="#dfn-allowed-to-show-a-popup">allowed to show a popup</a>, is allowed to modify the clipboard.</p>
+ <p>The implementation <em>may</em> allow other trusted event types to modify the clipboard if the implementation authors believe that those event types are likely to express user intention.</p>
+ <p>Synthetic paste events <em>must not</em> give a script access to data on the real system clipboard.</p>
+<p>Synthetic cut and copy events whose <var>trusted</var> property is <var>false</var> <em>must not</em> modify data on the system clipboard.</p>
 
 
 
-<p>The default action of a synthetic paste event is to insert any data passed to the event constructor, if that data is suitable for the event target. If the data type is not suitable for the event target, data <em>must not</em> be inserted.</p>
 
 
 
@@ -1030,7 +1039,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 
 </section>
 <section id="integration-with-rich-text-editing-apis"><h3 id="h3_integration-with-rich-text-editing-apis" role="heading" aria-level="2"><span class="secno">8.2 </span>Integration with rich text editing APIs</h3>
-<p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> dispatch corresponding synthetic clipboard events. Such events are not trusted, but may be <a href="#semi-trusted-event">semi-trusted events</a>.</p>
+<p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> dispatch corresponding clipboard events.</p>
 <div class="note"><div id="h_note_5" role="heading" aria-level="3" class="note-title"><span>Note</span></div><p class="">Synthetic events and events triggered from document.execCommand() will only affect the contents of the real clipboard if the user agent is configured to trust the script, or (for copy and cut events only) if the synthetic event is dispatched from an event that is trusted and whitelisted.</p></div>
 
 
@@ -1038,7 +1047,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 
 
 </section>
-<section id="interaction-with-other-events" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="interaction-with-other-events" rel="bibo:Chapter" resource="#otherevents" typeof="bibo:Chapter">
 <h3 role="heading" aria-level="2" id="otherevents"><span class="secno">8.3 </span>Interaction with other events</h3>
 <p>If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.</p>
 
@@ -1055,7 +1064,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <p>The implementation <em>must not</em> dispatch other input-related events like textInput, input, change, and validation events in response to the copy operation. </p>
 </section>
 
-<section id="event-listeners-that-modify-selection-or-focus" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="event-listeners-that-modify-selection-or-focus" rel="bibo:Chapter" resource="#selection-mod" typeof="bibo:Chapter">
 <h3 role="heading" aria-level="2" id="selection-mod"><span class="secno">8.4 </span>Event listeners that modify selection or focus</h3>
 <p>If the event listener modifies the selection or focus, the clipboard action <em>must</em> be completed on the modified selection.</p>
 
@@ -1064,7 +1073,7 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 </section>
 </section>
 
-<section id="pasting-html-and-multi-part-data" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="pasting-html-and-multi-part-data" rel="bibo:Chapter" resource="#pasting-html" typeof="bibo:Chapter">
 <!--OddPage--><h2 role="heading" aria-level="1" id="pasting-html"><span class="secno">9. </span>Pasting HTML and multi-part data</h2>
 <section id="security-risks" class="informative">
 <h3 id="h3_security-risks" role="heading" aria-level="2"><span class="secno">9.1 </span>Security risks</h3><p><em>This section is non-normative.</em></p>
@@ -1097,13 +1106,13 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 </section>
 
 
-<section id="other-security-and-privacy-considerations" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="other-security-and-privacy-considerations" rel="bibo:Chapter" resource="#security" typeof="bibo:Chapter">
 <!--OddPage--><h2 role="heading" aria-level="1" id="security"><span class="secno">10. </span>Other security and privacy considerations</h2>
 <p>Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.</p>
 
 <p>An example scenario of a problem is where a user selects a link and copies it, but a different link is copied to the clipboard. The effect of this can range from an unexpected result on pasting to an attempted "phishing" attack.</p>
 
-<section id="privacy-concerns" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="privacy-concerns" rel="bibo:Chapter" resource="#privacy" typeof="bibo:Chapter">
 <h3 role="heading" aria-level="2" id="privacy"><span class="secno">10.1 </span>Privacy concerns</h3>
 <p>Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the user agent's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:</p>
 <ul>
@@ -1119,12 +1128,12 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
 <p>Implementations may choose to further limit the functionality provided by the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
 </section>
 
-<section id="nuisance-considerations" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="nuisances"><span class="secno">10.2 </span>Nuisance considerations</h3>
+<section id="nuisance-considerations" rel="bibo:Chapter" resource="#nuisances" typeof="bibo:Chapter"><h3 role="heading" aria-level="2" id="nuisances"><span class="secno">10.2 </span>Nuisance considerations</h3>
 <p>Scripts may use the <a class="internalDFN" href="#dfn-datatransfer">DataTransfer</a> API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.</p>
 <p>Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.</p>
 </section>
 </section>
-<section id="mandatory-data-types-1" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="mandatory-data-types-1" rel="bibo:Chapter" resource="#mandatory-data-types" typeof="bibo:Chapter">
 <!--OddPage--><h2 role="heading" aria-level="1" id="mandatory-data-types"><span class="secno">11. </span>Mandatory data types</h2>
 <p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
 <ul>
@@ -1151,23 +1160,23 @@ RTF? RTF was requested due to embedded images possibility (but this spec allows 
 <pre class="issue">
 Some standard Windows formats we don't handle
 
-DataFormats.CF_RTFTEXT 
+DataFormats.CF_RTFTEXT
 
-DataFormats.CF_WAVE 
-DataFormats.CF_RIFF 
+DataFormats.CF_WAVE
+DataFormats.CF_RIFF
 
-DataFormats.CF_BITMAP 
-DataFormats.CF_DIB 
-DataFormats.CF_DIF 
-DataFormats.CF_METAFILEPICT 
-DataFormats.CF_PALETTE 
-DataFormats.CF_TIFF 
+DataFormats.CF_BITMAP
+DataFormats.CF_DIB
+DataFormats.CF_DIF
+DataFormats.CF_METAFILEPICT
+DataFormats.CF_PALETTE
+DataFormats.CF_TIFF
 
 </pre>
 -->
 </section>
 
-<section id="acknowledgements" rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter">
+<section id="acknowledgements" rel="bibo:Chapter" resource="#Acknowledg" typeof="bibo:Chapter">
 <!--OddPage--><h2 role="heading" aria-level="1" id="Acknowledg"><span class="secno">12. </span>Acknowledgements</h2>
 
 <p>This section is informative</p>
@@ -1180,7 +1189,7 @@ documentation of Data Transfer functionalities from Microsoft [<cite><a href="#b
 <p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
 Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
-Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov, 
+Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov,
 Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham, James Greene, Boris Zbarsky.</p>
 </section>
 
@@ -1206,10 +1215,10 @@ Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Bar
 
 
 
-<section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="references" class="appendix"><!--OddPage--><h2 id="h2_references" role="heading" aria-level="1"><span class="secno">A. </span>References</h2><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="normative-references"><h3 id="h3_normative-references" role="heading" aria-level="2"><span class="secno">A.1 </span>Normative references</h3><dl about="" class="bibliography"><dt id="bib-DOM">[DOM]</dt><dd rel="dcterms:requires">Anne van Kesteren; Aryeh Gregor; Ms2ger. <a href="http://dom.spec.whatwg.org"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="http://dom.spec.whatwg.org">http://dom.spec.whatwg.org</a>
-</dd><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:requires">Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 4 February 2014. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a>
-</dd><dt id="bib-RFC2046">[RFC2046]</dt><dd rel="dcterms:requires">N. Freed; N. Borenstein. <a href="http://www.ietf.org/rfc/rfc2046.txt"><cite>Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types (RFC 2046)</cite></a>. November 1996. RFC. URL: <a href="http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a>
-</dd><dt id="bib-RFC2119">[RFC2119]</dt><dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> 
+<section rel="bibo:Chapter" resource="#references" typeof="bibo:Chapter" id="references" class="appendix"><!--OddPage--><h2 id="h2_references" role="heading" aria-level="1"><span class="secno">A. </span>References</h2><section rel="bibo:Chapter" resource="#normative-references" typeof="bibo:Chapter" id="normative-references"><h3 id="h3_normative-references" role="heading" aria-level="2"><span class="secno">A.1 </span>Normative references</h3><dl about="" class="bibliography"><dt id="bib-DOM">[DOM]</dt><dd rel="dcterms:requires">Anne van Kesteren; Aryeh Gregor; Ms2ger; Alex Russell; Robin Berjon. <a href="http://www.w3.org/TR/dom/"><cite>W3C DOM4</cite></a>. 10 July 2014. W3C Last Call Working Draft. URL: <a href="http://www.w3.org/TR/dom/">http://www.w3.org/TR/dom/</a>
+</dd><dt id="bib-HTML5">[HTML5]</dt><dd rel="dcterms:requires">Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 31 July 2014. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a>
+</dd><dt id="bib-RFC2046">[RFC2046]</dt><dd rel="dcterms:requires">N. Freed; N. Borenstein. <a href="http://www.ietf.org/rfc/rfc2046.txt"><cite>Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</cite></a>. November 1996. Draft Standard. URL: <a href="http://www.ietf.org/rfc/rfc2046.txt">http://www.ietf.org/rfc/rfc2046.txt</a>
+</dd><dt id="bib-RFC2119">[RFC2119]</dt><dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a>
 </dd><dt id="bib-RFC2392">[RFC2392]</dt><dd rel="dcterms:requires">E. Levinson. <a href="http://www.ietf.org/rfc/rfc2392.txt"><cite>Content-ID and Message-ID Uniform Resource Locators. August 1998. Internet RFC 2392.</cite></a>. URL: <a href="http://www.ietf.org/rfc/rfc2392.txt">http://www.ietf.org/rfc/rfc2392.txt</a>
-</dd></dl></section><section rel="bibo:Chapter" resource="#ref" typeof="bibo:Chapter" id="informative-references"><h3 id="h3_informative-references" role="heading" aria-level="2"><span class="secno">A.2 </span>Informative references</h3><dl about="" class="bibliography"><dt id="bib-MICROSOFT-CLIP-OP">[MICROSOFT-CLIP-OP]</dt><dd rel="dcterms:references"><a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx"><cite>About DHTML Data Transfer. Microsoft Developer Network.</cite></a>. URL: <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a>
+</dd></dl></section><section rel="bibo:Chapter" resource="#informative-references" typeof="bibo:Chapter" id="informative-references"><h3 id="h3_informative-references" role="heading" aria-level="2"><span class="secno">A.2 </span>Informative references</h3><dl about="" class="bibliography"><dt id="bib-MICROSOFT-CLIP-OP">[MICROSOFT-CLIP-OP]</dt><dd rel="dcterms:references"><a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx"><cite>About DHTML Data Transfer. Microsoft Developer Network.</cite></a>. URL: <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a>
 </dd></dl></section></section></body></html>
