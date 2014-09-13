@@ -447,7 +447,7 @@ table.simple {
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
 
-  <h2 id="w3c-editor-s-draft-13-september-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-09-13T20:20:48.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-09-13">13 September 2014</time></h2>
+  <h2 id="w3c-editor-s-draft-13-september-2014" property="dcterms:issued" datatype="xsd:dateTime" content="2014-09-13T20:33:09.000Z"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time class="dt-published" datetime="2014-09-13">13 September 2014</time></h2>
   <dl>
 
       <dt>This version:</dt>
@@ -917,7 +917,8 @@ If the default action is to do nothing, the clipboard is not modified except if 
                 <dt>Otherwise</dt>
                 <dd>
                     <dl class="switch">
-                        <dt>If the event was trusted</dt>
+                        <dt>If the event is trusted and <var>script-triggered</var> is <var>false</var></dt>
+                        <dt>If <var>script-triggered</var> is <var>true</var> and the implementation is configured to give the script read access to the OS clipboard</dt>
                         <dd>
                            <p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a class="internalDFN" href="#dfn-datatransferitemlist">DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
                         </dd>
@@ -1198,25 +1199,6 @@ Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Bar
 </section>
 
 <!--  Here follow some more quirky tests that don't directly correspond to any of the requirements in the spec itself.. -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <section rel="bibo:Chapter" resource="#references" typeof="bibo:Chapter" id="references" class="appendix"><!--OddPage--><h2 id="h2_references" role="heading" aria-level="1"><span class="secno">A. </span>References</h2><section rel="bibo:Chapter" resource="#normative-references" typeof="bibo:Chapter" id="normative-references"><h3 id="h3_normative-references" role="heading" aria-level="2"><span class="secno">A.1 </span>Normative references</h3><dl about="" class="bibliography"><dt id="bib-DOM">[DOM]</dt><dd rel="dcterms:requires">Anne van Kesteren; Aryeh Gregor; Ms2ger; Alex Russell; Robin Berjon. <a href="http://www.w3.org/TR/dom/"><cite>W3C DOM4</cite></a>. 10 July 2014. W3C Last Call Working Draft. URL: <a href="http://www.w3.org/TR/dom/">http://www.w3.org/TR/dom/</a>

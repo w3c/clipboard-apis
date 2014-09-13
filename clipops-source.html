@@ -1002,7 +1002,8 @@ function clipboard_api_test(e){
 				<dt>Otherwise</dt>
 				<dd>
                     <dl class="switch">
-                        <dt>If the event was trusted</dt>
+                        <dt>If the event is trusted and <var>script-triggered</var> is <var>false</var></dt>
+                        <dt>If <var>script-triggered</var> is <var>true</var> and the implementation is configured to give the script read access to the OS clipboard</dt>
                         <dd>
     					   <p>If the cursor or selection is in an editable context, insert any data suitable for that context from the event's <a>DataTransferItemList</a>. Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</p>
                         </dd>
