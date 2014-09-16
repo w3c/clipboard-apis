@@ -823,7 +823,7 @@ function clipboard_api_test(e){
 /* Events: paste */
 /* Targets: document */
 /* Clipboard data type: file reference: ./support/image.jpg */
-/* paste data: the file "support/image.jpg" */
+/* paste data: "the file 'support/image.jpg'" */
 /* Test HTML: <p>To complete this test, copy the './support/image.jpg' file from the OS file manager and paste into this page</p> <div contentEditable="true" id="paste_here">&nbsp;</div><script>document.getElementById('paste_here').focus()<\/script>*/
 
 function clipboard_api_test(e){
@@ -838,7 +838,7 @@ function clipboard_api_test(e){
 <script>
 /** pasting a file of unknown type */
 /* Events: paste */
-/* paste data: the file "support/test" */
+/* paste data: "the file 'support/test'" */
 /* Targets: document */
 /* 	Clipboard data type: file reference: ./support/test */
 /* Test HTML: <p>To complete this test, copy the "./support/test" file from the OS file manager and paste into this page</p>*/
