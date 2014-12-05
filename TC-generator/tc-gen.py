@@ -50,7 +50,7 @@ rubytemplate = """
 describe "Clipboard events testsuite" do
   before(:all) do
     @browser = OperaWatir::Browser.new
-    $base = 'file://localhost/d:/projects/spec-dev/copy-paste/W3C-repo/clipops/testsuite/'
+    $base = '/web-platform-tests/clipboard-apis/testsuite/'
   end
 %s
 end
@@ -88,8 +88,8 @@ for match in re.finditer(r, spec_text):
 			test_info['event_target'] = target
 			test_info['title'] = base_title + ' - ' + event + ' on ' + target
 			#print template.format(**test_info)
-			fn = tc_path+("%03d"%testcounter)+'.html'
-			f = codecs.open(fn, 'w', 'UTF-8')
+			fn = re.sub('[ ]+', '_', re.sub('[^a-zA-Z0-9 ]+', '', test_info['title'])).lower() + '.html'
+			f = codecs.open(tc_path + fn, 'w', 'UTF-8')
 			f.write(template.format(**test_info))
 			f.close()
 			testcounter += 1
