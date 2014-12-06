@@ -1281,26 +1281,28 @@ function onTestSetupReady(){
     <dl class="switch">
         <dt>If the <em>items</em> list is not empty</dt>
         <dd>
-        <li>Clear the clipboard</li>
-        <li>For each part in the list,
-            <dl class="switch">
-                <dt>If data type is <i>text/plain</i></dt>
-                <dd>
-                    <ol>
-                        <li>Ensure encoding is correct per OS and locale conventions</li>
-                        <li>Normalize line endings according to platform conventions</li>
-                        <li>Place text on clipboard with the appropriate OS clipboard format description</li>
-                    </ol>
-                </dd>
-                <dt>Otherwise, if data is of a type listed in the <a>mandatory data types</a> list</dt>
-                <dd>Place part on clipboard with the appropriate OS clipboard format description</dd>
-                <dt>Otherwise</dt>
-                <dd>This is left to the implementation..
-                <p class="issue">It's not good to leave things up to the implementation. What should happen here?</p>
-                <p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a>setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
-                </dd>
-            </dl>
-        </li>
+        <ol>
+            <li>Clear the clipboard</li>
+            <li>For each part in the list,
+                <dl class="switch">
+                    <dt>If data type is <i>text/plain</i></dt>
+                    <dd>
+                        <ol>
+                            <li>Ensure encoding is correct per OS and locale conventions</li>
+                            <li>Normalize line endings according to platform conventions</li>
+                            <li>Place text on clipboard with the appropriate OS clipboard format description</li>
+                        </ol>
+                    </dd>
+                    <dt>Otherwise, if data is of a type listed in the <a>mandatory data types</a> list</dt>
+                    <dd>Place part on clipboard with the appropriate OS clipboard format description</dd>
+                    <dt>Otherwise</dt>
+                    <dd>This is left to the implementation..
+                    <p class="issue">It's not good to leave things up to the implementation. What should happen here?</p>
+                    <p class="note">Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a>setData()</a>'s type argument, sticking to <a href="#mandatory-data-types">well-known types</a> is strongly recommended.</p>
+                    </dd>
+                </dl>
+            </li>
+        </ol>
         </dd>
         <dt>Otherwise, the <em>items</em> list is empty. Follow these steps to determine whether to clear the clipboard:</dt>
         <dd>
@@ -1890,7 +1892,7 @@ function clipboard_api_test(e){
 }
 </script>
 </li>
-<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data except when configured to do so.</li>
+<li>Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data except if configured to do so.</li>
 <li>Implementations <em>should not</em> let scripts call document.execCommand('paste') unless the user has explicitly allowed it.</li>
 </ul>
 <p>Implementations may choose to further limit the functionality provided by the <a>DataTransfer</a> interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.</p>
@@ -1955,7 +1957,7 @@ documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-O
 <p>We would like to acknowledge the contributions made by the following:</p>
 
 <p>Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
-Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, "ROBO Design",
+Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, Chris Mills, "ROBO Design",
 Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
 Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov,
 Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham, James Greene, Boris Zbarsky.</p>
