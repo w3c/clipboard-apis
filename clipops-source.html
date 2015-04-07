@@ -244,7 +244,7 @@ function clipboard_api_test(e){
         </dl>
     </li>
     <li>Let <em>event target</em> be the focused element, or <a>the body element</a> if no other element has focus.</li>
-    <li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <a>type</a> attribute initialized to <em>type</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.</li>
+    <li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</a> interface, with its <a>type</a> attribute initialized to <em>type</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.</li>
 
     <li>
         <dl class="switch">
@@ -417,14 +417,14 @@ document.addEventListener('copy', function(e){
 });
 </pre>
 
-<p>The copy action has two flags called <em>script-triggered</em> and <em>script-may-write-clipboard</em>. The copy action consists of the following steps:</p>
+<p>The copy action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The copy action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
         <dt>If the <em>script-triggered</em> flag is set</dt>
         <dd>
             <dl class="switch">
-                <dt>If the <em>script-may-write-clipboard</em> flag is unset</dt>
+                <dt>If the <em>script-may-access-clipboard</em> flag is unset</dt>
                 <dd>Return false from the copy action, terminate this algorithm</dd>
             </dl>
         </dd>
@@ -543,14 +543,14 @@ function clipboard_api_test(e){
 </script>
 </div>
 
-<p>The cut action has two flags called <em>script-triggered</em> and <em>script-may-write-clipboard</em>. The cut action consists of the following steps:</p>
+<p>The cut action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The cut action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
         <dt>If the <em>script-triggered</em> flag is set</dt>
         <dd>
             <dl class="switch">
-                <dt>If the <em>script-may-write-clipboard</em> flag is unset</dt>
+                <dt>If the <em>script-may-access-clipboard</em> flag is unset</dt>
                 <dd>Return false from the cut action, terminate this algorithm</dd>
             </dl>
         </dd>
@@ -781,14 +781,14 @@ document.addEventListener('paste', function(e){
 });
 </pre>
 
-<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-write-clipboard</em>. The paste action consists of the following steps:</p>
+<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific mechanism for determining what sites or apps may read from the clipboard. The paste action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
         <dt>If the <em>script-triggered</em> flag is set</dt>
         <dd>
             <dl class="switch">
-                <dt>If the implementation is not configured to allow the script to read from the clipboard</dt>
+                <dt>If <em>script-may-access-clipboard</em> is unset</dt>
                 <dd>Return false from the paste action, terminate this algorithm</dd>
             </dl>
         </dd>
@@ -1104,7 +1104,7 @@ function clipboard_api_test(e){
 		</dd>
 	</dl>
 </li>
-<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</code> interface, with its <a>type</a> attribute initialized to <em>e</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
+<li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</a> interface, with its <a>type</a> attribute initialized to <em>e</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.
 	<p>Implementation requirements for access to data during event dispatch are defined in [[!HTMLLS]]. Some additional clipboard event-specific processing rules are given below:</p>
     <p class="issue">Why here? Why not in the HTML spec?</p>
 	<dl class="switch">
@@ -1181,7 +1181,7 @@ function clipboard_api_test(e){
 		<dt>If a script calls <a>getData()</a> or accesses items in the <a>DataTransferItemList</a> and <var>clipboard-entry</var> is set</dt>
 		<dd>check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <a>DataTransferItemList</a> object's <a>drag data store mode</a> to the <i>disabled mode</i></dd>
 	</dl>
-		<p class="warning"><strong>Warning!</strong> A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>
+		<div class="warning" title="Long-running clipboard reading threads">A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</div>
 <script>
 /** reading clipboard data from looping script  */
 /* Events: paste */
@@ -1326,10 +1326,14 @@ function onTestSetupReady(){
 
 <section>
 <h2>Integration with other scripts and events</h2>
-<section><h3>Events that are <dfn>allowed to modify the clipboard</dfn></h3>
-<p class="not-fully-tested">A <em>copy</em> or <em>cut</em> event dispatched because document.execCommand() is called in a thread which is <a>allowed to show a popup</a>, is allowed to modify the clipboard.</p>
+<section><h3>Event handlers that are <dfn>allowed to modify the clipboard</dfn></h3>
+  <p>Event handlers may write to the clipboard if any of the following is true:</p>
+  <ul>
+    <li>The action which triggers the event is invoked from the user-agent's own user interface, e.g. from a "Copy" menu entry or shortcut key.</li>
+    <li>The action which triggers the event is invoked from a scripting thread which is <a>allowed to show a popup</a>.</li>
+
+  </ul>
 <p>The implementation <em>may</em> allow other trusted event types to modify the clipboard if the implementation authors believe that those event types are likely to express user intention. The implementation <em>may</em> also support configuration that trusts specific sites or apps to modify the clipboard regardless of the origin of the scripting thread.</p>
-<p>Synthetic paste events <em>must not</em> give a script access to data on the real system clipboard.</p>
 <p>Synthetic cut and copy events <em>must not</em> modify data on the system clipboard.</p>
 
 <script>
@@ -1500,12 +1504,23 @@ function onTestSetupReady(){
 }
 </script>
 </section>
+<section><h3>Event handlers that are <dfn>allowed to read from clipboard</dfn></h3>
+  <p>Event handlers may read data from the system clipboard if either of the following is true</p>
+  <ul>
+    <li>The action that triggers the event is invoked from the user-agent's own user interface, e.g. a "Paste" menu entry or shortcut key.</li>
+    <li>The script that triggers the action is running on a site which through an implementation-dependant mechanism is given permission to read data from the clipboard.</li>
+    <li>The action that triggers the event is triggered in an app with permissions to read the clipboard.</li>
+  </ul>
+<p>Synthetic paste events <em>must not</em> give a script access to data on the real system clipboard.</p>
+
+</section>
 <section><h3>Integration with rich text editing APIs</h3>
-<p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> dispatch corresponding clipboard events.</p>
+<p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> trigger the corresponding action, which again will dispatch the associated clipboard event.</p>
 <p>These are the steps to follow when triggering copy, cut or paste actions through the document.execCommand() API:</p>
 <ol>
     <li>Set the action's <em>script-triggered</em> flag.</li>
-    <li>If the script thread is <a>allowed to modify the clipboard</a> set the action's <em>script-may-write-clipboard</em> flag.</li>
+    <li>If action is <em>copy</em> or <em>cut</em> and the script thread is <a>allowed to modify the clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
+    <li>If action is <em>paste</em> and the script thread is <a>allowed to read from clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
     <li>Execute the corresponding action synchronously.</li>
     <li>Use the action's return value as the return value for the document.execCommand() call.</li>
 <script>
