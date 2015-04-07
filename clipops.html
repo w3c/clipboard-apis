@@ -1255,7 +1255,8 @@ interface <span class="idlInterfaceID">ClipboardEvent</span> : <span class="idlS
     <li>Set the action's <em>script-triggered</em> flag.</li>
     <li>If action is <em>copy</em> or <em>cut</em> and the script thread is <a class="internalDFN" href="#dfn-allowed-to-modify-the-clipboard">allowed to modify the clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
     <li>If action is <em>paste</em> and the script thread is <a class="internalDFN" href="#dfn-allowed-to-read-from-clipboard">allowed to read from clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
-    <li>Execute the corresponding action synchronously.</li>
+    <li>Dispatch the corresponding event synchronously.</li>
+    <li>If the event's default action is not prevented, execute the corresponding action synchronously.</li>
     <li>Use the action's return value as the return value for the document.execCommand() call.</li>
 
 
