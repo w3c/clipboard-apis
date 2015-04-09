@@ -466,7 +466,7 @@ table.exceptions table {
   </p>
   <h1 class="title p-name" id="title" property="dcterms:title">Clipboard API and events</h1>
 
-  <h2 id="w3c-editor-s-draft-07-april-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-04-07">07 April 2015</time></h2>
+  <h2 id="w3c-editor-s-draft-09-april-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-04-09">09 April 2015</time></h2>
   <dl>
 
       <dt>This version:</dt>
@@ -951,7 +951,9 @@ If the default action is to do nothing, the clipboard is not modified except if 
     }
 });</pre></div>
 
-<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific mechanism for determining what sites or apps may read from the clipboard. The paste action consists of the following steps:</p>
+<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific permission mechanism for determining what sites or apps may read from the clipboard. When a paste action is triggered by a script, the implementation must not make clipboard contents available without the user's permission. If the permission has not already been granted, the permission prompt must include the hostname of the document associated with the script thread.
+</p>
+  <p>The paste action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">

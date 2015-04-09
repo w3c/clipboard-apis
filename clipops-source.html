@@ -781,7 +781,9 @@ document.addEventListener('paste', function(e){
 });
 </pre>
 
-<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific mechanism for determining what sites or apps may read from the clipboard. The paste action consists of the following steps:</p>
+<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific permission mechanism for determining what sites or apps may read from the clipboard. When a paste action is triggered by a script, the implementation must not make clipboard contents available without the user's permission. If the permission has not already been granted, the permission prompt must include the hostname of the document associated with the script thread.
+</p>
+  <p>The paste action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
