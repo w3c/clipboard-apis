@@ -564,7 +564,7 @@ function clipboard_api_test(e){
         <dt>If the event was not cancelled</dt>
         <dd>
             <dl class="switch">
-                <dt>If there is a selection in an <a>editable context</a></dt>
+                <dt>If there is a selection in an <a>editable context</a> where cutting is enabled</dt>
                 <dd>
                     <ol>
                         <li>Copy the selected contents, if any, to the clipboard. Implementations <em>should</em> create alternate text/html and text/plain clipboard formats when content in a web page is selected.</li>
@@ -804,7 +804,7 @@ document.addEventListener('paste', function(e){
         <dt>If the event was not cancelled</dt>
         <dd>
             <dl class="switch">
-                <dt>If there is a selection or cursor in an <a>editable context</a></dt>
+                <dt>If there is a selection or cursor in an <a>editable context</a> where pasting is enabled</dt>
                 <dd><ol>
                         <li>Insert the most suitable content found on the clipboard, if any, into the context.</li>
                         <li>Queue tasks to fire any events that should fire due to the modification, see <a href="#integration-with-other-scripts-and-events">interaction with other events</a> for details.</li>
