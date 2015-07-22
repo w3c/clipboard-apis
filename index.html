@@ -1367,7 +1367,7 @@ function onTestSetupReady(type){
 }
 </script>
 <script>
-/** ClipboardEvent interface - events triggered from document.execCommand() inside trusted events do affect system clipboard */
+/** ClipboardEvent interface - execCommand() inside trusted event affects clipboard */
 /* Events: copy cut */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "modified text" */
@@ -2052,7 +2052,7 @@ function clipboard_api_test(e){
 </script>
 
 <script>
-/** types property - all implementations must return 'text/plain' as one of the .types entries when there is plain text on the clipboard */
+/** types property - 'text/plain' in .types entries when there is plain text on the clipboard */
 /* Events: paste */
 /* paste data: "clipboard text" */
 function clipboard_api_test(e){
