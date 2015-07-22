@@ -4,7 +4,7 @@
 
 import os, re, codecs
 
-spec_path = os.path.abspath(os.path.dirname(__file__)+os.sep+'..'+os.sep+'clipops-source.html')
+spec_path = os.path.abspath(os.path.dirname(__file__)+os.sep+'..'+os.sep+'index.html')
 tc_path = os.path.abspath(os.path.dirname(__file__)+os.sep+'..'+os.sep+'testsuite')+os.sep
 
 tc_path = "C:\\mozilla\\web-platform-tests\\clipboard-apis\\" #
