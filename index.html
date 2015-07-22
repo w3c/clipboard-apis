@@ -570,7 +570,28 @@ function clipboard_api_test(e){
                     </ol>
                 </dd>
                 <dt>Else, if there is no selection or the context is not editable</dt>
-                <dd>Do nothing</dd>
+                <dd>Return false</dd>
+<script type="text/javascript">
+/** execCommand cut in non-editable context returns false */
+/* Events: cut */
+/* Test HTML: <p>This is filler text</p> */
+/* Targets: document */
+var eventFired = false
+function clipboard_api_test(e){
+  var eventFired = true;
+}
+
+function triggerTestManually(){
+  try{
+    var returnValue = document.execCommand('cut', false, false);
+    /* The event should have fired, but the return value should be false */
+    result(eventFired && !returnValue);
+  }catch(e){
+    result('document.execCommand(\'cut\') throws exception, can\'t test');
+  }
+}
+
+</script>
             </dl>
         </dd>
         <dt>Else, if the event was cancelled</dt>
