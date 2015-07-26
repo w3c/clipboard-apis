@@ -1253,7 +1253,7 @@ function clipboard_api_test(e){
 }
 function onTestSetupReady(){
     try{
-        var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+        var evt=new ClipboardEvent('paste', {dataType: 'text/plain', data: 'synthetic event text'});
         document.dispatchEvent(evt);
     }catch(e){
         result('Unexpected Exception when initiating ClipboardEvent: '+e);
@@ -1367,23 +1367,18 @@ function clipboard_api_test(e){
 
 }
 function onTestSetupReady(type){
-    try{
-        var evt = new ClipboardEvent(window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'});
-        if(type === 'cut'){
-            document.body.contentEditable='true';
-        }
-        /* make a selection to check if selected text is copied by the synthetic event.. */
-        var range = document.createRange();
-        range.selectNodeContents(document.body);
-        window.getSelection().addRange(range);
-        document.dispatchEvent(evt);
-        window.getSelection().removeAllRanges();
-        if(type === 'cut'){
-            document.body.contentEditable = 'false';
-        }
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
+    var evt = new ClipboardEvent(window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'});
+    if(type === 'cut'){
+        document.body.contentEditable='true';
+    }
+    /* make a selection to check if selected text is copied by the synthetic event.. */
+    var range = document.createRange();
+    range.selectNodeContents(document.body);
+    window.getSelection().addRange(range);
+    document.dispatchEvent(evt);
+    window.getSelection().removeAllRanges();
+    if(type === 'cut'){
+        document.body.contentEditable = 'false';
     }
 }
 </script>
@@ -1397,22 +1392,17 @@ function clipboard_api_test(e){
     e.preventDefault();
 }
 function triggerTestManually(type){
-    try{
-        if(window.eventType === 'cut'){
-            document.body.contentEditable = 'true';
-        }
-        /* make a selection to check if selected text is copied */
-        var range = document.createRange();
-        range.selectNodeContents(document.body);
-        window.getSelection().addRange(range);
-        document.execCommand(type);
-        window.getSelection().removeAllRanges();
-        if(window.eventType ==='cut'){
-            document.body.contentEditable='false';
-        }
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
+    if(window.eventType === 'cut'){
+        document.body.contentEditable = 'true';
+    }
+    /* make a selection to check if selected text is copied */
+    var range = document.createRange();
+    range.selectNodeContents(document.body);
+    window.getSelection().addRange(range);
+    document.execCommand(type);
+    window.getSelection().removeAllRanges();
+    if(window.eventType ==='cut'){
+        document.body.contentEditable='false';
     }
 }
 </script>
@@ -1424,16 +1414,11 @@ function triggerTestManually(type){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(type){
-    try{
-        var evt=new ClipboardEvent( type, { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-        document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
-        setTimeout( function(){
-            result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' ) === -1);
-        }, 50 );
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt=new ClipboardEvent( type, { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+    document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
+    setTimeout( function(){
+        result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' ) === -1);
+    }, 50 );
 }
 </script>
 <script>
@@ -1444,16 +1429,11 @@ function onTestSetupReady(type){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(){
-    try{
-        var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-        document.getElementsByTagName('input')[0].dispatchEvent(evt);
-        setTimeout( function(){
-            result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )===-1);
-        }, 50 );
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+    document.getElementsByTagName('input')[0].dispatchEvent(evt);
+    setTimeout( function(){
+        result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )===-1);
+    }, 50 );
 }
 </script>
 <script>
@@ -1464,16 +1444,11 @@ function onTestSetupReady(){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(type){
-    try{
-        var evt = new ClipboardEvent(type, { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' });
-        document.getElementsByTagName('input')[0].dispatchEvent(evt);
-        setTimeout(function(){
-            result(document.getElementsByTagName('input')[0].value.indexOf('synthetic event text') === -1);
-        }, 50);
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt = new ClipboardEvent(type, { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' });
+    document.getElementsByTagName('input')[0].dispatchEvent(evt);
+    setTimeout(function(){
+        result(document.getElementsByTagName('input')[0].value.indexOf('synthetic event text') === -1);
+    }, 50);
 }
 </script>
 
@@ -1485,20 +1460,15 @@ function onTestSetupReady(type){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(){
-    try{
-        var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
-        document.getElementById('editable').dispatchEvent(evt);
-        setTimeout( function(){
-            try{
-                result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )===-1);
-            }catch(e){
-                result('Unexpected exception when looking for inserted HTML data: '+e);
-            }
-        }, 50 );
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+    document.getElementById('editable').dispatchEvent(evt);
+    setTimeout( function(){
+        try{
+            result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )===-1);
+        }catch(e){
+            result('Unexpected exception when looking for inserted HTML data: '+e);
+        }
+    }, 50 );
 }
 </script>
 <script>
@@ -1509,20 +1479,15 @@ function onTestSetupReady(){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(){
-    try{
-        var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
-        document.getElementById('editable').dispatchEvent(evt);
-        setTimeout( function(){
-            try{
-                result(document.getElementById('editable').getElementsByTagName('em').length == 0);
-            }catch(e){
-                result('Unexpected exception when looking for inserted HTML data: '+e);
-            }
-        }, 50 );
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+    document.getElementById('editable').dispatchEvent(evt);
+    setTimeout( function(){
+        try{
+            result(document.getElementById('editable').getElementsByTagName('em').length == 0);
+        }catch(e){
+            result('Unexpected exception when looking for inserted HTML data: '+e);
+        }
+    }, 50 );
 }
 </script>
 </section>
@@ -1554,11 +1519,9 @@ function clipboard_api_test(e){
     assert_unreached('document.execCommand() triggered from non-user-initiated script thread, events should not fire');
 }
 function onTestSetupReady(eventType){
-    try{
-        result(document.execCommand(eventType) === false);
-    }catch(e){
-        result('FAILED - exception from document.execCommand() when it was expected to return false');
-    }
+    result(function(){
+      assert_false(document.execCommand(eventType));
+    });
 }
 </script>
 
@@ -1567,12 +1530,15 @@ function onTestSetupReady(eventType){
 
 <script>
 /** integration with execCommand, events are syncronous */
-/* Events: copy cut paste */
+/* Events: copy cut */
 /* Test HTML: <iframe id="iframe"></iframe>*/
 /* Targets: 'iframe.contentWindow' */
 /* This assertation is based on Gecko's implementation. */
+var eventFired = false;
 function clipboard_api_test(e){
-    return window.afterExecCommand===false; /* the event is syncronous, must not run after the execCommand call is finished */
+    /* the event is syncronous, must not run after the execCommand call is finished */
+    assert_false(window.afterExecCommand);
+    eventFired = true;
 }
 function onTestSetupReady( eventType ){
   document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
@@ -1580,26 +1546,22 @@ function onTestSetupReady( eventType ){
     (doc=ifr.contentDocument).designMode='on';
     doc.body.innerHTML='<p>Frame contents</p>';
     ifr.contentWindow.focus();
-    if(eventType in { copy:1, cut:1 }){    // create a selection
-        var rng=doc.createRange();
-        rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
-        var sel=ifr.contentWindow.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(rng);
-    }
+    var rng=doc.createRange();
+    rng.selectNodeContents(doc.getElementsByTagName('p')[0]);
+    var sel=ifr.contentWindow.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(rng);
 }
 function triggerTestManually(eventType){
-    try{
-        var ifr=document.getElementById('iframe');
-        window.afterExecCommand=false;
-        var execSucceeded = ifr.contentDocument.execCommand(eventType, false, false);
-        window.afterExecCommand=true;
-        if(!execSucceeded){
-            result('Can not test - exception from execCommand '+e+' (Note: tester may have to enable clipboard access in preferences for '+location.hostname+' before running this test)');
-        }
-    }catch(e){
-        result('Can not test - exception from execCommand '+e+' (Note: tester may have to enable clipboard access in preferences for '+location.hostname+' before running this test)');
-    }
+    var ifr=document.getElementById('iframe');
+    window.afterExecCommand=false;
+    /* This triggers the event listener, which asserts false */
+    var execSucceeded = ifr.contentDocument.execCommand(eventType, false, false);
+    window.afterExecCommand=true;
+    result(function(){
+      assert_true(eventFired, eventType + ' event should fire');
+      assert_true(execSucceeded, 'document.execCommand() should succeed and return true');
+    });
 }
 </script>
 <script>
@@ -1616,21 +1578,20 @@ function clipboard_api_test(e){
 
 function triggerTestManually(){
   document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
-    var ifr=document.getElementById('ifr');
-    var doc=ifr.contentDocument;
-    doc.designMode='on';
-    ifr.contentDocument.body.innerHTML='<p>Frame contents</p>';
-    ifr.contentWindow.focus();
-    doc.body.innerHTML='<p>This is filler text</p>';
-    var range=doc.createRange();
-    range.selectNodeContents(doc.getElementsByTagName('p')[0]);
-    doc.defaultView.getSelection().addRange(range);
-    try{
-        doc.execCommand(window.eventType, false, false);
-    // result(doc.body.innerHTML=='<p>This is filler text</p>'); // sorry, pass condition here is external
-    }catch(e){
-        result('Can not test - exception from execCommand '+e+' (Note: enable clipboard access in preferences for '+location.hostname+' before running this test)');
-    }
+  var ifr=document.getElementById('ifr');
+  var doc=ifr.contentDocument;
+  doc.designMode='on';
+  doc.body.innerHTML='<p>Frame contents</p>';
+  ifr.contentWindow.focus();
+  var range=doc.createRange();
+  range.selectNodeContents(doc.getElementsByTagName('p')[0]);
+  doc.defaultView.getSelection().removeAllRanges();
+  doc.defaultView.getSelection().addRange(range);
+  var returnValue = doc.execCommand(window.eventType, false, false);
+  /* Main pass condition here is clipboard contents - but we can add a couple of assertations here */
+  assert_false(returnValue, 'execCommand() returns false when event default action is prevented');
+  /* This assertation is especially relevant for 'cut' */
+  assert_equals(doc.getElementsByTagName('p')[0].firstChild.textContent, 'Frame contents');
 }
 </script>
 
@@ -1638,7 +1599,7 @@ function triggerTestManually(){
 /** integration with execCommand, can prevent default action */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe>*/
+/* Test HTML: <iframe id="ifr"></iframe><p>Note: this test is only relevant if scripted paste is allowed</p> */
 /* Targets: 'ifr.contentWindow' */
 function clipboard_api_test(e){
     window.eventFired=true;
@@ -1903,6 +1864,7 @@ function clipboard_api_test(e){
     setTimeout( function(){
         cbData.setData('text/plain', 'Test failed');
     }, 1 );
+    e.preventDefault();
 }
 </script>
 <script>
@@ -1915,6 +1877,7 @@ function clipboard_api_test(e){
     setTimeout( function(){
         cbData.items.add( 'Test failed', 'text/plain');
     }, 1 );
+    e.preventDefault();
 }
 </script>
 <script>
@@ -1927,6 +1890,7 @@ function clipboard_api_test(e){
     setTimeout( function(){
         cbData.clearData();
     }, 1 );
+    e.preventDefault();
 }
 </script>
 </li>
