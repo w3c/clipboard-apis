@@ -51,21 +51,7 @@ spec_text = f.read()
 f.close()
 r = re.compile('<script>\s*(/\*\* (?P<title>.+?)\*/\s*\n(?P<script>.+?))</script>', re.I | re.S)
 testcounter = 1
-rubytemplate = """
-describe "Clipboard events testsuite" do
-  before(:all) do
-    @browser = OperaWatir::Browser.new
-    $base = '/web-platform-tests/clipboard-apis/testsuite/'
-  end
-%s
-end
-"""
-rubycode = ""
-rbatom = """
-    it "%i %s" do
-        doSingleTest %i
-    end
-"""
+
 for match in re.finditer(r, spec_text):
     test_info = {
         "title": match.groupdict()["title"],
@@ -104,7 +90,6 @@ for match in re.finditer(r, spec_text):
         test_info['events'] = test_info['events'].strip().split(' ')
     if 'targets' in test_info:
         test_info['targets'] = test_info['targets'].strip().split(' ')
-    rubycode += rbatom % (testcounter, test_info['title'], testcounter)
     base_title = test_info['title']
     for event in test_info['events']:
         for target in test_info['targets']:
@@ -119,6 +104,3 @@ for match in re.finditer(r, spec_text):
             testcounter += 1
             print('wrote %s, %s' % (fn, test_info['title']))
 
-f = open(tc_path+'testlist.rb', 'w')
-f.write(rubytemplate % rubycode)
-f.close()
