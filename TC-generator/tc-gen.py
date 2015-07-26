@@ -15,7 +15,7 @@ tc_path = "C:\\mozilla\\web-platform-tests\\clipboard-apis\\"
 template = u"""<!DOCTYPE html>
 <html><head>
     <meta charset="UTF-8">
-    <title>  ClipboardEvent - {title}</title>
+    <title>Clipboard API - {title}</title>
     <script src="/resources/testharness.js"></script>
     <script src="/resources/testharnessreport.js"></script>
     <script src="support/_lib.js"></script>
@@ -33,9 +33,9 @@ template = u"""<!DOCTYPE html>
     var extPassCond={external_pass_condition};
     var eventTarget={event_target};
     var eventType='{event_type}';
-    window.onload=function(){{
-        setupTest( eventTarget, eventType, dataToPaste, extPassCond );
-    }}
+    setup(function(){{
+            setupTest( eventTarget, eventType, dataToPaste, extPassCond );
+        }});
     </script>
 </body></html>
 """
