@@ -180,7 +180,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 <h3>Events</h3>
 <section>
 <h4>beforecopy event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a copy operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecopy event before the control is shown to the user (i.e. in a menu). The default action of the beforecopy event is to disable any 'copy'-related UI controls if there is no selection. The event bubbles and is cancelable.</p>
+<p>If the implementation has user interface controls that users can use to initiate a copy operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecopy event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'copy'-related UI controls if there is no selection. The event bubbles and is cancelable.</p>
 <script>
 /** Using beforecopy to enable 'copy' UI that would otherwise be disabled */
 /* Events: copy */
@@ -202,7 +202,7 @@ document.addEventListener('beforecopy', function(e){
 </section>
 <section>
 <h4>beforecut event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a cut operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecut event before the control is shown to the user (i.e. in a menu). The default action of the beforecut event is to disable any 'cut'-related UI controls if there is no selection in an <a>editable context</a>. The event bubbles and is cancelable.</p>
+<p>If the implementation has user interface controls that users can use to initiate a cut operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecut event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'cut'-related UI controls if there is no selection in an <a>editable context</a>. The event bubbles and is cancelable.</p>
 <script>
 /** Using beforecut to enable 'cut' UI that would otherwise be disabled */
 /* Events: cut */
@@ -216,7 +216,7 @@ function clipboard_api_test(e){
 </section>
 <section>
 <h4>beforepaste event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a paste operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforepaste event before the control is shown to the user (i.e. in a menu). The default action of the before event is to disable any 'paste'-related UI controls if there is no <a>editable context</a>. The event bubbles and is cancelable.</p>
+<p>If the implementation has user interface controls that users can use to initiate a paste operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforepaste event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'paste'-related UI controls if focus is not in an <a>editable context</a>. The event bubbles and is cancelable.</p>
 <script>
 /** Using beforepaste to enable 'paste' UI that would otherwise be disabled */
 /* Events: paste */
@@ -247,9 +247,9 @@ function clipboard_api_test(e){
 
     <li>
         <dl class="switch">
-            <dt>If the event was not cancelled</dt>
+            <dt>If the event was not canceled</dt>
             <dd>Use the user-agent's built-in logic for determining the command's state</dd>
-            <dt>Otherwise, if the event was cancelled</dt>
+            <dt>Otherwise, if the event was canceled</dt>
             <dd>Set the command's state to enabled</dd>
     </li>
 </ol>
@@ -267,14 +267,14 @@ function clipboard_api_test(e){
 <section>
 <h4>The copy action</h4>
 <div class="note">
-<p>When the user initiates a copy action, the implementation <a href="#fire-a-clipboard-event">fires a clipboard event</a> named <em>copy</em>. If the event is not cancelled, the selected data will be copied to the clipboard. </p>
+<p>When the user initiates a copy action, the implementation <a href="#fire-a-clipboard-event">fires a clipboard event</a> named <em>copy</em>. If the event is not canceled, the selected data will be copied to the clipboard. </p>
 <script>
 /** ClipboardEvent - events fire on INPUT */
 /* Events: copy cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
-function clipboard_api_test(e){
-    var passed = e.type === window.eventType;
+function clipboard_api_test(e, test_obj, eventType){
+    var passed = e.type === eventType;
     passed = passed && e.target.id==='input_text';
     return passed;
 }
@@ -284,8 +284,8 @@ function clipboard_api_test(e){
 /* Events: copy cut */
 /* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">copied text</textarea></form>*/
 /* Targets: document 'input_text' */
-function clipboard_api_test(e){
-    var passed = e.type === window.eventType;
+function clipboard_api_test(e, test_obj, eventType){
+    var passed = e.type === eventType;
     passed = passed && e.target.id==='input_text';
     return passed;
 }
@@ -341,8 +341,8 @@ function clipboard_api_test(e){
 /* Events: copy */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
-function clipboard_api_test(e){
-    setTimeout(function(){
+function clipboard_api_test(e, test_obj){
+    test_obj.step_timeout(function(){
     /* what is the "most standardised" way to test this? */
     var passed = document.activeElement == document.getElementById('input_text') ;
     passed = passed && document.activeElement.selectionStart == 0 && document.activeElement.selectionEnd == document.activeElement.value.length;
@@ -351,8 +351,8 @@ function clipboard_api_test(e){
 }
 </script>
 
-<p>A script which uses the event.clipboardData API to control what ends up on the clipboard, needs to cancel the default action of the event. Otherwise, the data the script intends to place on the clipboard will be ignored.</p>
-<p>If there is no selection, the clipboard is not modified except if the default action is prevented and the script has added entries in the <a>DataTransferItemList</a>, for example by calling the <a>setData()</a> method.</p>
+<p>A script which uses the event.clipboardData API to control what ends up on the clipboard, needs to cancel the event. Otherwise, the data the script intends to place on the clipboard will be ignored.</p>
+<p>If there is no selection, the clipboard is not modified except if the script has added entries in the <a>DataTransferItemList</a>, for example by calling the <a>setData()</a> method, and canceled the event.</p>
 </div>
 
 
@@ -374,9 +374,9 @@ function clipboard_api_test(e){
 /* Test HTML: <form><input id="input_text" onfocus="this.selectionEnd=this.selectionStart" autofocus value="copied text"></form>*/
 /* Targets: document */
 /* paste data: "clipboard text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     var elm=e.target;
-  setTimeout(
+  test_obj.step_timeout(
         function(){
             result(elm.value===elm.defaultValue);
         },
@@ -432,9 +432,9 @@ document.addEventListener('copy', function(e){
 <li><a href="#create-a-clipboard-event-object">Create</a> and <a href="#fire-a-clipboard-event">fire a clipboard event</a> named <em>copy</em></li>
 <li>
     <dl class="switch">
-        <dt>If the event was not cancelled</dt>
+        <dt>If the event was not canceled</dt>
         <dd>Copy the selected contents, if any, to the clipboard. Implementations <em>should</em> create alternate text/html and text/plain clipboard formats when content in a web page is selected.</dd>
-        <dt>else, if the event was cancelled</dt>
+        <dt>else, if the event was canceled</dt>
         <dd>Call the <a>writing contents to the clipboard</a> algorithm, passing on the <a>DataTransferItemList</a> list <em>items</em>, a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</dd>
     </dl>
 </li>
@@ -447,7 +447,7 @@ document.addEventListener('copy', function(e){
 
 <h4>The cut action</h4>
 <div class="note">
-<p>When the user initiates a cut action, the implementation <a href="#fire-a-clipboard-event">fires a clipboard event</a> named <em>cut</em>. In an <a>editable context</a>, if the event is not cancelled the action will place the selected data on the clipboard and remove the selection from the document.</p>
+<p>When the user initiates a cut action, the implementation <a href="#fire-a-clipboard-event">fires a clipboard event</a> named <em>cut</em>. In an <a>editable context</a>, if the event is not canceled the action will place the selected data on the clipboard and remove the selection from the document.</p>
 <p>The event bubbles and is cancelable.</p>
 <!-- Tests are above, under copy. One additional test for preventing default action here: -->
 <script>
@@ -455,10 +455,10 @@ document.addEventListener('copy', function(e){
 /* Events: cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     e.preventDefault();
     var theTarget=e.target;
-    setTimeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
+    test_obj.step_timeout( function(){ var passed = theTarget.value === theTarget.defaultValue; result(passed);   }, 10 );
 }
 </script>
 <p>The cut event fires before the selected data is removed.
@@ -478,8 +478,8 @@ function clipboard_api_test(e){
 /* Events: cut */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="cut text"></form>*/
 /* Targets: 'input_text' */
-function clipboard_api_test(e){
-    setTimeout(function(){
+function clipboard_api_test(e, test_obj){
+  test_obj.step_timeout(function(){
     var elm=document.getElementById('input_text');
     var passed = elm.selectionStart === 0 && elm.selectionEnd === 0 && elm.value === '';
     result( passed );
@@ -487,7 +487,7 @@ function clipboard_api_test(e){
 }
 </script>
 
-<p>In a non-<a>editable context</a>, or if there is no selection, the cut event's default action is to do nothing. The implementation fires the event regardless.
+<p>In a non-<a>editable context</a>, or if there is no selection, the <em>cut action</em> does nothing. The implementation fires the event regardless.
 <script>
 /** no default action for cut in non-editable context */
 /* Events: cut */
@@ -499,7 +499,7 @@ function clipboard_api_test(e){
     /* hence we don't need to to anything here (if the event doesn't fire the test will hang without giving further instructions) */
 }
 </script>
-If the default action is to do nothing, the clipboard is not modified except if the default action is prevented and the script has added entries in the <a>DataTransferItemList</a>.</p>
+In this case nothing, the clipboard is not modified except if the script has added entries in the <a>DataTransferItemList</a> and the event is canceled.</p>
 
 <script>
 /** setData() in cut event without preventDefault() has no effect when default action is noop */
@@ -514,7 +514,7 @@ function clipboard_api_test(e){
 </script>
 
 
-<p>Any script which uses the event.clipboardData API to control what the cut event will write to the clipboard also needs to cancel the default action of the event. Otherwise, the data the script intends to place on the clipboard will be ignored.</p>
+<p>Any script which uses the event.clipboardData API to control what the cut event will write to the clipboard also needs to cancel the event. Otherwise, the data the script intends to place on the clipboard will be ignored.</p>
 <script>
 /** modifying data for cut event in non-editable context with selection */
 /* Events: copy cut */
@@ -558,7 +558,7 @@ function clipboard_api_test(e){
 <li><a href="#create-a-clipboard-event-object">Create</a> and <a href="#fire-a-clipboard-event">fire a clipboard event</a> named <em>cut</em></li>
 <li>
     <dl class="switch">
-        <dt>If the event was not cancelled</dt>
+        <dt>If the event was not canceled</dt>
         <dd>
             <dl class="switch">
                 <dt>If there is a selection in an <a>editable context</a> where cutting is enabled</dt>
@@ -582,19 +582,15 @@ function clipboard_api_test(e){
 }
 
 function triggerTestManually(){
-  try{
-    var returnValue = document.execCommand('cut', false, false);
-    /* The event should have fired, but the return value should be false */
-    result(eventFired && !returnValue);
-  }catch(e){
-    result('document.execCommand(\'cut\') throws exception, can\'t test');
-  }
+  var returnValue = document.execCommand('cut', false, false);
+  /* The event should have fired, but the return value should be false */
+  result(eventFired && !returnValue);
 }
 
 </script>
             </dl>
         </dd>
-        <dt>Else, if the event was cancelled</dt>
+        <dt>Else, if the event was canceled</dt>
         <dd>Call the <a>writing contents to the clipboard</a> algorithm, passing on the <a>DataTransferItemList</a> list <em>items</em>, a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</dd>
     </dl>
 </li>
@@ -617,8 +613,8 @@ function triggerTestManually(){
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
-function clipboard_api_test(e){
-    var passed = e.type === window.eventType;
+function clipboard_api_test(e, test_obj, eventType){
+    var passed = e.type === eventType;
     passed = passed && e.target.id==='input_text';
     return passed;
 }
@@ -629,8 +625,8 @@ function clipboard_api_test(e){
 /* Test HTML: <form><textarea id="input_text" autofocus onfocus="this.select()">original text</textarea></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
-function clipboard_api_test(e){
-    var passed = e.type === window.eventType;
+function clipboard_api_test(e, test_obj, eventType){
+    var passed = e.type === eventType;
     passed = passed && e.target.id==='input_text';
     return passed;
 }
@@ -649,27 +645,29 @@ function clipboard_api_test(e){
 </script>
 
 
-<p>If the cursor is in an editable element, the default action is to insert clipboard data in the most suitable format supported for the given context.</p>
+<p>If the cursor is in an editable element, the paste action will insert clipboard data in the most suitable format (if any) supported for the given context.</p>
 <script>
 /** preventing default action  */
 /* Events: paste */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="original text"></form>*/
 /* Targets: document 'input_text' */
 /* paste data: "pasted text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     e.preventDefault();
     var theTarget=e.target;
-    setTimeout( function(){ var passed = theTarget.value === 'original text'; result(passed);   }, 10 );
+    test_obj.step_timeout(function(){
+      result(function(){assert_equals(theTarget.value, 'original text');});
+    }, 10 );
 }
 </script>
-<p> The paste event has no default action in a non-<a>editable context</a>, but the event fires regardless.</p>
+<p> The paste action has no effect in a non-<a>editable context</a>, but the event fires regardless.</p>
 
 <script>
 /** paste event fires even in non-editable context */
 /* Events: paste */
 /* Targets: document */
 /* paste data: "pasted text" */
-/* Test HTML: <p>&nbsp;</p> */
+/* Test HTML: <p>&nbsp;</p>*/
 function clipboard_api_test(e){
     var passed = e.type === 'paste';
     return passed;
@@ -681,13 +679,28 @@ function clipboard_api_test(e){
 /* Events: paste */
 /* paste data: "pasted text" */
 /* Test HTML: <form><input autofocus></form> */
-function clipboard_api_test(e){
-    setTimeout(function(){
-        var passed=false;
-    passed=e.target.value==='pasted text';
-        result(passed);
+function clipboard_api_test(e, test_obj){
+    test_obj.step_timeout(function(){
+      var passed=false;
+      passed=e.target.value==='pasted text';
+      result(passed);
     }, 10);
     e.clipboardData.setData('text/plain', 'modified text');
+}
+</script>
+<script>
+/** setData() does not modify text about to be inserted in a paste event - w preventDefault() */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Test HTML: <form><input autofocus></form> */
+function clipboard_api_test(e, test_obj){
+    test_obj.step_timeout(function(){
+      result(function(){
+        assert_equals(e.target.value, 'pasted text');
+      });
+    }, 10);
+    e.clipboardData.setData('text/plain', 'modified text');
+    e.preventDefault();
 }
 </script>
 <script>
@@ -699,9 +712,20 @@ function clipboard_api_test(e){
 /* Targets:  'input_text' */
 
 function clipboard_api_test(e){
-    if(e.clipboardData && e.clipboardData.setData){
-        e.clipboardData.setData('text/plain', 'modified text');
-    }
+  e.clipboardData.setData('text/plain', 'modified text');
+}
+</script>
+<script>
+/** setData() doesn't modify text on the clipboard when called from a paste event - w preventDefault() */
+/* Events: paste */
+/* paste data: "pasted text" */
+/* Test HTML: <form><input autofocus id="input_text"></form> */
+/* External pass condition - clipboard data: "pasted text" */
+/* Targets:  'input_text' */
+
+function clipboard_api_test(e){
+  e.clipboardData.setData('text/plain', 'modified text');
+  e.preventDefault();
 }
 </script>
 <script>
@@ -709,22 +733,19 @@ function clipboard_api_test(e){
 /* Events: paste */
 /* paste data: "pasted text" */
 function clipboard_api_test(e){
-    var passed = false;
-    if(e.clipboardData && e.clipboardData.getData){
-        if(e.clipboardData.getData('text/plain')==='pasted text')passed=true;
-    }
-    return passed;
+    return e.clipboardData.getData('text/plain')==='pasted text';
 }
 </script>
 <script>
 /** getData() method when called outside event handler should return an empty string */
 /* Events: paste */
 /* paste data: "pasted text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     var cbData=e.clipboardData;
-    setTimeout( function(){
-        var passed = cbData.getData('text/plain')==='';
-        result(passed);
+    test_obj.step_timeout( function(){
+        result(function(){
+          assert_equals(cbData.getData('text/plain', ''));
+        });
     }, 1 );
 }
 </script>
@@ -733,16 +754,14 @@ function clipboard_api_test(e){
 /* Events: paste */
 /* paste data: "pasted text" */
 function clipboard_api_test(e){
-    var passed=true;
-    try{
+  result(function(){
+    assert_throws(new TypeError, function(){
         e.clipboardData.getData();
-        passed=false;
-    }catch(e){}
-    try{
-        e.clipboardData.getData( 'text/plain', 'wrong number of arguments' );
-        passed=false;
-    }catch(e){}
-    return passed;
+    });
+/*    assert_throws('TypeError', function(){
+        e.clipboardData.getData('text/plain', 'wrong number of arguments');
+    });*/
+  });
 }
 </script>
 <script>
@@ -819,7 +838,7 @@ document.addEventListener('paste', function(e){
 <li><a href="#create-a-clipboard-event-object">Create</a> and <a href="#fire-a-clipboard-event">fire a clipboard event</a> named <em>paste</em></li>
 <li>
     <dl class="switch">
-        <dt>If the event was not cancelled</dt>
+        <dt>If the event was not canceled</dt>
         <dd>
             <dl class="switch">
                 <dt>If there is a selection or cursor in an <a>editable context</a> where pasting is enabled</dt>
@@ -833,7 +852,7 @@ document.addEventListener('paste', function(e){
                 <dd>Do nothing</dd>
             </dl>
         </dd>
-        <dt>Else, if the event was cancelled</dt>
+        <dt>Else, if the event was canceled</dt>
         <dd>Do nothing</dd>
 </li>
 <li>Return true from the action</li>
@@ -1268,14 +1287,9 @@ function clipboard_api_test(e){
     return e.clipboardData.getData('text/plain')=='synthetic event text';
 }
 function onTestSetupReady(){
-    try{
-        var evt = new ClipboardEvent('paste')
-        evt.clipboardData.items.add('synthetic event text', 'text/plain');
-        document.dispatchEvent(evt);
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt = new ClipboardEvent('paste')
+    evt.clipboardData.items.add('synthetic event text', 'text/plain');
+    document.dispatchEvent(evt);
 }
 </script>
 <script>
@@ -1287,19 +1301,14 @@ function clipboard_api_test(e){
 }
 
 function onTestSetupReady(){
-    try{
-        var evt = new ClipboardEvent('paste');
-        evt.clipboardData.items.add('synthetic event text', 'text/foobarbogustype');
-        document.dispatchEvent(evt);
-    }catch(e){
-        result('Unexpected Exception when initiating ClipboardEvent: '+e);
-        return;
-    }
+    var evt = new ClipboardEvent('paste');
+    evt.clipboardData.items.add('synthetic event text', 'text/foobarbogustype');
+    document.dispatchEvent(evt);
 }
 </script>
 
 
-<dl class="idl idl-code" title="[Constructor(DOMString type)] interface ClipboardEvent : Event">
+<dl class="idl idl-code" title="[Constructor(DOMString type, optional EventInit eventInitDict)] interface ClipboardEvent : Event">
     <dt>readonly attribute DataTransfer clipboardData</dt>
     <dd>
      <p>The clipboardData attribute is an instance of the <a>DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access. For synthetic events, the drag data store contains the data added by the script that created the event.</p>
@@ -1375,20 +1384,23 @@ function onTestSetupReady(){
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
 function clipboard_api_test(e){
-
+  /* The result must be checked externally - i.e. what's on the clipboard.. */
 }
-function onTestSetupReady(type){
-    var evt = new ClipboardEvent(window.eventType, {bubbles:true, cancelable:true, dataType: 'text/plain', data:'synthetic event text'});
-    if(type === 'cut'){
+function onTestSetupReady(eventType){
+    var evt = new ClipboardEvent(eventType);
+    evt.clipboardData.items.add('synthetic event text', 'text/plain');
+    evt.preventDefault();
+    if(eventType === 'cut'){
         document.body.contentEditable='true';
     }
     /* make a selection to check if selected text is copied by the synthetic event.. */
     var range = document.createRange();
     range.selectNodeContents(document.body);
+    window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
     document.dispatchEvent(evt);
     window.getSelection().removeAllRanges();
-    if(type === 'cut'){
+    if(eventType === 'cut'){
         document.body.contentEditable = 'false';
     }
 }
@@ -1402,17 +1414,17 @@ function clipboard_api_test(e){
     e.clipboardData.setData('text/plain', 'modified text');
     e.preventDefault();
 }
-function triggerTestManually(type){
-    if(window.eventType === 'cut'){
+function triggerTestManually(eventType){
+    if(eventType === 'cut'){
         document.body.contentEditable = 'true';
     }
     /* make a selection to check if selected text is copied */
     var range = document.createRange();
     range.selectNodeContents(document.body);
     window.getSelection().addRange(range);
-    document.execCommand(type);
+    document.execCommand(eventType);
     window.getSelection().removeAllRanges();
-    if(window.eventType ==='cut'){
+    if(eventType ==='cut'){
         document.body.contentEditable='false';
     }
 }
@@ -1424,11 +1436,14 @@ function triggerTestManually(type){
 /* Test HTML: <form><textarea autofocus></textarea></form>*/
 /* Targets: document */
 function clipboard_api_test(e){ }
-function onTestSetupReady(type){
-    var evt=new ClipboardEvent( type, { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+function onTestSetupReady(type, test_obj){
+    var evt = new ClipboardEvent(type);
+    evt.clipboardData.items.add('synthetic event text', 'text/plain');
     document.getElementsByTagName('textarea')[0].dispatchEvent(evt);
-    setTimeout( function(){
-        result(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' ) === -1);
+    test_obj.step_timeout(function(){
+        result(function(){
+          assert_equals(document.getElementsByTagName('textarea')[0].value.indexOf( 'synthetic event text' ), -1);
+        });
     }, 50 );
 }
 </script>
@@ -1438,12 +1453,15 @@ function onTestSetupReady(type){
 /* paste data: "clipboard text" */
 /* Test HTML: <form><input autofocus></form>*/
 /* Targets: document */
-function clipboard_api_test(e){ }
-function onTestSetupReady(){
-    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+function clipboard_api_test(e){}
+function onTestSetupReady(type, test_obj){
+    var evt = new ClipboardEvent(type);
+    evt.clipboardData.items.add('synthetic event text', 'text/plain');
     document.getElementsByTagName('input')[0].dispatchEvent(evt);
-    setTimeout( function(){
-        result(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' )===-1);
+    test_obj.step_timeout( function(){
+      result(function(){
+        assert_equals(document.getElementsByTagName('input')[0].value.indexOf('synthetic event text'), -1);
+        });
     }, 50 );
 }
 </script>
@@ -1455,10 +1473,13 @@ function onTestSetupReady(){
 /* Targets: document */
 function clipboard_api_test(e){ }
 function onTestSetupReady(type){
-    var evt = new ClipboardEvent(type, { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' });
+    var evt = new ClipboardEvent(type);
+    evt.clipboardData.items.add('<em>synthetic event text</em>', 'text/html');
     document.getElementsByTagName('input')[0].dispatchEvent(evt);
-    setTimeout(function(){
-        result(document.getElementsByTagName('input')[0].value.indexOf('synthetic event text') === -1);
+    test_obj.step_timeout(function(){
+      result(function(){
+        assert_equals(document.getElementsByTagName('input')[0].value.indexOf( 'synthetic event text' ), -1);
+      });
     }, 50);
 }
 </script>
@@ -1469,16 +1490,15 @@ function onTestSetupReady(type){
 /* paste data: "clipboard text" */
 /* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
 /* Targets: document */
-function clipboard_api_test(e){ }
-function onTestSetupReady(){
-    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/plain', data:'synthetic event text' } );
+function clipboard_api_test(e){}
+function onTestSetupReady(type, test_obj){
+    var evt = new ClipboardEvent(type);
+    evt.clipboardData.items.add('synthetic event text', 'text/plain');
     document.getElementById('editable').dispatchEvent(evt);
-    setTimeout( function(){
-        try{
-            result(document.getElementById('editable').textContent.indexOf( 'synthetic event text' )===-1);
-        }catch(e){
-            result('Unexpected exception when looking for inserted HTML data: '+e);
-        }
+    test_obj.step_timeout( function(){
+      result(function(){
+        assert_equals(document.getElementById('editable').textContent.indexOf( 'synthetic event text' ), -1);
+      });
     }, 50 );
 }
 </script>
@@ -1488,16 +1508,15 @@ function onTestSetupReady(){
 /* paste data: "clipboard text" */
 /* Test HTML: <div id="editable" contentEditable><p>Editable element</p></div><script>document.getElementById('editable').focus();<\/script>*/
 /* Targets: document */
-function clipboard_api_test(e){ }
-function onTestSetupReady(){
-    var evt=new ClipboardEvent( 'paste', { bubbles:true, cancellable: true, dataType: 'text/html', data:'<em>synthetic event text</em>' } );
+function clipboard_api_test(e){}
+function onTestSetupReady(type, test_obj){
+    var evt = new ClipboardEvent(type);
+    evt.clipboardData.items.add('<em>synthetic event text</em>', 'text/html');
     document.getElementById('editable').dispatchEvent(evt);
-    setTimeout( function(){
-        try{
-            result(document.getElementById('editable').getElementsByTagName('em').length == 0);
-        }catch(e){
-            result('Unexpected exception when looking for inserted HTML data: '+e);
-        }
+    test_obj.step_timeout( function(){
+      result(function(){
+        assert_equals(document.getElementById('editable').getElementsByTagName('em').length, 0);
+      });
     }, 50 );
 }
 </script>
@@ -1520,7 +1539,7 @@ function onTestSetupReady(){
     <li>If action is <em>copy</em> or <em>cut</em> and the script thread is <a>allowed to modify the clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
     <li>If action is <em>paste</em> and the script thread is <a>allowed to read from clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
     <li>Dispatch the corresponding event synchronously.</li>
-    <li>If the event's default action is not prevented, execute the corresponding action synchronously.</li>
+    <li>If the event is not canceled, execute the corresponding action synchronously.</li>
     <li>Use the action's return value as the return value for the document.execCommand() call.</li>
 <script>
 /** integration with execCommand - returns false when not allowed to write to clipboard */
@@ -1587,7 +1606,7 @@ function clipboard_api_test(e){
     e.preventDefault();
 }
 
-function triggerTestManually(){
+function triggerTestManually(eventType){
   document.getElementsByTagName('p')[0].firstChild.data='FAILED'; // if event doesn't fire, this test failed..
   var ifr=document.getElementById('ifr');
   var doc=ifr.contentDocument;
@@ -1598,7 +1617,7 @@ function triggerTestManually(){
   range.selectNodeContents(doc.getElementsByTagName('p')[0]);
   doc.defaultView.getSelection().removeAllRanges();
   doc.defaultView.getSelection().addRange(range);
-  var returnValue = doc.execCommand(window.eventType, false, false);
+  var returnValue = doc.execCommand(eventType, false, false);
   /* Main pass condition here is clipboard contents - but we can add a couple of assertations here */
   assert_false(returnValue, 'execCommand() returns false when event default action is prevented');
   /* This assertation is especially relevant for 'cut' */
@@ -1610,25 +1629,21 @@ function triggerTestManually(){
 /** integration with execCommand, can prevent default action */
 /* Events: paste */
 /* paste data: "clipboard text" */
-/* Test HTML: <iframe id="ifr"></iframe><p>Note: this test is only relevant if scripted paste is allowed</p> */
+/* Test HTML: <iframe id="ifr"></iframe><p>Note: this test is only relevant if scripted paste is allowed</p>*/
 /* Targets: 'ifr.contentWindow' */
 function clipboard_api_test(e){
     window.eventFired=true;
     e.preventDefault();
 }
-function triggerTestManually(){
+function triggerTestManually(eventType, test_obj){
     var ifr=document.getElementById('ifr');
     ifr.contentDocument.designMode='on';
     ifr.contentWindow.focus();
-    try{
-        ifr.contentDocument.execCommand(window.eventType, false, false);
-        setTimeout(function(){
-            var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
-            result(passed);
-        }, 10);
-    }catch(e){
-        result('Can not test - exception from execCommand '+e+' (Note: enable clipboard access in preferences for '+location.hostname+' before running this test)');
-    }
+    ifr.contentDocument.execCommand(eventType, false, false);
+    test_obj.step_timeout(function(){
+        var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
+        result(passed);
+    }, 10);
 }
 </script>
 </section>
@@ -1650,11 +1665,12 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('input_text').addEventListener( 'keypress', logEvent, false );
 },false);
 
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj, eventType){
   logEvent(e);
-    setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,'+window.eventType+',keyup,keyup' ;
-    result( passed, 'Got: '+eventsFired.join(',') );
+  test_obj.step_timeout(function(){
+    result(function(){
+      assert_array_equals(eventsFired, ['keydown','keydown', eventType, 'keyup','keyup'], 'The right events fired in the expected order')
+    });
   }, 500);
 }
 </script>
@@ -1680,19 +1696,24 @@ document.addEventListener('DOMContentLoaded', function(){
 },false);
 document.onkeyup = function(){
     if(timeout)clearTimeout(timeout);
-    setTimeout(test, 500);
+    setTimeout(
+      function(){
+        result(function(){
+          assert_array_equals(eventsFired, ['keydown','keydown','keyup','keyup']);
+        });
+      }
+    , 500);
 }
-function clipboard_api_test(e){
-  if(e)logEvent(e);
-    setTimeout(function(){
-    var passed = eventsFired.join(',') === 'keydown,keydown,keyup,keyup' ;
-    result( passed, 'Got: '+eventsFired.join(',') );
-  }, 500);
+function clipboard_api_test(e, test_obj){
+  if(timeout)clearTimeout(timeout);
+  result(function(){
+      assert_unreached();
+  });
 }
 </script>
 
 
-<p>The default action of the cut and paste events <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved / DOMNodeInserted. Any such events are queued up to fire after processing of the cut/paste event is finished.</p>
+<p>The cut and paste actions <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved / DOMNodeInserted. Any such events are queued up to fire after processing of the cut/paste event is finished.</p>
 <script>
 /** clipboard events relative to other input events  */
 /* Events: cut */
@@ -1708,16 +1729,17 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
 },false);
 
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
   logEvent(e);
-  setTimeout(function(){
+  test_obj.step_timeout(function(){
     e.target.blur(); // causes change event
     e.target.form.checkValidity(); // causes invalid event
   }, 10);
-    setTimeout(function(){
-    var evString = eventsFired.join(',')
-    var passed =  evString === 'cut,cut handler done,input,change,invalid'; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
-    result( passed, 'Got: '+evString );
+  test_obj.step_timeout(function(){
+    var expected = ['cut','cut handler done','input','change','invalid']; // Issue: should textInput fire? Chrome doesn't but I don't know if it's on purpose
+    result(function(){
+      assert_array_equals(eventsFired, expected);
+    });
   }, 500);
   logEvent( {type: e.type+' handler done'} );
 }
@@ -1739,13 +1761,15 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('input_text').addEventListener( 'textInput', logEvent, false );
 },false);
 
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
   logEvent(e);
-  setTimeout(function(){
+  test_obj.step_timeout(function(){
     e.target.blur(); // causes change event
     e.target.form.checkValidity(); // causes invalid event
   }, 10);
-    setTimeout(function(){
+  test_obj.step_timeout(function(){
+    // would be nice to use assert_array_equals, but at the moment we allow two
+    // different pass conditions..
     var evString = eventsFired.join(',')
     var passed =  evString ==='paste,paste handler done,textInput,input,change' || evString ==='paste,paste handler done,input,change' ;
     result( passed, 'Got: '+evString );
@@ -1760,14 +1784,15 @@ function clipboard_api_test(e){
 /* Events: copy */
 /* Test HTML: <form><input id="input_text" autofocus onfocus="this.select()" value="copied text"></form>*/
 /* Targets: document 'input_text' */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
   var otherEventsFired=[];
   var events=[ 'input', 'textInput', 'change' ];
   for( var i=0,ev; ev=events[i];i++ )e.currentTarget.addEventListener(ev, function(e){ otherEventsFired.push(e.type); }, false);
-    setTimeout(function(){
-    var passed = otherEventsFired.length===0;
-    result(passed);
-  }, 50);
+    test_obj.step_timeout(function(){
+      result(function(){
+        assert_equals(otherEventsFired.length, 0);
+      });
+    }, 50);
   e.target.blur(); // might provoke a change event, but should not
 }
 </script></section>
@@ -1794,12 +1819,13 @@ function clipboard_api_test(e){
 /* Targets: 'input_text' */
 /* paste data: "clipboard text" */
 
-function clipboard_api_test(e){
-    document.getElementById('second').focus();
-  setTimeout( function(){
-    var passed = document.getElementById('second').value==='clipboard text';
-    result( passed );
-  }, 20 );
+function clipboard_api_test(e, test_obj){
+  document.getElementById('second').focus();
+  test_obj.step_timeout(function(){
+    result(function(){
+      assert_equals(document.getElementById('second').value, 'clipboard text');
+    });
+  }, 20);
 }
 </script>
 <script>
@@ -1810,7 +1836,7 @@ function clipboard_api_test(e){
 /* External pass condition - clipboard data: "This is demo text" */
 
 function clipboard_api_test(e){
-    var range=document.createRange();
+  var range=document.createRange();
   range.selectNodeContents(document.getElementsByTagName('div')[0]);
   window.getSelection().removeAllRanges();
   window.getSelection().addRange(range);
@@ -1870,9 +1896,9 @@ function clipboard_api_test(e){
 /* Events: copy cut paste */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     var cbData=e.clipboardData;
-    setTimeout( function(){
+    test_obj.step_timeout( function(){
         cbData.setData('text/plain', 'Test failed');
     }, 1 );
     e.preventDefault();
@@ -1883,9 +1909,9 @@ function clipboard_api_test(e){
 /* Events: copy cut paste */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     var cbData=e.clipboardData;
-    setTimeout( function(){
+    test_obj.step_timeout( function(){
         cbData.items.add( 'Test failed', 'text/plain');
     }, 1 );
     e.preventDefault();
@@ -1896,11 +1922,11 @@ function clipboard_api_test(e){
 /* Events: copy cut paste */
 /* paste data: "clipboard text" */
 /* External pass condition - clipboard data: "clipboard text" */
-function clipboard_api_test(e){
+function clipboard_api_test(e, test_obj){
     var cbData=e.clipboardData;
-    setTimeout( function(){
+    test_obj.step_timeout(function(){
         cbData.clearData();
-    }, 1 );
+    }, 1);
     e.preventDefault();
 }
 </script>
@@ -2072,14 +2098,9 @@ function clipboard_api_test(e){
 //TODO: this test asserts a NOOP.
 // how this SHOULD work is, however, underspecified..
 function clipboard_api_test(e){
-    var passed = false;
-    try{
-        e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text');
-        e.preventDefault();
-        passed=true;
-    }catch(e){
-    }
-    return passed;
+    e.clipboardData.setData('text/foobarbogustype', 'copycutpaste modified text');
+    e.preventDefault();
+    // pass condition is external, check clipboard contents
 }
 </script>
 
