@@ -583,7 +583,7 @@ function clipboard_api_test(e){
 }
 
 function triggerTestManually(){
-  var returnValue = document.execCommand('cut', false, false);
+  var returnValue = document.execCommand('cut', false, null);
   /* The event should have fired, but the return value should be false */
   result(eventFired && !returnValue);
 }
@@ -1433,7 +1433,7 @@ function triggerTestManually(eventType){
     var range = document.createRange();
     range.selectNodeContents(document.body);
     window.getSelection().addRange(range);
-    document.execCommand(eventType);
+    document.execCommand(eventType, false, null);
     window.getSelection().removeAllRanges();
     if(eventType ==='cut'){
         document.body.contentEditable='false';
@@ -1561,7 +1561,7 @@ function clipboard_api_test(e){
 }
 function onTestSetupReady(eventType){
     result(function(){
-      assert_false(document.execCommand(eventType));
+      assert_false(document.execCommand(eventType, false, null));
     });
 }
 </script>
@@ -1597,7 +1597,7 @@ function triggerTestManually(eventType){
     var ifr=document.getElementById('iframe');
     window.afterExecCommand=false;
     /* This triggers the event listener, which asserts false */
-    var execSucceeded = ifr.contentDocument.execCommand(eventType, false, false);
+    var execSucceeded = ifr.contentDocument.execCommand(eventType, false, null);
     window.afterExecCommand=true;
     result(function(){
       assert_true(eventFired, eventType + ' event should fire');
@@ -1628,7 +1628,7 @@ function triggerTestManually(eventType){
   range.selectNodeContents(doc.getElementsByTagName('p')[0]);
   doc.defaultView.getSelection().removeAllRanges();
   doc.defaultView.getSelection().addRange(range);
-  var returnValue = doc.execCommand(eventType, false, false);
+  var returnValue = doc.execCommand(eventType, false, null);
   /* Main pass condition here is clipboard contents - but we can add a couple of assertations here */
   assert_false(returnValue, 'execCommand() returns false when event default action is prevented');
   /* This assertation is especially relevant for 'cut' */
@@ -1650,7 +1650,7 @@ function triggerTestManually(eventType, test_obj){
     var ifr=document.getElementById('ifr');
     ifr.contentDocument.designMode='on';
     ifr.contentWindow.focus();
-    ifr.contentDocument.execCommand(eventType, false, false);
+    ifr.contentDocument.execCommand(eventType, false, null);
     test_obj.step_timeout(function(){
         var passed= window.eventFired === true && ifr.contentDocument.body.innerHTML.indexOf('clipboard text')==-1;
         result(passed);
