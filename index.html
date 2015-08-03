@@ -1129,15 +1129,6 @@ function clipboard_api_test(e){
 
                     </dl>
                 </dd>
-                <dt>Otherwise, the event is not allowed to read data from the OS clipboard. Follow the steps in this algorithm:</dt>
-                <dd>
-                    <dl class="switch">
-                        <dt>If <var>trusted</var> is <var>false</var> and the arguments data and dataType were passed to the <a href="#clipboardevent">ClipboardEvent</a> constructor</dt>
-                        <dd>Add one entry for the data to the <a>DataTransferItemList</a> with <a>drag data item kind</a> set to <em>string</em> and <a>drag data item type string</a> set to the value of the <em>dataType</em> argument</dd>
-                        <dt>Otherwise,</dt>
-                        <dd>Leave the <a>DataTransferItemList</a> empty</dd>
-                    </dl>
-                </dd>
             </dl>
         <p>Update the <a>files</a> property to match entries in the <a>DataTransferItemList</a>.</p>
         <p>Update the <a>types</a> property to match entries in the <a>DataTransferItemList</a>.</p>
