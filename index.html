@@ -265,6 +265,16 @@ function clipboard_api_test(e){
 <p>This section defines clipboard actions and events and the processing model for event dispatch.</p>
 <section>
     <h4>Actions</h4>
+    <p>Each action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>.</p>
+    <p>The <dfn>script-triggered</dfn> flag is set if the action runs because of a script, for example a <code>document.execCommand()</code> call. Future scripting APIs that interact with the clipboard should also use these actions, and the <em>script-triggered</em> flag must be set accordingly.</p>
+    <p>The <dfn>script-may-access-clipboard</dfn> flag is set as follows:</p>
+    <dl class="switch">
+      <dt>If action is <em>copy</em> or <em>cut</em> and the script thread is <a>allowed to modify the clipboard</a></dt>
+      <dd>Set the action's <em>script-may-access-clipboard</em> flag</dd>
+      <dt>If action is <em>paste</em> and the script thread is <a>allowed to read from clipboard</a></dt>
+      <dd>set the action's <em>script-may-access-clipboard</em> flag.</dd>
+    </dl>
+
 <section>
 <h4>The copy action</h4>
 <div class="note">
@@ -417,7 +427,7 @@ document.addEventListener('copy', function(e){
 });
 </pre>
 
-<p>The copy action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The copy action consists of the following steps:</p>
+<p>The copy action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
@@ -543,7 +553,7 @@ function clipboard_api_test(e){
 </script>
 </div>
 
-<p>The cut action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The cut action consists of the following steps:</p>
+<p>The cut action consists of the following steps:</p>
 <ol>
 <li>
     <dl class="switch">
@@ -821,7 +831,7 @@ document.addEventListener('paste', function(e){
 });
 </pre>
 
-<p>The paste action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>. The <em>script-may-access-clipboard</em> flag depends on an implementation-specific permission mechanism for determining what sites or apps may read from the clipboard. When a paste action is triggered by a script, the implementation must not make clipboard contents available without the user's permission. If the permission has not already been granted, the permission prompt must include the hostname of the document associated with the script thread.
+<p>For the paste action, the <em>script-may-access-clipboard</em> flag depends on an implementation-specific permission mechanism for determining what sites or apps may read from the clipboard. When a paste action is triggered by a script, the implementation must not make clipboard contents available without the user's permission. If the permission has not already been granted, the permission prompt must include the hostname of the document associated with the script thread.
 </p>
   <p>The paste action consists of the following steps:</p>
 <ol>
@@ -1538,15 +1548,11 @@ function onTestSetupReady(type, test_obj){
 
 </section>
 <section><h3>Integration with rich text editing APIs</h3>
-<p class="not-fully-tested">If an implementation supports the document.execCommand method and allows calling it with the commands "cut", "copy" and "paste", the implementation <em>must</em> trigger the corresponding action, which again will dispatch the associated clipboard event.</p>
-<p>These are the steps to follow when triggering copy, cut or paste actions through the document.execCommand() API:</p>
+<p class="not-fully-tested">If an implementation supports ways to execute clipboard commands through scripting, for example by calling the <code>document.execCommand()</code> method with the commands "cut", "copy" and "paste", the implementation <em>must</em> trigger the corresponding action, which again will dispatch the associated clipboard event.</p>
+<p>These are the steps to follow when triggering copy, cut or paste actions through a scripting API:</p>
 <ol>
-    <li>Set the action's <em>script-triggered</em> flag.</li>
-    <li>If action is <em>copy</em> or <em>cut</em> and the script thread is <a>allowed to modify the clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
-    <li>If action is <em>paste</em> and the script thread is <a>allowed to read from clipboard</a>, set the action's <em>script-may-access-clipboard</em> flag.</li>
-    <li>Dispatch the corresponding event synchronously.</li>
-    <li>If the event is not canceled, execute the corresponding action synchronously.</li>
-    <li>Use the action's return value as the return value for the document.execCommand() call.</li>
+    <li>Execute the corresponding action synchronously.</li>
+    <li>Use the action's return value as the return value for the API call.</li>
 <script>
 /** integration with execCommand - returns false when not allowed to write to clipboard */
 /* Events: cut copy */
@@ -1562,7 +1568,7 @@ function onTestSetupReady(eventType){
 </script>
 
 </ol>
-<p class="note">Copy and cut commands triggered from document.execCommand() will only affect the contents of the real clipboard if the event is dispatched from an event that is trusted and triggered by the user, or if the implementation is configured to allow this. Paste commands triggered from document.execCommand() will only fire paste events and give access to clipboard contents if the implementation is configured to allow this. How implementations can be configured to allow read or write access to the clipboard is outside the scope of this specification.</p>
+<p class="note">Copy and cut commands triggered through a scripting API will only affect the contents of the real clipboard if the event is dispatched from an event that is trusted and triggered by the user, or if the implementation is configured to allow this. Paste commands triggered through a scripting API will only fire paste events and give access to clipboard contents if the implementation is configured to allow this. How implementations can be configured to allow read or write access to the clipboard is outside the scope of this specification.</p>
 
 <script>
 /** integration with execCommand, events are syncronous */
