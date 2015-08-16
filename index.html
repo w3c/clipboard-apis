@@ -1957,6 +1957,8 @@ function clipboard_api_test(e, test_obj){
 <section>
 <h2><dfn id="mandatory-data-types">Mandatory data types</dfn></h2>
 <p>The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the <a>DataTransferItemList</a> with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.</p>
+<h3>Reading from the clipboard</h3>
+<p>These data types must be exposed by <em>paste</em> events if a corresponding native type exists on the clipboard:</p>
 <ul>
 <li>text/plain</li>
 <li>text/uri-list</li>
@@ -1973,6 +1975,23 @@ function clipboard_api_test(e, test_obj){
 <li>application/json</li>
 <li>application/octet-stream</li>
 </ul>
+
+<h3>Writing to the clipboard</h3>
+<p>These data types must be placed on the clipboard with a corresponding native type description if added to a <a>DataTransfer</a> object during <em>copy</em> and <em>cut</em> events.</p>
+
+<ul>
+<li>text/plain</li>
+<li>text/uri-list</li>
+<li>text/csv</li>
+<li>text/html</li>
+<li>image/svg+xml</li>
+<li>application/xml, text/xml</li>
+<li>application/json</li>
+</ul>
+
+<p class="warning">Data types untrusted scripts are allowed to write to the clipboard is limited as a security precaution. Untrusted scripts can attempt to exploit security vulnerabilities in local software by placing data known to trigger those vulnerabilities on the clipboard.</p>
+
+
 <!-- TODO:
 <p class="issue">What about audio and video types? BMP?
 RTF? RTF was requested due to embedded images possibility (but this spec allows access to local images referenced in HTML fragments by design..).
