@@ -180,7 +180,7 @@ could also be placed in the clipboard with the appropriate transformation occurr
 
 <section>
 <h3>Determining UI state</h3>
-<p>The user agent typically has internal logic for determining whether copy, cut and paste commands in the UI are enabled. This logic depends on factors like whether the cursor is in an <a>editable context</a> (for paste commands) or whether there is a selection (for copy commands).</p>
+<p>The user agent typically has internal logic for determining whether copy, cut and paste commands in the UI are enabled. This logic depends on factors like whether the cursor is in an <a>editable context</a> (for paste commands), whether there is a selection (for copy commands), or where there is a selection within an editable context (for cut commands).</p>
 <p>Web applications need a way to override this logic, because they need to be able to enable commands even when the user agent's native logic concludes that the commands should not be available. The before* events can be used to override the internal logic.</p>
 <section>
 <h3>Events</h3>
