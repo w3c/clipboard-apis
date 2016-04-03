@@ -756,6 +756,15 @@ document.addEventListener('paste', function(e){
             <dl class="switch">
                 <dt>If <em>script-may-access-clipboard</em> is unset</dt>
                 <dd>Return false from the paste action, terminate this algorithm</dd>
+<script>
+/** paste action returns false in non-editable context */
+/* Test HTML: <p>This document has no editable context</p> */
+/* paste data: "pasted text" */
+function clipboard_api_test(e){
+    assert_false(document.execCommand('paste', false, null));
+}
+</script>
+
             </dl>
         </dd>
     </dl>
