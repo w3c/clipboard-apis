@@ -179,92 +179,6 @@ could also be placed in the clipboard with the appropriate transformation occurr
 </section>
 
 <section>
-<h3>Determining UI state</h3>
-<p>The user agent typically has internal logic for determining whether copy, cut and paste commands in the UI are enabled. This logic depends on factors like whether the cursor is in an <a>editable context</a> (for paste commands), whether there is a selection (for copy commands), or where there is a selection within an editable context (for cut commands).</p>
-<p>Web applications need a way to override this logic, because they need to be able to enable commands even when the user agent's native logic concludes that the commands should not be available. The before* events can be used to override the internal logic.</p>
-<section>
-<h3>Events</h3>
-<section>
-<h4>beforecopy event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a copy operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecopy event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'copy'-related UI controls if there is no selection. The event bubbles and is cancelable.</p>
-<script>
-/** Using beforecopy to enable 'copy' UI that would otherwise be disabled */
-/* Events: copy */
-/* paste data: "pasted text" */
-/* Test HTML: <p>The "copy" menu UI state is enabled on this page even when there is no selection.</p> */
-document.onbeforecopy = function(){return false;}
-function clipboard_api_test(e){
-    result('UI test: passes if "copy" menu UI state is enabled');
-}
-</script>
-<pre class="example javascript">
-document.addEventListener('beforecopy', function(e){
-    if(weHaveDataToCopy()){ // use your web app's internal logic to determine if something can be copied
-        e.preventDefault(); // enable copy UI and events
-    }
-});
-</pre>
-
-</section>
-<section>
-<h4>beforecut event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a cut operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforecut event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'cut'-related UI controls if there is no selection in an <a>editable context</a>. The event bubbles and is cancelable.</p>
-<script>
-/** Using beforecut to enable 'cut' UI that would otherwise be disabled */
-/* Events: cut */
-/* paste data: "pasted text" */
-/* Test HTML: <p>The "cut" menu UI state is enabled on this page even when there is no editable selection.</p> */
-document.onbeforecut = function(){return false;}
-function clipboard_api_test(e){
-    result('UI test: passes if "cut" menu UI state is enabled');
-}
-</script>
-</section>
-<section>
-<h4>beforepaste event</h4>
-<p>If the implementation has user interface controls that users can use to initiate a paste operation, the user agent <em>should</em> determine what state such controls should be in by firing a beforepaste event before the control is shown to the user (i.e. in a menu). If the event is canceled, the control's state is set to enabled. If the event is not canceled, the implementation uses its built-in logic to set the control's state, for example by disabling any 'paste'-related UI controls if focus is not in an <a>editable context</a>. The event bubbles and is cancelable.</p>
-<script>
-/** Using beforepaste to enable 'paste' UI that would otherwise be disabled */
-/* Events: paste */
-/* paste data: "pasted text" */
-/* Test HTML: <p>The "paste" menu UI state is enabled on this page even when there is no editable context.</p> */
-document.onbeforepaste = function(){return false;}
-function clipboard_api_test(e){
-    result('UI test: passes if "paste" menu UI state is enabled');
-}
-</script>
-</section>
-</section>
-<section>
-<h4>Processing model for before* events</h4>
-<p>At any time, including before a command will be shown to the user, or when the user presses a shortcut combination, or otherwise interacts with the document, the user agent may use the steps below for checking if a given command should be enabled.</p>
-<p>To fire a beforecopy, beforecut or beforepaste event of type <em>type</em>:</p>
-<ol>
-    <li>Let the <em>data transfer</em> be a <a>DataTransfer</a> object [[!HTMLLS]]</li>
-    <li>Set the associated <a>DataTransfer</a> object's <a>drag data store mode</a> flag to <em>read-only</em></li>
-    <li>
-        <dl class="switch">
-            <dt>If the <em>type</em> is <i>beforepaste</i></dt>
-            <dd>For each part on the OS clipboard of a type listed in the <a>mandatory data types</a> list, add the corresponding MIME type to the <em>data transfer</em>'s types list</dd>
-        </dl>
-    </li>
-    <li>Let <em>event target</em> be the focused element, or <a>the body element</a> if no other element has focus.</li>
-    <li> Dispatch an event using the <a href="#clipboardevent">ClipboardEvent</a> interface, with its <a>type</a> attribute initialized to <em>type</em>, its <a>isTrusted</a> attribute initialized to <var>trusted</var>, its <a>bubbles</a> attribute set to <em>true</em>, its <a>cancelable</a> attribute set to <em>true</em>, and its <a href="#widl-ClipboardEvent-clipboardData">clipboardData</a> attribute initialized to <em>data transfer</em>, at <em>event target</em>.</li>
-
-    <li>
-        <dl class="switch">
-            <dt>If the event was not canceled</dt>
-            <dd>Use the user-agent's built-in logic for determining the command's state</dd>
-            <dt>Otherwise, if the event was canceled</dt>
-            <dd>Set the command's state to enabled</dd>
-    </li>
-</ol>
-<p class="note">These events can not be used to disable UI controls that would otherwise be enabled. The use case for beforecopy, beforecut and beforepaste events is to <em>enable</em> UI elements that would otherwise be disabled, by allowing the script to indicate that it will handle clipboard operations even though there is no selection or <a>editable context</a>.</p>
-<p class="note">Typically, the before* events fire before a menu is shown to the user, or when the user presses a combination of shortcut keys that would trigger a clipboard command. The user agent is explicitly allowed to fire these events at any time. If the UI has visible buttons that trigger clipboard actions, the implementation may want to fire these events at regular intervals to keep the state of these buttons updated.</p>
-</section>
-</section>
-
-<section>
 
 <h3>Clipboard actions and events</h3>
 <p>This section defines clipboard actions and events and the processing model for event dispatch.</p>
@@ -317,11 +231,6 @@ function clipboard_api_test(e){
     e.clipboardData.setData('text/plain', 'modified text');
     e.preventDefault();
 }
-/* TODO: should this (and similar) tests only work if we have "preflight" events? */
-/*
-document.onbeforecopy = function(){return false;}
-document.onbeforecut = function(){return false;}
-*/
 </script>
 <script>
 /** copy event when there is no selection and script uses setData()  */
