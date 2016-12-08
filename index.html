@@ -1241,20 +1241,33 @@ function onTestSetupReady(){
     document.dispatchEvent(evt);
 }
 </script>
+<div data-dfn-for="ClipboardEventInit">
+<pre class="idl">
+dictionary ClipboardEventInit : EventInit {
+  DataTransfer? clipboardData = null;
+};
+</pre>
 
-<dl class="idl idl-code" title="dictionary ClipboardEventInit : EventInit">
-    <dt>DataTransfer? clipboardData = null</dt>
+<dl>
+    <dt><dfn>clipboardData</dfn></dt>
     <dd>A <a>DataTransfer</a> object to hold data and meta data related to the event</dd>
 </dl>
-
-<dl class="idl idl-code" title="[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)] interface ClipboardEvent : Event">
-    <dt>readonly attribute DataTransfer? clipboardData</dt>
+</div>
+<div data-dfn-for="ClipboardEvent">
+<pre class="idl">
+[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)]
+interface ClipboardEvent : Event {
+  readonly attribute DataTransfer? clipboardData;
+};
+</pre>
+<dl>
+    <dt><dfn>clipboardData</dfn></dt>
     <dd>
      <p>The clipboardData attribute is an instance of the <a>DataTransfer</a> interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing <a href="#mandatory-data-types">data types</a> the implementation knows the script can safely access. For synthetic events, the drag data store contains the data added by the script that created the event.</p>
      <p>The clipboardData object's <var>items</var> and <var>files</var> properties enable processing of multi-part or non-textual data from the clipboard.</p>
     </dd>
 </dl>
-
+</div>
 </section>
 <section>
     <h2><dfn>Writing contents to the clipboard</dfn></h2>
