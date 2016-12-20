@@ -565,9 +565,9 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		document.dispatchEvent(pasteEvent);
 	</pre>
 
-	Note: Synthetic events do not have default actions. In other words, while
-	the script above will fire a paste event, the data will not actually be
-	pasted into the document.
+	Note: Synthetic clipboard events will not actually modify the clipboard or
+	the document. In other words, while the script above will fire a paste event,
+	the data will not be pasted into the document.
 
 	<!-- Issue: There should be a way a script can check if a clipboard format
 	is registered and whether the implementation allows writing this format to
@@ -739,11 +739,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	<h3 id="otherevents">Interaction with other events</h3>
 
 		If the clipboard operation is triggered by keyboard input, the
-		implementation <em>must</em> fire the corresponding event as the default
-		action of the <b>keydown</b> event that initiates the clipboard
-		operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy,
-		dispatching a copy event <em>must</em> be the default action of the C
-		key's keydown event. The event is asynchronous but <em>must</em> be
+		implementation <em>must</em> fire the corresponding event that initiates
+		the clipboard operation. The event is asynchronous but <em>must</em> be
 		dispatched before <b>keyup</b> events for the relevant keys.
 
 		The cut and paste actions <em>may</em> cause the implementation to

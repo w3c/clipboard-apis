@@ -2028,9 +2028,9 @@ implemented.</p>
 pasteEvent.clipboardData.items.add('My string', 'text/plain');
 document.dispatchEvent(pasteEvent);
 </pre>
-   <p class="note" role="note">Note: Synthetic events do not have default actions. In other words, while
-	the script above will fire a paste event, the data will not actually be
-	pasted into the document.</p>
+   <p class="note" role="note">Note: Synthetic clipboard events will not actually modify the clipboard or
+	the document. In other words, while the script above will fire a paste event,
+	the data will not be pasted into the document.</p>
    <div id="clipboardeventinit-idl">
 <pre class="idl highlight def" data-highlight="webidl"><span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-clipboardeventinit">ClipboardEventInit</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a> {
   <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <dfn class="nv idl-code" data-default="null" data-dfn-for="ClipboardEventInit" data-dfn-type="dict-member" data-export="" data-type="DataTransfer? " id="dom-clipboardeventinit-clipboarddata">clipboardData<a class="self-link" href="#dom-clipboardeventinit-clipboarddata"></a></dfn> = <span class="kt">null</span>;
@@ -2196,11 +2196,8 @@ permissions to read the clipboard.</p>
 		the clipboard is outside the scope of this specification.</p>
    <h3 class="heading settled" data-level="7.4" id="otherevents"><span class="secno">7.4. </span><span class="content">Interaction with other events</span><a class="self-link" href="#otherevents"></a></h3>
    <p>If the clipboard operation is triggered by keyboard input, the
-		implementation <em>must</em> fire the corresponding event as the default
-		action of the <b>keydown</b> event that initiates the clipboard
-		operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy,
-		dispatching a copy event <em>must</em> be the default action of the C
-		key’s keydown event. The event is asynchronous but <em>must</em> be
+		implementation <em>must</em> fire the corresponding event that initiates
+		the clipboard operation. The event is asynchronous but <em>must</em> be
 		dispatched before <b>keyup</b> events for the relevant keys.</p>
    <p>The cut and paste actions <em>may</em> cause the implementation to
 		dispatch other supported events, such as textInput, input, change,
