@@ -92,45 +92,6 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. The XML source
 		could also be placed in the clipboard with the appropriate transformation occurring at paste time.
 
-<h2 id="apis-from-other-specs">APIs from other specifications</h2>
-
-	Algorithms in this document rely on several APIs defined in other web platform specifications and recommendations. Below is a list of all methods, properties and definitions this document relies on.
-
-	The following items are defined in the HTML Living Standard specification. [[!HTMLLS]]
-
-	* {{DataTransferItemList}}
-	* {{DataTransfer/setData()}}
-	* {{DataTransfer/getData()}}
-	* <a>drag data store mode</a>
-	* {{DataTransfer}}
-	* <a>drag data item kind</a>
-	* <a>drag data item type string</a>
-	* {{DataTransfer/files}}
-	* {{DataTransfer/types}}
-	* {{DataTransfer/clearData()}}
-	* {{DataTransferItemList/clear}}
-
-		Note: Link should go to clear(). See <a href="https://github.com/whatwg/html/issues/2194">Html bug #2194</a>.
-
-	The following items are defined in the HTML5 specification. [[!HTML5]]
-
-	* <a>the body element</a>
-	* The <a>allowed to show a popup</a> logic
-
-	The following items are defined in the DOM specification [[!DOM]]
-
-	* {{Event/type}}
-	* {{Event/isTrusted}}
-	* {{Event/bubbles}}
-	* {{Event/cancelable}}
-	* {{Event}}
-	* <a>constructing events</a>
-	* {{EventInit}}
-
-	The following items are defined in the HTML Editing APIs specification [[!HTMLEA]]
-
-	* <a>editing host</a>
-
 <h2 id="terminolofy">Terminology</h2>
 
 	The term <dfn>editable context</dfn> means any element that is either an
