@@ -5,7 +5,7 @@ Shortname: clipboard-apis
 Level:
 Group: webplatform
 Status: ED
-TR: http://www.w3.org/TR/clipboard-apis/
+TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
 Repository: w3c/clipboard-apis
 Editor: Gary Kacmarcik, Google, garykac@google.com
