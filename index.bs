@@ -559,7 +559,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 						object's <a>drag data store mode</a> to the
 						<i>disabled mode</i>
 
-				Warning: A malicious script listening to a paste event may set
+				Advisement: Warning! A malicious script listening to a paste event may set
 				up a never-ending loop in order to read what the user places on
 				the clipboard in the future. On platforms where a clipboard
 				sequence number is not available, other limitations should be
@@ -819,8 +819,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		* application/xml, text/xml
 		* application/json
 
-		Warning: Data types untrusted scripts are allowed to write to the
-		clipboard is limited as a security precaution. Untrusted scripts can
+		Advisement: Warning! The data types that untrusted scripts are allowed to write to the
+		clipboard are limited as a security precaution. Untrusted scripts can
 		attempt to exploit security vulnerabilities in local software by placing
 		data known to trigger those vulnerabilities on the clipboard.
 
