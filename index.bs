@@ -82,7 +82,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	<h3 id="graphics-semantics">Graphics with built-in semantics</h3>
 
 		In order to make web applications which allow the manipulation of rich
-		text, or of graphic content such as SVG, it is useful to provide a mechanism
+		text, or of graphic content such as [[SVG]], it is useful to provide a mechanism
 		that allows for copying more than just the rendered content.
 
 	<h3 id="Mathematic">Mathematical information</h3>
