@@ -55,11 +55,6 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 }
 </pre>
 
-<h2 id="conformance-x">Conformance</h2>
-
-	The [[#conformance]] section is now auto-generated at the end of this
-	document.
-
 <h2 id="secintro">Introduction</h2>
 
 	<i>This section is non-normative.</i>
