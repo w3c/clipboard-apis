@@ -5,7 +5,7 @@ branches:
   - gh-pages
 env:
   global:
-  - URL="http://w3c.github.io/clipboard-apis/W3CTRMANIFEST"
+  - URL="https://w3c.github.io/clipboard-apis/"
   - DECISION="https://lists.w3.org/Archives/Public/public-webapps/2014JulSep/0627.html"
   - secure: "VN/dLt9WsmTxswfh1yTbttRsHHAZ3tlxoixu3OPO/arLhpbYDyqHHVF3If8LogWSK/B6hG8CBgGTm4ixtvP5sZ2AaNeyCT3VvcxM2DUXAQMBFsIXVkihuYPZBhC9SPvRGHsYyAm5Bso8QINje7sGXEXMMlaLQIkmSnpZ9wYVSPY="
 script:
