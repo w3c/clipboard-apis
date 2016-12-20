@@ -76,21 +76,23 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	<h3 id="Rich">Rich content editing</h3>
 
 		When copying text which contains hyperlinks or other structure,
-		it is often useful to be able to reformat the content to preserve important
-		information.
+		it is often useful to be able to reformat the content to preserve
+		important information.
 
 	<h3 id="graphics-semantics">Graphics with built-in semantics</h3>
 
 		In order to make web applications which allow the manipulation of rich
-		text, or of graphic content such as [[SVG]], it is useful to provide a mechanism
-		that allows for copying more than just the rendered content.
+		text, or of graphic content such as [[SVG]], it is useful to provide a
+		mechanism that allows for copying more than just the rendered content.
 
 	<h3 id="Mathematic">Mathematical information</h3>
 
 		With content such as mathematics, simply copying rendered text and pasting
 		it into another application generally leads to most of the semantics being
-		lost. MathML often needs to be transformed to be copied as plain text, for example to make sure "to the power of" is shown with the caret  "^" sign in a formula plain-text input. The XML source
-		could also be placed in the clipboard with the appropriate transformation occurring at paste time.
+		lost. MathML often needs to be transformed to be copied as plain text, for
+		example to make sure "to the power of" is shown with the caret  "^" sign
+		in a formula plain-text input. The XML source could also be placed in the
+		clipboard with the appropriate transformation occurring at paste time.
 
 <h2 id="terminolofy">Terminology</h2>
 
@@ -119,9 +121,12 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 		1. If action is <em>copy</em> or <em>cut</em> and the script thread
 			is <a>allowed to modify the clipboard</a>, then
+
 			1. Set the action's <em>script-may-access-clipboard</em> flag
+
 		2. If action is <em>paste</em> and the script thread is [=allowed to
 			read from clipboard=], then
+
 			1. Set the action's <em>script-may-access-clipboard</em> flag.
 
 		<h4 id="copy-action">The copy action</h4>
@@ -153,18 +158,26 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			The copy action consists of the following steps:
 
 			1. If the <em>script-triggered</em> flag is set
+
 				1. If the <em>script-may-access-clipboard</em> flag is unset
+
 					1. Return false from the copy action, terminate this algorithm
+
 			2. <a>Fire a clipboard event</a> named <em>copy</em>
+
 			3. If the event was not canceled
+
 				1. Copy the selected contents, if any, to the clipboard.
 					Implementations <em>should</em> create alternate text/html and
 					text/plain clipboard formats when content in a web page is selected.
+
 			4. Else, if the event was canceled
+
 				1. Call the <a>writing contents to the clipboard</a> algorithm,
 					passing on the {{DataTransferItemList}} list <em>items</em>,
 					a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 					list.
+
 			5. Return true from the copy action
 
 		<h4 id="cut-action">The cut action</h4>
@@ -194,29 +207,42 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			The cut action consists of the following steps:
 
 			1. If the <em>script-triggered</em> flag is set
+
 				1. If the <em>script-may-access-clipboard</em> flag is unset
+
 					1. Return false from the cut action, terminate this algorithm
+
 			2. <a>Fire a clipboard event</a> named <em>cut</em>
+
 		    3. If the event was not canceled
+
 				1. If there is a selection in an <a>editable context</a> where
 					cutting is enabled
+
 					1. Copy the selected contents, if any, to the clipboard.
 						Implementations <em>should</em> create alternate
 						text/html and text/plain clipboard formats when content
 						in a web page is selected.
+
 					2. Remove the contents of the selection from the document
 						and collapse the selection.
+
 					3. Queue tasks to fire any events that should fire due to the
 						modification, see
 						[[#integration-with-other-scripts-and-events]]
 						for details.
+
 				2. Else, if there is no selection or the context is not editable
+
 					1. Return false
+
 			4. Else, if the event was canceled
+
 				1. Call the <a>writing contents to the clipboard</a> algorithm,
 					passing on the {{DataTransferItemList}} list <em>items</em>,
 					a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 					list.
+
 			5. Return true from the cut action
 
 		<h4 id="paste-action">The paste action</h4>
@@ -260,102 +286,273 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			The paste action consists of the following steps:
 
 			1. If the <em>script-triggered</em> flag is set
+
 				1. If <em>script-may-access-clipboard</em> is unset
+
 					1. Return false from the paste action, terminate this algorithm
-			2. <a href="#fire-a-clipboard-event">Fire a clipboard event</a> named <em>paste</em>
+
+			2. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
+				named <em>paste</em>
+
 			3. If the event was not canceled
-				1. If there is a selection or cursor in an <a>editable context</a> where pasting is enabled
-					1. Insert the most suitable content found on the clipboard, if any, into the context.
-					2. Queue tasks to fire any events that should fire due to the modification, see [[#integration-with-other-scripts-and-events]] for details.
+
+				1. If there is a selection or cursor in an <a>editable context</a>
+					where pasting is enabled
+
+					1. Insert the most suitable content found on the clipboard,
+						if any, into the context.
+
+					2. Queue tasks to fire any events that should fire due to
+						the modification, see
+						[[#integration-with-other-scripts-and-events]] for details.
 
 				2. Else
+
 					1. Return false
+
 			4. Else, if the event was canceled
+
 				1. Return false
+
 			5. Return true from the action
 
 	<h3 id="processing-model">Processing model for event dispatch</h3>
 
 		To <dfn>fire a clipboard event</dfn> of type <var>e</var>,
+
 			1. Let <var>clear-was-called</var> be <var>false</var>
+
 			2. Let <var>types-to-clear</var> be an empty list
-			3. Let |clipboard-entry| be the sequence number of the current clipboard content, or null if the OS clipboard does not support sequence numbers
-			4. Let |trusted| be <var>true</var> if the event is generated by the user agent, <var>false</var> otherwise
+
+			3. Let |clipboard-entry| be the sequence number of the current
+				clipboard content, or null if the OS clipboard does not support
+				sequence numbers
+
+			4. Let |trusted| be <var>true</var> if the event is generated by the
+				user agent, <var>false</var> otherwise
+
 			5. Set |target| as follows:
+
 				1. If the context is editable:
-					1. Let <var>target</var> be the element that contains the start of the selection in document order, or <a>the body element</a> if there is no selection or cursor.
+
+					1. Let <var>target</var> be the element that contains the
+						start of the selection in document order, or
+						<a>the body element</a> if there is no selection or cursor.
+
 				2. Else, if the context is not editable
-					1. Let <var>target</var> be the focused node, or <a>the body element</a> if no node has focus.
+
+					1. Let <var>target</var> be the focused node, or
+						<a>the body element</a> if no node has focus.
 
 			6. Process the event as follows:
+
 				1. If |e| is "paste"
-					1. Set the associated {{DataTransfer}} object's <a>drag data store mode</a> flag to <em>read-only</em>
-					2. If <var>trusted</var> is <var>true</var>, or the implementation is configured to give script-generated events read access to the OS clipboard
+
+					1. Set the associated {{DataTransfer}} object's
+						<a>drag data store mode</a> flag to <em>read-only</em>
+
+					2. If <var>trusted</var> is <var>true</var>, or the
+						implementation is configured to give script-generated events
+						read access to the OS clipboard
+
 						1. For each part on the OS clipboard, carry out these steps:
+
 							1. If the current clipboard part contains plain text:
-								1. Ensure the text is in the encoding the scripting engine uses internally
-								2. Add one entry for the text to the {{DataTransferItemList}} with <a>drag data item kind</a> set to <em>string</em> and <a>drag data item type string</a> set to <em>text/plain</em>
-							2. If the current clipboard part represents file references:
+
+								1. Ensure the text is in the encoding the
+									scripting engine uses internally
+
+								2. Add one entry for the text to the
+									{{DataTransferItemList}} with
+									<a>drag data item kind</a> set to <em>string</em> and
+									<a>drag data item type string</a> set to <em>text/plain</em>
+
+							2. If the current clipboard part represents file
+								references:
+
 								1. Determine MIME type of referenced files
-								2. Add one entry per file reference to the {{DataTransferItemList}} with <a>drag data item kind</a> set to <em>file</em> and <a>drag data item type string</a> set to the corresponding MIME type, or <code>application/octet-stream</code> if the file's type is unknown.
-							3. If the current clipboard part contains HTML- or XHTML-formatted text, according to the operating system's convention for describing such clipboard formats
-								1. If the implementation supports pasting HTML, the implementation <em>must</em> process the markup according to the following steps:
-									1. Add one entry to the {{DataTransferItemList}} with <a>drag data item kind</a> set to <em>Plain Unicode string</em>, <a>drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the {{DataTransferItemList}}.
-									2. Extract the markup from the clipboard and use the relevant parser to construct a DOM tree
-									3. If the markup's source URL is known, resolve all relative URLs in HREF and SRC attributes using the source URL as base URL, and set the respective attributes to the resolved absolute URL
-									4. If the markup's origin is from a local application, check whether there are references to local files and/or other parts of the OS clipboard's contents. If such references are found, references to sub-parts <em>must</em> be replaced by content-id references using the cid: URL scheme [[!RFC2392]]. To do so, process each attribute referencing a local file or clipboard part according to the following steps:
 
-										Issue: Are these steps necessary? Do we know about native (platform) clipboard implementations that support multiple parts with internal references?
+								2. Add one entry per file reference to the
+									{{DataTransferItemList}} with
+									<a>drag data item kind</a> set to <em>file</em> and
+									<a>drag data item type string</a> set to the
+									corresponding MIME type, or
+									<code>application/octet-stream</code> if the
+									file's type is unknown.
 
-										Issue: This feature is at risk because it's unclear whether it is required, and because it's hard to test in a cross-platform way.
+							3. If the current clipboard part contains HTML- or
+								XHTML-formatted text, according to the operating
+								system's convention for describing such clipboard
+								formats
 
-										1. Let <var>itemNumber</var> be the number of items on the {{DataTransferItemList}}
+								1. If the implementation supports pasting HTML,
+									the implementation <em>must</em> process the
+									markup according to the following steps:
+
+									1. Add one entry to the
+										{{DataTransferItemList}} with
+										<a>drag data item kind</a> set to <em>Plain Unicode string</em>,
+										<a>drag data item type string</a> set to
+										<em>text/html</em> or <em>application/xhtml+xml</em> accordingly.
+										Let <var>mainPartIndex</var> be the index of
+										this entry in the {{DataTransferItemList}}.
+
+									2. Extract the markup from the clipboard and
+										use the relevant parser to construct a DOM
+										tree
+
+									3. If the markup's source URL is known,
+										resolve all relative URLs in HREF and SRC
+										attributes using the source URL as base URL,
+										and set the respective attributes to the
+										resolved absolute URL
+
+									4. If the markup's origin is from a local
+										application, check whether there are
+										references to local files and/or other parts
+										of the OS clipboard's contents. If such
+										references are found, references to
+										sub-parts <em>must</em> be replaced by
+										content-id references using the cid: URL
+										scheme [[!RFC2392]]. To do so, process each
+										attribute referencing a local file or
+										clipboard part according to the following
+										steps:
+
+										Issue: Are these steps necessary? Do we
+										know about native (platform) clipboard
+										implementations that support multiple
+										parts with internal references?
+
+										Issue: This feature is at risk because
+										it's unclear whether it is required, and
+										because it's hard to test in a
+										cross-platform way.
+
+										1. Let <var>itemNumber</var> be the
+											number of items on the
+											{{DataTransferItemList}}
 
 										2. Choose the appropriate steps from this list:
 
-											1. If the {{DataTransferItemList}} of the current {{DataTransfer}} object already contains an entry for the referenced file or clipboard part
-												1. Set <var>itemNumber</var> to the index of the existing entry
+											1. If the {{DataTransferItemList}}
+												of the current {{DataTransfer}}
+												object already contains an entry for
+												the referenced file or clipboard part
+
+												1. Set <var>itemNumber</var> to
+													the index of the existing entry
 
 											2. Otherwise
-												1. Add a new entry to the {{DataTransferItemList}} with <code>index</code> set to <var>itemNumber</var>, <a>drag data item kind</a> set to "file", and <a>drag data item type string</a> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.
-												2. Let the new entry's internal <i>file name</i> be the file name part of the HTML attribute contents
-												3. Let the new entry's <i>last modified date</i> be the timestamp of the referenced file or 0 if the entry references a clipboard part
 
-										3. Update the DOM attribute that referenced the local file or clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.
+												1. Add a new entry to the
+													{{DataTransferItemList}} with
+													<code>index</code> set to <var>itemNumber</var>,
+													<a>drag data item kind</a> set to "file",
+													and <a>drag data item type string</a>
+													set to the MIME type of the file
+													or clipboard part if known, or
+													<code>application/octet-stream</code>
+													if the file's type is unknown.
 
-									5. Serialize the processed DOM and update the {{DataTransferItemList}} entry referenced by <var>mainPartIndex</var> with the resulting HTML code
-							4. If the current clipboard part contains data in another supported binary or text-based format (see [=mandatory data types=]):
+												2. Let the new entry's internal
+													<i>file name</i> be the file
+													name part of the HTML attribute
+													contents
+
+												3. Let the new entry's <i>last
+													modified date</i> be the
+													timestamp of the referenced file
+													or 0 if the entry references a
+													clipboard part
+
+										3. Update the DOM attribute that
+											referenced the local file or clipboard
+											part to contain the string 'cid:'
+											followed by <var>itemNumber</var>.
+
+									5. Serialize the processed DOM and update
+										the {{DataTransferItemList}} entry
+										referenced by <var>mainPartIndex</var> with
+										the resulting HTML code
+
+							4. If the current clipboard part contains data in
+								another supported binary or text-based format (see
+								[=mandatory data types=]):
+
 								1. Determine the MIME type of the data
-								2. Add one entry to the {{DataTransferItemList}} with <a>drag data item kind</a> set to <em>file</em>, <a>drag data item type string</a> set to the corresponding MIME type
-					3. Update the {{DataTransfer/files}} property to match entries in the {{DataTransferItemList}}.
-					4. Update the {{DataTransfer/types}} property to match entries in the {{DataTransferItemList}}.
-				2. If <var>e</var> is "copy" or "cut"
-					1. Set the associated {{DataTransfer}} object's <a>drag data store mode</a> flag to <em>read/write</em>
-			7. Dispatch an event named <var>e</var> which bubbles and is cancelable and which uses the {{ClipboardEvent}} interface, with {{Event/isTrusted}} set to <var>trusted</var>, at <var>target</var>.
 
-				Implementation requirements for access to data during event dispatch are defined in [[!HTMLLS]]. Some additional clipboard event-specific processing rules are given below:
+								2. Add one entry to the {{DataTransferItemList}}
+									with <a>drag data item kind</a> set to
+									<em>file</em>, <a>drag data item type string</a>
+									set to the corresponding MIME type
+
+					3. Update the {{DataTransfer/files}} property to match
+						entries in the {{DataTransferItemList}}.
+
+					4. Update the {{DataTransfer/types}} property to match
+						entries in the {{DataTransferItemList}}.
+
+				2. If <var>e</var> is "copy" or "cut"
+
+					1. Set the associated {{DataTransfer}} object's <a>drag data
+						store mode</a> flag to <em>read/write</em>
+
+			7. Dispatch an event named <var>e</var> which bubbles and is
+				cancelable and which uses the {{ClipboardEvent}} interface, with
+				{{Event/isTrusted}} set to <var>trusted</var>, at <var>target</var>.
+
+				Implementation requirements for access to data during event
+				dispatch are defined in [[!HTMLLS]]. Some additional clipboard
+				event-specific processing rules are given below:
 
 				Issue: Why here? Why not in the HTML spec?
 
-				1. If a script calls <a>clearData()</a> or {{DataTransferItemList/clear}} and the {{DataTransfer}} object's <a>drag data store mode</a> flag is <em>read/write</em>
-					1. Set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.
+				1. If a script calls <a>clearData()</a> or
+					{{DataTransferItemList/clear}} and the {{DataTransfer}}
+					object's <a>drag data store mode</a> flag is
+					<em>read/write</em>
 
-				2. If a script calls <a>setData()</a> or modifies items and the <var>clear-was-called</var> flag is true
+					1. Set the <var>clear-was-called</var> flag to true. If an
+						argument is given, add the argument to the
+						<var>types-to-clear</var> list.
+
+				2. If a script calls <a>setData()</a> or modifies items and the
+					<var>clear-was-called</var> flag is true
+
 					1. If the <var>types-to-clear</var> list is empty
+
 						1. Set the <var>clear-was-called</var> flag to false
-					2. Else, if <a>setData()</a>'s <code>type</code> argument or the new item's <a>drag data item type string</a> is found in the <var>types-to-clear</var> list
-						1. Remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false
 
-				3. If a script calls <a>getData()</a> or accesses items in the {{DataTransferItemList}} and <var>clipboard-entry</var> is set
-					1. Check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the {{DataTransferItemList}} object's <a>drag data store mode</a> to the <i>disabled mode</i>
+					2. Else, if <a>setData()</a>'s <code>type</code> argument or
+						the new item's <a>drag data item type string</a> is
+						found in the <var>types-to-clear</var> list
 
-				Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</div>
+						1. Remove it from the list. If the list is now empty,
+							set the <var>clear-was-called</var> flag to false
+
+				3. If a script calls <a>getData()</a> or accesses items in the
+					{{DataTransferItemList}} and <var>clipboard-entry</var> is
+					set
+
+					1. Check that the clipboard data's sequence number matches
+						<var>clipboard-entry</var>. If the clipboard no longer
+						contains the same entry, set the {{DataTransferItemList}}
+						object's <a>drag data store mode</a> to the
+						<i>disabled mode</i>
+
+				Warning: A malicious script listening to a paste event may set
+				up a never-ending loop in order to read what the user places on
+				the clipboard in the future. On platforms where a clipboard
+				sequence number is not available, other limitations should be
+				implemented.
 
 <h2 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h2>
 
 	The ClipboardEvent interface extends the {{Event}} interface.
 
-	The interface can be used to <a lt="constructing events">construct events</a>. An example is given below:
+	The interface can be used to <a lt="constructing events">construct events</a>.
+	An example is given below:
 
 	<pre class="example javascript">
 		var pasteEvent = new ClipboardEvent('paste');
@@ -363,9 +560,14 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		document.dispatchEvent(pasteEvent);
 	</pre>
 
-	Note: Synthetic events do not have default actions. In other words, while the script above will fire a paste event, the data will not actually be pasted into the document.
+	Note: Synthetic events do not have default actions. In other words, while
+	the script above will fire a paste event, the data will not actually be
+	pasted into the document.
 
-	<!-- Issue: There should be a way a script can check if a clipboard format is registered and whether the implementation allows writing this format to the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p> -->
+	<!-- Issue: There should be a way a script can check if a clipboard format
+	is registered and whether the implementation allows writing this format to
+	the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p>
+	-->
 
 	<div id="clipboardeventinit-idl">
 	<pre class="idl" data-highlight="webidl">
@@ -375,7 +577,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	</pre>
 
 	: <dfn for="ClipboardEventInit">clipboardData</dfn>
-	:: A {{DataTransfer}} object to hold data and meta data related to the event
+	:: A {{DataTransfer}} object to hold data and meta data related to the event.
 
 	</div>
 	<div id="clipboardevent-idl">
@@ -389,14 +591,24 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 	: <dfn for="ClipboardEvent">clipboardData</dfn>
 
-	:: The clipboardData attribute is an instance of the {{DataTransfer}} interface which lets a script read and manipulate values on the system clipboard during user-initiated copy, cut and paste operations. The associated drag data store is a live but filtered view of the system clipboard, exposing [=mandatory data types=] the implementation knows the script can safely access. For synthetic events, the drag data store contains the data added by the script that created the event.
-	:: The clipboardData object's {{DataTransfer/items}} and {{DataTransfer/files}} properties enable processing of multi-part or non-textual data from the clipboard.
+	:: The clipboardData attribute is an instance of the {{DataTransfer}}
+		interface which lets a script read and manipulate values on the system
+		clipboard during user-initiated copy, cut and paste operations. The
+		associated drag data store is a live but filtered view of the system
+		clipboard, exposing [=mandatory data types=] the implementation knows
+		the script can safely access. For synthetic events, the drag data store
+		contains the data added by the script that created the event.
+	:: The clipboardData object's {{DataTransfer/items}} and
+		{{DataTransfer/files}} properties enable processing of multi-part or
+		non-textual data from the clipboard.
 
 	</div>
 
 <h2 id="writing-contents-to-clipboard"><dfn>Writing contents to the clipboard</dfn></h2>
 
-    To update the clipboard contents, follow these steps, given a {{DataTransferItemList}} list <em>items</em>, a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list:
+    To update the clipboard contents, follow these steps, given a
+    {{DataTransferItemList}} list <em>items</em>, a <em>clear-was-called</em>
+    flag and a <em>types-to-clear</em> list:
 
 	1. If the <em>items</em> list is not empty
 
@@ -410,23 +622,35 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 				2. Normalize line endings according to platform conventions
 
-				3. Place text on clipboard with the appropriate OS clipboard format description
+				3. Place text on clipboard with the appropriate OS clipboard
+					format description
 
-			2. Otherwise, if data is of a type listed in the [=mandatory data types=] list
+			2. Otherwise, if data is of a type listed in the
+				[=mandatory data types=] list
 
-				1. Place part on clipboard with the appropriate OS clipboard format description
+				1. Place part on clipboard with the appropriate OS clipboard
+					format description
 
 			3. Otherwise
 
 				1. This is left to the implementation...
 
-					Issue: It's not good to leave things up to the implementation. What should happen here?
+					Issue: It's not good to leave things up to the
+					implementation. What should happen here?
 
-					Note: Due to limitations in the implementation of operating system clipboards, scripts should not assume that custom formats will be available to other applications on the system. For example, there is a limit to how many custom clipboard formats can be registered in Microsoft Windows. While it is possible to use any string for <a>setData()</a>'s type argument, sticking to the [=mandatory data types=] is strongly recommended.
+					Note: Due to limitations in the implementation of operating
+					system clipboards, scripts should not assume that custom
+					formats will be available to other applications on the
+					system. For example, there is a limit to how many custom
+					clipboard formats can be registered in Microsoft Windows.
+					While it is possible to use any string for
+					<a>setData()</a>'s type argument, sticking to the
+					[=mandatory data types=] is strongly recommended.
 
 	2. Otherwise, the <em>items</em> list is empty. Follow these steps to determine whether to clear the clipboard:
 
-		1. If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i>
+		1. If the list of items is empty and the <var>clear-was-called</var>
+			flag is <i>true</i>
 
 			1. If the <var>types-to-clear</var> list is empty
 
@@ -434,54 +658,101 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			2. Else
 
-				2. Remove types in the <var>types-to-clear</var> list from the clipboard in an operating system and implementation-specific way
+				2. Remove types in the <var>types-to-clear</var> list from the
+					clipboard in an operating system and implementation-specific
+					way
 
-					Issue: The "remove specific types from clipboard" feature is at risk. It doesn't seem all that important, and it's unclear if it can be implemented easily across relevant platforms.
+					Issue: The "remove specific types from clipboard" feature is
+					at risk. It doesn't seem all that important, and it's
+					unclear if it can be implemented easily across relevant
+					platforms.
 
 <h2 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h2>
 
 	<h3 id="allow-modify-clipboard">Event handlers that are <dfn>allowed to modify the clipboard</dfn></h3>
-		Event handlers may write to the clipboard if any of the following is true:
 
-		* The action which triggers the event is invoked from the user-agent's own user interface, e.g. from a "Copy" menu entry or shortcut key.
-		* The action which triggers the event is invoked from a scripting thread which is <a>allowed to show a popup</a>.
+		Event handlers may write to the clipboard if any of the following is
+		true:
 
-		The implementation <em>may</em> allow other trusted event types to modify the clipboard if the implementation authors believe that those event types are likely to express user intention. The implementation <em>may</em> also support configuration that trusts specific sites or apps to modify the clipboard regardless of the origin of the scripting thread.
+		* The action which triggers the event is invoked from the user-agent's
+			own user interface, e.g. from a "Copy" menu entry or shortcut key.
+		* The action which triggers the event is invoked from a scripting thread
+			which is <a>allowed to show a popup</a>.
 
-		Synthetic cut and copy events <em>must not</em> modify data on the system clipboard.
+		The implementation <em>may</em> allow other trusted event types to
+		modify the clipboard if the implementation authors believe that those
+		event types are likely to express user intention. The implementation
+		<em>may</em> also support configuration that trusts specific sites or
+		apps to modify the clipboard regardless of the origin of the scripting
+		thread.
+
+		Synthetic cut and copy events <em>must not</em> modify data on the
+		system clipboard.
 
 	<h3 id="allow-read-clipboard">Event handlers that are <dfn>allowed to read from clipboard</dfn></h3>
 
-		Event handlers may read data from the system clipboard if either of the following is true
+		Event handlers may read data from the system clipboard if either of the
+		following is true
 
-		* The action that triggers the event is invoked from the user-agent's own user interface, e.g. a "Paste" menu entry or shortcut key.
-		* The script that triggers the action is running on a site which through an implementation-dependant mechanism is given permission to read data from the clipboard.
-		* The action that triggers the event is triggered in an app with permissions to read the clipboard.
+		* The action that triggers the event is invoked from the user-agent's
+			own user interface, e.g. a "Paste" menu entry or shortcut key.
+		* The script that triggers the action is running on a site which through
+			an implementation-dependant mechanism is given permission to read
+			data from the clipboard.
+		* The action that triggers the event is triggered in an app with
+			permissions to read the clipboard.
 
-		Synthetic paste events <em>must not</em> give a script access to data on the real system clipboard.
+		Synthetic paste events <em>must not</em> give a script access to data on
+		the real system clipboard.
 
 	<h3 id="integration-with-rich-text-editing">Integration with rich text editing APIs</h3>
 
-		If an implementation supports ways to execute clipboard commands through scripting, for example by calling the <code>document.execCommand()</code> method with the commands "cut", "copy" and "paste", the implementation <em>must</em> trigger the corresponding action, which again will dispatch the associated clipboard event.
+		If an implementation supports ways to execute clipboard commands through
+		scripting, for example by calling the
+		<code>document.execCommand()</code> method with the commands "cut",
+		"copy" and "paste", the implementation <em>must</em> trigger the
+		corresponding action, which again will dispatch the associated clipboard
+		event.
 
-		These are the steps to follow when triggering copy, cut or paste actions through a scripting API:
+		These are the steps to follow when triggering copy, cut or paste actions
+		through a scripting API:
 
 		1. Execute the corresponding action synchronously.
 		2. Use the action's return value as the return value for the API call.
 
-		Note: Copy and cut commands triggered through a scripting API will only affect the contents of the real clipboard if the event is dispatched from an event that is trusted and triggered by the user, or if the implementation is configured to allow this. Paste commands triggered through a scripting API will only fire paste events and give access to clipboard contents if the implementation is configured to allow this. How implementations can be configured to allow read or write access to the clipboard is outside the scope of this specification.
+		Note: Copy and cut commands triggered through a scripting API will only
+		affect the contents of the real clipboard if the event is dispatched
+		from an event that is trusted and triggered by the user, or if the
+		implementation is configured to allow this. Paste commands triggered
+		through a scripting API will only fire paste events and give access to
+		clipboard contents if the implementation is configured to allow this.
+		How implementations can be configured to allow read or write access to
+		the clipboard is outside the scope of this specification.
 
 	<h3 id="otherevents">Interaction with other events</h3>
 
-		If the clipboard operation is triggered by keyboard input, the implementation <em>must</em> fire the corresponding event as the default action of the <b>keydown</b> event that initiates the clipboard operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy, dispatching a copy event <em>must</em> be the default action of the C key's keydown event. The event is asynchronous but <em>must</em> be dispatched before <b>keyup</b> events for the relevant keys.
+		If the clipboard operation is triggered by keyboard input, the
+		implementation <em>must</em> fire the corresponding event as the default
+		action of the <b>keydown</b> event that initiates the clipboard
+		operation. For example, if the user presses <kbd>Ctrl-C</kbd> to copy,
+		dispatching a copy event <em>must</em> be the default action of the C
+		key's keydown event. The event is asynchronous but <em>must</em> be
+		dispatched before <b>keyup</b> events for the relevant keys.
 
-		The cut and paste actions <em>may</em> cause the implementation to dispatch other supported events, such as textInput, input, change, validation events, DOMCharacterDataModified and DOMNodeRemoved / DOMNodeInserted. Any such events are queued up to fire after processing of the cut/paste event is finished.
+		The cut and paste actions <em>may</em> cause the implementation to
+		dispatch other supported events, such as textInput, input, change,
+		validation events, DOMCharacterDataModified and DOMNodeRemoved /
+		DOMNodeInserted. Any such events are queued up to fire after processing
+		of the cut/paste event is finished.
 
-		The implementation <em>must not</em> dispatch other input-related events like textInput, input, change, and validation events in response to the copy operation.
+		The implementation <em>must not</em> dispatch other input-related events
+		like textInput, input, change, and validation events in response to the
+		copy operation.
 
 	<h3 id="selection-mod">Event listeners that modify selection or focus</h3>
 
-		If the event listener modifies the selection or focus, the clipboard action <em>must</em> be completed on the modified selection.
+		If the event listener modifies the selection or focus, the clipboard
+		action <em>must</em> be completed on the modified selection.
 
 
 <h2 id="pasting-html">Pasting HTML and multi-part data</h3>
@@ -490,12 +761,19 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 		<em>This section is non-normative.</em>
 
-		There are certain security risks associated with pasting formatted or multi-part data.
-		* The user might paste hidden data without realising is there. This may happen if, for example, the markup includes &lt;input type="hidden"&gt; tags or HTML comments. Such hidden data might contain sensitive information.
+		There are certain security risks associated with pasting formatted or
+		multi-part data.
+
+		* The user might paste hidden data without realising is there. This may
+			happen if, for example, the markup includes
+			&lt;input type="hidden"&gt; tags or HTML comments. Such hidden data
+			might contain sensitive information.
 		* The user might paste malicious JavaScript into a trusted page.
-		* The implementation might grant scripts access to local files the user did not intend to expose.
+		* The implementation might grant scripts access to local files the user
+			did not intend to expose.
 
 		To determine what policies to use, the factors we consider are:
+
 		* The origin of the data being pasted
 		* The origin of data sub-parts such as referenced images
 		* The origin of the running script
@@ -503,50 +781,107 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		This is an overview of the scenarios and the possible security policies:
 
 		<table class="simple">
-			<tr><th>Origin of data</th><th>Origin of script</th><th>Rules</th></tr>
-			<tr><td rowspan="2">Originates from online source</td><td>Same as data</td><td>Do not sanitize HTML. Do not access any local files.</td></tr>
-			<tr><td>Different origin</td><td>Optionally sanitize content. Do not access any local files.</td></tr>
-			<tr><td>Originates from local application</td><td>Any</td><td>Do not sanitize HTML. Grant access to local files</td></tr>
+			<tr>
+				<th>Origin of data</th>
+				<th>Origin of script</th>
+				<th>Rules</th>
+			</tr>
+			<tr>
+				<td rowspan="2">Originates from online source</td>
+				<td>Same as data</td>
+				<td>Do not sanitize HTML. Do not access any local files.</td>
+			</tr>
+			<tr>
+				<!-- cell span from previous row -->
+				<td>Different origin</td>
+				<td>Optionally sanitize content. Do not access any local files.</td>
+			</tr>
+			<tr>
+				<td>Originates from local application</td>
+				<td>Any</td>
+				<td>Do not sanitize HTML. Grant access to local files</td>
+			</tr>
 		</table>
 
-		Some implementations mitigate the risks associated with pasting rich text by stripping potentially malicious content such as SCRIPT elements and javascript: links by default when pasting rich text, but allow a paste event handler to retrieve and process  the original, un-sanitized data.
+		Some implementations mitigate the risks associated with pasting rich
+		text by stripping potentially malicious content such as SCRIPT elements
+		and javascript: links by default when pasting rich text, but allow a
+		paste event handler to retrieve and process  the original, un-sanitized
+		data.
 
 	<h3 id="general-security-policies">General security policies</h3>
 
-		The implementation <em>must not</em> download referenced online resources, or expose their contents in the {{DataTransfer/files}} list or {{DataTransferItemList}}.
+		The implementation <em>must not</em> download referenced online
+		resources, or expose their contents in the {{DataTransfer/files}} list
+		or {{DataTransferItemList}}.
 
-		If the data on the clipboard is not from a local application, the implementation <em>must not</em> give access to any referenced local files. For example, if the data contains &lt;img src="file://localhost/example.jpg"&gt; but the data's origin is an online resource, the implementation must not add an entry for example.jpg to the clipboardData.items list.
+		If the data on the clipboard is not from a local application, the
+		implementation <em>must not</em> give access to any referenced local
+		files. For example, if the data contains
+		&lt;img src="file://localhost/example.jpg"&gt;
+		but the data's origin is an online resource, the implementation must not
+		add an entry for example.jpg to the clipboardData.items list.
 
 <h2 id="other-security-considerations">Other security and privacy considerations</h2>
 
-	Enabling authors to change what is copied by a user, or to make an automated copy of something that was never selected and allowing unrestricted calls to paste information can raise various security and privacy concerns.
+	Enabling authors to change what is copied by a user, or to make an automated
+	copy of something that was never selected and allowing unrestricted calls to
+	paste information can raise various security and privacy concerns.
 
-	An example scenario of a problem is where a user selects a link and copies it, but a different link is copied to the clipboard. The effect of this can range from an unexpected result on pasting to an attempted "phishing" attack.
+	An example scenario of a problem is where a user selects a link and copies
+	it, but a different link is copied to the clipboard. The effect of this can
+	range from an unexpected result on pasting to an attempted "phishing" attack.
 
 	<h3 id="privacy-concerns">Privacy concerns</h3>
 
-		Untrusted scripts should not get uncontrolled access to a user's clipboard data. This specification assumes that granting access to the current clipboard data when a user explicitly initiates a paste operation from the user agent's trusted chrome is acceptable. However, implementors must proceed carefully, and as a minimum implement the precautions below:
+		Untrusted scripts should not get uncontrolled access to a user's
+		clipboard data. This specification assumes that granting access to the
+		current clipboard data when a user explicitly initiates a paste
+		operation from the user agent's trusted chrome is acceptable. However,
+		implementors must proceed carefully, and as a minimum implement the
+		precautions below:
 
-		* Objects implementing the {{DataTransfer}} interface to return clipboard data <em>must not</em> be available outside the ClipboardEvent event handler.
-		* If a script stores a reference to an object implementing the {{DataTransfer}} interface to use from outside the ClipboardEvent event handler, all methods <em>must</em> be no-ops when called outside the expected context.
-		* Implementations <em>must not</em> let scripts create synthetic clipboard events to get access to real clipboard data except if configured to do so.
-		* Implementations <em>should not</em> let scripts call document.execCommand("paste") unless the user has explicitly allowed it.
+		* Objects implementing the {{DataTransfer}} interface to return
+			clipboard data <em>must not</em> be available outside the
+			ClipboardEvent event handler.
+		* If a script stores a reference to an object implementing the
+			{{DataTransfer}} interface to use from outside the ClipboardEvent
+			event handler, all methods <em>must</em> be no-ops when called
+			outside the expected context.
+		* Implementations <em>must not</em> let scripts create synthetic
+			clipboard events to get access to real clipboard data except if
+			configured to do so.
+		* Implementations <em>should not</em> let scripts call
+			document.execCommand("paste") unless the user has explicitly allowed
+			it.
 
-		Implementations may choose to further limit the functionality provided by the {{DataTransfer}} interface. For example, an implementation may allow the user to disable this API, or configure which web sites should be granted access to it.
+		Implementations may choose to further limit the functionality provided
+		by the {{DataTransfer}} interface. For example, an implementation may
+		allow the user to disable this API, or configure which web sites should
+		be granted access to it.
 
 	<h3 id="nuisances">Nuisance considerations</h3>
 
-		Scripts may use the {{DataTransfer}} API to annoy and confuse users by altering the data on the system clipboard from copy and cut events. This specification does not attempt to prevent such nuisances, though implementations may add additional restrictions.
+		Scripts may use the {{DataTransfer}} API to annoy and confuse users by
+		altering the data on the system clipboard from copy and cut events. This
+		specification does not attempt to prevent such nuisances, though
+		implementations may add additional restrictions.
 
-		Implementations must handle scripts that try to place excessive amounts of data on the clipboard gracefully.
+		Implementations must handle scripts that try to place excessive amounts
+		of data on the clipboard gracefully.
 
 <h2 id="mandatory-data-types-x"><dfn>Mandatory data types</dfn></h2>
 
-	The implementation must recognise the native OS clipboard format description for the following data types, to be able to populate the {{DataTransferItemList}} with the correct description for paste events, and set the correct data format on the OS clipboard in response to copy and cut events.
+	The implementation must recognise the native OS clipboard format description
+	for the following data types, to be able to populate the
+	{{DataTransferItemList}} with the correct description for paste events, and
+	set the correct data format on the OS clipboard in response to copy and cut
+	events.
 
 	<h3 id="reading-from-clipboard">Reading from the clipboard</h3>
 
-		These data types must be exposed by <em>paste</em> events if a corresponding native type exists on the clipboard:
+		These data types must be exposed by <em>paste</em> events if a
+		corresponding native type exists on the clipboard:
 
 		* text/plain
 		* text/uri-list
@@ -565,7 +900,9 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 	<h3 id="writing-to-clipboard">Writing to the clipboard</h3>
 
-		These data types must be placed on the clipboard with a corresponding native type description if added to a {{DataTransfer}} object during <em>copy</em> and <em>cut</em> events.
+		These data types must be placed on the clipboard with a corresponding
+		native type description if added to a {{DataTransfer}} object during
+		<em>copy</em> and <em>cut</em> events.
 
 		* text/plain
 		* text/uri-list
@@ -575,7 +912,10 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		* application/xml, text/xml
 		* application/json
 
-		Warning: Data types untrusted scripts are allowed to write to the clipboard is limited as a security precaution. Untrusted scripts can attempt to exploit security vulnerabilities in local software by placing data known to trigger those vulnerabilities on the clipboard.
+		Warning: Data types untrusted scripts are allowed to write to the
+		clipboard is limited as a security precaution. Untrusted scripts can
+		attempt to exploit security vulnerabilities in local software by placing
+		data known to trigger those vulnerabilities on the clipboard.
 
 
 <h2 id="security">Security Considerations</h2>
@@ -591,13 +931,42 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	<em>This section is informative</em>
 
 	The editors would like to acknowledge their intellectual debt to the
-	documentation of Data Transfer functionalities from Microsoft [[MICROSOFT-CLIP-OP]] and earlier drafts of the [[HTML5]] specification.  We are also grateful for the draft "safe copy and paste" from Paul Libbrecht (this draft is no longer available on the Web).
+	documentation of Data Transfer functionalities from Microsoft
+	[[MICROSOFT-CLIP-OP]] and earlier drafts of the [[HTML5]] specification.
+	We are also grateful for the draft "safe copy and paste" from Paul Libbrecht
+	(this draft is no longer available on the Web).
 
 	We would like to acknowledge the contributions made by the following:
 
-	Shawn Carnell, Daniel Dardailler, Al Gilman, Lachlan Hunt, Aaron
-	Leventhal, Jim Ley, Paul Libbrecht, "Martijn", Dave Poehlman, Chris Mills, "ROBO Design",
-	Janina Sajka, Rich Schwerdtfeger, Jonas Sicking, Maciej Stachowiak, Mihai
-	Sucan, Tom Wlodkowski, Anne van Kesteren, Tarquin Wilton-Jones, Dmitry Titov,
-	Robert O'Callahan, Ryosuke Niwa, Ian Hickson, Ojan Vafai, Daniel Cheng, Adam Barth, ms2ger, Glenn Maynard, James Graham, James Greene, Boris Zbarsky, Philip Jägenstedt.
-
+	Adam Barth,
+	Shawn Carnell,
+	Daniel Cheng,
+	Daniel Dardailler,
+	Al Gilman,
+	James Graham,
+	James Greene,
+	Ian Hickson,
+	Lachlan Hunt,
+	Philip Jägenstedt,
+	Anne van Kesteren,
+	Aaron Leventhal,
+	Jim Ley,
+	Paul Libbrecht,
+	"Martijn",
+	Glenn Maynard,
+	Chris Mills,
+	ms2ger,
+	Ryosuke Niwa,
+	Robert O'Callahan,
+	Dave Poehlman,
+	"ROBO Design",
+	Janina Sajka,
+	Rich Schwerdtfeger,
+	Jonas Sicking,
+	Maciej Stachowiak,
+	Mihai Sucan,
+	Dmitry Titov,
+	Ojan Vafai,
+	Tarquin Wilton-Jones,
+	Tom Wlodkowski,
+	and Boris Zbarsky.
