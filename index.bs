@@ -21,7 +21,7 @@ urlPrefix: https://html.spec.whatwg.org/multipage/interaction.html#; type: dfn;
 	text: drag data store mode
 	text: drag data item kind
 	text: drag data item type string
-urlPrefix: http://www.w3.org/TR/html/sections.html#; type: dfn;
+url: https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2; type: dfn;
 	text: the body element
 urlPrefix: http://www.w3.org/TR/html5/browsers.html#; type: dfn;
 	text: allowed to show a popup
