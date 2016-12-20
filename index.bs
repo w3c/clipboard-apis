@@ -159,6 +159,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			});
 			</pre>
 
+			<div class="algorithm" data-algorithm="clipboard-copy-action">
+
 			The copy action consists of the following steps:
 
 			1. If the <em>script-triggered</em> flag is set
@@ -184,6 +186,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the copy action
 
+			</div>
+
 		<h4 id="cut-action">The cut action</h4>
 
 			Note: When the user initiates a cut action, the implementation
@@ -207,6 +211,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			what the cut event will write to the clipboard also needs to cancel
 			the event. Otherwise, the data the script intends to place on the
 			clipboard will be ignored.
+
+			<div class="algorithm" data-algorithm="clipboard-cut-action">
 
 			The cut action consists of the following steps:
 
@@ -249,6 +255,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the cut action
 
+			</div>
+
 		<h4 id="paste-action">The paste action</h4>
 
 			Note: When a user initiates a paste action, the implementation
@@ -287,6 +295,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			must include the hostname of the document associated with the script
 			thread.
 
+			<div class="algorithm" data-algorithm="clipboard-paste-action">
+
 			The paste action consists of the following steps:
 
 			1. If the <em>script-triggered</em> flag is set
@@ -320,7 +330,11 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the action
 
+			</div>
+
 	<h3 id="processing-model">Processing model for event dispatch</h3>
+
+		<div class="algorithm" data-algorithm="fire-a-clipboard-event">
 
 		To <dfn>fire a clipboard event</dfn> of type <var>e</var>,
 
@@ -551,6 +565,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				sequence number is not available, other limitations should be
 				implemented.
 
+		</div>
 
 <h2 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h2>
 
@@ -612,9 +627,11 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 <h2 id="writing-contents-to-clipboard"><dfn>Writing contents to the clipboard</dfn></h2>
 
+	<div class="algorithm" data-algorithm="clipboard-update">
+
     To update the clipboard contents, follow these steps, given a
-    {{DataTransferItemList}} list <em>items</em>, a <em>clear-was-called</em>
-    flag and a <em>types-to-clear</em> list:
+    {{DataTransferItemList}} list <em>items</em>, a <var>clear-was-called</var>
+    flag and a <var>types-to-clear</var> list:
 
 	1. If the <em>items</em> list is not empty
 
@@ -673,6 +690,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 					unclear if it can be implemented easily across relevant
 					platforms.
 
+	</div>
 
 <h2 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h2>
 
