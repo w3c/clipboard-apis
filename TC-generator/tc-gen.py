@@ -7,7 +7,7 @@ import re
 import codecs
 
 script_path = os.path.abspath(os.path.dirname(__file__))
-spec_path = os.path.join(script_path, '..', 'index.html')
+spec_path = os.path.join(script_path, '..', 'tests.html')
 tc_path = os.path.join(script_path, '..', 'testsuite') + os.sep
 
 tc_path = "C:\\mozilla\\web-platform-tests\\clipboard-apis\\"
