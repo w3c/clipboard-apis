@@ -135,21 +135,25 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 		<h4 id="copy-action">The copy action</h4>
 
-			Note: When the user initiates a copy action, the implementation
+			<div class="note">
+			NOTE:
+
+			When the user initiates a copy action, the implementation
 			[=fire a clipboard event|fires a clipboard event=] named
 			<em>copy</em>. If the event is not canceled, the selected data will be
 			copied to the clipboard.
 
-			Note: The current selection is not affected. The event bubbles and is
+			The current selection is not affected. The event bubbles and is
 			cancelable.
 
-			Note: A script which uses the event.clipboardData API to control what
+			A script which uses the event.clipboardData API to control what
 			ends up on the clipboard, needs to cancel the event. Otherwise, the
 			data the script intends to place on the clipboard will be ignored.
 
-			Note: If there is no selection, the clipboard is not modified except
+			If there is no selection, the clipboard is not modified except
 			if the script has added entries in the {{DataTransferItemList}}, for
 			example by calling the <a>setData()</a> method, and canceled the event.
+			</div>
 
 			<pre class="example javascript">
 			document.addEventListener('copy', function(e){
@@ -190,27 +194,31 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 		<h4 id="cut-action">The cut action</h4>
 
-			Note: When the user initiates a cut action, the implementation
+			<div class="note">
+			NOTE:
+
+			When the user initiates a cut action, the implementation
 			[=fire a clipboard event|fires a clipboard event=] named
 			<em>cut</em>. In an <a>editable context</a>, if the event is not
 			canceled the action will place the selected data on the clipboard
 			and remove the selection from the document.
 
-			Note: The event bubbles and is cancelable.
+			The event bubbles and is cancelable.
 
-			Note: The cut event fires before the selected data is removed. When
+			The cut event fires before the selected data is removed. When
 			the cut operation is completed, the selection is collapsed.
 
-			Note: In a non-<a>editable context</a>, or if there is no selection,
+			In a non-<a>editable context</a>, or if there is no selection,
 			the <em>cut action</em> does nothing. The implementation fires the
 			event regardless. In this case nothing, the clipboard is not
 			modified except if the script has added entries in the
 			{{DataTransferItemList}} and the event is canceled.
 
-			Note: Any script which uses the event.clipboardData API to control
+			Any script which uses the event.clipboardData API to control
 			what the cut event will write to the clipboard also needs to cancel
 			the event. Otherwise, the data the script intends to place on the
 			clipboard will be ignored.
+			</div>
 
 			<div class="algorithm" data-algorithm="clipboard-cut-action">
 
@@ -259,23 +267,27 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 		<h4 id="paste-action">The paste action</h4>
 
-			Note: When a user initiates a paste action, the implementation
+			<div class="note">
+			NOTE:
+
+			When a user initiates a paste action, the implementation
 			[=fire a clipboard event|fires a clipboard event=] named
 			<em>paste</em>. The event fires before any clipboard data is inserted.
 
-			Note: The event bubbles and is cancelable.
+			The event bubbles and is cancelable.
 
-			Note: If the cursor is in an editable element, the paste action will
+			If the cursor is in an editable element, the paste action will
 			insert clipboard data in the most suitable format (if any) supported
 			for the given context.
 
-			Note: The paste action has no effect in a non-<a>editable
+			The paste action has no effect in a non-<a>editable
 			context</a>, but the event fires regardless.
 
-			Note: When pasting, the <a>drag data store mode</a> flag is
+			When pasting, the <a>drag data store mode</a> flag is
 			<em>read-only</em>, hence calling <a>setData()</a> from a
 			<b>paste</b> event handler will not modify the data that is
 			inserted, and not modify the data on the clipboard.
+			</div>
 
 			<pre class="example javascript">
 			document.addEventListener('paste', function(e){

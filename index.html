@@ -1603,16 +1603,19 @@ read from clipboard</a>, then</p>
      </ol>
    </ol>
    <h4 class="heading settled" data-level="4.1.1" id="copy-action"><span class="secno">4.1.1. </span><span class="content">The copy action</span><a class="self-link" href="#copy-action"></a></h4>
-   <p class="note" role="note">Note: When the user initiates a copy action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-1">fires a clipboard event</a> named <em>copy</em>. If the event is not canceled, the selected data will be
+   <div class="note" role="note">
+     NOTE: 
+    <p>When the user initiates a copy action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-1">fires a clipboard event</a> named <em>copy</em>. If the event is not canceled, the selected data will be
 			copied to the clipboard.</p>
-   <p class="note" role="note">Note: The current selection is not affected. The event bubbles and is
+    <p>The current selection is not affected. The event bubbles and is
 			cancelable.</p>
-   <p class="note" role="note">Note: A script which uses the event.clipboardData API to control what
+    <p>A script which uses the event.clipboardData API to control what
 			ends up on the clipboard, needs to cancel the event. Otherwise, the
 			data the script intends to place on the clipboard will be ignored.</p>
-   <p class="note" role="note">Note: If there is no selection, the clipboard is not modified except
+    <p>If there is no selection, the clipboard is not modified except
 			if the script has added entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>, for
 			example by calling the <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> method, and canceled the event.</p>
+   </div>
 <pre class="example javascript" id="example-f35a9bd5"><a class="self-link" href="#example-f35a9bd5"></a>document.addEventListener('copy', function(e){
   e.clipboardData.setData('text/plain', 'Hello, world!');
   e.clipboardData.setData('text/html', '&lt;b>Hello, world!&lt;/b>');
@@ -1655,20 +1658,23 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
     </ol>
    </div>
    <h4 class="heading settled" data-level="4.1.2" id="cut-action"><span class="secno">4.1.2. </span><span class="content">The cut action</span><a class="self-link" href="#cut-action"></a></h4>
-   <p class="note" role="note">Note: When the user initiates a cut action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-3">fires a clipboard event</a> named <em>cut</em>. In an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-1">editable context</a>, if the event is not
+   <div class="note" role="note">
+     NOTE: 
+    <p>When the user initiates a cut action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-3">fires a clipboard event</a> named <em>cut</em>. In an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-1">editable context</a>, if the event is not
 			canceled the action will place the selected data on the clipboard
 			and remove the selection from the document.</p>
-   <p class="note" role="note">Note: The event bubbles and is cancelable.</p>
-   <p class="note" role="note">Note: The cut event fires before the selected data is removed. When
+    <p>The event bubbles and is cancelable.</p>
+    <p>The cut event fires before the selected data is removed. When
 			the cut operation is completed, the selection is collapsed.</p>
-   <p class="note" role="note">Note: In a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-2">editable context</a>, or if there is no selection,
+    <p>In a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-2">editable context</a>, or if there is no selection,
 			the <em>cut action</em> does nothing. The implementation fires the
 			event regardless. In this case nothing, the clipboard is not
 			modified except if the script has added entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> and the event is canceled.</p>
-   <p class="note" role="note">Note: Any script which uses the event.clipboardData API to control
+    <p>Any script which uses the event.clipboardData API to control
 			what the cut event will write to the clipboard also needs to cancel
 			the event. Otherwise, the data the script intends to place on the
 			clipboard will be ignored.</p>
+   </div>
    <div class="algorithm" data-algorithm="clipboard-cut-action">
     <p>The cut action consists of the following steps:</p>
     <ol>
@@ -1723,15 +1729,18 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
     </ol>
    </div>
    <h4 class="heading settled" data-level="4.1.3" id="paste-action"><span class="secno">4.1.3. </span><span class="content">The paste action</span><a class="self-link" href="#paste-action"></a></h4>
-   <p class="note" role="note">Note: When a user initiates a paste action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-5">fires a clipboard event</a> named <em>paste</em>. The event fires before any clipboard data is inserted.</p>
-   <p class="note" role="note">Note: The event bubbles and is cancelable.</p>
-   <p class="note" role="note">Note: If the cursor is in an editable element, the paste action will
+   <div class="note" role="note">
+     NOTE: 
+    <p>When a user initiates a paste action, the implementation <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-5">fires a clipboard event</a> named <em>paste</em>. The event fires before any clipboard data is inserted.</p>
+    <p>The event bubbles and is cancelable.</p>
+    <p>If the cursor is in an editable element, the paste action will
 			insert clipboard data in the most suitable format (if any) supported
 			for the given context.</p>
-   <p class="note" role="note">Note: The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable
+    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable
 			context</a>, but the event fires regardless.</p>
-   <p class="note" role="note">Note: When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read-only</em>, hence calling <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> from a <b>paste</b> event handler will not modify the data that is
+    <p>When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read-only</em>, hence calling <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> from a <b>paste</b> event handler will not modify the data that is
 			inserted, and not modify the data on the clipboard.</p>
+   </div>
 <pre class="example javascript" id="example-aa4e3b8b"><a class="self-link" href="#example-aa4e3b8b"></a>document.addEventListener('paste', function(e){
     if(e.clipboardData.types.indexOf('text/html') > -1){
         processDataFromClipboard(e.clipboardData.getData('text/html'));
