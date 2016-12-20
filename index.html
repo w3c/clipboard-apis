@@ -1603,7 +1603,7 @@ is <a data-link-type="dfn" href="#allowed-to-modify-the-clipboard" id="ref-for-a
 read from clipboard</a>, then</p>
      <ol>
       <li data-md="">
-       <p>set the action’s <em>script-may-access-clipboard</em> flag.</p>
+       <p>Set the action’s <em>script-may-access-clipboard</em> flag.</p>
      </ol>
    </ol>
    <h4 class="heading settled" data-level="4.1.1" id="copy-action"><span class="secno">4.1.1. </span><span class="content">The copy action</span><a class="self-link" href="#copy-action"></a></h4>
@@ -1646,7 +1646,7 @@ Implementations <em>should</em> create alternate text/html and
 text/plain clipboard formats when content in a web page is selected.</p>
      </ol>
     <li data-md="">
-     <p>else, if the event was canceled</p>
+     <p>Else, if the event was canceled</p>
      <ol>
       <li data-md="">
        <p>Call the <a data-link-type="dfn" href="#writing-contents-to-the-clipboard" id="ref-for-writing-contents-to-the-clipboard-1">writing contents to the clipboard</a> algorithm,
@@ -1871,7 +1871,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
                      <p>If the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> of the current <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object already contains an entry for the referenced file or clipboard part</p>
                      <ol>
                       <li data-md="">
-                       <p>set <var>itemNumber</var> to the index of the existing entry</p>
+                       <p>Set <var>itemNumber</var> to the index of the existing entry</p>
                      </ol>
                     <li data-md="">
                      <p>Otherwise</p>
@@ -1922,7 +1922,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransferitemlist-clear">clear</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em></p>
        <ol>
         <li data-md="">
-         <p>set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</p>
+         <p>Set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.</p>
        </ol>
       <li data-md="">
        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true</p>
@@ -1931,20 +1931,20 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
          <p>If the <var>types-to-clear</var> list is empty</p>
          <ol>
           <li data-md="">
-           <p>set the <var>clear-was-called</var> flag to false</p>
+           <p>Set the <var>clear-was-called</var> flag to false</p>
          </ol>
         <li data-md="">
-         <p>else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a>’s <code>type</code> argument or the new item’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> is found in the <var>types-to-clear</var> list</p>
+         <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a>’s <code>type</code> argument or the new item’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> is found in the <var>types-to-clear</var> list</p>
          <ol>
           <li data-md="">
-           <p>remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</p>
+           <p>Remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false</p>
          </ol>
        </ol>
       <li data-md="">
        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-getdata">getData()</a> or accesses items in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> and <var>clipboard-entry</var> is set</p>
        <ol>
         <li data-md="">
-         <p>check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> to the <i>disabled mode</i></p>
+         <p>Check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> to the <i>disabled mode</i></p>
        </ol>
      </ol>
      <p>Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</p>

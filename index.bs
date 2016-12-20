@@ -122,7 +122,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			1. Set the action's <em>script-may-access-clipboard</em> flag
 		2. If action is <em>paste</em> and the script thread is [=allowed to
 			read from clipboard=], then
-			1. set the action's <em>script-may-access-clipboard</em> flag.
+			1. Set the action's <em>script-may-access-clipboard</em> flag.
 
 		<h4 id="copy-action">The copy action</h4>
 
@@ -160,7 +160,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				1. Copy the selected contents, if any, to the clipboard.
 					Implementations <em>should</em> create alternate text/html and
 					text/plain clipboard formats when content in a web page is selected.
-			4. else, if the event was canceled
+			4. Else, if the event was canceled
 				1. Call the <a>writing contents to the clipboard</a> algorithm,
 					passing on the {{DataTransferItemList}} list <em>items</em>,
 					a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
@@ -314,7 +314,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 										2. Choose the appropriate steps from this list:
 
 											1. If the {{DataTransferItemList}} of the current {{DataTransfer}} object already contains an entry for the referenced file or clipboard part
-												1. set <var>itemNumber</var> to the index of the existing entry
+												1. Set <var>itemNumber</var> to the index of the existing entry
 
 											2. Otherwise
 												1. Add a new entry to the {{DataTransferItemList}} with <code>index</code> set to <var>itemNumber</var>, <a>drag data item kind</a> set to "file", and <a>drag data item type string</a> set to the MIME type of the file or clipboard part if known, or <code>application/octet-stream</code> if the file's type is unknown.
@@ -338,16 +338,16 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				Issue: Why here? Why not in the HTML spec?
 
 				1. If a script calls <a>clearData()</a> or {{DataTransferItemList/clear}} and the {{DataTransfer}} object's <a>drag data store mode</a> flag is <em>read/write</em>
-					1. set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.
+					1. Set the <var>clear-was-called</var> flag to true. If an argument is given, add the argument to the <var>types-to-clear</var> list.
 
 				2. If a script calls <a>setData()</a> or modifies items and the <var>clear-was-called</var> flag is true
 					1. If the <var>types-to-clear</var> list is empty
-						1. set the <var>clear-was-called</var> flag to false
-					2. else, if <a>setData()</a>'s <code>type</code> argument or the new item's <a>drag data item type string</a> is found in the <var>types-to-clear</var> list
-						1. remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false
+						1. Set the <var>clear-was-called</var> flag to false
+					2. Else, if <a>setData()</a>'s <code>type</code> argument or the new item's <a>drag data item type string</a> is found in the <var>types-to-clear</var> list
+						1. Remove it from the list. If the list is now empty, set the <var>clear-was-called</var> flag to false
 
 				3. If a script calls <a>getData()</a> or accesses items in the {{DataTransferItemList}} and <var>clipboard-entry</var> is set
-					1. check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the {{DataTransferItemList}} object's <a>drag data store mode</a> to the <i>disabled mode</i>
+					1. Check that the clipboard data's sequence number matches <var>clipboard-entry</var>. If the clipboard no longer contains the same entry, set the {{DataTransferItemList}} object's <a>drag data store mode</a> to the <i>disabled mode</i>
 
 				Warning: A malicious script listening to a paste event may set up a never-ending loop in order to read what the user places on the clipboard in the future. On platforms where a clipboard sequence number is not available, other limitations should be implemented.</div>
 
