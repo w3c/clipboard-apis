@@ -1585,23 +1585,25 @@ paste in web applications.</p>
 		Future scripting APIs that interact with the clipboard should also use
 		these actions, and the <em>script-triggered</em> flag must be set
 		accordingly.</p>
-   <p>The <dfn data-dfn-type="dfn" data-noexport="" id="script-may-access-clipboard">script-may-access-clipboard<a class="self-link" href="#script-may-access-clipboard"></a></dfn> flag is set as follows:</p>
-   <ol>
-    <li data-md="">
-     <p>If action is <em>copy</em> or <em>cut</em> and the script thread
+   <div class="algorithm" data-algorithm="script-may-access-clipboard">
+    <p>The <dfn data-dfn-type="dfn" data-noexport="" id="script-may-access-clipboard">script-may-access-clipboard<a class="self-link" href="#script-may-access-clipboard"></a></dfn> flag is set as follows:</p>
+    <ol>
+     <li data-md="">
+      <p>If action is <em>copy</em> or <em>cut</em> and the script thread
 is <a data-link-type="dfn" href="#allowed-to-modify-the-clipboard" id="ref-for-allowed-to-modify-the-clipboard-1">allowed to modify the clipboard</a>, then</p>
-     <ol>
-      <li data-md="">
-       <p>Set the action’s <em>script-may-access-clipboard</em> flag</p>
-     </ol>
-    <li data-md="">
-     <p>If action is <em>paste</em> and the script thread is <a data-link-type="dfn" href="#allowed-to-read-from-clipboard" id="ref-for-allowed-to-read-from-clipboard-1">allowed to
+      <ol>
+       <li data-md="">
+        <p>Set the action’s <em>script-may-access-clipboard</em> flag</p>
+      </ol>
+     <li data-md="">
+      <p>If action is <em>paste</em> and the script thread is <a data-link-type="dfn" href="#allowed-to-read-from-clipboard" id="ref-for-allowed-to-read-from-clipboard-1">allowed to
 read from clipboard</a>, then</p>
-     <ol>
-      <li data-md="">
-       <p>Set the action’s <em>script-may-access-clipboard</em> flag.</p>
-     </ol>
-   </ol>
+      <ol>
+       <li data-md="">
+        <p>Set the action’s <em>script-may-access-clipboard</em> flag.</p>
+      </ol>
+    </ol>
+   </div>
    <h4 class="heading settled" data-level="4.1.1" id="copy-action"><span class="secno">4.1.1. </span><span class="content">The copy action</span><a class="self-link" href="#copy-action"></a></h4>
    <div class="note" role="note">
      NOTE: 

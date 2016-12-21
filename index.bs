@@ -121,6 +121,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		these actions, and the <em>script-triggered</em> flag must be set
 		accordingly.
 
+		<div class="algorithm" data-algorithm="script-may-access-clipboard">
+
 		The <dfn>script-may-access-clipboard</dfn> flag is set as follows:
 
 		1. If action is <em>copy</em> or <em>cut</em> and the script thread
@@ -132,6 +134,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			read from clipboard=], then
 
 			1. Set the action's <em>script-may-access-clipboard</em> flag.
+
+		</div><!-- algorithm -->
 
 		<h4 id="copy-action">The copy action</h4>
 
@@ -190,7 +194,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the copy action
 
-			</div>
+			</div><!-- algorithm -->
 
 		<h4 id="cut-action">The cut action</h4>
 
@@ -263,7 +267,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the cut action
 
-			</div>
+			</div><!-- algorithm -->
 
 		<h4 id="paste-action">The paste action</h4>
 
@@ -342,7 +346,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Return true from the action
 
-			</div>
+			</div><!-- algorithm -->
 
 	<h3 id="processing-model">Processing model for event dispatch</h3>
 
@@ -577,7 +581,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				sequence number is not available, other limitations should be
 				implemented.
 
-		</div>
+		</div><!-- algorithm -->
 
 <h2 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h2>
 
@@ -702,7 +706,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 					unclear if it can be implemented easily across relevant
 					platforms.
 
-	</div>
+	</div><!-- algorithm -->
 
 <h2 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h2>
 
