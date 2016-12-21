@@ -10,7 +10,7 @@ ED: https://w3c.github.io/clipboard-apis/
 Repository: w3c/clipboard-apis
 Editor: Gary Kacmarcik, Google, garykac@google.com
 Editor: Grisha Lyukshin, Microsoft, gked@microsoft.com
-Editor: Hallvord R. M. Steen, Mozilla
+Editor: Hallvord R. M. Steen, Mozilla - emeritus
 Abstract:
 	This document describes APIs for clipboard operations such as copy, cut and
     paste in web applications.
@@ -956,13 +956,19 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 	<em>This section is informative</em>
 
-	The editors would like to acknowledge their intellectual debt to the
+	The editors would like to acknowledge the contributions of the former
+	editors who helped shepherd this specification through the various
+	meetings and mailing-lists to bring it to its current state.
+
+	* Hallvord R. M. Steen
+
+	The editors would also like to acknowledge their intellectual debt to the
 	documentation of Data Transfer functionalities from Microsoft
 	[[MICROSOFT-CLIP-OP]] and earlier drafts of the [[HTML5]] specification.
 	We are also grateful for the draft "safe copy and paste" from Paul Libbrecht
 	(this draft is no longer available on the Web).
 
-	We would like to acknowledge the contributions made by the following:
+	And finally, we would like to acknowledge the contributions made by the following:
 
 	Adam Barth,
 	Shawn Carnell,
