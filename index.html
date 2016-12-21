@@ -1736,8 +1736,8 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
     <p>If the cursor is in an editable element, the paste action will
 			insert clipboard data in the most suitable format (if any) supported
 			for the given context.</p>
-    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable
-			context</a>, but the event fires regardless.</p>
+    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable context</a>,
+			but the event fires regardless.</p>
     <p>When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read-only</em>, hence calling <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> from a <b>paste</b> event handler will not modify the data that is
 			inserted, and not modify the data on the clipboard.</p>
    </div>
@@ -1983,8 +1983,7 @@ entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec
         <p>If <var>e</var> is "copy" or "cut"</p>
         <ol>
          <li data-md="">
-          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data
-store mode</a> flag to <em>read/write</em></p>
+          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read/write</em></p>
         </ol>
       </ol>
      <li data-md="">
