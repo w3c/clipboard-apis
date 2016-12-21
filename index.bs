@@ -113,7 +113,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	<h3 id="actions">Actions</h3>
 
 		Each action has two flags called <em>script-triggered</em> and
-		<em>script-may-access-clipboard</em>.</p>
+		<em>script-may-access-clipboard</em>.
 
 		The <dfn>script-triggered</dfn> flag is set if the action runs because
 		of a script, for example a <code>document.execCommand()</code> call.
@@ -586,7 +586,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 	<!-- Issue: There should be a way a script can check if a clipboard format
 	is registered and whether the implementation allows writing this format to
-	the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?</p>
+	the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?
 	-->
 
 	<div id="clipboardeventinit-idl">
