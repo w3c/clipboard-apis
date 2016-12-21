@@ -171,21 +171,21 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			The copy action consists of the following steps:
 
-			1. If the <em>script-triggered</em> flag is set
+			1. If the <em>script-triggered</em> flag is set, then
 
-				1. If the <em>script-may-access-clipboard</em> flag is unset
+				1. If the <em>script-may-access-clipboard</em> flag is unset, then
 
 					1. Return false from the copy action, terminate this algorithm
 
 			2. [=Fire a clipboard event=] named <em>copy</em>
 
-			3. If the event was not canceled
+			3. If the event was not canceled, then
 
 				1. Copy the selected contents, if any, to the clipboard.
 					Implementations <em>should</em> create alternate text/html and
 					text/plain clipboard formats when content in a web page is selected.
 
-			4. Else, if the event was canceled
+			4. Else, if the event was canceled, then
 
 				1. Call the [=writing contents to the clipboard=] algorithm,
 					passing on the {{DataTransferItemList}} list <em>items</em>,
@@ -228,18 +228,18 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			The cut action consists of the following steps:
 
-			1. If the <em>script-triggered</em> flag is set
+			1. If the <em>script-triggered</em> flag is set, then
 
-				1. If the <em>script-may-access-clipboard</em> flag is unset
+				1. If the <em>script-may-access-clipboard</em> flag is unset, then
 
 					1. Return false from the cut action, terminate this algorithm
 
 			2. [=Fire a clipboard event=] named <em>cut</em>
 
-		    3. If the event was not canceled
+		    3. If the event was not canceled, then
 
 				1. If there is a selection in an [=editable context=] where
-					cutting is enabled
+					cutting is enabled, then
 
 					1. Copy the selected contents, if any, to the clipboard.
 						Implementations <em>should</em> create alternate
@@ -254,11 +254,11 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 						[[#integration-with-other-scripts-and-events]]
 						for details.
 
-				2. Else, if there is no selection or the context is not editable
+				2. Else, if there is no selection or the context is not editable, then
 
 					1. Return false
 
-			4. Else, if the event was canceled
+			4. Else, if the event was canceled, then
 
 				1. Call the [=writing contents to the clipboard=] algorithm,
 					passing on the {{DataTransferItemList}} list <em>items</em>,
@@ -315,19 +315,19 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			The paste action consists of the following steps:
 
-			1. If the <em>script-triggered</em> flag is set
+			1. If the <em>script-triggered</em> flag is set, then
 
-				1. If <em>script-may-access-clipboard</em> is unset
+				1. If <em>script-may-access-clipboard</em> is unset, then
 
 					1. Return false from the paste action, terminate this algorithm
 
 			2. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
 				named <em>paste</em>
 
-			3. If the event was not canceled
+			3. If the event was not canceled, then
 
 				1. If there is a selection or cursor in an [=editable context=]
-					where pasting is enabled
+					where pasting is enabled, then
 
 					1. Insert the most suitable content found on the clipboard,
 						if any, into the context.
@@ -367,20 +367,20 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 			5. Set |target| as follows:
 
-				1. If the context is editable:
+				1. If the context is editable, then
 
 					1. Let <var>target</var> be the element that contains the
 						start of the selection in document order, or
 						[=the body element=] if there is no selection or cursor.
 
-				2. Else, if the context is not editable
+				2. Else, if the context is not editable, then
 
 					1. Let <var>target</var> be the focused node, or
 						[=the body element=] if no node has focus.
 
 			6. Process the event as follows:
 
-				1. If |e| is "paste"
+				1. If |e| is "paste", then
 
 					1. Set the associated {{DataTransfer}} object's
 						[=drag data store mode=] flag to <em>read-only</em>
@@ -391,7 +391,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 						1. For each part on the OS clipboard, carry out these steps:
 
-							1. If the current clipboard part contains plain text:
+							1. If the current clipboard part contains plain text, then
 
 								1. Ensure the text is in the encoding the
 									scripting engine uses internally
@@ -402,7 +402,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 									[=drag data item type string=] set to <em>text/plain</em>
 
 							2. If the current clipboard part represents file
-								references:
+								references, then
 
 								1. Determine MIME type of referenced files
 
@@ -417,16 +417,16 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 							3. If the current clipboard part contains HTML- or
 								XHTML-formatted text, according to the operating
 								system's convention for describing such clipboard
-								formats
+								formats, then
 
-								1. If the implementation supports pasting HTML,
+								1. If the implementation supports pasting HTML, then
 									the implementation <em>must</em> process the
 									markup by running the steps to
 									[=process an html paste event=]
 
 							4. If the current clipboard part contains data in
 								another supported binary or text-based format (see
-								[=mandatory data types=]):
+								[=mandatory data types=]), then
 
 								1. Determine the MIME type of the data
 
@@ -441,7 +441,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 					4. Update the {{DataTransfer/types}} property to match
 						entries in the {{DataTransferItemList}}.
 
-				2. If <var>e</var> is "copy" or "cut"
+				2. If <var>e</var> is "copy" or "cut", then
 
 					1. Set the associated {{DataTransfer}} object's
 						[=drag data store mode=] flag to <em>read/write</em>
@@ -459,29 +459,29 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				1. If a script calls <a>clearData()</a> or
 					{{DataTransferItemList/clear}} and the {{DataTransfer}}
 					object's [=drag data store mode=] flag is
-					<em>read/write</em>
+					<em>read/write</em>, then
 
 					1. Set the <var>clear-was-called</var> flag to true. If an
 						argument is given, add the argument to the
 						<var>types-to-clear</var> list.
 
 				2. If a script calls <a>setData()</a> or modifies items and the
-					<var>clear-was-called</var> flag is true
+					<var>clear-was-called</var> flag is true, then
 
-					1. If the <var>types-to-clear</var> list is empty
+					1. If the <var>types-to-clear</var> list is empty, then
 
-						1. Set the <var>clear-was-called</var> flag to false
+						1. Set the <var>clear-was-called</var> flag to false, then
 
 					2. Else, if <a>setData()</a>'s <code>type</code> argument or
 						the new item's [=drag data item type string=] is
-						found in the <var>types-to-clear</var> list
+						found in the <var>types-to-clear</var> list, then
 
 						1. Remove it from the list. If the list is now empty,
 							set the <var>clear-was-called</var> flag to false
 
 				3. If a script calls <a>getData()</a> or accesses items in the
 					{{DataTransferItemList}} and <var>clipboard-entry</var> is
-					set
+					set, then
 
 					1. Check that the clipboard data's sequence number matches
 						<var>clipboard-entry</var>. If the clipboard no longer
@@ -510,11 +510,11 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		2. Extract the markup from the clipboard and use the relevant parser to
 			construct a DOM tree
 
-		3. If the markup's source URL is known, resolve all relative URLs in
+		3. If the markup's source URL is known, then resolve all relative URLs in
 			HREF and SRC attributes using the source URL as base URL, and set the
 			respective attributes to the resolved absolute URL
 
-		4. If the markup's origin is from a local application, check whether
+		4. If the markup's origin is from a local application, then check whether
 			there are references to local files and/or other parts of the OS
 			clipboard's contents. If such references are found, references to
 			sub-parts <em>must</em> be replaced by content-id references using the
@@ -536,12 +536,12 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 				1. If the {{DataTransferItemList}} of the current
 					{{DataTransfer}} object already contains an entry for the
-					referenced file or clipboard part
+					referenced file or clipboard part, then
 
 					1. Set <var>itemNumber</var> to the index of the existing
 						entry
 
-				2. Otherwise
+				2. Else
 
 					1. Add a new entry to the {{DataTransferItemList}} with
 						<code>index</code> set to <var>itemNumber</var>,
@@ -633,13 +633,13 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
     {{DataTransferItemList}} list <em>items</em>, a <var>clear-was-called</var>
     flag and a <var>types-to-clear</var> list:
 
-	1. If the <em>items</em> list is not empty
+	1. If the <em>items</em> list is not empty, then
 
 		1. Clear the clipboard
 
 		2. For each part in the list,
 
-			1. If data type is <i>text/plain</i>
+			1. If data type is <i>text/plain</i>, then
 
 				1. Ensure encoding is correct per OS and locale conventions
 
@@ -648,13 +648,13 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				3. Place text on clipboard with the appropriate OS clipboard
 					format description
 
-			2. Otherwise, if data is of a type listed in the
-				[=mandatory data types=] list
+			2. Else, if data is of a type listed in the
+				[=mandatory data types=] list, then
 
 				1. Place part on clipboard with the appropriate OS clipboard
 					format description
 
-			3. Otherwise
+			3. Else
 
 				1. This is left to the implementation...
 
@@ -670,12 +670,13 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 					<a>setData()</a>'s type argument, sticking to the
 					[=mandatory data types=] is strongly recommended.
 
-	2. Otherwise, the <em>items</em> list is empty. Follow these steps to determine whether to clear the clipboard:
+	2. Else, the <em>items</em> list is empty. Follow these steps to determine
+		whether to clear the clipboard:
 
 		1. If the list of items is empty and the <var>clear-was-called</var>
-			flag is <i>true</i>
+			flag is <i>true</i>, then
 
-			1. If the <var>types-to-clear</var> list is empty
+			1. If the <var>types-to-clear</var> list is empty, then
 
 				1. Clear the clipboard
 

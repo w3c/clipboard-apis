@@ -1628,10 +1628,10 @@ read from clipboard</a>, then</p>
     <p>The copy action consists of the following steps:</p>
     <ol>
      <li data-md="">
-      <p>If the <em>script-triggered</em> flag is set</p>
+      <p>If the <em>script-triggered</em> flag is set, then</p>
       <ol>
        <li data-md="">
-        <p>If the <em>script-may-access-clipboard</em> flag is unset</p>
+        <p>If the <em>script-may-access-clipboard</em> flag is unset, then</p>
         <ol>
          <li data-md="">
           <p>Return false from the copy action, terminate this algorithm</p>
@@ -1640,7 +1640,7 @@ read from clipboard</a>, then</p>
      <li data-md="">
       <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-2">Fire a clipboard event</a> named <em>copy</em></p>
      <li data-md="">
-      <p>If the event was not canceled</p>
+      <p>If the event was not canceled, then</p>
       <ol>
        <li data-md="">
         <p>Copy the selected contents, if any, to the clipboard.
@@ -1648,7 +1648,7 @@ Implementations <em>should</em> create alternate text/html and
 text/plain clipboard formats when content in a web page is selected.</p>
       </ol>
      <li data-md="">
-      <p>Else, if the event was canceled</p>
+      <p>Else, if the event was canceled, then</p>
       <ol>
        <li data-md="">
         <p>Call the <a data-link-type="dfn" href="#writing-contents-to-the-clipboard" id="ref-for-writing-contents-to-the-clipboard-1">writing contents to the clipboard</a> algorithm,
@@ -1681,10 +1681,10 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
     <p>The cut action consists of the following steps:</p>
     <ol>
      <li data-md="">
-      <p>If the <em>script-triggered</em> flag is set</p>
+      <p>If the <em>script-triggered</em> flag is set, then</p>
       <ol>
        <li data-md="">
-        <p>If the <em>script-may-access-clipboard</em> flag is unset</p>
+        <p>If the <em>script-may-access-clipboard</em> flag is unset, then</p>
         <ol>
          <li data-md="">
           <p>Return false from the cut action, terminate this algorithm</p>
@@ -1693,11 +1693,11 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
      <li data-md="">
       <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-4">Fire a clipboard event</a> named <em>cut</em></p>
      <li data-md="">
-      <p>If the event was not canceled</p>
+      <p>If the event was not canceled, then</p>
       <ol>
        <li data-md="">
         <p>If there is a selection in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-3">editable context</a> where
-cutting is enabled</p>
+cutting is enabled, then</p>
         <ol>
          <li data-md="">
           <p>Copy the selected contents, if any, to the clipboard.
@@ -1712,14 +1712,14 @@ and collapse the selection.</p>
 modification, see <a href="#integration-with-other-scripts-and-events">§7 Integration with other scripts and events</a> for details.</p>
         </ol>
        <li data-md="">
-        <p>Else, if there is no selection or the context is not editable</p>
+        <p>Else, if there is no selection or the context is not editable, then</p>
         <ol>
          <li data-md="">
           <p>Return false</p>
         </ol>
       </ol>
      <li data-md="">
-      <p>Else, if the event was canceled</p>
+      <p>Else, if the event was canceled, then</p>
       <ol>
        <li data-md="">
         <p>Call the <a data-link-type="dfn" href="#writing-contents-to-the-clipboard" id="ref-for-writing-contents-to-the-clipboard-2">writing contents to the clipboard</a> algorithm,
@@ -1762,10 +1762,10 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
     <p>The paste action consists of the following steps:</p>
     <ol>
      <li data-md="">
-      <p>If the <em>script-triggered</em> flag is set</p>
+      <p>If the <em>script-triggered</em> flag is set, then</p>
       <ol>
        <li data-md="">
-        <p>If <em>script-may-access-clipboard</em> is unset</p>
+        <p>If <em>script-may-access-clipboard</em> is unset, then</p>
         <ol>
          <li data-md="">
           <p>Return false from the paste action, terminate this algorithm</p>
@@ -1774,10 +1774,10 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
      <li data-md="">
       <p><a href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-6">Fire a clipboard event</a> named <em>paste</em></p>
      <li data-md="">
-      <p>If the event was not canceled</p>
+      <p>If the event was not canceled, then</p>
       <ol>
        <li data-md="">
-        <p>If there is a selection or cursor in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-5">editable context</a> where pasting is enabled</p>
+        <p>If there is a selection or cursor in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-5">editable context</a> where pasting is enabled, then</p>
         <ol>
          <li data-md="">
           <p>Insert the most suitable content found on the clipboard,
@@ -1822,14 +1822,14 @@ user agent, <var>false</var> otherwise</p>
       <p>Set <var>target</var> as follows:</p>
       <ol>
        <li data-md="">
-        <p>If the context is editable:</p>
+        <p>If the context is editable, then</p>
         <ol>
          <li data-md="">
           <p>Let <var>target</var> be the element that contains the
 start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if there is no selection or cursor.</p>
         </ol>
        <li data-md="">
-        <p>Else, if the context is not editable</p>
+        <p>Else, if the context is not editable, then</p>
         <ol>
          <li data-md="">
           <p>Let <var>target</var> be the focused node, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if no node has focus.</p>
@@ -1839,7 +1839,7 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
       <p>Process the event as follows:</p>
       <ol>
        <li data-md="">
-        <p>If <var>e</var> is "paste"</p>
+        <p>If <var>e</var> is "paste", then</p>
         <ol>
          <li data-md="">
           <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
@@ -1852,7 +1852,7 @@ read access to the OS clipboard</p>
             <p>For each part on the OS clipboard, carry out these steps:</p>
             <ol>
              <li data-md="">
-              <p>If the current clipboard part contains plain text:</p>
+              <p>If the current clipboard part contains plain text, then</p>
               <ol>
                <li data-md="">
                 <p>Ensure the text is in the encoding the
@@ -1862,7 +1862,7 @@ scripting engine uses internally</p>
               </ol>
              <li data-md="">
               <p>If the current clipboard part represents file
-references:</p>
+references, then</p>
               <ol>
                <li data-md="">
                 <p>Determine MIME type of referenced files</p>
@@ -1875,16 +1875,16 @@ file’s type is unknown.</p>
               <p>If the current clipboard part contains HTML- or
 XHTML-formatted text, according to the operating
 system’s convention for describing such clipboard
-formats</p>
+formats, then</p>
               <ol>
                <li data-md="">
-                <p>If the implementation supports pasting HTML,
+                <p>If the implementation supports pasting HTML, then
 the implementation <em>must</em> process the
 markup by running the steps to <a data-link-type="dfn" href="#process-an-html-paste-event" id="ref-for-process-an-html-paste-event-1">process an html paste event</a></p>
               </ol>
              <li data-md="">
               <p>If the current clipboard part contains data in
-another supported binary or text-based format (see <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types-1">mandatory data types</a>):</p>
+another supported binary or text-based format (see <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types-1">mandatory data types</a>), then</p>
               <ol>
                <li data-md="">
                 <p>Determine the MIME type of the data</p>
@@ -1901,7 +1901,7 @@ entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec
 entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
         </ol>
        <li data-md="">
-        <p>If <var>e</var> is "copy" or "cut"</p>
+        <p>If <var>e</var> is "copy" or "cut", then</p>
         <ol>
          <li data-md="">
           <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read/write</em></p>
@@ -1916,25 +1916,25 @@ event-specific processing rules are given below:</p>
       <p class="issue" id="issue-7d2ab940"><a class="self-link" href="#issue-7d2ab940"></a> Why here? Why not in the HTML spec?</p>
       <ol>
        <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransferitemlist-clear">clear</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em></p>
+        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransferitemlist-clear">clear</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em>, then</p>
         <ol>
          <li data-md="">
           <p>Set the <var>clear-was-called</var> flag to true. If an
 argument is given, add the argument to the <var>types-to-clear</var> list.</p>
         </ol>
        <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true</p>
+        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true, then</p>
         <ol>
          <li data-md="">
-          <p>If the <var>types-to-clear</var> list is empty</p>
+          <p>If the <var>types-to-clear</var> list is empty, then</p>
           <ol>
            <li data-md="">
-            <p>Set the <var>clear-was-called</var> flag to false</p>
+            <p>Set the <var>clear-was-called</var> flag to false, then</p>
           </ol>
          <li data-md="">
           <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a>’s <code>type</code> argument or
 the new item’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> is
-found in the <var>types-to-clear</var> list</p>
+found in the <var>types-to-clear</var> list, then</p>
           <ol>
            <li data-md="">
             <p>Remove it from the list. If the list is now empty,
@@ -1943,7 +1943,7 @@ set the <var>clear-was-called</var> flag to false</p>
         </ol>
        <li data-md="">
         <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-getdata">getData()</a> or accesses items in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> and <var>clipboard-entry</var> is
-set</p>
+set, then</p>
         <ol>
          <li data-md="">
           <p>Check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer
@@ -1966,11 +1966,11 @@ implemented.</strong></p>
       <p>Extract the markup from the clipboard and use the relevant parser to
 construct a DOM tree</p>
      <li data-md="">
-      <p>If the markup’s source URL is known, resolve all relative URLs in
+      <p>If the markup’s source URL is known, then resolve all relative URLs in
 HREF and SRC attributes using the source URL as base URL, and set the
 respective attributes to the resolved absolute URL</p>
      <li data-md="">
-      <p>If the markup’s origin is from a local application, check whether
+      <p>If the markup’s origin is from a local application, then check whether
 there are references to local files and/or other parts of the OS
 clipboard’s contents. If such references are found, references to
 sub-parts <em>must</em> be replaced by content-id references using the
@@ -1990,14 +1990,14 @@ required, and because it’s hard to test in a cross-platform way.</p>
         <ol>
          <li data-md="">
           <p>If the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> of the current <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object already contains an entry for the
-referenced file or clipboard part</p>
+referenced file or clipboard part, then</p>
           <ol>
            <li data-md="">
             <p>Set <var>itemNumber</var> to the index of the existing
 entry</p>
           </ol>
          <li data-md="">
-          <p>Otherwise</p>
+          <p>Else</p>
           <ol>
            <li data-md="">
             <p>Add a new entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <code>index</code> set to <var>itemNumber</var>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the MIME type of
@@ -2069,7 +2069,7 @@ non-textual data from the clipboard.</p>
     <p>To update the clipboard contents, follow these steps, given a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> list <em>items</em>, a <var>clear-was-called</var> flag and a <var>types-to-clear</var> list:</p>
     <ol>
      <li data-md="">
-      <p>If the <em>items</em> list is not empty</p>
+      <p>If the <em>items</em> list is not empty, then</p>
       <ol>
        <li data-md="">
         <p>Clear the clipboard</p>
@@ -2077,7 +2077,7 @@ non-textual data from the clipboard.</p>
         <p>For each part in the list,</p>
         <ol>
          <li data-md="">
-          <p>If data type is <i>text/plain</i></p>
+          <p>If data type is <i>text/plain</i>, then</p>
           <ol>
            <li data-md="">
             <p>Ensure encoding is correct per OS and locale conventions</p>
@@ -2088,14 +2088,14 @@ non-textual data from the clipboard.</p>
 format description</p>
           </ol>
          <li data-md="">
-          <p>Otherwise, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types-3">mandatory data types</a> list</p>
+          <p>Else, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types-3">mandatory data types</a> list, then</p>
           <ol>
            <li data-md="">
             <p>Place part on clipboard with the appropriate OS clipboard
 format description</p>
           </ol>
          <li data-md="">
-          <p>Otherwise</p>
+          <p>Else</p>
           <ol>
            <li data-md="">
             <p>This is left to the implementation...</p>
@@ -2111,13 +2111,14 @@ While it is possible to use any string for <a data-link-type="functionish" href=
         </ol>
       </ol>
      <li data-md="">
-      <p>Otherwise, the <em>items</em> list is empty. Follow these steps to determine whether to clear the clipboard:</p>
+      <p>Else, the <em>items</em> list is empty. Follow these steps to determine
+whether to clear the clipboard:</p>
       <ol>
        <li data-md="">
-        <p>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i></p>
+        <p>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i>, then</p>
         <ol>
          <li data-md="">
-          <p>If the <var>types-to-clear</var> list is empty</p>
+          <p>If the <var>types-to-clear</var> list is empty, then</p>
           <ol>
            <li data-md="">
             <p>Clear the clipboard</p>
