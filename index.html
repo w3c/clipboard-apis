@@ -1880,88 +1880,7 @@ formats</p>
                <li data-md="">
                 <p>If the implementation supports pasting HTML,
 the implementation <em>must</em> process the
-markup according to the following steps:</p>
-                <ol>
-                 <li data-md="">
-                  <p>Add one entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly.
-Let <var>mainPartIndex</var> be the index of
-this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
-                 <li data-md="">
-                  <p>Extract the markup from the clipboard and
-use the relevant parser to construct a DOM
-tree</p>
-                 <li data-md="">
-                  <p>If the markup’s source URL is known,
-resolve all relative URLs in HREF and SRC
-attributes using the source URL as base URL,
-and set the respective attributes to the
-resolved absolute URL</p>
-                 <li data-md="">
-                  <p>If the markup’s origin is from a local
-application, check whether there are
-references to local files and/or other parts
-of the OS clipboard’s contents. If such
-references are found, references to
-sub-parts <em>must</em> be replaced by
-content-id references using the cid: URL
-scheme <a data-link-type="biblio" href="#biblio-rfc2392">[RFC2392]</a>. To do so, process each
-attribute referencing a local file or
-clipboard part according to the following
-steps:</p>
-                  <p class="issue" id="issue-21153e5c"><a class="self-link" href="#issue-21153e5c"></a> Are these steps necessary? Do we
-know about native (platform) clipboard
-implementations that support multiple
-parts with internal references?</p>
-                  <p class="issue" id="issue-954c7f49"><a class="self-link" href="#issue-954c7f49"></a> This feature is at risk because
-it’s unclear whether it is required, and
-because it’s hard to test in a
-cross-platform way.</p>
-                  <ol>
-                   <li data-md="">
-                    <p>Let <var>itemNumber</var> be the
-number of items on the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code></p>
-                   <li data-md="">
-                    <p>Choose the appropriate steps from this list:</p>
-                    <ol>
-                     <li data-md="">
-                      <p>If the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> of the current <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object already contains an entry for
-the referenced file or clipboard part</p>
-                      <ol>
-                       <li data-md="">
-                        <p>Set <var>itemNumber</var> to
-the index of the existing entry</p>
-                      </ol>
-                     <li data-md="">
-                      <p>Otherwise</p>
-                      <ol>
-                       <li data-md="">
-                        <p>Add a new entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <code>index</code> set to <var>itemNumber</var>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to "file",
-and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the MIME type of the file
-or clipboard part if known, or <code>application/octet-stream</code> if the file’s type is unknown.</p>
-                       <li data-md="">
-                        <p>Let the new entry’s internal <i>file name</i> be the file
-name part of the HTML attribute
-contents</p>
-                       <li data-md="">
-                        <p>Let the new entry’s <i>last
-modified date</i> be the
-timestamp of the referenced file
-or 0 if the entry references a
-clipboard part</p>
-                      </ol>
-                    </ol>
-                   <li data-md="">
-                    <p>Update the DOM attribute that
-referenced the local file or clipboard
-part to contain the string 'cid:'
-followed by <var>itemNumber</var>.</p>
-                  </ol>
-                 <li data-md="">
-                  <p>Serialize the processed DOM and update
-the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> entry
-referenced by <var>mainPartIndex</var> with
-the resulting HTML code</p>
-                </ol>
+markup by running the steps to <a data-link-type="dfn" href="#process-an-html-paste-event" id="ref-for-process-an-html-paste-event-1">process an html paste event</a></p>
               </ol>
              <li data-md="">
               <p>If the current clipboard part contains data in
@@ -2036,6 +1955,69 @@ up a never-ending loop in order to read what the user places on
 the clipboard in the future. On platforms where a clipboard
 sequence number is not available, other limitations should be
 implemented.</strong></p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="process-an-html-paste-event">
+    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="process-an-html-paste-event">process an html paste event</dfn>,</p>
+    <ol>
+     <li data-md="">
+      <p>Add one entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+     <li data-md="">
+      <p>Extract the markup from the clipboard and use the relevant parser to
+construct a DOM tree</p>
+     <li data-md="">
+      <p>If the markup’s source URL is known, resolve all relative URLs in
+HREF and SRC attributes using the source URL as base URL, and set the
+respective attributes to the resolved absolute URL</p>
+     <li data-md="">
+      <p>If the markup’s origin is from a local application, check whether
+there are references to local files and/or other parts of the OS
+clipboard’s contents. If such references are found, references to
+sub-parts <em>must</em> be replaced by content-id references using the
+cid: URL scheme <a data-link-type="biblio" href="#biblio-rfc2392">[RFC2392]</a>. To do so, process each attribute
+referencing a local file or clipboard part according to the following
+steps:</p>
+      <p class="issue" id="issue-9f40691b"><a class="self-link" href="#issue-9f40691b"></a> Are these steps necessary? Do we know about native (platform)
+clipboard implementations that support multiple parts with internal
+references?</p>
+      <p class="issue" id="issue-f5823941"><a class="self-link" href="#issue-f5823941"></a> This feature is at risk because it’s unclear whether it is
+required, and because it’s hard to test in a cross-platform way.</p>
+      <ol>
+       <li data-md="">
+        <p>Let <var>itemNumber</var> be the number of items on the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code></p>
+       <li data-md="">
+        <p>Choose the appropriate steps from this list:</p>
+        <ol>
+         <li data-md="">
+          <p>If the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> of the current <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object already contains an entry for the
+referenced file or clipboard part</p>
+          <ol>
+           <li data-md="">
+            <p>Set <var>itemNumber</var> to the index of the existing
+entry</p>
+          </ol>
+         <li data-md="">
+          <p>Otherwise</p>
+          <ol>
+           <li data-md="">
+            <p>Add a new entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <code>index</code> set to <var>itemNumber</var>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the MIME type of
+the file or clipboard part if known, or <code>application/octet-stream</code> if the
+file’s type is unknown.</p>
+           <li data-md="">
+            <p>Let the new entry’s internal <i>file name</i> be the file
+name part of the HTML attribute contents</p>
+           <li data-md="">
+            <p>Let the new entry’s <i>last modified date</i> be the
+timestamp of the referenced file or 0 if the entry
+references a clipboard part</p>
+          </ol>
+        </ol>
+       <li data-md="">
+        <p>Update the DOM attribute that referenced the local file or
+clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</p>
+      </ol>
+     <li data-md="">
+      <p>Serialize the processed DOM and update the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code</p>
     </ol>
    </div>
    <h2 class="heading settled" data-level="5" id="clipboard-event-interfaces"><span class="secno">5. </span><span class="content"><dfn data-dfn-type="dfn" data-noexport="" id="clipboard-event">Clipboard event<a class="self-link" href="#clipboard-event"></a></dfn> interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h2>
@@ -2495,6 +2477,7 @@ it.</p>
    <li><a href="#editable-context">editable context</a><span>, in §3</span>
    <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in §4.2</span>
    <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §8</span>
+   <li><a href="#process-an-html-paste-event">process an html paste event</a><span>, in §4.2</span>
    <li><a href="#dfn-processing-equivalence">processing equivalence</a><span>, in §Unnumbered section</span>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §4.1</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in §4.1</span>
@@ -2559,15 +2542,12 @@ it.</p>
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Are these steps necessary? Do we
-know about native (platform) clipboard
-implementations that support multiple
-parts with internal references?<a href="#issue-21153e5c"> ↵ </a></div>
-   <div class="issue"> This feature is at risk because
-it’s unclear whether it is required, and
-because it’s hard to test in a
-cross-platform way.<a href="#issue-954c7f49"> ↵ </a></div>
    <div class="issue"> Why here? Why not in the HTML spec?<a href="#issue-7d2ab940"> ↵ </a></div>
+   <div class="issue"> Are these steps necessary? Do we know about native (platform)
+clipboard implementations that support multiple parts with internal
+references?<a href="#issue-9f40691b"> ↵ </a></div>
+   <div class="issue"> This feature is at risk because it’s unclear whether it is
+required, and because it’s hard to test in a cross-platform way.<a href="#issue-f5823941"> ↵ </a></div>
    <div class="issue"> It’s not good to leave things up to the
 implementation. What should happen here?<a href="#issue-0b93e4b8"> ↵ </a></div>
    <div class="issue"> The "remove specific types from clipboard" feature is
@@ -2588,6 +2568,12 @@ platforms.<a href="#issue-1c8bdbac"> ↵ </a></div>
     <li><a href="#ref-for-fire-a-clipboard-event-1">4.1.1. The copy action</a> <a href="#ref-for-fire-a-clipboard-event-2">(2)</a>
     <li><a href="#ref-for-fire-a-clipboard-event-3">4.1.2. The cut action</a> <a href="#ref-for-fire-a-clipboard-event-4">(2)</a>
     <li><a href="#ref-for-fire-a-clipboard-event-5">4.1.3. The paste action</a> <a href="#ref-for-fire-a-clipboard-event-6">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="process-an-html-paste-event">
+   <b><a href="#process-an-html-paste-event">#process-an-html-paste-event</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-process-an-html-paste-event-1">4.2. Processing model for event dispatch</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-clipboardeventinit">

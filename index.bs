@@ -421,94 +421,8 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 
 								1. If the implementation supports pasting HTML,
 									the implementation <em>must</em> process the
-									markup according to the following steps:
-
-									1. Add one entry to the
-										{{DataTransferItemList}} with
-										[=drag data item kind=] set to <em>Plain Unicode string</em>,
-										[=drag data item type string=] set to
-										<em>text/html</em> or <em>application/xhtml+xml</em> accordingly.
-										Let <var>mainPartIndex</var> be the index of
-										this entry in the {{DataTransferItemList}}.
-
-									2. Extract the markup from the clipboard and
-										use the relevant parser to construct a DOM
-										tree
-
-									3. If the markup's source URL is known,
-										resolve all relative URLs in HREF and SRC
-										attributes using the source URL as base URL,
-										and set the respective attributes to the
-										resolved absolute URL
-
-									4. If the markup's origin is from a local
-										application, check whether there are
-										references to local files and/or other parts
-										of the OS clipboard's contents. If such
-										references are found, references to
-										sub-parts <em>must</em> be replaced by
-										content-id references using the cid: URL
-										scheme [[!RFC2392]]. To do so, process each
-										attribute referencing a local file or
-										clipboard part according to the following
-										steps:
-
-										Issue: Are these steps necessary? Do we
-										know about native (platform) clipboard
-										implementations that support multiple
-										parts with internal references?
-
-										Issue: This feature is at risk because
-										it's unclear whether it is required, and
-										because it's hard to test in a
-										cross-platform way.
-
-										1. Let <var>itemNumber</var> be the
-											number of items on the
-											{{DataTransferItemList}}
-
-										2. Choose the appropriate steps from this list:
-
-											1. If the {{DataTransferItemList}}
-												of the current {{DataTransfer}}
-												object already contains an entry for
-												the referenced file or clipboard part
-
-												1. Set <var>itemNumber</var> to
-													the index of the existing entry
-
-											2. Otherwise
-
-												1. Add a new entry to the
-													{{DataTransferItemList}} with
-													<code>index</code> set to <var>itemNumber</var>,
-													[=drag data item kind=] set to "file",
-													and [=drag data item type string=]
-													set to the MIME type of the file
-													or clipboard part if known, or
-													<code>application/octet-stream</code>
-													if the file's type is unknown.
-
-												2. Let the new entry's internal
-													<i>file name</i> be the file
-													name part of the HTML attribute
-													contents
-
-												3. Let the new entry's <i>last
-													modified date</i> be the
-													timestamp of the referenced file
-													or 0 if the entry references a
-													clipboard part
-
-										3. Update the DOM attribute that
-											referenced the local file or clipboard
-											part to contain the string 'cid:'
-											followed by <var>itemNumber</var>.
-
-									5. Serialize the processed DOM and update
-										the {{DataTransferItemList}} entry
-										referenced by <var>mainPartIndex</var> with
-										the resulting HTML code
+									markup by running the steps to
+									[=process an html paste event=]
 
 							4. If the current clipboard part contains data in
 								another supported binary or text-based format (see
@@ -580,6 +494,76 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 				the clipboard in the future. On platforms where a clipboard
 				sequence number is not available, other limitations should be
 				implemented.
+
+		</div><!-- algorithm -->
+
+		<div class="algorithm" data-algorithm="process-an-html-paste-event">
+
+		To <dfn>process an html paste event</dfn>,
+
+		1. Add one entry to the {{DataTransferItemList}} with
+			[=drag data item kind=] set to <em>Plain Unicode string</em>,
+			[=drag data item type string=] set to <em>text/html</em> or
+			<em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var>
+			be the index of this entry in the {{DataTransferItemList}}.
+
+		2. Extract the markup from the clipboard and use the relevant parser to
+			construct a DOM tree
+
+		3. If the markup's source URL is known, resolve all relative URLs in
+			HREF and SRC attributes using the source URL as base URL, and set the
+			respective attributes to the resolved absolute URL
+
+		4. If the markup's origin is from a local application, check whether
+			there are references to local files and/or other parts of the OS
+			clipboard's contents. If such references are found, references to
+			sub-parts <em>must</em> be replaced by content-id references using the
+			cid: URL scheme [[!RFC2392]]. To do so, process each attribute
+			referencing a local file or clipboard part according to the following
+			steps:
+
+			Issue: Are these steps necessary? Do we know about native (platform)
+			clipboard implementations that support multiple parts with internal
+			references?
+
+			Issue: This feature is at risk because it's unclear whether it is
+			required, and because it's hard to test in a cross-platform way.
+
+			1. Let <var>itemNumber</var> be the number of items on the
+				{{DataTransferItemList}}
+
+			2. Choose the appropriate steps from this list:
+
+				1. If the {{DataTransferItemList}} of the current
+					{{DataTransfer}} object already contains an entry for the
+					referenced file or clipboard part
+
+					1. Set <var>itemNumber</var> to the index of the existing
+						entry
+
+				2. Otherwise
+
+					1. Add a new entry to the {{DataTransferItemList}} with
+						<code>index</code> set to <var>itemNumber</var>,
+						[=drag data item kind=] set to "file", and
+						[=drag data item type string=] set to the MIME type of
+						the file or clipboard part if known, or
+						<code>application/octet-stream</code> if the
+						file's type is unknown.
+
+					2. Let the new entry's internal <i>file name</i> be the file
+						name part of the HTML attribute contents
+
+					3. Let the new entry's <i>last modified date</i> be the
+						timestamp of the referenced file or 0 if the entry
+						references a clipboard part
+
+			3. Update the DOM attribute that referenced the local file or
+				clipboard part to contain the string 'cid:' followed by
+				<var>itemNumber</var>.
+
+		5. Serialize the processed DOM and update the {{DataTransferItemList}}
+			entry referenced by <var>mainPartIndex</var> with the resulting HTML code
 
 		</div><!-- algorithm -->
 
