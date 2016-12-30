@@ -260,8 +260,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		The platform provides a <dfn>system clipboard</dfn>.
 
 		The [=system clipboard=] has a list of clipboard items that are collectively
-		called the <dfn>system clipboard data</dfn>. The [=system clipboard data=] is associated
-		with a {{DataTransfer}} object that contains the contents of the clipboard.
+		called the <dfn>system clipboard data</dfn>. The [=system clipboard data=] is
+		a {{DataTransfer}} object that contains the contents of the clipboard.
 
 	<h3 id="navigator-interface">Navigator Interface</h3>
 
