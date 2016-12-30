@@ -29,6 +29,10 @@ urlPrefix: https://dom.spec.whatwg.org/#; type: dfn;
 	text: constructing events
 urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	text: editing host
+spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
+    type: dfn
+        text: Assert; url: sec-algorithm-conventions
+        text: promise; url: sec-promise-objects
 </pre>
 
 <pre class="biblio">
@@ -130,6 +134,7 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 		-->
 
 		<div id="clipboardeventinit-idl">
+
 		<pre class="idl" data-highlight="webidl">
 		dictionary ClipboardEventInit : EventInit {
 		  DataTransfer? clipboardData = null;
@@ -248,8 +253,121 @@ urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 			If the event listener modifies the selection or focus, the clipboard
 			action <em>must</em> be completed on the modified selection.
 
+<h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
 
-<h2 id="">Synchronous Clipboard API</h2>
+	<h3 id="model">Model</h3>
+
+		The platform provides a <dfn>system clipboard</dfn>.
+
+		The [=system clipboard=] has a list of clipboard items that are collectively
+		called the <dfn>system clipboard data</dfn>. The [=system clipboard data=] is associated
+		with a {{DataTransfer}} object that contains the contents of the clipboard.
+
+	<h3 id="navigator-interface">Navigator Interface</h3>
+
+		<pre class="idl" data-highlight="webidl">
+		partial interface Navigator {
+		  [SecureContext] readonly attribute Clipboard clipboard;
+		};
+		</pre>
+
+		<div id="navigator-idl" dfn-for="Navigator">
+
+		<div class="algorithm" data-algorithm="navigator-clipboard">
+		<h4 id="h-navigator-clipboard"><dfn>clipboard</dfn></h4>
+		The [=clipboard=] attribute must return the {{Navigator}}'s [=clipboard=] object.
+		</div>
+
+		</div><!-- dfn-for Navigator -->
+
+	<h3 id="clipboard-interface">Clipboard Interface</h3>
+
+		<pre class="idl" data-highlight="webidl">
+		[SecureContext] interface Clipboard {
+		  Promise&lt;DataTransfer> read();
+		  Promise&lt;void> write(DataTransfer data);
+		};
+		</pre>
+
+		<div id="clipboard-idl" dfn-for="Clipboard">
+
+		<div class="algorithm" data-algorithm="clipboard-read">
+		<h4 id="h-clipboard-read"><dfn>read()</dfn></h4>
+		The [=read()=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. TODO: Handle access permissions. Reject promise if not allowed.
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |data| be a copy of the [=system clipboard data=].
+
+				1. Resolve |p| with |data|.
+
+			1. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				navigator.clipboard.read().then(function(data) {
+					for (var i = 0; i < data.items.length; i++) {
+						if (data.items[i].type == "text/plain") {
+							console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+						} else {
+							console.error(“No text/plain data on clipboard.”);
+						}
+					}
+				});
+			</pre>
+
+		</div>
+
+		<div class="algorithm" data-algorithm="clipboard-write">
+		<h4 id="h-clipboard-write-data"><dfn>write(|data|)</dfn></h4>
+		The [=write(data)=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. TODO: Handle access permissions. Reject promise if not allowed.
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |cleanItemList| be an empty {{DataTransferItemList}}.
+
+				1. For each {{DataTransferItem}} |item| in |data|'s {{DataTransfer/items}} list:
+
+					1. Let |cleanItem| be a sanitized copy of |item|.
+
+					1. If unable to create a sanitized copy, then reject |p|.
+
+					1. Add |cleanItem| to |cleanItemList|.
+
+				1. Replace the [=system clipboard data=]'s {{DataTransfer/items}}
+					list with |cleanItemList|.
+
+				1. Resolve |p|.
+
+			2. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				var data = new DataTransfer();
+				data.items.add("text/plain", "Howdy, partner!");
+				navigator.clipboard.write(data).then(function() {
+					console.log(“Copied to clipboard successfully!”);
+				}, function() {
+					console.error(“Unable to write to clipboard. :-(”);
+				});
+			</pre>
+
+		</div>
+
+		</div><!-- dfn-for Clipboard -->
+
+
+<h2 id="sync-clipboard-api">Synchronous Clipboard API</h2>
 
 	<h3 id="clipboard-actions-and-events">Clipboard actions and events</h3>
 
