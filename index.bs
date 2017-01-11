@@ -109,29 +109,20 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	"url", "email", "password" or "number".
 
 
+<h2 id="model">Model</h2>
+
+	The platform provides a <dfn>system clipboard</dfn>.
+
+	The [=system clipboard=] has a list of clipboard items that are collectively
+	called the <dfn>system clipboard data</dfn>. The [=system clipboard data=] is
+	a {{DataTransfer}} object that mirrors the contents of the clipboard.
+
+
 <h2 id="clipboard-events">Clipboard Events</h2>
 
 	<h3 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h3>
 
 		The ClipboardEvent interface extends the {{Event}} interface.
-
-		The interface can be used to <a lt="constructing events">construct events</a>.
-		An example is given below:
-
-		<pre class="example javascript">
-			var pasteEvent = new ClipboardEvent('paste');
-			pasteEvent.clipboardData.items.add('My string', 'text/plain');
-			document.dispatchEvent(pasteEvent);
-		</pre>
-
-		Note: Synthetic clipboard events will not actually modify the clipboard or
-		the document. In other words, while the script above will fire a paste event,
-		the data will not be pasted into the document.
-
-		<!-- Issue: There should be a way a script can check if a clipboard format
-		is registered and whether the implementation allows writing this format to
-		the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?
-		-->
 
 		<div id="clipboardeventinit-idl">
 
@@ -168,6 +159,24 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			non-textual data from the clipboard.
 
 		</div>
+
+		The interface can be used to <a lt="constructing events">construct events</a>.
+		An example is given below:
+
+		<pre class="example javascript">
+			var pasteEvent = new ClipboardEvent('paste');
+			pasteEvent.clipboardData.items.add('My string', 'text/plain');
+			document.dispatchEvent(pasteEvent);
+		</pre>
+
+		Note: Synthetic clipboard events will not actually modify the clipboard or
+		the document. In other words, while the script above will fire a paste event,
+		the data will not be pasted into the document.
+
+		<!-- Issue: There should be a way a script can check if a clipboard format
+		is registered and whether the implementation allows writing this format to
+		the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?
+		-->
 
 	<h3 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h3>
 
@@ -253,15 +262,138 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			If the event listener modifies the selection or focus, the clipboard
 			action <em>must</em> be completed on the modified selection.
 
+<h2 id="sync-clipboard-api">Synchronous Clipboard API</h2>
+
+	The Synchronous Clipboard API allows you to override the default cut, copy
+	and paste behavior of the user agent.
+
+	Synchronous access to the clipboard is performed using the standard
+	{{DataTransfer}} methods to mutate the {{DataTransfer/items}} on a
+	{{ClipboardEvent}}'s {{ClipboardEvent/clipboardData}} attribute.
+	One consequence of this is that the synchronous clipboard APIs can only
+	access clipboard data in the context of a {{ClipboardEvent}} handler.
+
+	Note: If you need to access the clipboard outside of a clipboard event
+	handler, see [[#async-clipboard-api]].
+
+	<h3 id="override-copy">Overriding the copy event</h3>
+
+		When the user initiates a copy action, the user agent
+		[=fire a clipboard event|fires a clipboard event=] named
+		<em>copy</em>. If the event is not canceled, the currently selected
+		data will be copied to the [=system clipboard=].
+
+		The event bubbles and is cancelable.
+
+		The current document selection is not affected.
+
+		<pre class="example javascript">
+		// Overwrite what is being copied to the clipboard.
+		document.addEventListener('copy', function(e) {
+			// e.clipboardData is initially empty, but we can set it to the
+			// data that we want copied onto the clipboard.
+			e.clipboardData.setData('text/plain', 'Hello, world!');
+			e.clipboardData.setData('text/html', '&lt;b&gt;Hello, world!&lt;/b&gt;');
+
+			// This is necessary to prevent the current document selection from
+			// being written to the clipboard.
+			e.preventDefault();
+		});
+		</pre>
+
+		Note: The event handler must call {{Event/preventDefault()}} to cancel
+		the event in order for the [=system clipboard=] to be updated with the
+		data in {{ClipboardEvent/clipboardData}}.
+		If the {{ClipboardEvent}} is not canceled, then the data from the
+		current document selection will be copied instead.
+
+	<h3 id="override-cut">Overriding the cut event</h3>
+
+		When the user initiates a cut action, the user agent
+		[=fire a clipboard event|fires a clipboard event=] named
+		<em>cut</em>. In an [=editable context=], if the event is not
+		canceled the action will place the currently selected data on the
+		[=system clipboard=] and remove the selection from the document.
+
+		The event bubbles and is cancelable.
+
+		The <em>cut</em> event fires before the selected data is removed. When
+		the cut operation is completed, the selection is collapsed.
+
+		In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
+		be an empty list. Not that the <em>cut</em> event will still be fired
+		in this case.
+
+		<pre class="example javascript">
+		// Overwrite what is copied to the clipboard.
+		document.addEventListener('cut', function(e) {
+			// e.clipboardData is initially empty, but we can set it to the
+			// data that we want copied onto the clipboard as part of the cut.
+			// Write the data that we want copied onto the clipboard.
+			e.clipboardData.setData('text/plain', 'Hello, world!');
+			e.clipboardData.setData('text/html', '&lt;b&gt;Hello, world!&lt;/b&gt;');
+
+			// Since we will be canceling the cut operation, we need to manually
+			// update the document to remove the currently selected text.
+			deleteCurrentDocumentSelection();
+
+			// This is necessary to prevent the document selection from being
+			// written to the clipboard.
+			e.preventDefault();
+		});
+		</pre>
+
+		Note: The event handler must call {{Event/preventDefault()}} to cancel
+		the event in order for the [=system clipboard=] to be updated with the
+		data in {{ClipboardEvent/clipboardData}}.
+		If the {{ClipboardEvent}} is not canceled, then the data from the
+		current document selection will be copied instead.
+
+	<h3 id="override-paste">Overriding the paste event</h3>
+
+		When a user initiates a paste action, the user agent
+		[=fire a clipboard event|fires a clipboard event=] named
+		<em>paste</em>. The event fires before any clipboard data is inserted
+		into the document.
+
+		The event bubbles and is cancelable.
+
+		If the cursor is in an [=editable context=], the paste action will
+		insert clipboard data in the most suitable format (if any) supported
+		for the given context.
+
+		The paste action has no effect in a non-[=editable context=],
+		but the event fires regardless.
+
+		When pasting, the [=drag data store mode=] flag is
+		<em>read-only</em>, hence calling {{DataTransfer/setData()}} from a
+		<em>paste</em> event handler will not modify the data that is
+		inserted, and not modify the data on the clipboard.
+
+		<pre class="example javascript">
+		// Overwrite what is being pasted onto the clipboard.
+		document.addEventListener('paste', function(e) {
+			// e.clipboardData contains the data that is about to be pasted.
+			if (e.clipboardData.types.indexOf('text/html') > -1) {
+				var oldData = e.clipboardData.getData('text/html');
+				var newData = '<b>Ha Ha!</b> ' + oldData;
+
+				// Since we are canceling the paste operation, we need to manually
+				// paste the data into the document.
+				pasteClipboardData(newData);
+
+				// This is necessary to prevent the default paste action.
+				e.preventDefault();
+			}
+		});
+		</pre>
+
+		Note: The event handler must call {{Event/preventDefault()}} to cancel
+		the event so that the user agent does not update the document with data
+		from the [=system clipboard=].
+
+
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
-
-	<h3 id="model">Model</h3>
-
-		The platform provides a <dfn>system clipboard</dfn>.
-
-		The [=system clipboard=] has a list of clipboard items that are collectively
-		called the <dfn>system clipboard data</dfn>. The [=system clipboard data=] is
-		a {{DataTransfer}} object that contains the contents of the clipboard.
 
 	<h3 id="navigator-interface">Navigator Interface</h3>
 
@@ -283,7 +415,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
 		<pre class="idl" data-highlight="webidl">
-		[SecureContext] interface Clipboard {
+		[SecureContext] interface Clipboard : EventTarget {
 		  Promise&lt;DataTransfer> read();
 		  Promise&lt;void> write(DataTransfer data);
 		};
@@ -367,250 +499,161 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		</div><!-- dfn-for Clipboard -->
 
 
-<h2 id="sync-clipboard-api">Synchronous Clipboard API</h2>
+<h2 id="clipboard-actions">Clipboard Actions</h2>
 
-	<h3 id="clipboard-actions-and-events">Clipboard actions and events</h3>
+	This section defines clipboard actions and events and the processing model
+	for event dispatch.
 
-		This section defines clipboard actions and events and the processing model
-		for event dispatch.
+	Each clipboard action has two flags called <em>script-triggered</em> and
+	<em>script-may-access-clipboard</em>.
 
-		<h4 id="actions">Actions</h4>
+	The <dfn>script-triggered</dfn> flag is set if the action runs because
+	of a script, for example a <code>document.execCommand()</code> call.
+	Future scripting APIs that interact with the clipboard should also use
+	these actions, and the <em>script-triggered</em> flag must be set
+	accordingly.
 
-			Each action has two flags called <em>script-triggered</em> and
-			<em>script-may-access-clipboard</em>.
+	<div class="algorithm" data-algorithm="script-may-access-clipboard">
 
-			The <dfn>script-triggered</dfn> flag is set if the action runs because
-			of a script, for example a <code>document.execCommand()</code> call.
-			Future scripting APIs that interact with the clipboard should also use
-			these actions, and the <em>script-triggered</em> flag must be set
-			accordingly.
+	The <dfn>script-may-access-clipboard</dfn> flag is set as follows:
 
-			<div class="algorithm" data-algorithm="script-may-access-clipboard">
+	1. If action is <em>copy</em> or <em>cut</em> and the script thread
+		is [=allowed to modify the clipboard=], then
 
-			The <dfn>script-may-access-clipboard</dfn> flag is set as follows:
+		1. Set the action's <em>script-may-access-clipboard</em> flag
 
-			1. If action is <em>copy</em> or <em>cut</em> and the script thread
-				is [=allowed to modify the clipboard=], then
+	2. If action is <em>paste</em> and the script thread is [=allowed to
+		read from clipboard=], then
 
-				1. Set the action's <em>script-may-access-clipboard</em> flag
+		1. Set the action's <em>script-may-access-clipboard</em> flag.
 
-			2. If action is <em>paste</em> and the script thread is [=allowed to
-				read from clipboard=], then
+	</div><!-- algorithm -->
 
-				1. Set the action's <em>script-may-access-clipboard</em> flag.
+	<h3 id="copy-action">The copy action</h3>
 
-			</div><!-- algorithm -->
+		<div class="algorithm" data-algorithm="clipboard-copy-action">
 
-			<h5 id="copy-action">The copy action</h5>
+		The copy action consists of the following steps:
 
-				<div class="note">
-				NOTE:
+		1. If the <em>script-triggered</em> flag is set, then
 
-				When the user initiates a copy action, the implementation
-				[=fire a clipboard event|fires a clipboard event=] named
-				<em>copy</em>. If the event is not canceled, the selected data will be
-				copied to the clipboard.
+			1. If the <em>script-may-access-clipboard</em> flag is unset, then
 
-				The current selection is not affected. The event bubbles and is
-				cancelable.
+				1. Return false from the copy action, terminate this algorithm
 
-				A script which uses the event.clipboardData API to control what
-				ends up on the clipboard, needs to cancel the event. Otherwise, the
-				data the script intends to place on the clipboard will be ignored.
+		2. [=Fire a clipboard event=] named <em>copy</em>
 
-				If there is no selection, the clipboard is not modified except
-				if the script has added entries in the {{DataTransferItemList}}, for
-				example by calling the <a>setData()</a> method, and canceled the event.
-				</div>
+		3. If the event was not canceled, then
 
-				<pre class="example javascript">
-				document.addEventListener('copy', function(e){
-					e.clipboardData.setData('text/plain', 'Hello, world!');
-					e.clipboardData.setData('text/html', '&lt;b&gt;Hello, world!&lt;/b&gt;');
-					e.preventDefault(); // We want our data, not data from any selection, to be written to the clipboard
-				});
-				</pre>
+			1. Copy the selected contents, if any, to the clipboard.
+				Implementations <em>should</em> create alternate text/html and
+				text/plain clipboard formats when content in a web page is selected.
 
-				<div class="algorithm" data-algorithm="clipboard-copy-action">
+		4. Else, if the event was canceled, then
 
-				The copy action consists of the following steps:
+			1. Call the [=write content to the clipboard=] algorithm,
+				passing on the {{DataTransferItemList}} list <em>items</em>,
+				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
+				list.
 
-				1. If the <em>script-triggered</em> flag is set, then
+		5. Return true from the copy action
 
-					1. If the <em>script-may-access-clipboard</em> flag is unset, then
+		</div><!-- algorithm -->
 
-						1. Return false from the copy action, terminate this algorithm
+	<h3 id="cut-action">The cut action</h3>
 
-				2. [=Fire a clipboard event=] named <em>copy</em>
+		<div class="algorithm" data-algorithm="clipboard-cut-action">
 
-				3. If the event was not canceled, then
+		The cut action consists of the following steps:
 
-					1. Copy the selected contents, if any, to the clipboard.
-						Implementations <em>should</em> create alternate text/html and
-						text/plain clipboard formats when content in a web page is selected.
+		1. If the <em>script-triggered</em> flag is set, then
 
-				4. Else, if the event was canceled, then
+			1. If the <em>script-may-access-clipboard</em> flag is unset, then
 
-					1. Call the [=write content to the clipboard=] algorithm,
-						passing on the {{DataTransferItemList}} list <em>items</em>,
-						a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
-						list.
+				1. Return false from the cut action, terminate this algorithm
 
-				5. Return true from the copy action
+		2. [=Fire a clipboard event=] named <em>cut</em>
 
-				</div><!-- algorithm -->
+		3. If the event was not canceled, then
 
-			<h5 id="cut-action">The cut action</h5>
+			1. If there is a selection in an [=editable context=] where
+				cutting is enabled, then
 
-				<div class="note">
-				NOTE:
+				1. Copy the selected contents, if any, to the clipboard.
+					Implementations <em>should</em> create alternate
+					text/html and text/plain clipboard formats when content
+					in a web page is selected.
 
-				When the user initiates a cut action, the implementation
-				[=fire a clipboard event|fires a clipboard event=] named
-				<em>cut</em>. In an [=editable context=], if the event is not
-				canceled the action will place the selected data on the clipboard
-				and remove the selection from the document.
+				2. Remove the contents of the selection from the document
+					and collapse the selection.
 
-				The event bubbles and is cancelable.
+				3. Queue tasks to fire any events that should fire due to the
+					modification, see
+					[[#integration-with-other-scripts-and-events]]
+					for details.
 
-				The cut event fires before the selected data is removed. When
-				the cut operation is completed, the selection is collapsed.
+			2. Else, if there is no selection or the context is not editable, then
 
-				In a non-[=editable context=], or if there is no selection,
-				the <em>cut action</em> does nothing. The implementation fires the
-				event regardless. In this case nothing, the clipboard is not
-				modified except if the script has added entries in the
-				{{DataTransferItemList}} and the event is canceled.
+				1. Return false
 
-				Any script which uses the event.clipboardData API to control
-				what the cut event will write to the clipboard also needs to cancel
-				the event. Otherwise, the data the script intends to place on the
-				clipboard will be ignored.
-				</div>
+		4. Else, if the event was canceled, then
 
-				<div class="algorithm" data-algorithm="clipboard-cut-action">
+			1. Call the [=write content to the clipboard=] algorithm,
+				passing on the {{DataTransferItemList}} list <em>items</em>,
+				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
+				list.
 
-				The cut action consists of the following steps:
+		5. Return true from the cut action
 
-				1. If the <em>script-triggered</em> flag is set, then
+		</div><!-- algorithm -->
 
-					1. If the <em>script-may-access-clipboard</em> flag is unset, then
+	<h3 id="paste-action">The paste action</h3>
 
-						1. Return false from the cut action, terminate this algorithm
+		For the paste action, the <em>script-may-access-clipboard</em> flag
+		depends on an implementation-specific permission mechanism for
+		determining what sites or apps may read from the clipboard. When a
+		paste action is triggered by a script, the implementation must not
+		make clipboard contents available without the user's permission. If
+		the permission has not already been granted, the permission prompt
+		must include the hostname of the document associated with the script
+		thread.
 
-				2. [=Fire a clipboard event=] named <em>cut</em>
+		<div class="algorithm" data-algorithm="clipboard-paste-action">
 
-				3. If the event was not canceled, then
+		The paste action consists of the following steps:
 
-					1. If there is a selection in an [=editable context=] where
-						cutting is enabled, then
+		1. If the <em>script-triggered</em> flag is set, then
 
-						1. Copy the selected contents, if any, to the clipboard.
-							Implementations <em>should</em> create alternate
-							text/html and text/plain clipboard formats when content
-							in a web page is selected.
+			1. If <em>script-may-access-clipboard</em> is unset, then
 
-						2. Remove the contents of the selection from the document
-							and collapse the selection.
+				1. Return false from the paste action, terminate this algorithm
 
-						3. Queue tasks to fire any events that should fire due to the
-							modification, see
-							[[#integration-with-other-scripts-and-events]]
-							for details.
+		2. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
+			named <em>paste</em>
 
-					2. Else, if there is no selection or the context is not editable, then
+		3. If the event was not canceled, then
 
-						1. Return false
+			1. If there is a selection or cursor in an [=editable context=]
+				where pasting is enabled, then
 
-				4. Else, if the event was canceled, then
+				1. Insert the most suitable content found on the clipboard,
+					if any, into the context.
 
-					1. Call the [=write content to the clipboard=] algorithm,
-						passing on the {{DataTransferItemList}} list <em>items</em>,
-						a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
-						list.
+				2. Queue tasks to fire any events that should fire due to
+					the modification, see
+					[[#integration-with-other-scripts-and-events]] for details.
 
-				5. Return true from the cut action
+			2. Else
 
-				</div><!-- algorithm -->
+				1. Return false
 
-			<h5 id="paste-action">The paste action</h5>
+		4. Else, if the event was canceled
 
-				<div class="note">
-				NOTE:
+			1. Return false
 
-				When a user initiates a paste action, the implementation
-				[=fire a clipboard event|fires a clipboard event=] named
-				<em>paste</em>. The event fires before any clipboard data is inserted.
+		5. Return true from the action
 
-				The event bubbles and is cancelable.
-
-				If the cursor is in an editable element, the paste action will
-				insert clipboard data in the most suitable format (if any) supported
-				for the given context.
-
-				The paste action has no effect in a non-[=editable context=],
-				but the event fires regardless.
-
-				When pasting, the [=drag data store mode=] flag is
-				<em>read-only</em>, hence calling <a>setData()</a> from a
-				<b>paste</b> event handler will not modify the data that is
-				inserted, and not modify the data on the clipboard.
-				</div>
-
-				<pre class="example javascript">
-				document.addEventListener('paste', function(e){
-					if(e.clipboardData.types.indexOf('text/html') > -1){
-						processDataFromClipboard(e.clipboardData.getData('text/html'));
-						e.preventDefault(); // We are already handling the data from the clipboard, we do not want it inserted into the document
-					}
-				});
-				</pre>
-
-				For the paste action, the <em>script-may-access-clipboard</em> flag
-				depends on an implementation-specific permission mechanism for
-				determining what sites or apps may read from the clipboard. When a
-				paste action is triggered by a script, the implementation must not
-				make clipboard contents available without the user's permission. If
-				the permission has not already been granted, the permission prompt
-				must include the hostname of the document associated with the script
-				thread.
-
-				<div class="algorithm" data-algorithm="clipboard-paste-action">
-
-				The paste action consists of the following steps:
-
-				1. If the <em>script-triggered</em> flag is set, then
-
-					1. If <em>script-may-access-clipboard</em> is unset, then
-
-						1. Return false from the paste action, terminate this algorithm
-
-				2. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
-					named <em>paste</em>
-
-				3. If the event was not canceled, then
-
-					1. If there is a selection or cursor in an [=editable context=]
-						where pasting is enabled, then
-
-						1. Insert the most suitable content found on the clipboard,
-							if any, into the context.
-
-						2. Queue tasks to fire any events that should fire due to
-							the modification, see
-							[[#integration-with-other-scripts-and-events]] for details.
-
-					2. Else
-
-						1. Return false
-
-				4. Else, if the event was canceled
-
-					1. Return false
-
-				5. Return true from the action
-
-				</div><!-- algorithm -->
+		</div><!-- algorithm -->
 
 
 <h2 id="mandatory-data-types-x"><dfn>Mandatory data types</dfn></h2>
