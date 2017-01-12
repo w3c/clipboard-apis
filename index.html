@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-01-11">11 January 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-01-12">12 January 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2397,6 +2397,8 @@ platforms.</p>
      <li data-md="">
       <p>Let <var>types-to-clear</var> be an empty list</p>
      <li data-md="">
+      <p>Let <var>clipboard-event-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object with an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list.</p>
+     <li data-md="">
       <p>Let <var>clipboard-entry</var> be the sequence number of the current
 clipboard content, or null if the OS clipboard does not support
 sequence numbers</p>
@@ -2427,7 +2429,7 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
         <p>If <var>e</var> is "paste", then</p>
         <ol>
          <li data-md="">
-          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
+          <p>Set the <var>clipboard-event-data</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
          <li data-md="">
           <p>If <var>trusted</var> is <em>true</em>, or the
 implementation is configured to give script-generated events
@@ -2443,18 +2445,22 @@ read access to the OS clipboard</p>
                 <p>Ensure the text is in the encoding the
 scripting engine uses internally</p>
                <li data-md="">
-                <p>Add one entry for the text to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></p>
+                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></p>
+               <li data-md="">
+                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
              <li data-md="">
               <p>If <var>clipboard-part</var> represents file
-references, then</p>
+references, then for each file reference:</p>
               <ol>
                <li data-md="">
-                <p>Determine MIME type of referenced files</p>
+                <p>Determine MIME type of referenced file</p>
                <li data-md="">
-                <p>Add one entry per file reference to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the
+                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the
 corresponding MIME type, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
+               <li data-md="">
+                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
              <li data-md="">
               <p>If <var>clipboard-part</var> contains HTML- or
@@ -2465,7 +2471,7 @@ formats, then</p>
                <li data-md="">
                 <p>If the implementation supports pasting HTML, then
 the implementation <em>must</em> process the
-markup by calling <a data-link-type="dfn" href="#process-an-html-paste-event" id="ref-for-process-an-html-paste-event-1">process an html paste event</a> with <var>clipboard-part</var>.</p>
+markup by calling <a data-link-type="dfn" href="#process-an-html-paste-event" id="ref-for-process-an-html-paste-event-1">process an html paste event</a> with <var>clipboard-part</var> and <var>clipboard-event-data</var>.</p>
               </ol>
              <li data-md="">
               <p>If <var>clipboard-part</var> contains data in
@@ -2474,16 +2480,18 @@ another supported binary or text-based format (see <a data-link-type="dfn" href=
                <li data-md="">
                 <p>Determine the MIME type of the data</p>
                <li data-md="">
-                <p>Add one entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</p>
+                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</p>
+               <li data-md="">
+                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
             </ol>
           </ol>
          <li data-md="">
-          <p>Update the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-files">files</a></code> property to match
-entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+          <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-files">files</a></code> property to match
+entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code>.</p>
          <li data-md="">
-          <p>Update the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-types">types</a></code> property to match
-entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+          <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-types">types</a></code> property to match
+entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code>.</p>
         </ol>
        <li data-md="">
         <p>If <var>e</var> is "copy" or "cut", then</p>
@@ -2493,8 +2501,12 @@ entries in the <code class="idl"><a data-link-type="idl" href="https://html.spec
         </ol>
       </ol>
      <li data-md="">
-      <p>Dispatch the event <var>e</var> which bubbles and is
-cancelable and which uses the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-6">ClipboardEvent</a></code> interface, with <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted">isTrusted</a></code> set to <var>trusted</var>, at <var>target</var>.</p>
+      <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-5">clipboardData</a></code> to <var>clipboard-event-data</var>.</p>
+     <li data-md="">
+      <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted">isTrusted</a></code> to <var>trusted</var>.</p>
+     <li data-md="">
+      <p>Dispatch the event <var>e</var> which bubbles and is cancelable, and which
+uses the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-6">ClipboardEvent</a></code> interface, at <var>target</var>.</p>
       <p>Implementation requirements for access to data during event
 dispatch are defined in <a data-link-type="biblio" href="#biblio-htmlls">[HTMLLS]</a>. Some additional clipboard
 event-specific processing rules are given below:</p>
@@ -2549,6 +2561,8 @@ implemented.</strong></p>
       <p>Input</p>
      <dd data-md="">
       <p><var>clipboard-part</var>, the clipboard part to process</p>
+     <dd data-md="">
+      <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object for this event</p>
      <dt data-md="">
       <p>Output</p>
      <dd data-md="">
@@ -2556,7 +2570,7 @@ implemented.</strong></p>
     </dl>
     <ol>
      <li data-md="">
-      <p>Add one entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly. Let <var>mainPartIndex</var> be the index of this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+      <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly.</p>
      <li data-md="">
       <p>Extract the markup from <var>clipboard-part</var> and use the relevant parser to
 construct a DOM tree.</p>
@@ -2579,40 +2593,39 @@ references?</p>
 required, and because it’s hard to test in a cross-platform way.</p>
       <ol>
        <li data-md="">
-        <p>Let <var>itemNumber</var> be the number of items on the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
-       <li data-md="">
-        <p>Choose the appropriate steps from this list:</p>
+        <p>If <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> already
+contains an entry for the referenced file or clipboard part, then</p>
         <ol>
          <li data-md="">
-          <p>If the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> of the current <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object already contains an entry for the
-referenced file or clipboard part, then</p>
-          <ol>
-           <li data-md="">
-            <p>Set <var>itemNumber</var> to the index of the existing
+          <p>Set <var>itemNumber</var> to the index of the existing
 entry.</p>
-          </ol>
+        </ol>
+       <li data-md="">
+        <p>Else,</p>
+        <ol>
          <li data-md="">
-          <p>Else,</p>
-          <ol>
-           <li data-md="">
-            <p>Add a new entry to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with <code>index</code> set to <var>itemNumber</var>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the MIME type of
+          <p>Let <var>new-file-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the MIME type of
 the file or clipboard part if known, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
-           <li data-md="">
-            <p>Let the new entry’s internal <i>file name</i> be the file
-name part of the HTML attribute contents.</p>
-           <li data-md="">
-            <p>Let the new entry’s <i>last modified date</i> be the
+         <li data-md="">
+          <p>Let <var>file-info</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file">File</a></code> object with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-name">name</a></code> set to the name part of the HTML attribute contents,
+and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-lastModified">lastModified</a></code> set to the
 timestamp of the referenced file or 0 if the entry
 references a clipboard part.</p>
-          </ol>
+         <li data-md="">
+          <p>Set <var>new-file-data</var>’s internal <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file">File</a></code> object to <var>file-info</var>.</p>
+         <li data-md="">
+          <p>Add <var>new-file-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> and let <var>itemNumber</var> be the index of this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
         </ol>
        <li data-md="">
         <p>Update the DOM attribute that referenced the local file or
 clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</p>
       </ol>
      <li data-md="">
-      <p>Serialize the processed DOM and update the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> entry referenced by <var>mainPartIndex</var> with the resulting HTML code.</p>
+      <p>Serialize the processed DOM and update <var>new-data</var> with the resulting
+HTML code.</p>
+     <li data-md="">
+      <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code>.</p>
     </ol>
    </div>
   </main>
@@ -2715,6 +2728,13 @@ clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</
      <li><a href="http://tc39.github.io/ecma262/#sec-promise-objects">promise</a>
     </ul>
    <li>
+    <a data-link-type="biblio">[FileAPI]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/FileAPI/#dfn-file">File</a>
+     <li><a href="https://w3c.github.io/FileAPI/#dfn-lastModified">lastModified</a>
+     <li><a href="https://w3c.github.io/FileAPI/#dfn-name">name</a>
+    </ul>
+   <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><a href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>
@@ -2741,6 +2761,8 @@ clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</
   <dl>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
+   <dt id="biblio-fileapi">[FileAPI]
+   <dd>Arun Ranganathan; Jonas Sicking. <a href="https://w3c.github.io/FileAPI/">File API</a>. URL: <a href="https://w3c.github.io/FileAPI/">https://w3c.github.io/FileAPI/</a>
    <dt id="biblio-html">[HTML]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-htmlls">[HTMLLS]
@@ -2845,6 +2867,7 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
     <li><a href="#ref-for-dom-clipboardevent-clipboarddata-1">6. Synchronous Clipboard API</a>
     <li><a href="#ref-for-dom-clipboardevent-clipboarddata-2">6.1. Overriding the copy event</a>
     <li><a href="#ref-for-dom-clipboardevent-clipboarddata-3">6.2. Overriding the cut event</a> <a href="#ref-for-dom-clipboardevent-clipboarddata-4">(2)</a>
+    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-5">fire a clipboard event</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="allowed-to-modify-the-clipboard">

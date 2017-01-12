@@ -957,6 +957,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		1. Let |types-to-clear| be an empty list
 
+		1. Let |clipboard-event-data| be a new {{DataTransfer}} object with an empty
+			{{DataTransfer/items}} list.
+
 		1. Let |clipboard-entry| be the sequence number of the current
 			clipboard content, or null if the OS clipboard does not support
 			sequence numbers
@@ -981,7 +984,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. If |e| is "paste", then
 
-				1. Set the associated {{DataTransfer}} object's
+				1. Set the |clipboard-event-data|'s
 					[=drag data store mode=] flag to <em>read-only</em>
 
 				1. If |trusted| is <em>true</em>, or the
@@ -995,23 +998,25 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 							1. Ensure the text is in the encoding the
 								scripting engine uses internally
 
-							1. Add one entry for the text to the
-								{{DataTransferItemList}} with
+							1. Let |new-data| be a new {{DataTransferItem}} with
 								[=drag data item kind=] set to <em>string</em> and
 								[=drag data item type string=] set to <em>text/plain</em>
 
+							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
+
 						1. If |clipboard-part| represents file
-							references, then
+							references, then for each file reference:
 
-							1. Determine MIME type of referenced files
+							1. Determine MIME type of referenced file
 
-							1. Add one entry per file reference to the
-								{{DataTransferItemList}} with
+							1. Let |new-data| be a new {{DataTransferItem}} with
 								[=drag data item kind=] set to <em>file</em> and
 								[=drag data item type string=] set to the
 								corresponding MIME type, or
 								<code>application/octet-stream</code> if the
 								file's type is unknown.
+
+							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
 						1. If |clipboard-part| contains HTML- or
 							XHTML-formatted text, according to the operating
@@ -1021,7 +1026,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 							1. If the implementation supports pasting HTML, then
 								the implementation <em>must</em> process the
 								markup by calling [=process an html paste event=]
-								with |clipboard-part|.
+								with |clipboard-part| and |clipboard-event-data|.
 
 						1. If |clipboard-part| contains data in
 							another supported binary or text-based format (see
@@ -1029,25 +1034,30 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 							1. Determine the MIME type of the data
 
-							1. Add one entry to the {{DataTransferItemList}}
+							1. Let |new-data| be a new {{DataTransferItem}}
 								with [=drag data item kind=] set to
 								<em>file</em>, [=drag data item type string=]
 								set to the corresponding MIME type
 
-				1. Update the {{DataTransfer/files}} property to match
-					entries in the {{DataTransferItemList}}.
+							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
-				1. Update the {{DataTransfer/types}} property to match
-					entries in the {{DataTransferItemList}}.
+				1. Update |clipboard-event-data|'s {{DataTransfer/files}} property to match
+					entries in |clipboard-event-data|'s {{DataTransfer/items}}.
+
+				1. Update |clipboard-event-data|'s {{DataTransfer/types}} property to match
+					entries in |clipboard-event-data|'s {{DataTransfer/items}}.
 
 			1. If |e| is "copy" or "cut", then
 
 				1. Set the associated {{DataTransfer}} object's
 					[=drag data store mode=] flag to <em>read/write</em>
 
-		1. Dispatch the event |e| which bubbles and is
-			cancelable and which uses the {{ClipboardEvent}} interface, with
-			{{Event/isTrusted}} set to |trusted|, at |target|.
+		1. Set |e|'s {{ClipboardEvent/clipboardData}} to |clipboard-event-data|.
+
+		1. Set |e|'s {{Event/isTrusted}} to |trusted|.
+
+		1. Dispatch the event |e| which bubbles and is cancelable, and which
+			uses the {{ClipboardEvent}} interface, at |target|.
 
 			Implementation requirements for access to data during event
 			dispatch are defined in [[!HTMLLS]]. Some additional clipboard
@@ -1101,15 +1111,15 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		: Input
 		:: |clipboard-part|, the clipboard part to process
+		:: |clipboard-event-data|, the {{DataTransfer}} object for this event
 
 		: Output
 		:: None
 
-		1. Add one entry to the {{DataTransferItemList}} with
+		1. Let |new-data| be a new {{DataTransferItem}} with
 			[=drag data item kind=] set to <em>Plain Unicode string</em>,
 			[=drag data item type string=] set to <em>text/html</em> or
-			<em>application/xhtml+xml</em> accordingly. Let |mainPartIndex|
-			be the index of this entry in the {{DataTransferItemList}}.
+			<em>application/xhtml+xml</em> accordingly.
 
 		1. Extract the markup from |clipboard-part| and use the relevant parser to
 			construct a DOM tree.
@@ -1133,40 +1143,41 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			Issue: This feature is at risk because it's unclear whether it is
 			required, and because it's hard to test in a cross-platform way.
 
-			1. Let |itemNumber| be the number of items on the
-				{{DataTransferItemList}}.
+			1. If |clipboard-event-data|'s {{DataTransfer/items}} already
+				contains an entry for the referenced file or clipboard part, then
 
-			1. Choose the appropriate steps from this list:
+				1. Set |itemNumber| to the index of the existing
+					entry.
 
-				1. If the {{DataTransferItemList}} of the current
-					{{DataTransfer}} object already contains an entry for the
-					referenced file or clipboard part, then
+			1. Else,
 
-					1. Set |itemNumber| to the index of the existing
-						entry.
+				1. Let |new-file-data| be a new {{DataTransferItem}} with
+					[=drag data item kind=] set to "file", and
+					[=drag data item type string=] set to the MIME type of
+					the file or clipboard part if known, or
+					<code>application/octet-stream</code> if the
+					file's type is unknown.
 
-				1. Else,
+				1. Let |file-info| be a new {{File}} object with {{File/name}}
+					set to the name part of the HTML attribute contents,
+					and {{File/lastModified}} set to the
+					timestamp of the referenced file or 0 if the entry
+					references a clipboard part.
 
-					1. Add a new entry to the {{DataTransferItemList}} with
-						<code>index</code> set to |itemNumber|,
-						[=drag data item kind=] set to "file", and
-						[=drag data item type string=] set to the MIME type of
-						the file or clipboard part if known, or
-						<code>application/octet-stream</code> if the
-						file's type is unknown.
+				1. Set |new-file-data|'s internal {{File}} object to |file-info|.
 
-					1. Let the new entry's internal <i>file name</i> be the file
-						name part of the HTML attribute contents.
-
-					1. Let the new entry's <i>last modified date</i> be the
-						timestamp of the referenced file or 0 if the entry
-						references a clipboard part.
+				1. Add |new-file-data| to |clipboard-event-data|'s {{DataTransfer/items}}
+					and let |itemNumber| be the index of this entry in the
+					{{DataTransferItemList}}.
 
 			1. Update the DOM attribute that referenced the local file or
 				clipboard part to contain the string 'cid:' followed by
 				|itemNumber|.
 
-		1. Serialize the processed DOM and update the {{DataTransferItemList}}
-			entry referenced by |mainPartIndex| with the resulting HTML code.
+		1. Serialize the processed DOM and update |new-data| with the resulting
+			HTML code.
+
+		1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}.
+
 
 	</div><!-- algorithm -->
