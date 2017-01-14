@@ -21,6 +21,9 @@ urlPrefix: https://html.spec.whatwg.org/multipage/interaction.html#; type: dfn;
 	text: drag data store mode
 	text: drag data item kind
 	text: drag data item type string
+	text: concept dnd rw
+	text: concept dnd ro
+	text: concept dnd p
 url: https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2; type: dfn;
 	text: the body element
 urlPrefix: http://www.w3.org/TR/html5/browsers.html#; type: dfn;
@@ -366,7 +369,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		but the event fires regardless.
 
 		When pasting, the [=drag data store mode=] flag is
-		<em>read-only</em>, hence calling {{DataTransfer/setData()}} from a
+		<a lt="concept dnd ro">read/only</a>, hence calling {{DataTransfer/setData()}} from a
 		<em>paste</em> event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.
 
@@ -985,7 +988,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			1. If |e| is "paste", then
 
 				1. Set the |clipboard-event-data|'s
-					[=drag data store mode=] flag to <em>read-only</em>
+					internal [=drag data store mode=] flag to
+					<a lt="concept dnd rw">read/write</a>.
 
 				1. If |trusted| is <em>true</em>, or the
 					implementation is configured to give script-generated events
@@ -1049,8 +1053,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. If |e| is "copy" or "cut", then
 
-				1. Set the associated {{DataTransfer}} object's
-					[=drag data store mode=] flag to <em>read/write</em>
+				1. Set the associated {{DataTransfer}} object's internal
+					[=drag data store mode=] flag to <a lt="concept dnd rw">read/write</a>
 
 		1. Set |e|'s {{ClipboardEvent/clipboardData}} to |clipboard-event-data|.
 
@@ -1067,8 +1071,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. If a script calls <a>clearData()</a> or
 				{{DataTransferItemList/clear()}} and the {{DataTransfer}}
-				object's [=drag data store mode=] flag is
-				<em>read/write</em>, then
+				object's internal [=drag data store mode=] flag is
+				<a lt="concept dnd rw">read/write</a>, then
 
 				1. Set the |clear-was-called| flag to true. If an
 					argument is given, add the argument to the
@@ -1095,8 +1099,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				1. Check that the clipboard data's sequence number matches
 					|clipboard-entry|. If the clipboard no longer
 					contains the same entry, set the {{DataTransferItemList}}
-					object's [=drag data store mode=] to the
-					<i>disabled mode</i>.
+					object's internal [=drag data store mode=] to the
+					<a lt="concept dnd p">protected</a>.
 
 			Advisement: Warning! A malicious script listening to a paste event may set
 			up a never-ending loop in order to read what the user places on

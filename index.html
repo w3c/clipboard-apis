@@ -1796,7 +1796,7 @@ document.addEventListener('cut', function(e) {
 		for the given context.</p>
    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable context</a>,
 		but the event fires regardless.</p>
-   <p>When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read-only</em>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <em>paste</em> event handler will not modify the data that is
+   <p>When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read/only</a>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <em>paste</em> event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.</p>
 <pre class="example javascript" id="example-ce8e183c"><a class="self-link" href="#example-ce8e183c"></a>// Overwrite what is being pasted onto the clipboard.
 document.addEventListener('paste', function(e) {
@@ -2429,7 +2429,8 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
         <p>If <var>e</var> is "paste", then</p>
         <ol>
          <li data-md="">
-          <p>Set the <var>clipboard-event-data</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read-only</em></p>
+          <p>Set the <var>clipboard-event-data</var>’s
+internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw">read/write</a>.</p>
          <li data-md="">
           <p>If <var>trusted</var> is <em>true</em>, or the
 implementation is configured to give script-generated events
@@ -2497,7 +2498,7 @@ entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-ty
         <p>If <var>e</var> is "copy" or "cut", then</p>
         <ol>
          <li data-md="">
-          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <em>read/write</em></p>
+          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw">read/write</a></p>
         </ol>
       </ol>
      <li data-md="">
@@ -2513,7 +2514,7 @@ event-specific processing rules are given below:</p>
       <p class="issue" id="issue-7d2ab940"><a class="self-link" href="#issue-7d2ab940"></a> Why here? Why not in the HTML spec?</p>
       <ol>
        <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <em>read/write</em>, then</p>
+        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw">read/write</a>, then</p>
         <ol>
          <li data-md="">
           <p>Set the <var>clear-was-called</var> flag to true. If an
@@ -2544,7 +2545,7 @@ set, then</p>
         <ol>
          <li data-md="">
           <p>Check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer
-contains the same entry, set the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> object’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> to the <i>disabled mode</i>.</p>
+contains the same entry, set the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p">protected</a>.</p>
         </ol>
       </ol>
       <p><strong class="advisement"> Warning! A malicious script listening to a paste event may set
