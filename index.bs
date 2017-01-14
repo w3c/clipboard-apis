@@ -1099,7 +1099,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				1. Check that the clipboard data's sequence number matches
 					|clipboard-entry|. If the clipboard no longer
 					contains the same entry, set the {{DataTransferItemList}}
-					object's internal [=drag data store mode=] to the
+					object's internal [=drag data store mode=] to
 					<a lt="concept dnd p">protected</a>.
 
 			Advisement: Warning! A malicious script listening to a paste event may set
