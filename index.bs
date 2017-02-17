@@ -24,6 +24,8 @@ urlPrefix: https://html.spec.whatwg.org/multipage/interaction.html#; type: dfn;
 	text: concept dnd rw
 	text: concept dnd ro
 	text: concept dnd p
+	text: focusable area
+	text: dom anchor
 url: https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2; type: dfn;
 	text: the body element
 urlPrefix: http://www.w3.org/TR/html5/browsers.html#; type: dfn;
@@ -262,7 +264,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		<h4 id="selection-mod">Event listeners that modify selection or focus</h4>
 
-			If the event listener modifies the selection or focus, the clipboard
+			If the event listener modifies the selection or [=focusable area=], the clipboard
 			action <em>must</em> be completed on the modified selection.
 
 <h2 id="sync-clipboard-api">Synchronous Clipboard API</h2>
@@ -980,7 +982,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Else, if the context is not editable, then
 
-				1. Set |target| to be the focused node, or
+				1. Set |target| to be the [=DOM anchor=] of the [=focusable area=], or
 					[=the body element=] if no node has focus.
 
 		1. Process the event as follows:

@@ -1177,7 +1177,7 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 6a4f8be68430b11c876cd3230aa3d768e5c074a3" name="generator">
+  <meta content="Bikeshed version 6465e1e635d337ce46d971a19374b9e5bbfa26b6" name="generator">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-01-14">14 January 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-02-17">17 February 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1724,7 +1724,7 @@ permissions to read the clipboard.</p>
 			like textInput, input, change, and validation events in response to the
 			copy operation.</p>
    <h4 class="heading settled" data-level="5.2.5" id="selection-mod"><span class="secno">5.2.5. </span><span class="content">Event listeners that modify selection or focus</span><a class="self-link" href="#selection-mod"></a></h4>
-   <p>If the event listener modifies the selection or focus, the clipboard
+   <p>If the event listener modifies the selection or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable area</a>, the clipboard
 			action <em>must</em> be completed on the modified selection.</p>
    <h2 class="heading settled" data-level="6" id="sync-clipboard-api"><span class="secno">6. </span><span class="content">Synchronous Clipboard API</span><a class="self-link" href="#sync-clipboard-api"></a></h2>
    <p>The Synchronous Clipboard API allows you to override the default cut, copy
@@ -2419,7 +2419,7 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
         <p>Else, if the context is not editable, then</p>
         <ol>
          <li data-md="">
-          <p>Set <var>target</var> to be the focused node, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if no node has focus.</p>
+          <p>Set <var>target</var> to be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-anchor">DOM anchor</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable area</a>, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if no node has focus.</p>
         </ol>
       </ol>
      <li data-md="">
