@@ -419,7 +419,7 @@
 	[data-algorithm]:not(.heading) {
 	  padding: .5em;
 	  border: thin solid #ddd; border-radius: .5em;
-	  margin: .5em 0;
+	  margin: .5em calc(-0.5em - 1px);
 	}
 	[data-algorithm]:not(.heading) > :first-child {
 	  margin-top: 0;
@@ -1177,7 +1177,8 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 6465e1e635d337ce46d971a19374b9e5bbfa26b6" name="generator">
+  <meta content="Bikeshed version 26ea3a45cb5052b41bc87174096f9f0093d5064f" name="generator">
+  <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1422,9 +1423,9 @@ pre.idl.highlight { color: #708090; }
         </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-02-17">17 February 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-03-28">28 March 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1466,7 +1467,7 @@ paste in web applications.</p>
   W3C maintains a <a href="https://www.w3.org/2004/01/pp-impl/83482/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
   that page also includes instructions for disclosing a patent.
   An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 W3C Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1616,21 +1617,19 @@ paste in web applications.</p>
 };
 </pre>
     <dl>
-     <dt data-md="">
-      <p><dfn data-dfn-for="ClipboardEventInit" data-dfn-type="dfn" data-noexport="" id="clipboardeventinit-clipboarddata">clipboardData<a class="self-link" href="#clipboardeventinit-clipboarddata"></a></dfn></p>
+     <dt data-md=""><dfn data-dfn-for="ClipboardEventInit" data-dfn-type="dfn" data-noexport="" id="clipboardeventinit-clipboarddata">clipboardData<a class="self-link" href="#clipboardeventinit-clipboarddata"></a></dfn>
      <dd data-md="">
       <p>A <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object to hold data and meta data related to the event.</p>
     </dl>
    </div>
    <div id="clipboardevent-idl">
-<pre class="idl highlight def" data-highlight="webidl">[<dfn class="nv idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export="" data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent">Constructor<a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<span class="kt">DOMString</span> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-type">type<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit-1">ClipboardEventInit</a> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn>)]
+<pre class="idl highlight def" data-highlight="webidl">[<dfn class="nv idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export="" data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent">Constructor<a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><span class="kt">DOMString</span></a> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-type">type<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit-1">ClipboardEventInit</a> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn>)]
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboardevent">ClipboardEvent</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event">Event</a> {
   <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <dfn class="nv dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export="" data-readonly="" data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata">clipboardData</dfn>;
 };
 </pre>
     <dl>
-     <dt data-md="">
-      <p><dfn data-dfn-for="ClipboardEvent" data-dfn-type="dfn" data-noexport="" id="clipboardevent-clipboarddata">clipboardData<a class="self-link" href="#clipboardevent-clipboarddata"></a></dfn></p>
+     <dt data-md=""><dfn data-dfn-for="ClipboardEvent" data-dfn-type="dfn" data-noexport="" id="clipboardevent-clipboarddata">clipboardData<a class="self-link" href="#clipboardevent-clipboarddata"></a></dfn>
      <dd data-md="">
       <p>The clipboardData attribute is an instance of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> interface which lets a script read and manipulate values on the system
 clipboard during user-initiated copy, cut and paste operations. The
@@ -1649,7 +1648,7 @@ non-textual data from the clipboard.</p>
 pasteEvent.clipboardData.items.add('My string', 'text/plain');
 document.dispatchEvent(pasteEvent);
 </pre>
-   <p class="note" role="note">Note: Synthetic clipboard events will not actually modify the clipboard or
+   <p class="note" role="note"><span>Note:</span> Synthetic clipboard events will not actually modify the clipboard or
 		the document. In other words, while the script above will fire a paste event,
 		the data will not be pasted into the document.</p>
    <h3 class="heading settled" data-level="5.2" id="integration-with-other-scripts-and-events"><span class="secno">5.2. </span><span class="content">Integration with other scripts and events</span><a class="self-link" href="#integration-with-other-scripts-and-events"></a></h3>
@@ -1702,7 +1701,7 @@ permissions to read the clipboard.</p>
     <li data-md="">
      <p>Use the action’s return value as the return value for the API call.</p>
    </ol>
-   <p class="note" role="note">Note: Copy and cut commands triggered through a scripting API will only
+   <p class="note" role="note"><span>Note:</span> Copy and cut commands triggered through a scripting API will only
 			affect the contents of the real clipboard if the event is dispatched
 			from an event that is trusted and triggered by the user, or if the
 			implementation is configured to allow this. Paste commands triggered
@@ -1732,7 +1731,7 @@ permissions to read the clipboard.</p>
    <p>Synchronous access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-1">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-1">clipboardData</a></code> attribute.
 	One consequence of this is that the synchronous clipboard APIs can only
 	access clipboard data in the context of a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-2">ClipboardEvent</a></code> handler.</p>
-   <p class="note" role="note">Note: If you need to access the clipboard outside of a clipboard event
+   <p class="note" role="note"><span>Note:</span> If you need to access the clipboard outside of a clipboard event
 	handler, see <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a>.</p>
    <h3 class="heading settled" data-level="6.1" id="override-copy"><span class="secno">6.1. </span><span class="content">Overriding the copy event</span><a class="self-link" href="#override-copy"></a></h3>
    <p>When the user initiates a copy action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-1">fires a clipboard event</a> named <em>copy</em>. If the event is not canceled, the currently selected
@@ -1751,7 +1750,7 @@ document.addEventListener('copy', function(e) {
   e.preventDefault();
 });
 </pre>
-   <p class="note" role="note">Note: The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
+   <p class="note" role="note"><span>Note:</span> The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
 		the event in order for the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-3">system clipboard</a> to be updated with the
 		data in <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-2">clipboardData</a></code>.
 		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-3">ClipboardEvent</a></code> is not canceled, then the data from the
@@ -1782,7 +1781,7 @@ document.addEventListener('cut', function(e) {
   e.preventDefault();
 });
 </pre>
-   <p class="note" role="note">Note: The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
+   <p class="note" role="note"><span>Note:</span> The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
 		the event in order for the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-5">system clipboard</a> to be updated with the
 		data in <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-4">clipboardData</a></code>.
 		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-4">ClipboardEvent</a></code> is not canceled, then the data from the
@@ -1814,7 +1813,7 @@ document.addEventListener('paste', function(e) {
   }
 });
 </pre>
-   <p class="note" role="note">Note: The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
+   <p class="note" role="note"><span>Note:</span> The event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel
 		the event so that the user agent does not update the document with data
 		from the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-6">system clipboard</a>.</p>
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
@@ -2294,16 +2293,14 @@ it.</p>
    <div class="algorithm" data-algorithm="write-content-to-clipboard">
     <h3 class="heading settled" id="to-write-content-to-clipboard"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="write-content-to-the-clipboard">write content to the clipboard</dfn></span><a class="self-link" href="#to-write-content-to-clipboard"></a></h3>
     <dl>
-     <dt data-md="">
-      <p>Input</p>
+     <dt data-md="">Input
      <dd data-md="">
       <p><var>items</var>, a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> list of items to write</p>
      <dd data-md="">
       <p><var>clear-was-called</var>, a boolean</p>
      <dd data-md="">
       <p><var>types-to-clear</var>, a list</p>
-     <dt data-md="">
-      <p>Output</p>
+     <dt data-md="">Output
      <dd data-md="">
       <p>None</p>
     </dl>
@@ -2341,7 +2338,7 @@ format description</p>
             <p>This is left to the implementation...</p>
             <p class="issue" id="issue-0b93e4b8"><a class="self-link" href="#issue-0b93e4b8"></a> It’s not good to leave things up to the
 implementation. What should happen here?</p>
-            <p class="note" role="note">Note: Due to limitations in the implementation of operating
+            <p class="note" role="note"><span>Note:</span> Due to limitations in the implementation of operating
 system clipboards, scripts should not assume that custom
 formats will be available to other applications on the
 system. For example, there is a limit to how many custom
@@ -2382,12 +2379,10 @@ platforms.</p>
    <div class="algorithm" data-algorithm="algo-fire-a-clipboard-event">
     <h3 class="heading settled" id="to-fire-a-clipboard-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="fire-a-clipboard-event">fire a clipboard event</dfn></span><a class="self-link" href="#to-fire-a-clipboard-event"></a></h3>
     <dl>
-     <dt data-md="">
-      <p>Input</p>
+     <dt data-md="">Input
      <dd data-md="">
       <p><var>e</var>, the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-5">ClipboardEvent</a></code> to fire</p>
-     <dt data-md="">
-      <p>Output</p>
+     <dt data-md="">Output
      <dd data-md="">
       <p>None</p>
     </dl>
@@ -2419,7 +2414,8 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
         <p>Else, if the context is not editable, then</p>
         <ol>
          <li data-md="">
-          <p>Set <var>target</var> to be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-anchor">DOM anchor</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable area</a>, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if no node has focus.</p>
+          <p>Set <var>target</var> to be the element that contains the
+start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if there is no selection or cursor.</p>
         </ol>
       </ol>
      <li data-md="">
@@ -2558,14 +2554,12 @@ implemented.</strong></p>
    <div class="algorithm" data-algorithm="process-an-html-paste-event">
     <h3 class="heading settled" id="to-process-html-paste-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="process-an-html-paste-event">process an HTML paste event</dfn></span><a class="self-link" href="#to-process-html-paste-event"></a></h3>
     <dl>
-     <dt data-md="">
-      <p>Input</p>
+     <dt data-md="">Input
      <dd data-md="">
       <p><var>clipboard-part</var>, the clipboard part to process</p>
      <dd data-md="">
       <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object for this event</p>
-     <dt data-md="">
-      <p>Output</p>
+     <dt data-md="">Output
      <dd data-md="">
       <p>None</p>
     </dl>
@@ -2715,7 +2709,7 @@ HTML code.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
-    <a data-link-type="biblio">[WHATWG-DOM]</a> defines the following terms:
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><a href="https://dom.spec.whatwg.org/#event">Event</a>
      <li><a href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a>
@@ -2754,16 +2748,19 @@ HTML code.</p>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
+     <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
      <li><a href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
    <dt id="biblio-fileapi">[FileAPI]
-   <dd>Arun Ranganathan; Jonas Sicking. <a href="https://w3c.github.io/FileAPI/">File API</a>. URL: <a href="https://w3c.github.io/FileAPI/">https://w3c.github.io/FileAPI/</a>
+   <dd>Arun Ranganathan; Jonas Sicking. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-htmlls">[HTMLLS]
@@ -2773,14 +2770,12 @@ HTML code.</p>
    <dt id="biblio-rfc2392">[RFC2392]
    <dd>E. Levinson. <a href="http://www.ietf.org/rfc/rfc2392.txt">Content-ID and Message-ID Uniform Resource Locators. August 1998. Internet RFC 2392.</a>. URL: <a href="http://www.ietf.org/rfc/rfc2392.txt">http://www.ietf.org/rfc/rfc2392.txt</a>
    <dt id="biblio-webidl">[WebIDL]
-   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://heycam.github.io/webidl/">Web IDL</a>. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
-   <dt id="biblio-whatwg-dom">[WHATWG-DOM]
-   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://www.w3.org/TR/WebIDL-1/">Web IDL</a>. URL: <a href="https://www.w3.org/TR/WebIDL-1/">https://www.w3.org/TR/WebIDL-1/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-html5">[HTML5]
-   <dd>Ian Hickson; et al. <a href="https://www.w3.org/html/wg/drafts/html/master/">HTML5</a>. URL: <a href="https://www.w3.org/html/wg/drafts/html/master/">https://www.w3.org/html/wg/drafts/html/master/</a>
+   <dd>Ian Hickson; et al. <a href="https://www.w3.org/TR/html5/">HTML5</a>. URL: <a href="https://www.w3.org/TR/html5/">https://www.w3.org/TR/html5/</a>
    <dt id="biblio-microsoft-clip-op">[MICROSOFT-CLIP-OP]
    <dd><a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">About DHTML Data Transfer. Microsoft Developer Network.</a>. URL: <a href="http://msdn.microsoft.com/en-us/library/ms537658.aspx">http://msdn.microsoft.com/en-us/library/ms537658.aspx</a>
    <dt id="biblio-svg">[SVG]
@@ -2791,7 +2786,7 @@ HTML code.</p>
   <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <a class="nv" data-default="null" data-type="DataTransfer? " href="#dom-clipboardeventinit-clipboarddata">clipboardData</a> = <span class="kt">null</span>;
 };
 
-[<a class="nv" href="#dom-clipboardevent-clipboardevent">Constructor</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type">type</a>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit">ClipboardEventInit</a> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict</a>)]
+[<a class="nv" href="#dom-clipboardevent-clipboardevent">Constructor</a>(<a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><span class="kt">DOMString</span></a> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type">type</a>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit">ClipboardEventInit</a> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict</a>)]
 <span class="kt">interface</span> <a class="nv" href="#clipboardevent">ClipboardEvent</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event">Event</a> {
   <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <a class="nv" data-readonly="" data-type="DataTransfer?" href="#dom-clipboardevent-clipboarddata">clipboardData</a>;
 };
