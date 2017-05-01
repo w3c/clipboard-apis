@@ -1,4 +1,4 @@
-##Clipboard Events spec
+## Clipboard Events spec
 
 This repository contains the specification for Clipboard Events.
 
