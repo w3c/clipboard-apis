@@ -123,9 +123,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 
-<h2 id="clipboard-events">Clipboard Events</h2>
+<h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
 
-	<h3 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h3>
+	<h3 id="clipboard-event-interfaces">Clipboard event interfaces</h3>
 
 		The ClipboardEvent interface extends the {{Event}} interface.
 
@@ -183,6 +183,88 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?
 		-->
 
+	<h3 id="clipboard-event-definitions"><dfn>Clipboard events</dfn></h3>
+
+		<h4 id="clipboard-event-clipboardchange">The <dfn>clipboardchange</dfn> event</h4>
+
+			The [=clipboardchange=] event fires whenever the contents of the
+			[=system clipboard=] are changed. These changes could be due to any of the
+			following (non-exhaustive):
+			
+			* User-initiated cut or copy actions
+			* Scripts that use the [[#async-clipboard-api]] to write to the clipboard
+			* Actions that update the clipboard outside the user agent
+
+			If the clipboard contents are changed outside the user agent, then the
+			[=clipboardchange=] event MUST fire when the user agent regains focus.
+			
+			Since synthetic [=cut=] and [=copy=] events do not update the [=system clipboard=],
+			they will not trigger a "clipboardchange" event.
+
+		<h4 id="clipboard-event-copy">The <dfn>copy</dfn> event</h4>
+
+			When the user initiates a copy action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=copy=].
+			
+			If the event is not canceled, the currently selected
+			data will be copied to the [=system clipboard=].
+			The current document selection is not affected.
+
+			The [=copy=] event bubbles and is cancelable.
+			
+			See [[#copy-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=copy=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the [=system clipboard=].
+
+		<h4 id="clipboard-event-cut">The <dfn>cut</dfn> event</h4>
+
+			When the user initiates a cut action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=cut=].
+			
+			In an [=editable context=], if the event is not
+			canceled the action will place the currently selected data on the
+			[=system clipboard=] and remove the selection from the document.
+			The [=cut=] event fires before the selected data is removed. When
+			the cut operation is completed, the selection is collapsed.
+
+			In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
+			be an empty list. Note that the [=cut=] event will still be fired
+			in this case.
+
+			The [=cut=] event bubbles and is cancelable.
+
+			See [[#cut-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=cut=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the document or of the [=system clipboard=].
+
+		<h4 id="clipboard-event-paste">The <dfn>paste</dfn> event</h4>
+
+			When a user initiates a paste action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=paste=]. The event fires before any clipboard data is inserted
+			into the document.
+
+			If the cursor is in an [=editable context=], the paste action will
+			insert clipboard data in the most suitable format (if any) supported
+			for the given context.
+
+			The paste action has no effect in a non-[=editable context=],
+			but the [=paste=] event fires regardless.
+
+			The [=paste=] event bubbles and is cancelable.
+
+			See [[#paste-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=paste=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the document.
+
 	<h3 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h3>
 
 		<h4 id="allow-modify-clipboard">Event handlers that are <dfn>allowed to modify the clipboard</dfn></h4>
@@ -202,7 +284,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			apps to modify the clipboard regardless of the origin of the scripting
 			thread.
 
-			Synthetic cut and copy events <em>must not</em> modify data on the
+			Synthetic [=cut=] and [=copy=] events <em>must not</em> modify data on the
 			system clipboard.
 
 		<h4 id="allow-read-clipboard">Event handlers that are <dfn>allowed to read from clipboard</dfn></h4>
@@ -218,7 +300,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			* The action that triggers the event is triggered in an app with
 				permissions to read the clipboard.
 
-			Synthetic paste events <em>must not</em> give a script access to data on
+			Synthetic [=paste=] events <em>must not</em> give a script access to data on
 			the real system clipboard.
 
 		<h4 id="integration-with-rich-text-editing">Integration with rich text editing APIs</h4>
@@ -283,14 +365,14 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 	<h3 id="override-copy">Overriding the copy event</h3>
 
-		When the user initiates a copy action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>copy</em>. If the event is not canceled, the currently selected
-		data will be copied to the [=system clipboard=].
-
-		The event bubbles and is cancelable.
-
-		The current document selection is not affected.
+		To override the default [=copy=] event behavior, a [=copy=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required in order for the [=system clipboard=] to be
+		updated with the data in {{ClipboardEvent/clipboardData}}.
+		If the {{ClipboardEvent}} is not canceled, then the data from the
+		current document selection will be copied instead.
 
 		<pre class="example javascript">
 		// Overwrite what is being copied to the clipboard.
@@ -306,29 +388,22 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event in order for the [=system clipboard=] to be updated with the
-		data in {{ClipboardEvent/clipboardData}}.
+	<h3 id="override-cut">Overriding the cut event</h3>
+
+		To override the default [=cut=] event behavior, a [=cut=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required in order for the [=system clipboard=] to be
+		updated with the data in {{ClipboardEvent/clipboardData}}.
 		If the {{ClipboardEvent}} is not canceled, then the data from the
 		current document selection will be copied instead.
 
-	<h3 id="override-cut">Overriding the cut event</h3>
-
-		When the user initiates a cut action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>cut</em>. In an [=editable context=], if the event is not
-		canceled the action will place the currently selected data on the
-		[=system clipboard=] and remove the selection from the document.
-
-		The event bubbles and is cancelable.
-
-		The <em>cut</em> event fires before the selected data is removed. When
-		the cut operation is completed, the selection is collapsed.
-
-		In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
-		be an empty list. Not that the <em>cut</em> event will still be fired
-		in this case.
-
+		Note that canceling the [=cut=] event will also prevent the document from
+		being updated (i.e., the current selection will not be removed). The event
+		handler will need to manually update the document to remove the currently
+		selected text.
+		
 		<pre class="example javascript">
 		// Overwrite what is copied to the clipboard.
 		document.addEventListener('cut', function(e) {
@@ -348,31 +423,22 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event in order for the [=system clipboard=] to be updated with the
-		data in {{ClipboardEvent/clipboardData}}.
-		If the {{ClipboardEvent}} is not canceled, then the data from the
-		current document selection will be copied instead.
-
 	<h3 id="override-paste">Overriding the paste event</h3>
 
-		When a user initiates a paste action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>paste</em>. The event fires before any clipboard data is inserted
-		into the document.
+		To override the default [=paste=] event behavior, a [=paste=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required so that the user agent does not update the
+		document with data from the [=system clipboard=].
 
-		The event bubbles and is cancelable.
-
-		If the cursor is in an [=editable context=], the paste action will
-		insert clipboard data in the most suitable format (if any) supported
-		for the given context.
-
-		The paste action has no effect in a non-[=editable context=],
-		but the event fires regardless.
-
-		When pasting, the [=drag data store mode=] flag is
+		Note that canceling the [=paste=] event will also prevent the document from
+		being updated (i.e., nothing will be pasted into the document). The event
+		handler will need to manually paste the data into the document.
+		
+		Also note that, when pasting, the [=drag data store mode=] flag is
 		<a lt="concept dnd ro">read/only</a>, hence calling {{DataTransfer/setData()}} from a
-		<em>paste</em> event handler will not modify the data that is
+		[=paste=] event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.
 
 		<pre class="example javascript">
@@ -381,7 +447,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			// e.clipboardData contains the data that is about to be pasted.
 			if (e.clipboardData.types.indexOf('text/html') > -1) {
 				var oldData = e.clipboardData.getData('text/html');
-				var newData = '<b>Ha Ha!</b> ' + oldData;
+				var newData = '&lt;b&gt;Ha Ha!&lt;/b&gt; ' + oldData;
 
 				// Since we are canceling the paste operation, we need to manually
 				// paste the data into the document.
@@ -393,9 +459,6 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event so that the user agent does not update the document with data
-		from the [=system clipboard=].
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -506,7 +569,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 <h2 id="clipboard-actions">Clipboard Actions</h2>
 
-	This section defines clipboard actions and events and the processing model
+	This section defines clipboard actions and the processing model
 	for event dispatch.
 
 	Each clipboard action has two flags called <em>script-triggered</em> and
@@ -546,13 +609,15 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Return false from the copy action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named <em>copy</em>
+		1. [=Fire a clipboard event=] named [=copy=]
 
 		1. If the event was not canceled, then
 
 			1. Copy the selected contents, if any, to the clipboard.
 				Implementations <em>should</em> create alternate text/html and
 				text/plain clipboard formats when content in a web page is selected.
+
+			1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 		1. Else, if the event was canceled, then
 
@@ -577,7 +642,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Return false from the cut action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named <em>cut</em>
+		1. [=Fire a clipboard event=] named [=cut=]
 
 		1. If the event was not canceled, then
 
@@ -591,6 +656,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Remove the contents of the selection from the document
 					and collapse the selection.
+
+				1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 				1. Queue tasks to fire any events that should fire due to the
 					modification, see
@@ -607,6 +674,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				passing on the {{DataTransferItemList}} list <em>items</em>,
 				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 				list.
+
+			1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 		1. Return true from the cut action
 
@@ -634,7 +703,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				1. Return false from the paste action, terminate this algorithm
 
 		1. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
-			named <em>paste</em>
+			named [=paste=]
 
 		1. If the event was not canceled, then
 
