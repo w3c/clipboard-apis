@@ -467,7 +467,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		<pre class="idl" data-highlight="webidl">
 		partial interface Navigator {
-		  [SecureContext] readonly attribute Clipboard clipboard;
+		  [SecureContext SameObject] readonly attribute Clipboard clipboard;
 		};
 		</pre>
 
@@ -485,7 +485,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<pre class="idl" data-highlight="webidl">
 		[SecureContext] interface Clipboard : EventTarget {
 		  Promise&lt;DataTransfer> read();
+		  Promise&lt;DOMString> readText();
 		  Promise&lt;void> write(DataTransfer data);
+		  Promise&lt;void> writeText(DOMString data);
 		};
 		</pre>
 
@@ -513,7 +515,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				navigator.clipboard.read().then(function(data) {
 					for (var i = 0; i < data.items.length; i++) {
 						if (data.items[i].type == "text/plain") {
-							console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+							console.log(“Your string: ”, data.items[i].getAs(“text/plain”));
 						} else {
 							console.error(“No text/plain data on clipboard.”);
 						}
@@ -521,7 +523,39 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				});
 			</pre>
 
-		</div>
+		</div><!-- read() -->
+
+		<div class="algorithm" data-algorithm="clipboard-readtext">
+		<h4 id="h-clipboard-readtext"><dfn>readText()</dfn></h4>
+		The [=readText()=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. TODO: Handle access permissions. Reject promise if not allowed.
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |data| be a copy of the [=system clipboard data=].
+				
+				1. Let |textData| be an empty string.
+				
+				1. If |data|'s {{DataTransfer/items}} list contains a "text/plain" item |textItem|, then:
+				
+					1. Set |textData| to be a copy of |textItem|'s string data
+
+				1. Resolve |p| with |textData|.
+
+			1. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				navigator.clipboard.read().then(function(data) {
+					console.log(“Your string: ”, data);
+				});
+			</pre>
+
+		</div><!-- readText() -->
 
 		<div class="algorithm" data-algorithm="clipboard-write">
 		<h4 id="h-clipboard-write-data"><dfn>write(|data|)</dfn></h4>
@@ -562,8 +596,47 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				});
 			</pre>
 
-		</div>
+		</div><!-- write() -->
 
+		<div class="algorithm" data-algorithm="clipboard-writetext">
+		<h4 id="h-clipboard-writetext-data"><dfn>writeText(|data|)</dfn></h4>
+		The [=writeText(data)=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. TODO: Handle access permissions. Reject promise if not allowed.
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |newItemList| be an empty {{DataTransferItemList}}.
+
+				1. Let |newItem| be a new {{DataTransferItem}} with
+					[=drag data item kind=] set to <em>string</em> and
+					[=drag data item type string=] set to <em>text/plain</em>.
+					
+				1. Set |newItem|'s data to |data|.
+
+				1. Add |newItem| to |newItemList|.
+
+				1. Replace the [=system clipboard data=]'s {{DataTransfer/items}}
+					list with |newItemList|.
+
+				1. Resolve |p|.
+
+			1. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				navigator.clipboard.writeText("Howdy, partner!").then(function() {
+					console.log(“Copied to clipboard successfully!”);
+				}, function() {
+					console.error(“Unable to write to clipboard. :-(”);
+				});
+			</pre>
+
+		</div><!-- writeText() -->
+		
 		</div><!-- dfn-for Clipboard -->
 
 
@@ -1075,7 +1148,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 							1. Let |new-data| be a new {{DataTransferItem}} with
 								[=drag data item kind=] set to <em>string</em> and
-								[=drag data item type string=] set to <em>text/plain</em>
+								[=drag data item type string=] set to <em>text/plain</em>.
+
+							1. Set |new-data|'s data to the plain text.
 
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
@@ -1091,6 +1166,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 								<code>application/octet-stream</code> if the
 								file's type is unknown.
 
+							1. Set |new-data|'s data to the file reference data.
+							
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
 						1. If |clipboard-part| contains HTML- or
@@ -1113,6 +1190,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 								with [=drag data item kind=] set to
 								<em>file</em>, [=drag data item type string=]
 								set to the corresponding MIME type
+							
+							1. Set |new-data|'s data to be the binary or text-based data.
 
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 

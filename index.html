@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-09">9 May 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-12">12 May 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1524,7 +1524,9 @@ paste in web applications.</p>
        <a href="#clipboard-interface"><span class="secno">7.2</span> <span class="content">Clipboard Interface</span></a>
        <ol class="toc">
         <li><a href="#h-clipboard-read"><span class="secno">7.2.1</span> <span class="content"><span>read()</span></span></a>
-        <li><a href="#h-clipboard-write-data"><span class="secno">7.2.2</span> <span class="content"><span>write(<var>data</var>)</span></span></a>
+        <li><a href="#h-clipboard-readtext"><span class="secno">7.2.2</span> <span class="content"><span>readText()</span></span></a>
+        <li><a href="#h-clipboard-write-data"><span class="secno">7.2.3</span> <span class="content"><span>write(<var>data</var>)</span></span></a>
+        <li><a href="#h-clipboard-writetext-data"><span class="secno">7.2.4</span> <span class="content"><span>writeText(<var>data</var>)</span></span></a>
        </ol>
      </ol>
     <li>
@@ -1870,7 +1872,7 @@ document.addEventListener('paste', function(e) {
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="navigator-interface"><span class="secno">7.1. </span><span class="content">Navigator Interface</span><a class="self-link" href="#navigator-interface"></a></h3>
 <pre class="idl highlight def" data-highlight="webidl"><span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
+  [SecureContext SameObject] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
 };
 </pre>
    <div id="navigator-idl">
@@ -1882,7 +1884,9 @@ document.addEventListener('paste', function(e) {
    <h3 class="heading settled" data-level="7.2" id="clipboard-interface"><span class="secno">7.2. </span><span class="content">Clipboard Interface</span><a class="self-link" href="#clipboard-interface"></a></h3>
 <pre class="idl highlight def" data-highlight="webidl">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboard">Clipboard</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="read()" id="dom-clipboard-read">read<a class="self-link" href="#dom-clipboard-read"></a></dfn>();
+  <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="readText()" id="dom-clipboard-readtext">readText<a class="self-link" href="#dom-clipboard-readtext"></a></dfn>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="write(data)" id="dom-clipboard-write">write<a class="self-link" href="#dom-clipboard-write"></a></dfn>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <dfn class="nv idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export="" id="dom-clipboard-write-data-data">data<a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
+  <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="writeText(data)" id="dom-clipboard-writetext">writeText<a class="self-link" href="#dom-clipboard-writetext"></a></dfn>(<span class="kt">DOMString</span> <dfn class="nv idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export="" id="dom-clipboard-writetext-data-data">data<a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
 };
 </pre>
    <div id="clipboard-idl">
@@ -1906,10 +1910,10 @@ document.addEventListener('paste', function(e) {
        <p>Return <var>p</var>.</p>
      </ol>
      <div></div>
-<pre class="example javascript" id="example-956ab570"><a class="self-link" href="#example-956ab570"></a>navigator.clipboard.read().then(function(data) {
+<pre class="example javascript" id="example-abe7113b"><a class="self-link" href="#example-abe7113b"></a>navigator.clipboard.read().then(function(data) {
   for (var i = 0; i &lt; data.items.length; i++) {
     if (data.items[i].type == "text/plain") {
-      console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+      console.log(“Your string: ”, data.items[i].getAs(“text/plain”));
     } else {
       console.error(“No text/plain data on clipboard.”);
     }
@@ -1917,8 +1921,41 @@ document.addEventListener('paste', function(e) {
 });
 </pre>
     </div>
+    <div class="algorithm" data-algorithm="clipboard-readtext">
+     <h4 class="heading settled" data-level="7.2.2" id="h-clipboard-readtext"><span class="secno">7.2.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-readtext">readText()</dfn></span><a class="self-link" href="#h-clipboard-readtext"></a></h4>
+      The <a data-link-type="dfn" href="#clipboard-readtext" id="ref-for-clipboard-readtext-1">readText()</a> method must run these steps: 
+     <ol>
+      <li data-md="">
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
+      <li data-md="">
+       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+      <li data-md="">
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-3">system clipboard data</a>.</p>
+        <li data-md="">
+         <p>Let <var>textData</var> be an empty string.</p>
+        <li data-md="">
+         <p>If <var>data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list contains a "text/plain" item <var>textItem</var>, then:</p>
+         <ol>
+          <li data-md="">
+           <p>Set <var>textData</var> to be a copy of <var>textItem</var>’s string data</p>
+         </ol>
+        <li data-md="">
+         <p>Resolve <var>p</var> with <var>textData</var>.</p>
+       </ol>
+      <li data-md="">
+       <p>Return <var>p</var>.</p>
+     </ol>
+     <div></div>
+<pre class="example javascript" id="example-4a69f74d"><a class="self-link" href="#example-4a69f74d"></a>navigator.clipboard.read().then(function(data) {
+  console.log(“Your string: ”, data);
+});
+</pre>
+    </div>
     <div class="algorithm" data-algorithm="clipboard-write">
-     <h4 class="heading settled" data-level="7.2.2" id="h-clipboard-write-data"><span class="secno">7.2.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-write-data">write(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-write-data"></a></h4>
+     <h4 class="heading settled" data-level="7.2.3" id="h-clipboard-write-data"><span class="secno">7.2.3. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-write-data">write(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-write-data"></a></h4>
       The <a data-link-type="dfn" href="#clipboard-write-data" id="ref-for-clipboard-write-data-1">write(data)</a> method must run these steps: 
      <ol>
       <li data-md="">
@@ -1941,7 +1978,7 @@ document.addEventListener('paste', function(e) {
            <p>Add <var>cleanItem</var> to <var>cleanItemList</var>.</p>
          </ol>
         <li data-md="">
-         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-3">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>cleanItemList</var>.</p>
+         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-4">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>cleanItemList</var>.</p>
         <li data-md="">
          <p>Resolve <var>p</var>.</p>
        </ol>
@@ -1952,6 +1989,41 @@ document.addEventListener('paste', function(e) {
 <pre class="example javascript" id="example-7325ddea"><a class="self-link" href="#example-7325ddea"></a>var data = new DataTransfer();
 data.items.add("text/plain", "Howdy, partner!");
 navigator.clipboard.write(data).then(function() {
+  console.log(“Copied to clipboard successfully!”);
+}, function() {
+  console.error(“Unable to write to clipboard. :-(”);
+});
+</pre>
+    </div>
+    <div class="algorithm" data-algorithm="clipboard-writetext">
+     <h4 class="heading settled" data-level="7.2.4" id="h-clipboard-writetext-data"><span class="secno">7.2.4. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-writetext-data">writeText(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-writetext-data"></a></h4>
+      The <a data-link-type="dfn" href="#clipboard-writetext-data" id="ref-for-clipboard-writetext-data-1">writeText(data)</a> method must run these steps: 
+     <ol>
+      <li data-md="">
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
+      <li data-md="">
+       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+      <li data-md="">
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>newItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+        <li data-md="">
+         <p>Let <var>newItem</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em>.</p>
+        <li data-md="">
+         <p>Set <var>newItem</var>’s data to <var>data</var>.</p>
+        <li data-md="">
+         <p>Add <var>newItem</var> to <var>newItemList</var>.</p>
+        <li data-md="">
+         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-5">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>newItemList</var>.</p>
+        <li data-md="">
+         <p>Resolve <var>p</var>.</p>
+       </ol>
+      <li data-md="">
+       <p>Return <var>p</var>.</p>
+     </ol>
+     <div></div>
+<pre class="example javascript" id="example-ca9df9ce"><a class="self-link" href="#example-ca9df9ce"></a>navigator.clipboard.writeText("Howdy, partner!").then(function() {
   console.log(“Copied to clipboard successfully!”);
 }, function() {
   console.error(“Unable to write to clipboard. :-(”);
@@ -2502,7 +2574,9 @@ read access to the OS clipboard</p>
                 <p>Ensure the text is in the encoding the
 scripting engine uses internally</p>
                <li data-md="">
-                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></p>
+                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em>.</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to the plain text.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2516,6 +2590,8 @@ references, then for each file reference:</p>
                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the
 corresponding MIME type, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to the file reference data.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2538,6 +2614,8 @@ another supported binary or text-based format (see <a data-link-type="dfn" href=
                 <p>Determine the MIME type of the data</p>
                <li data-md="">
                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to be the binary or text-based data.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2760,6 +2838,12 @@ HTML code.</p>
      <li><a href="#dom-clipboard-read">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-read">dfn for Clipboard</a><span>, in §7.2.1</span>
     </ul>
+   <li>
+    readText()
+    <ul>
+     <li><a href="#dom-clipboard-readtext">method for Clipboard</a><span>, in §7.2</span>
+     <li><a href="#clipboard-readtext">dfn for Clipboard</a><span>, in §7.2.2</span>
+    </ul>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §8</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in §8</span>
    <li><a href="#system-clipboard">system clipboard</a><span>, in §4</span>
@@ -2769,7 +2853,13 @@ HTML code.</p>
     write(data)
     <ul>
      <li><a href="#dom-clipboard-write">method for Clipboard</a><span>, in §7.2</span>
-     <li><a href="#clipboard-write-data">dfn for Clipboard</a><span>, in §7.2.2</span>
+     <li><a href="#clipboard-write-data">dfn for Clipboard</a><span>, in §7.2.3</span>
+    </ul>
+   <li>
+    writeText(data)
+    <ul>
+     <li><a href="#dom-clipboard-writetext">method for Clipboard</a><span>, in §7.2</span>
+     <li><a href="#clipboard-writetext-data">dfn for Clipboard</a><span>, in §7.2.4</span>
     </ul>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -2857,12 +2947,14 @@ HTML code.</p>
 };
 
 <span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
+  [SecureContext SameObject] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
 };
 
 [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <a class="nv" href="#dom-clipboard-read">read</a>();
+  <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <a class="nv" href="#dom-clipboard-readtext">readText</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-write">write</a>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <a class="nv" href="#dom-clipboard-write-data-data">data</a>);
+  <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-writetext">writeText</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboard-writetext-data-data">data</a>);
 };
 
 </pre>
@@ -2907,7 +2999,9 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <ul>
     <li><a href="#ref-for-system-clipboard-data-1">4. Model</a>
     <li><a href="#ref-for-system-clipboard-data-2">7.2.1. read()</a>
-    <li><a href="#ref-for-system-clipboard-data-3">7.2.2. write(data)</a>
+    <li><a href="#ref-for-system-clipboard-data-3">7.2.2. readText()</a>
+    <li><a href="#ref-for-system-clipboard-data-4">7.2.3. write(data)</a>
+    <li><a href="#ref-for-system-clipboard-data-5">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-clipboardeventinit">
@@ -3002,10 +3096,22 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
     <li><a href="#ref-for-clipboard-read-1">7.2.1. read()</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="clipboard-readtext">
+   <b><a href="#clipboard-readtext">#clipboard-readtext</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-clipboard-readtext-1">7.2.2. readText()</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="clipboard-write-data">
    <b><a href="#clipboard-write-data">#clipboard-write-data</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-clipboard-write-data-1">7.2.2. write(data)</a>
+    <li><a href="#ref-for-clipboard-write-data-1">7.2.3. write(data)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="clipboard-writetext-data">
+   <b><a href="#clipboard-writetext-data">#clipboard-writetext-data</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-clipboard-writetext-data-1">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="mandatory-data-types">
