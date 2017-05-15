@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-12">12 May 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-15">15 May 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1872,7 +1872,7 @@ document.addEventListener('paste', function(e) {
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="navigator-interface"><span class="secno">7.1. </span><span class="content">Navigator Interface</span><a class="self-link" href="#navigator-interface"></a></h3>
 <pre class="idl highlight def" data-highlight="webidl"><span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [SecureContext SameObject] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
+  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
 };
 </pre>
    <div id="navigator-idl">
@@ -2904,6 +2904,7 @@ HTML code.</p>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
+     <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
      <li><a href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>
     </ul>
   </ul>
@@ -2947,7 +2948,7 @@ HTML code.</p>
 };
 
 <span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [SecureContext SameObject] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
+  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
 };
 
 [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
