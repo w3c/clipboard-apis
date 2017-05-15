@@ -467,7 +467,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		<pre class="idl" data-highlight="webidl">
 		partial interface Navigator {
-		  [SecureContext SameObject] readonly attribute Clipboard clipboard;
+		  [SecureContext, SameObject] readonly attribute Clipboard clipboard;
 		};
 		</pre>
 
