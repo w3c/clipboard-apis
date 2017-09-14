@@ -499,7 +499,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Let |p| be a new [=Promise=].
 
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			1. If the result of [=check clipboard read permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -531,7 +531,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Let |p| be a new [=Promise=].
 
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			1. If the result of [=check clipboard read permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -562,8 +562,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		The [=write(data)=] method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
-
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			
+			1. If the result of [=check clipboard write permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -604,7 +604,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Let |p| be a new [=Promise=].
 
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			1. If the result of [=check clipboard write permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -799,6 +799,68 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			1. Return false
 
 		1. Return true from the action
+
+		</div><!-- algorithm -->
+
+
+<h2 id="clipboard-permissions">Clipboard Permissions</h2>
+
+	This section defines how the clipboard permissions control access
+	to the clipboard APIs.
+	
+	Note: Clipboard permissions currently only apply to the Async Clipboard API.
+	This will updated in a future version of this specification (so it applies to all
+	Clipboard interactions).
+
+	<h3 id="read-permission">Clipboard read permission</h3>
+
+		<div class="algorithm" data-algorithm="clipboard-read-permission">
+		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
+
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+		
+		1. Let |systemPaste| be true if the current script is running as a result of user
+			interaction with a "Paste" element created by the user agent or operating
+			system.
+		
+		1. If |fullAccess| is "denied", then return false.
+
+		1. If |fullAccess| is "granted", then return true.
+
+		1. If |fullAccess| is "prompt", then
+		
+			<!-- System paste buttons don't require permission -->
+			1. If |systemPaste| is true, then return true.
+			
+			1. Query the user for full access to the clipboard.
+			
+			1. Set |fullAccess| be the updated value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+		
+		1. If |fullAccess| is "granted", then return true.
+
+		1. Return false.
+
+		</div><!-- algorithm -->
+
+	<h3 id="write-permission">Clipboard write permission</h3>
+
+		<div class="algorithm" data-algorithm="clipboard-write-permission">
+		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
+
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+
+		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard" }</code> permission.
+
+		1. Let |userInitiated| be true if the current script is running as a result of direct user action, false otherwise.
+
+		1. If |writeAccess| is "denied", then return false.
+		
+		<!-- If full access is granted, then don't require a user gesture for writes. -->
+		1. If |fullAccess| is "granted", then return true.
+
+		1. If |userInitiated| is true, then return true.
+		
+		1. Return false.
 
 		</div><!-- algorithm -->
 

@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-05-15">15 May 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-09-14">14 September 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1537,20 +1537,34 @@ paste in web applications.</p>
       <li><a href="#paste-action"><span class="secno">8.3</span> <span class="content">The paste action</span></a>
      </ol>
     <li>
-     <a href="#mandatory-data-types-x"><span class="secno">9</span> <span class="content"><span>Mandatory data types</span></span></a>
+     <a href="#clipboard-permissions"><span class="secno">9</span> <span class="content">Clipboard Permissions</span></a>
      <ol class="toc">
-      <li><a href="#reading-from-clipboard"><span class="secno">9.1</span> <span class="content">Reading from the clipboard</span></a>
-      <li><a href="#writing-to-clipboard"><span class="secno">9.2</span> <span class="content">Writing to the clipboard</span></a>
+      <li>
+       <a href="#read-permission"><span class="secno">9.1</span> <span class="content">Clipboard read permission</span></a>
+       <ol class="toc">
+        <li><a href="#h-clipboard-read-permission"><span class="secno">9.1.1</span> <span class="content"><span>check clipboard read permission</span></span></a>
+       </ol>
+      <li>
+       <a href="#write-permission"><span class="secno">9.2</span> <span class="content">Clipboard write permission</span></a>
+       <ol class="toc">
+        <li><a href="#h-clipboard-write-permission"><span class="secno">9.2.1</span> <span class="content"><span>check clipboard write permission</span></span></a>
+       </ol>
      </ol>
     <li>
-     <a href="#security"><span class="secno">10</span> <span class="content">Security Considerations</span></a>
+     <a href="#mandatory-data-types-x"><span class="secno">10</span> <span class="content"><span>Mandatory data types</span></span></a>
      <ol class="toc">
-      <li><a href="#pasting-html"><span class="secno">10.1</span> <span class="content">Pasting HTML and multi-part data</span></a>
-      <li><a href="#general-security-policies"><span class="secno">10.2</span> <span class="content">General security policies</span></a>
-      <li><a href="#nuisances"><span class="secno">10.3</span> <span class="content">Nuisance considerations</span></a>
+      <li><a href="#reading-from-clipboard"><span class="secno">10.1</span> <span class="content">Reading from the clipboard</span></a>
+      <li><a href="#writing-to-clipboard"><span class="secno">10.2</span> <span class="content">Writing to the clipboard</span></a>
      </ol>
-    <li><a href="#privacy"><span class="secno">11</span> <span class="content">Privacy Considerations</span></a>
-    <li><a href="#acknowledge"><span class="secno">12</span> <span class="content">Acknowledgements</span></a>
+    <li>
+     <a href="#security"><span class="secno">11</span> <span class="content">Security Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#pasting-html"><span class="secno">11.1</span> <span class="content">Pasting HTML and multi-part data</span></a>
+      <li><a href="#general-security-policies"><span class="secno">11.2</span> <span class="content">General security policies</span></a>
+      <li><a href="#nuisances"><span class="secno">11.3</span> <span class="content">Nuisance considerations</span></a>
+     </ol>
+    <li><a href="#privacy"><span class="secno">12</span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#acknowledge"><span class="secno">13</span> <span class="content">Acknowledgements</span></a>
     <li>
      <a href="#algorithms"><span class="secno"></span> <span class="content">Appendix A: Algorithms</span></a>
      <ol class="toc">
@@ -1897,7 +1911,7 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission-1">check clipboard read permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -1928,7 +1942,7 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission-2">check clipboard read permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -1961,7 +1975,7 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission-1">check clipboard write permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -2002,7 +2016,7 @@ navigator.clipboard.write(data).then(function() {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission-2">check clipboard write permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -2209,12 +2223,68 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
       <p>Return true from the action</p>
     </ol>
    </div>
-   <h2 class="heading settled" data-level="9" id="mandatory-data-types-x"><span class="secno">9. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
+   <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Clipboard Permissions</span><a class="self-link" href="#clipboard-permissions"></a></h2>
+   <p>This section defines how the clipboard permissions control access
+	to the clipboard APIs.</p>
+   <p class="note" role="note">Note: Clipboard permissions currently only apply to the Async Clipboard API.
+	This will updated in a future version of this specification (so it applies to all
+	Clipboard interactions).</p>
+   <h3 class="heading settled" data-level="9.1" id="read-permission"><span class="secno">9.1. </span><span class="content">Clipboard read permission</span><a class="self-link" href="#read-permission"></a></h3>
+   <div class="algorithm" data-algorithm="clipboard-read-permission">
+    <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
+    <ol>
+     <li data-md="">
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+     <li data-md="">
+      <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
+interaction with a "Paste" element created by the user agent or operating
+system.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "denied", then return false.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "prompt", then</p>
+      <ol>
+       <li data-md="">
+        <p>If <var>systemPaste</var> is true, then return true.</p>
+       <li data-md="">
+        <p>Query the user for full access to the clipboard.</p>
+       <li data-md="">
+        <p>Set <var>fullAccess</var> be the updated value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+      </ol>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>Return false.</p>
+    </ol>
+   </div>
+   <h3 class="heading settled" data-level="9.2" id="write-permission"><span class="secno">9.2. </span><span class="content">Clipboard write permission</span><a class="self-link" href="#write-permission"></a></h3>
+   <div class="algorithm" data-algorithm="clipboard-write-permission">
+    <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
+    <ol>
+     <li data-md="">
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+     <li data-md="">
+      <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard" }</code> permission.</p>
+     <li data-md="">
+      <p>Let <var>userInitiated</var> be true if the current script is running as a result of direct user action, false otherwise.</p>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "denied", then return false.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>If <var>userInitiated</var> is true, then return true.</p>
+     <li data-md="">
+      <p>Return false.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="10" id="mandatory-data-types-x"><span class="secno">10. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
    <p>The implementation must recognise the native OS clipboard format description
 	for the following data types, to be able to populate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with the correct description for paste events, and
 	set the correct data format on the OS clipboard in response to copy and cut
 	events.</p>
-   <h3 class="heading settled" data-level="9.1" id="reading-from-clipboard"><span class="secno">9.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
+   <h3 class="heading settled" data-level="10.1" id="reading-from-clipboard"><span class="secno">10.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
    <p>These data types must be exposed by <em>paste</em> events if a
 		corresponding native type exists on the clipboard:</p>
    <ul>
@@ -2247,7 +2317,7 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
     <li data-md="">
      <p>application/octet-stream</p>
    </ul>
-   <h3 class="heading settled" data-level="9.2" id="writing-to-clipboard"><span class="secno">9.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
+   <h3 class="heading settled" data-level="10.2" id="writing-to-clipboard"><span class="secno">10.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
    <p>These data types must be placed on the clipboard with a corresponding
 		native type description if added to a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object during <em>copy</em> and <em>cut</em> events.</p>
    <ul>
@@ -2270,14 +2340,14 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
 		clipboard are limited as a security precaution. Untrusted scripts can
 		attempt to exploit security vulnerabilities in local software by placing
 		data known to trigger those vulnerabilities on the clipboard.</strong></p>
-   <h2 class="heading settled" data-level="10" id="security"><span class="secno">10. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <h2 class="heading settled" data-level="11" id="security"><span class="secno">11. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <p>Enabling authors to change what is copied by a user, or to make an automated
 	copy of something that was never selected and allowing unrestricted calls to
 	paste information can raise various security and privacy concerns.</p>
    <p>An example scenario of a problem is where a user selects a link and copies
 	it, but a different link is copied to the clipboard. The effect of this can
 	range from an unexpected result on pasting to an attempted "phishing" attack.</p>
-   <h3 class="heading settled" data-level="10.1" id="pasting-html"><span class="secno">10.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
+   <h3 class="heading settled" data-level="11.1" id="pasting-html"><span class="secno">11.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
    <p><em>This section is non-normative.</em></p>
    <p>There are certain security risks associated with pasting formatted or
 		multi-part data.</p>
@@ -2326,7 +2396,7 @@ did not intend to expose.</p>
 		and javascript: links by default when pasting rich text, but allow a
 		paste event handler to retrieve and process  the original, un-sanitized
 		data.</p>
-   <h3 class="heading settled" data-level="10.2" id="general-security-policies"><span class="secno">10.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
+   <h3 class="heading settled" data-level="11.2" id="general-security-policies"><span class="secno">11.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
    <p>The implementation <em>must not</em> download referenced online
 		resources, or expose their contents in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-files">files</a></code> list
 		or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
@@ -2336,14 +2406,14 @@ did not intend to expose.</p>
 		&lt;img src="file://localhost/example.jpg">
 		but the data’s origin is an online resource, the implementation must not
 		add an entry for example.jpg to the clipboardData.items list.</p>
-   <h3 class="heading settled" data-level="10.3" id="nuisances"><span class="secno">10.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
+   <h3 class="heading settled" data-level="11.3" id="nuisances"><span class="secno">11.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
    <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> API to annoy and confuse users by
 		altering the data on the system clipboard from copy and cut events. This
 		specification does not attempt to prevent such nuisances, though
 		implementations may add additional restrictions.</p>
    <p>Implementations must handle scripts that try to place excessive amounts
 		of data on the clipboard gracefully.</p>
-   <h2 class="heading settled" data-level="11" id="privacy"><span class="secno">11. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <h2 class="heading settled" data-level="12" id="privacy"><span class="secno">12. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>Untrusted scripts should not get uncontrolled access to a user’s
 	clipboard data. This specification assumes that granting access to the
 	current clipboard data when a user explicitly initiates a paste
@@ -2372,7 +2442,7 @@ it.</p>
 	by the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> interface. For example, an implementation may
 	allow the user to disable this API, or configure which web sites should
 	be granted access to it.</p>
-   <h2 class="heading settled" data-level="12" id="acknowledge"><span class="secno">12. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
+   <h2 class="heading settled" data-level="13" id="acknowledge"><span class="secno">13. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
    <p><em>This section is informative</em></p>
    <p>The editors would like to acknowledge the contributions of the former
 	editors who helped shepherd this specification through various
@@ -2803,6 +2873,8 @@ HTML code.</p>
   <ul class="index">
    <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.3.1</span>
    <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.3.2</span>
+   <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in §9.1.1</span>
+   <li><a href="#check-clipboard-write-permission">check clipboard write permission</a><span>, in §9.2.1</span>
    <li><a href="#clipboard">Clipboard</a><span>, in §7.2</span>
    <li>
     clipboard
@@ -2828,7 +2900,7 @@ HTML code.</p>
    <li><a href="#cut">cut</a><span>, in §5.2.3</span>
    <li><a href="#editable-context">editable context</a><span>, in §3</span>
    <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in §Unnumbered section</span>
-   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §9</span>
+   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §10</span>
    <li><a href="#paste">paste</a><span>, in §5.2.4</span>
    <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in §Unnumbered section</span>
    <li><a href="#dfn-processing-equivalence">processing equivalence</a><span>, in §Unnumbered section</span>
@@ -3113,6 +3185,20 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <b><a href="#clipboard-writetext-data">#clipboard-writetext-data</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-clipboard-writetext-data-1">7.2.4. writeText(data)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="check-clipboard-read-permission">
+   <b><a href="#check-clipboard-read-permission">#check-clipboard-read-permission</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-check-clipboard-read-permission-1">7.2.1. read()</a>
+    <li><a href="#ref-for-check-clipboard-read-permission-2">7.2.2. readText()</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="check-clipboard-write-permission">
+   <b><a href="#check-clipboard-write-permission">#check-clipboard-write-permission</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-check-clipboard-write-permission-1">7.2.3. write(data)</a>
+    <li><a href="#ref-for-check-clipboard-write-permission-2">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="mandatory-data-types">
