@@ -2270,11 +2270,21 @@ system.</p>
      <li data-md="">
       <p>Let <var>userInitiated</var> be true if the current script is running as a result of direct user action, false otherwise.</p>
      <li data-md="">
-      <p>If <var>writeAccess</var> is "denied", then return false.</p>
-     <li data-md="">
       <p>If <var>fullAccess</var> is "granted", then return true.</p>
      <li data-md="">
-      <p>If <var>userInitiated</var> is true, then return true.</p>
+      <p>If <var>writeAccess</var> is "denied", then return false.</p>
+     <li data-md="">
+      <p>If <var>userInitiated</var> is false, then return false.</p>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "prompt", then</p>
+      <ol>
+       <li data-md="">
+        <p>Query the user for write access to the clipboard.</p>
+       <li data-md="">
+        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard" }</code> permission.</p>
+      </ol>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "granted", then return true.</p>
      <li data-md="">
       <p>Return false.</p>
     </ol>

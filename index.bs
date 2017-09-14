@@ -853,13 +853,26 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		1. Let |userInitiated| be true if the current script is running as a result of direct user action, false otherwise.
 
-		1. If |writeAccess| is "denied", then return false.
-		
-		<!-- If full access is granted, then don't require a user gesture for writes. -->
+		<!-- If full access is granted, then don't require a user gesture for writes. 
+			This is to allow backwards compat with current gesture requirements, while
+			permitting full-access to grant access without a gesture. -->
 		1. If |fullAccess| is "granted", then return true.
 
-		1. If |userInitiated| is true, then return true.
+		<!-- User has explicitly denied write access. We respect that. -->
+		1. If |writeAccess| is "denied", then return false.
+
+		<!-- User gesture is still required for backwards compat. Even if granted.
+			This to allow Write permission to be more easily granted by the UA. -->
+		1. If |userInitiated| is false, then return false.
 		
+		1. If |writeAccess| is "prompt", then
+
+			1. Query the user for write access to the clipboard.
+			
+			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard" }</code> permission.
+		
+		1. If |writeAccess| is "granted", then return true.
+
 		1. Return false.
 
 		</div><!-- algorithm -->
