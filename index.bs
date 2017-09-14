@@ -817,7 +817,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<div class="algorithm" data-algorithm="clipboard-read-permission">
 		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
 
-		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
 		
 		1. Let |systemPaste| be true if the current script is running as a result of user
 			interaction with a "Paste" element created by the user agent or operating
@@ -834,7 +834,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			
 			1. Query the user for full access to the clipboard.
 			
-			1. Set |fullAccess| be the updated value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+			1. Set |fullAccess| be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.
 		
 		1. If |fullAccess| is "granted", then return true.
 
@@ -847,9 +847,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<div class="algorithm" data-algorithm="clipboard-write-permission">
 		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
 
-		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
 
-		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard" }</code> permission.
+		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.
 
 		1. Let |userInitiated| be true if the current script is running as a result of direct user action, false otherwise.
 
@@ -869,7 +869,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Query the user for write access to the clipboard.
 			
-			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard" }</code> permission.
+			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard", access="write" }</code> permission.
 		
 		1. If |writeAccess| is "granted", then return true.
 

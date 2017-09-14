@@ -2234,7 +2234,7 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
     <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
     <ol>
      <li data-md="">
-      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
      <li data-md="">
       <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
 interaction with a "Paste" element created by the user agent or operating
@@ -2251,7 +2251,7 @@ system.</p>
        <li data-md="">
         <p>Query the user for full access to the clipboard.</p>
        <li data-md="">
-        <p>Set <var>fullAccess</var> be the updated value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+        <p>Set <var>fullAccess</var> be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
       </ol>
      <li data-md="">
       <p>If <var>fullAccess</var> is "granted", then return true.</p>
@@ -2264,9 +2264,9 @@ system.</p>
     <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
     <ol>
      <li data-md="">
-      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", fullAccess: "true" }</code> permission.</p>
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
      <li data-md="">
-      <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard" }</code> permission.</p>
+      <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
      <li data-md="">
       <p>Let <var>userInitiated</var> be true if the current script is running as a result of direct user action, false otherwise.</p>
      <li data-md="">
@@ -2281,7 +2281,7 @@ system.</p>
        <li data-md="">
         <p>Query the user for write access to the clipboard.</p>
        <li data-md="">
-        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard" }</code> permission.</p>
+        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard", access="write" }</code> permission.</p>
       </ol>
      <li data-md="">
       <p>If <var>writeAccess</var> is "granted", then return true.</p>
