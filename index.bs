@@ -819,10 +819,6 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
 		
-		1. Let |systemPaste| be true if the current script is running as a result of user
-			interaction with a "Paste" element created by the user agent or operating
-			system.
-		
 		1. If |fullAccess| is "denied", then return false.
 
 		1. If |fullAccess| is "granted", then return true.
@@ -830,6 +826,10 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		1. If |fullAccess| is "prompt", then
 		
 			<!-- System paste buttons don't require permission -->
+			1. Let |systemPaste| be true if the current script is running as a result of user
+				interaction with a "Paste" element created by the user agent or operating
+				system.
+		
 			1. If |systemPaste| is true, then return true.
 			
 			1. Query the user for full access to the clipboard.
@@ -851,8 +851,6 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.
 
-		1. Let |userInitiated| be true if the current script is running as a result of direct user action, false otherwise.
-
 		<!-- If full access is granted, then don't require a user gesture for writes. 
 			This is to allow backwards compat with current gesture requirements, while
 			permitting full-access to grant access without a gesture. -->
@@ -862,9 +860,12 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		1. If |writeAccess| is "denied", then return false.
 
 		<!-- User gesture is still required for backwards compat. Even if granted.
-			This to allow Write permission to be more easily granted by the UA. -->
-		1. If |userInitiated| is false, then return false.
+			This to allow Write permission to be more easily granted by default by the UA. -->
+		1. If the current script is not running as a result of direct user action, then return false.
 		
+			Note: This is for backwards compatibility with existing clipboard access
+			requirements that require a user gesture to prevent abuse of the API.
+
 		1. If |writeAccess| is "prompt", then
 
 			1. Query the user for write access to the clipboard.

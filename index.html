@@ -2236,16 +2236,16 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
      <li data-md="">
       <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
      <li data-md="">
-      <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
-interaction with a "Paste" element created by the user agent or operating
-system.</p>
-     <li data-md="">
       <p>If <var>fullAccess</var> is "denied", then return false.</p>
      <li data-md="">
       <p>If <var>fullAccess</var> is "granted", then return true.</p>
      <li data-md="">
       <p>If <var>fullAccess</var> is "prompt", then</p>
       <ol>
+       <li data-md="">
+        <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
+interaction with a "Paste" element created by the user agent or operating
+system.</p>
        <li data-md="">
         <p>If <var>systemPaste</var> is true, then return true.</p>
        <li data-md="">
@@ -2268,13 +2268,12 @@ system.</p>
      <li data-md="">
       <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
      <li data-md="">
-      <p>Let <var>userInitiated</var> be true if the current script is running as a result of direct user action, false otherwise.</p>
-     <li data-md="">
       <p>If <var>fullAccess</var> is "granted", then return true.</p>
      <li data-md="">
       <p>If <var>writeAccess</var> is "denied", then return false.</p>
      <li data-md="">
-      <p>If <var>userInitiated</var> is false, then return false.</p>
+      <p>If the current script is not running as a result of direct user action, then return false.</p>
+      <p class="note" role="note">Note: make a note</p>
      <li data-md="">
       <p>If <var>writeAccess</var> is "prompt", then</p>
       <ol>
