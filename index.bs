@@ -870,7 +870,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Query the user for write access to the clipboard.
 			
-			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard", access="write" }</code> permission.
+			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.
 		
 		1. If |writeAccess| is "granted", then return true.
 
