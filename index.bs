@@ -144,7 +144,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<div id="clipboardevent-idl">
 
 		<pre class="idl" data-highlight="webidl">
-		[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)]
+		[Constructor(DOMString type, optional ClipboardEventInit eventInitDict), Exposed=Window]
 		interface ClipboardEvent : Event {
 		  readonly attribute DataTransfer? clipboardData;
 		};
@@ -483,7 +483,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
 		<pre class="idl" data-highlight="webidl">
-		[SecureContext] interface Clipboard : EventTarget {
+		[SecureContext, Exposed=Window] interface Clipboard : EventTarget {
 		  Promise&lt;DataTransfer> read();
 		  Promise&lt;DOMString> readText();
 		  Promise&lt;void> write(DataTransfer data);

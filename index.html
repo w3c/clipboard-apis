@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-09-14">14 September 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-09-15">15 September 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1647,7 +1647,7 @@ paste in web applications.</p>
     </dl>
    </div>
    <div id="clipboardevent-idl">
-<pre class="idl highlight def" data-highlight="webidl">[<dfn class="nv idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export="" data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent">Constructor<a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<span class="kt">DOMString</span> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-type">type<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit-1">ClipboardEventInit</a> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn>)]
+<pre class="idl highlight def" data-highlight="webidl">[<dfn class="nv idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export="" data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent">Constructor<a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<span class="kt">DOMString</span> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-type">type<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit-1">ClipboardEventInit</a> <dfn class="nv idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export="" id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict<a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn>), <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>]
 <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboardevent">ClipboardEvent</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event">Event</a> {
   <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <dfn class="nv dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export="" data-readonly="" data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata">clipboardData</dfn>;
 };
@@ -1896,7 +1896,7 @@ document.addEventListener('paste', function(e) {
     </div>
    </div>
    <h3 class="heading settled" data-level="7.2" id="clipboard-interface"><span class="secno">7.2. </span><span class="content">Clipboard Interface</span><a class="self-link" href="#clipboard-interface"></a></h3>
-<pre class="idl highlight def" data-highlight="webidl">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboard">Clipboard</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
+<pre class="idl highlight def" data-highlight="webidl">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>] <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboard">Clipboard</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="read()" id="dom-clipboard-read">read<a class="self-link" href="#dom-clipboard-read"></a></dfn>();
   <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="readText()" id="dom-clipboard-readtext">readText<a class="self-link" href="#dom-clipboard-readtext"></a></dfn>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="write(data)" id="dom-clipboard-write">write<a class="self-link" href="#dom-clipboard-write"></a></dfn>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <dfn class="nv idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export="" id="dom-clipboard-write-data-data">data<a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
@@ -2273,14 +2273,15 @@ system.</p>
       <p>If <var>writeAccess</var> is "denied", then return false.</p>
      <li data-md="">
       <p>If the current script is not running as a result of direct user action, then return false.</p>
-      <p class="note" role="note">Note: make a note</p>
+      <p class="note" role="note">Note: This is for backwards compatibility with existing clipboard access
+requirements that require a user gesture to prevent abuse of the API.</p>
      <li data-md="">
       <p>If <var>writeAccess</var> is "prompt", then</p>
       <ol>
        <li data-md="">
         <p>Query the user for write access to the clipboard.</p>
        <li data-md="">
-        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard", access="write" }</code> permission.</p>
+        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
       </ol>
      <li data-md="">
       <p>If <var>writeAccess</var> is "granted", then return true.</p>
@@ -2985,6 +2986,7 @@ HTML code.</p>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
+     <li><a href="https://heycam.github.io/webidl/#Exposed">Exposed</a>
      <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
      <li><a href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>
     </ul>
@@ -3023,7 +3025,7 @@ HTML code.</p>
   <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <a class="nv" data-default="null" data-type="DataTransfer? " href="#dom-clipboardeventinit-clipboarddata">clipboardData</a> = <span class="kt">null</span>;
 };
 
-[<a class="nv" href="#dom-clipboardevent-clipboardevent">Constructor</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type">type</a>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit">ClipboardEventInit</a> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict</a>)]
+[<a class="nv" href="#dom-clipboardevent-clipboardevent">Constructor</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type">type</a>, <span class="kt">optional</span> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit">ClipboardEventInit</a> <a class="nv" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict">eventInitDict</a>), <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>]
 <span class="kt">interface</span> <a class="nv" href="#clipboardevent">ClipboardEvent</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event">Event</a> {
   <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>? <a class="nv" data-readonly="" data-type="DataTransfer?" href="#dom-clipboardevent-clipboarddata">clipboardData</a>;
 };
@@ -3032,7 +3034,7 @@ HTML code.</p>
   [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
 };
 
-[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
+[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <a class="nv" href="#dom-clipboard-read">read</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <a class="nv" href="#dom-clipboard-readtext">readText</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-write">write</a>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <a class="nv" href="#dom-clipboard-write-data-data">data</a>);
