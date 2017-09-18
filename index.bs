@@ -1200,8 +1200,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Else, if the context is not editable, then
 
-				1. Set |target| to be the [=DOM anchor=] of the [=focusable area=], or
-					[=the body element=] if no node has focus.
+				1. Set |target| to be the element that contains the
+					start of the selection in document order, or
+					[=the body element=] if there is no selection or cursor.
 
 		1. Process the event as follows:
 
