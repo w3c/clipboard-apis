@@ -1425,7 +1425,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-03-28">28 March 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-09-15">15 September 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1485,17 +1485,25 @@ paste in web applications.</p>
     <li><a href="#terminolofy"><span class="secno">3</span> <span class="content">Terminology</span></a>
     <li><a href="#model"><span class="secno">4</span> <span class="content">Model</span></a>
     <li>
-     <a href="#clipboard-events"><span class="secno">5</span> <span class="content">Clipboard Events</span></a>
+     <a href="#clipboard-events-and-interfaces"><span class="secno">5</span> <span class="content">Clipboard Events</span></a>
      <ol class="toc">
-      <li><a href="#clipboard-event-interfaces"><span class="secno">5.1</span> <span class="content"><span>Clipboard event</span> interfaces</span></a>
+      <li><a href="#clipboard-event-interfaces"><span class="secno">5.1</span> <span class="content">Clipboard event interfaces</span></a>
       <li>
-       <a href="#integration-with-other-scripts-and-events"><span class="secno">5.2</span> <span class="content">Integration with other scripts and events</span></a>
+       <a href="#clipboard-event-definitions"><span class="secno">5.2</span> <span class="content"><span>Clipboard events</span></span></a>
        <ol class="toc">
-        <li><a href="#allow-modify-clipboard"><span class="secno">5.2.1</span> <span class="content">Event handlers that are <span>allowed to modify the clipboard</span></span></a>
-        <li><a href="#allow-read-clipboard"><span class="secno">5.2.2</span> <span class="content">Event handlers that are <span>allowed to read from clipboard</span></span></a>
-        <li><a href="#integration-with-rich-text-editing"><span class="secno">5.2.3</span> <span class="content">Integration with rich text editing APIs</span></a>
-        <li><a href="#otherevents"><span class="secno">5.2.4</span> <span class="content">Interaction with other events</span></a>
-        <li><a href="#selection-mod"><span class="secno">5.2.5</span> <span class="content">Event listeners that modify selection or focus</span></a>
+        <li><a href="#clipboard-event-clipboardchange"><span class="secno">5.2.1</span> <span class="content">The <span>clipboardchange</span> event</span></a>
+        <li><a href="#clipboard-event-copy"><span class="secno">5.2.2</span> <span class="content">The <span>copy</span> event</span></a>
+        <li><a href="#clipboard-event-cut"><span class="secno">5.2.3</span> <span class="content">The <span>cut</span> event</span></a>
+        <li><a href="#clipboard-event-paste"><span class="secno">5.2.4</span> <span class="content">The <span>paste</span> event</span></a>
+       </ol>
+      <li>
+       <a href="#integration-with-other-scripts-and-events"><span class="secno">5.3</span> <span class="content">Integration with other scripts and events</span></a>
+       <ol class="toc">
+        <li><a href="#allow-modify-clipboard"><span class="secno">5.3.1</span> <span class="content">Event handlers that are <span>allowed to modify the clipboard</span></span></a>
+        <li><a href="#allow-read-clipboard"><span class="secno">5.3.2</span> <span class="content">Event handlers that are <span>allowed to read from clipboard</span></span></a>
+        <li><a href="#integration-with-rich-text-editing"><span class="secno">5.3.3</span> <span class="content">Integration with rich text editing APIs</span></a>
+        <li><a href="#otherevents"><span class="secno">5.3.4</span> <span class="content">Interaction with other events</span></a>
+        <li><a href="#selection-mod"><span class="secno">5.3.5</span> <span class="content">Event listeners that modify selection or focus</span></a>
        </ol>
      </ol>
     <li>
@@ -1517,7 +1525,9 @@ paste in web applications.</p>
        <a href="#clipboard-interface"><span class="secno">7.2</span> <span class="content">Clipboard Interface</span></a>
        <ol class="toc">
         <li><a href="#h-clipboard-read"><span class="secno">7.2.1</span> <span class="content"><span>read()</span></span></a>
-        <li><a href="#h-clipboard-write-data"><span class="secno">7.2.2</span> <span class="content"><span>write(<var>data</var>)</span></span></a>
+        <li><a href="#h-clipboard-readtext"><span class="secno">7.2.2</span> <span class="content"><span>readText()</span></span></a>
+        <li><a href="#h-clipboard-write-data"><span class="secno">7.2.3</span> <span class="content"><span>write(<var>data</var>)</span></span></a>
+        <li><a href="#h-clipboard-writetext-data"><span class="secno">7.2.4</span> <span class="content"><span>writeText(<var>data</var>)</span></span></a>
        </ol>
      </ol>
     <li>
@@ -1528,20 +1538,34 @@ paste in web applications.</p>
       <li><a href="#paste-action"><span class="secno">8.3</span> <span class="content">The paste action</span></a>
      </ol>
     <li>
-     <a href="#mandatory-data-types-x"><span class="secno">9</span> <span class="content"><span>Mandatory data types</span></span></a>
+     <a href="#clipboard-permissions"><span class="secno">9</span> <span class="content">Clipboard Permissions</span></a>
      <ol class="toc">
-      <li><a href="#reading-from-clipboard"><span class="secno">9.1</span> <span class="content">Reading from the clipboard</span></a>
-      <li><a href="#writing-to-clipboard"><span class="secno">9.2</span> <span class="content">Writing to the clipboard</span></a>
+      <li>
+       <a href="#read-permission"><span class="secno">9.1</span> <span class="content">Clipboard read permission</span></a>
+       <ol class="toc">
+        <li><a href="#h-clipboard-read-permission"><span class="secno">9.1.1</span> <span class="content"><span>check clipboard read permission</span></span></a>
+       </ol>
+      <li>
+       <a href="#write-permission"><span class="secno">9.2</span> <span class="content">Clipboard write permission</span></a>
+       <ol class="toc">
+        <li><a href="#h-clipboard-write-permission"><span class="secno">9.2.1</span> <span class="content"><span>check clipboard write permission</span></span></a>
+       </ol>
      </ol>
     <li>
-     <a href="#security"><span class="secno">10</span> <span class="content">Security Considerations</span></a>
+     <a href="#mandatory-data-types-x"><span class="secno">10</span> <span class="content"><span>Mandatory data types</span></span></a>
      <ol class="toc">
-      <li><a href="#pasting-html"><span class="secno">10.1</span> <span class="content">Pasting HTML and multi-part data</span></a>
-      <li><a href="#general-security-policies"><span class="secno">10.2</span> <span class="content">General security policies</span></a>
-      <li><a href="#nuisances"><span class="secno">10.3</span> <span class="content">Nuisance considerations</span></a>
+      <li><a href="#reading-from-clipboard"><span class="secno">10.1</span> <span class="content">Reading from the clipboard</span></a>
+      <li><a href="#writing-to-clipboard"><span class="secno">10.2</span> <span class="content">Writing to the clipboard</span></a>
      </ol>
-    <li><a href="#privacy"><span class="secno">11</span> <span class="content">Privacy Considerations</span></a>
-    <li><a href="#acknowledge"><span class="secno">12</span> <span class="content">Acknowledgements</span></a>
+    <li>
+     <a href="#security"><span class="secno">11</span> <span class="content">Security Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#pasting-html"><span class="secno">11.1</span> <span class="content">Pasting HTML and multi-part data</span></a>
+      <li><a href="#general-security-policies"><span class="secno">11.2</span> <span class="content">General security policies</span></a>
+      <li><a href="#nuisances"><span class="secno">11.3</span> <span class="content">Nuisance considerations</span></a>
+     </ol>
+    <li><a href="#privacy"><span class="secno">12</span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#acknowledge"><span class="secno">13</span> <span class="content">Acknowledgements</span></a>
     <li>
      <a href="#algorithms"><span class="secno"></span> <span class="content">Appendix A: Algorithms</span></a>
      <ol class="toc">
@@ -1608,8 +1632,8 @@ paste in web applications.</p>
    <p>The <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-1">system clipboard</a> has a list of clipboard items that are collectively
 	called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="system-clipboard-data">system clipboard data</dfn>. The <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-1">system clipboard data</a> is
 	a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object that mirrors the contents of the clipboard.</p>
-   <h2 class="heading settled" data-level="5" id="clipboard-events"><span class="secno">5. </span><span class="content">Clipboard Events</span><a class="self-link" href="#clipboard-events"></a></h2>
-   <h3 class="heading settled" data-level="5.1" id="clipboard-event-interfaces"><span class="secno">5.1. </span><span class="content"><dfn data-dfn-type="dfn" data-noexport="" id="clipboard-event">Clipboard event<a class="self-link" href="#clipboard-event"></a></dfn> interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h3>
+   <h2 class="heading settled" data-level="5" id="clipboard-events-and-interfaces"><span class="secno">5. </span><span class="content">Clipboard Events</span><a class="self-link" href="#clipboard-events-and-interfaces"></a></h2>
+   <h3 class="heading settled" data-level="5.1" id="clipboard-event-interfaces"><span class="secno">5.1. </span><span class="content">Clipboard event interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h3>
    <p>The ClipboardEvent interface extends the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event">Event</a></code> interface.</p>
    <div id="clipboardeventinit-idl">
 <pre class="idl highlight def" data-highlight="webidl"><span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-clipboardeventinit">ClipboardEventInit</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a> {
@@ -1651,8 +1675,60 @@ document.dispatchEvent(pasteEvent);
    <p class="note" role="note"><span>Note:</span> Synthetic clipboard events will not actually modify the clipboard or
 		the document. In other words, while the script above will fire a paste event,
 		the data will not be pasted into the document.</p>
-   <h3 class="heading settled" data-level="5.2" id="integration-with-other-scripts-and-events"><span class="secno">5.2. </span><span class="content">Integration with other scripts and events</span><a class="self-link" href="#integration-with-other-scripts-and-events"></a></h3>
-   <h4 class="heading settled" data-level="5.2.1" id="allow-modify-clipboard"><span class="secno">5.2.1. </span><span class="content">Event handlers that are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="allowed-to-modify-the-clipboard">allowed to modify the clipboard</dfn></span><a class="self-link" href="#allow-modify-clipboard"></a></h4>
+   <h3 class="heading settled" data-level="5.2" id="clipboard-event-definitions"><span class="secno">5.2. </span><span class="content"><dfn data-dfn-type="dfn" data-noexport="" id="clipboard-events">Clipboard events<a class="self-link" href="#clipboard-events"></a></dfn></span><a class="self-link" href="#clipboard-event-definitions"></a></h3>
+   <h4 class="heading settled" data-level="5.2.1" id="clipboard-event-clipboardchange"><span class="secno">5.2.1. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="clipboardchange">clipboardchange</dfn> event</span><a class="self-link" href="#clipboard-event-clipboardchange"></a></h4>
+   <p>The <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-1">clipboardchange</a> event fires whenever the contents of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-2">system clipboard</a> are changed. These changes could be due to any of the
+			following (non-exhaustive):</p>
+   <ul>
+    <li data-md="">
+     <p>User-initiated cut or copy actions</p>
+    <li data-md="">
+     <p>Scripts that use the <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a> to write to the clipboard</p>
+    <li data-md="">
+     <p>Actions that update the clipboard outside the user agent</p>
+   </ul>
+   <p>If the clipboard contents are changed outside the user agent, then the <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-2">clipboardchange</a> event MUST fire when the user agent regains focus.</p>
+   <p>Since synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut-1">cut</a> and <a data-link-type="dfn" href="#copy" id="ref-for-copy-1">copy</a> events do not update the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-3">system clipboard</a>,
+			they will not trigger a "clipboardchange" event.</p>
+   <h4 class="heading settled" data-level="5.2.2" id="clipboard-event-copy"><span class="secno">5.2.2. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="copy">copy</dfn> event</span><a class="self-link" href="#clipboard-event-copy"></a></h4>
+   <p>When the user initiates a copy action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-1">fires a clipboard event</a> named <a data-link-type="dfn" href="#copy" id="ref-for-copy-2">copy</a>.</p>
+   <p>If the event is not canceled, the currently selected
+			data will be copied to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-4">system clipboard</a>.
+			The current document selection is not affected.</p>
+   <p>The <a data-link-type="dfn" href="#copy" id="ref-for-copy-3">copy</a> event bubbles and is cancelable.</p>
+   <p>See <a href="#copy-action">§8.1 The copy action</a> for a detailed description of the processing model for
+			this event.</p>
+   <p>A synthetic <a data-link-type="dfn" href="#copy" id="ref-for-copy-4">copy</a> event can be manually constructed and dispatched, but it
+			will not affect the contents of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-5">system clipboard</a>.</p>
+   <h4 class="heading settled" data-level="5.2.3" id="clipboard-event-cut"><span class="secno">5.2.3. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="cut">cut</dfn> event</span><a class="self-link" href="#clipboard-event-cut"></a></h4>
+   <p>When the user initiates a cut action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-2">fires a clipboard event</a> named <a data-link-type="dfn" href="#cut" id="ref-for-cut-2">cut</a>.</p>
+   <p>In an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-1">editable context</a>, if the event is not
+			canceled the action will place the currently selected data on the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-6">system clipboard</a> and remove the selection from the document.
+			The <a data-link-type="dfn" href="#cut" id="ref-for-cut-3">cut</a> event fires before the selected data is removed. When
+			the cut operation is completed, the selection is collapsed.</p>
+   <p>In a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-2">editable context</a>, the <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-1">clipboardData</a></code> will
+			be an empty list. Note that the <a data-link-type="dfn" href="#cut" id="ref-for-cut-4">cut</a> event will still be fired
+			in this case.</p>
+   <p>The <a data-link-type="dfn" href="#cut" id="ref-for-cut-5">cut</a> event bubbles and is cancelable.</p>
+   <p>See <a href="#cut-action">§8.2 The cut action</a> for a detailed description of the processing model for
+			this event.</p>
+   <p>A synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut-6">cut</a> event can be manually constructed and dispatched, but it
+			will not affect the contents of the document or of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-7">system clipboard</a>.</p>
+   <h4 class="heading settled" data-level="5.2.4" id="clipboard-event-paste"><span class="secno">5.2.4. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="paste">paste</dfn> event</span><a class="self-link" href="#clipboard-event-paste"></a></h4>
+   <p>When a user initiates a paste action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-3">fires a clipboard event</a> named <a data-link-type="dfn" href="#paste" id="ref-for-paste-1">paste</a>. The event fires before any clipboard data is inserted
+			into the document.</p>
+   <p>If the cursor is in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-3">editable context</a>, the paste action will
+			insert clipboard data in the most suitable format (if any) supported
+			for the given context.</p>
+   <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable context</a>,
+			but the <a data-link-type="dfn" href="#paste" id="ref-for-paste-2">paste</a> event fires regardless.</p>
+   <p>The <a data-link-type="dfn" href="#paste" id="ref-for-paste-3">paste</a> event bubbles and is cancelable.</p>
+   <p>See <a href="#paste-action">§8.3 The paste action</a> for a detailed description of the processing model for
+			this event.</p>
+   <p>A synthetic <a data-link-type="dfn" href="#paste" id="ref-for-paste-4">paste</a> event can be manually constructed and dispatched, but it
+			will not affect the contents of the document.</p>
+   <h3 class="heading settled" data-level="5.3" id="integration-with-other-scripts-and-events"><span class="secno">5.3. </span><span class="content">Integration with other scripts and events</span><a class="self-link" href="#integration-with-other-scripts-and-events"></a></h3>
+   <h4 class="heading settled" data-level="5.3.1" id="allow-modify-clipboard"><span class="secno">5.3.1. </span><span class="content">Event handlers that are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="allowed-to-modify-the-clipboard">allowed to modify the clipboard</dfn></span><a class="self-link" href="#allow-modify-clipboard"></a></h4>
    <p>Event handlers may write to the clipboard if any of the following is
 			true:</p>
    <ul>
@@ -1668,9 +1744,9 @@ which is <a data-link-type="dfn" href="http://www.w3.org/TR/html5/browsers.html#
 			event types are likely to express user intention. The implementation <em>may</em> also support configuration that trusts specific sites or
 			apps to modify the clipboard regardless of the origin of the scripting
 			thread.</p>
-   <p>Synthetic cut and copy events <em>must not</em> modify data on the
+   <p>Synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut-7">cut</a> and <a data-link-type="dfn" href="#copy" id="ref-for-copy-5">copy</a> events <em>must not</em> modify data on the
 			system clipboard.</p>
-   <h4 class="heading settled" data-level="5.2.2" id="allow-read-clipboard"><span class="secno">5.2.2. </span><span class="content">Event handlers that are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="allowed-to-read-from-clipboard">allowed to read from clipboard</dfn></span><a class="self-link" href="#allow-read-clipboard"></a></h4>
+   <h4 class="heading settled" data-level="5.3.2" id="allow-read-clipboard"><span class="secno">5.3.2. </span><span class="content">Event handlers that are <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="allowed-to-read-from-clipboard">allowed to read from clipboard</dfn></span><a class="self-link" href="#allow-read-clipboard"></a></h4>
    <p>Event handlers may read data from the system clipboard if either of the
 			following is true</p>
    <ul>
@@ -1685,9 +1761,9 @@ data from the clipboard.</p>
      <p>The action that triggers the event is triggered in an app with
 permissions to read the clipboard.</p>
    </ul>
-   <p>Synthetic paste events <em>must not</em> give a script access to data on
+   <p>Synthetic <a data-link-type="dfn" href="#paste" id="ref-for-paste-5">paste</a> events <em>must not</em> give a script access to data on
 			the real system clipboard.</p>
-   <h4 class="heading settled" data-level="5.2.3" id="integration-with-rich-text-editing"><span class="secno">5.2.3. </span><span class="content">Integration with rich text editing APIs</span><a class="self-link" href="#integration-with-rich-text-editing"></a></h4>
+   <h4 class="heading settled" data-level="5.3.3" id="integration-with-rich-text-editing"><span class="secno">5.3.3. </span><span class="content">Integration with rich text editing APIs</span><a class="self-link" href="#integration-with-rich-text-editing"></a></h4>
    <p>If an implementation supports ways to execute clipboard commands through
 			scripting, for example by calling the <code>document.execCommand()</code> method with the commands "cut",
 			"copy" and "paste", the implementation <em>must</em> trigger the
@@ -1709,7 +1785,7 @@ permissions to read the clipboard.</p>
 			clipboard contents if the implementation is configured to allow this.
 			How implementations can be configured to allow read or write access to
 			the clipboard is outside the scope of this specification.</p>
-   <h4 class="heading settled" data-level="5.2.4" id="otherevents"><span class="secno">5.2.4. </span><span class="content">Interaction with other events</span><a class="self-link" href="#otherevents"></a></h4>
+   <h4 class="heading settled" data-level="5.3.4" id="otherevents"><span class="secno">5.3.4. </span><span class="content">Interaction with other events</span><a class="self-link" href="#otherevents"></a></h4>
    <p>If the clipboard operation is triggered by keyboard input, the
 			implementation <em>must</em> fire the corresponding event that initiates
 			the clipboard operation. The event is asynchronous but <em>must</em> be
@@ -1722,22 +1798,24 @@ permissions to read the clipboard.</p>
    <p>The implementation <em>must not</em> dispatch other input-related events
 			like textInput, input, change, and validation events in response to the
 			copy operation.</p>
-   <h4 class="heading settled" data-level="5.2.5" id="selection-mod"><span class="secno">5.2.5. </span><span class="content">Event listeners that modify selection or focus</span><a class="self-link" href="#selection-mod"></a></h4>
+   <h4 class="heading settled" data-level="5.3.5" id="selection-mod"><span class="secno">5.3.5. </span><span class="content">Event listeners that modify selection or focus</span><a class="self-link" href="#selection-mod"></a></h4>
    <p>If the event listener modifies the selection or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable area</a>, the clipboard
 			action <em>must</em> be completed on the modified selection.</p>
    <h2 class="heading settled" data-level="6" id="sync-clipboard-api"><span class="secno">6. </span><span class="content">Synchronous Clipboard API</span><a class="self-link" href="#sync-clipboard-api"></a></h2>
    <p>The Synchronous Clipboard API allows you to override the default cut, copy
 	and paste behavior of the user agent.</p>
-   <p>Synchronous access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-1">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-1">clipboardData</a></code> attribute.
+   <p>Synchronous access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-1">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-2">clipboardData</a></code> attribute.
 	One consequence of this is that the synchronous clipboard APIs can only
 	access clipboard data in the context of a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-2">ClipboardEvent</a></code> handler.</p>
    <p class="note" role="note"><span>Note:</span> If you need to access the clipboard outside of a clipboard event
 	handler, see <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a>.</p>
    <h3 class="heading settled" data-level="6.1" id="override-copy"><span class="secno">6.1. </span><span class="content">Overriding the copy event</span><a class="self-link" href="#override-copy"></a></h3>
-   <p>When the user initiates a copy action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-1">fires a clipboard event</a> named <em>copy</em>. If the event is not canceled, the currently selected
-		data will be copied to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-2">system clipboard</a>.</p>
-   <p>The event bubbles and is cancelable.</p>
-   <p>The current document selection is not affected.</p>
+   <p>To override the default <a data-link-type="dfn" href="#copy" id="ref-for-copy-6">copy</a> event behavior, a <a data-link-type="dfn" href="#copy" id="ref-for-copy-7">copy</a> event
+		handler must be added and this event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel the event.</p>
+   <p>Canceling the event is required in order for the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-8">system clipboard</a> to be
+		updated with the data in <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-3">clipboardData</a></code>.
+		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-3">ClipboardEvent</a></code> is not canceled, then the data from the
+		current document selection will be copied instead.</p>
 <pre class="example javascript" id="example-a0ca5ff8"><a class="self-link" href="#example-a0ca5ff8"></a>// Overwrite what is being copied to the clipboard.
 document.addEventListener('copy', function(e) {
   // e.clipboardData is initially empty, but we can set it to the
@@ -1756,14 +1834,16 @@ document.addEventListener('copy', function(e) {
 		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-3">ClipboardEvent</a></code> is not canceled, then the data from the
 		current document selection will be copied instead.</p>
    <h3 class="heading settled" data-level="6.2" id="override-cut"><span class="secno">6.2. </span><span class="content">Overriding the cut event</span><a class="self-link" href="#override-cut"></a></h3>
-   <p>When the user initiates a cut action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-2">fires a clipboard event</a> named <em>cut</em>. In an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-1">editable context</a>, if the event is not
-		canceled the action will place the currently selected data on the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-4">system clipboard</a> and remove the selection from the document.</p>
-   <p>The event bubbles and is cancelable.</p>
-   <p>The <em>cut</em> event fires before the selected data is removed. When
-		the cut operation is completed, the selection is collapsed.</p>
-   <p>In a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-2">editable context</a>, the <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-3">clipboardData</a></code> will
-		be an empty list. Not that the <em>cut</em> event will still be fired
-		in this case.</p>
+   <p>To override the default <a data-link-type="dfn" href="#cut" id="ref-for-cut-8">cut</a> event behavior, a <a data-link-type="dfn" href="#cut" id="ref-for-cut-9">cut</a> event
+		handler must be added and this event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel the event.</p>
+   <p>Canceling the event is required in order for the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-9">system clipboard</a> to be
+		updated with the data in <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-4">clipboardData</a></code>.
+		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-4">ClipboardEvent</a></code> is not canceled, then the data from the
+		current document selection will be copied instead.</p>
+   <p>Note that canceling the <a data-link-type="dfn" href="#cut" id="ref-for-cut-10">cut</a> event will also prevent the document from
+		being updated (i.e., the current selection will not be removed). The event
+		handler will need to manually update the document to remove the currently
+		selected text.</p>
 <pre class="example javascript" id="example-62f879b4"><a class="self-link" href="#example-62f879b4"></a>// Overwrite what is copied to the clipboard.
 document.addEventListener('cut', function(e) {
   // e.clipboardData is initially empty, but we can set it to the
@@ -1787,22 +1867,21 @@ document.addEventListener('cut', function(e) {
 		If the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-4">ClipboardEvent</a></code> is not canceled, then the data from the
 		current document selection will be copied instead.</p>
    <h3 class="heading settled" data-level="6.3" id="override-paste"><span class="secno">6.3. </span><span class="content">Overriding the paste event</span><a class="self-link" href="#override-paste"></a></h3>
-   <p>When a user initiates a paste action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-3">fires a clipboard event</a> named <em>paste</em>. The event fires before any clipboard data is inserted
-		into the document.</p>
-   <p>The event bubbles and is cancelable.</p>
-   <p>If the cursor is in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-3">editable context</a>, the paste action will
-		insert clipboard data in the most suitable format (if any) supported
-		for the given context.</p>
-   <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable context</a>,
-		but the event fires regardless.</p>
-   <p>When pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read/only</a>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <em>paste</em> event handler will not modify the data that is
+   <p>To override the default <a data-link-type="dfn" href="#paste" id="ref-for-paste-6">paste</a> event behavior, a <a data-link-type="dfn" href="#paste" id="ref-for-paste-7">paste</a> event
+		handler must be added and this event handler must call <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a></code> to cancel the event.</p>
+   <p>Canceling the event is required so that the user agent does not update the
+		document with data from the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-10">system clipboard</a>.</p>
+   <p>Note that canceling the <a data-link-type="dfn" href="#paste" id="ref-for-paste-8">paste</a> event will also prevent the document from
+		being updated (i.e., nothing will be pasted into the document). The event
+		handler will need to manually paste the data into the document.</p>
+   <p>Also note that, when pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read/only</a>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <a data-link-type="dfn" href="#paste" id="ref-for-paste-9">paste</a> event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.</p>
 <pre class="example javascript" id="example-ce8e183c"><a class="self-link" href="#example-ce8e183c"></a>// Overwrite what is being pasted onto the clipboard.
 document.addEventListener('paste', function(e) {
   // e.clipboardData contains the data that is about to be pasted.
   if (e.clipboardData.types.indexOf('text/html') > -1) {
     var oldData = e.clipboardData.getData('text/html');
-    var newData = '<b>Ha Ha!</b> ' + oldData;
+    var newData = '&lt;b>Ha Ha!&lt;/b> ' + oldData;
 
     // Since we are canceling the paste operation, we need to manually
     // paste the data into the document.
@@ -1819,7 +1898,7 @@ document.addEventListener('paste', function(e) {
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="navigator-interface"><span class="secno">7.1. </span><span class="content">Navigator Interface</span><a class="self-link" href="#navigator-interface"></a></h3>
 <pre class="idl highlight def" data-highlight="webidl"><span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
+  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard-1">Clipboard</a> <dfn class="nv idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export="" data-readonly="" data-type="Clipboard" id="dom-navigator-clipboard">clipboard<a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
 };
 </pre>
    <div id="navigator-idl">
@@ -1829,9 +1908,11 @@ document.addEventListener('paste', function(e) {
     </div>
    </div>
    <h3 class="heading settled" data-level="7.2" id="clipboard-interface"><span class="secno">7.2. </span><span class="content">Clipboard Interface</span><a class="self-link" href="#clipboard-interface"></a></h3>
-<pre class="idl highlight def" data-highlight="webidl">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboard">Clipboard</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
+<pre class="idl highlight def" data-highlight="webidl">[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>] <span class="kt">interface</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="interface" data-export="" id="clipboard">Clipboard</dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="read()" id="dom-clipboard-read">read<a class="self-link" href="#dom-clipboard-read"></a></dfn>();
+  <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="readText()" id="dom-clipboard-readtext">readText<a class="self-link" href="#dom-clipboard-readtext"></a></dfn>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="write(data)" id="dom-clipboard-write">write<a class="self-link" href="#dom-clipboard-write"></a></dfn>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <dfn class="nv idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export="" id="dom-clipboard-write-data-data">data<a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
+  <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <dfn class="nv idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export="" data-lt="writeText(data)" id="dom-clipboard-writetext">writeText<a class="self-link" href="#dom-clipboard-writetext"></a></dfn>(<span class="kt">DOMString</span> <dfn class="nv idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export="" id="dom-clipboard-writetext-data-data">data<a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
 };
 </pre>
    <div id="clipboard-idl">
@@ -1842,7 +1923,7 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission-1">check clipboard read permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -1855,10 +1936,10 @@ document.addEventListener('paste', function(e) {
        <p>Return <var>p</var>.</p>
      </ol>
      <div></div>
-<pre class="example javascript" id="example-956ab570"><a class="self-link" href="#example-956ab570"></a>navigator.clipboard.read().then(function(data) {
+<pre class="example javascript" id="example-abe7113b"><a class="self-link" href="#example-abe7113b"></a>navigator.clipboard.read().then(function(data) {
   for (var i = 0; i &lt; data.items.length; i++) {
     if (data.items[i].type == "text/plain") {
-      console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+      console.log(“Your string: ”, data.items[i].getAs(“text/plain”));
     } else {
       console.error(“No text/plain data on clipboard.”);
     }
@@ -1866,14 +1947,47 @@ document.addEventListener('paste', function(e) {
 });
 </pre>
     </div>
+    <div class="algorithm" data-algorithm="clipboard-readtext">
+     <h4 class="heading settled" data-level="7.2.2" id="h-clipboard-readtext"><span class="secno">7.2.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-readtext">readText()</dfn></span><a class="self-link" href="#h-clipboard-readtext"></a></h4>
+      The <a data-link-type="dfn" href="#clipboard-readtext" id="ref-for-clipboard-readtext-1">readText()</a> method must run these steps: 
+     <ol>
+      <li data-md="">
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
+      <li data-md="">
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission-2">check clipboard read permission</a> is false, then reject <var>p</var></p>
+      <li data-md="">
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-3">system clipboard data</a>.</p>
+        <li data-md="">
+         <p>Let <var>textData</var> be an empty string.</p>
+        <li data-md="">
+         <p>If <var>data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list contains a "text/plain" item <var>textItem</var>, then:</p>
+         <ol>
+          <li data-md="">
+           <p>Set <var>textData</var> to be a copy of <var>textItem</var>’s string data</p>
+         </ol>
+        <li data-md="">
+         <p>Resolve <var>p</var> with <var>textData</var>.</p>
+       </ol>
+      <li data-md="">
+       <p>Return <var>p</var>.</p>
+     </ol>
+     <div></div>
+<pre class="example javascript" id="example-4a69f74d"><a class="self-link" href="#example-4a69f74d"></a>navigator.clipboard.read().then(function(data) {
+  console.log(“Your string: ”, data);
+});
+</pre>
+    </div>
     <div class="algorithm" data-algorithm="clipboard-write">
-     <h4 class="heading settled" data-level="7.2.2" id="h-clipboard-write-data"><span class="secno">7.2.2. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-write-data">write(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-write-data"></a></h4>
+     <h4 class="heading settled" data-level="7.2.3" id="h-clipboard-write-data"><span class="secno">7.2.3. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-write-data">write(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-write-data"></a></h4>
       The <a data-link-type="dfn" href="#clipboard-write-data" id="ref-for-clipboard-write-data-1">write(data)</a> method must run these steps: 
      <ol>
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>TODO: Handle access permissions. Reject promise if not allowed.</p>
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission-1">check clipboard write permission</a> is false, then reject <var>p</var></p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -1890,7 +2004,7 @@ document.addEventListener('paste', function(e) {
            <p>Add <var>cleanItem</var> to <var>cleanItemList</var>.</p>
          </ol>
         <li data-md="">
-         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-3">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>cleanItemList</var>.</p>
+         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-4">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>cleanItemList</var>.</p>
         <li data-md="">
          <p>Resolve <var>p</var>.</p>
        </ol>
@@ -1907,9 +2021,44 @@ navigator.clipboard.write(data).then(function() {
 });
 </pre>
     </div>
+    <div class="algorithm" data-algorithm="clipboard-writetext">
+     <h4 class="heading settled" data-level="7.2.4" id="h-clipboard-writetext-data"><span class="secno">7.2.4. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Clipboard" data-dfn-type="dfn" data-noexport="" id="clipboard-writetext-data">writeText(<var>data</var>)</dfn></span><a class="self-link" href="#h-clipboard-writetext-data"></a></h4>
+      The <a data-link-type="dfn" href="#clipboard-writetext-data" id="ref-for-clipboard-writetext-data-1">writeText(data)</a> method must run these steps: 
+     <ol>
+      <li data-md="">
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
+      <li data-md="">
+       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission-2">check clipboard write permission</a> is false, then reject <var>p</var></p>
+      <li data-md="">
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>newItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
+        <li data-md="">
+         <p>Let <var>newItem</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em>.</p>
+        <li data-md="">
+         <p>Set <var>newItem</var>’s data to <var>data</var>.</p>
+        <li data-md="">
+         <p>Add <var>newItem</var> to <var>newItemList</var>.</p>
+        <li data-md="">
+         <p>Replace the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data-5">system clipboard data</a>'s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code> list with <var>newItemList</var>.</p>
+        <li data-md="">
+         <p>Resolve <var>p</var>.</p>
+       </ol>
+      <li data-md="">
+       <p>Return <var>p</var>.</p>
+     </ol>
+     <div></div>
+<pre class="example javascript" id="example-ca9df9ce"><a class="self-link" href="#example-ca9df9ce"></a>navigator.clipboard.writeText("Howdy, partner!").then(function() {
+  console.log(“Copied to clipboard successfully!”);
+}, function() {
+  console.error(“Unable to write to clipboard. :-(”);
+});
+</pre>
+    </div>
    </div>
    <h2 class="heading settled" data-level="8" id="clipboard-actions"><span class="secno">8. </span><span class="content">Clipboard Actions</span><a class="self-link" href="#clipboard-actions"></a></h2>
-   <p>This section defines clipboard actions and events and the processing model
+   <p>This section defines clipboard actions and the processing model
 	for event dispatch.</p>
    <p>Each clipboard action has two flags called <em>script-triggered</em> and <em>script-may-access-clipboard</em>.</p>
    <p>The <dfn data-dfn-type="dfn" data-noexport="" id="script-triggered">script-triggered<a class="self-link" href="#script-triggered"></a></dfn> flag is set if the action runs because
@@ -1951,7 +2100,7 @@ read from clipboard</a>, then</p>
         </ol>
       </ol>
      <li data-md="">
-      <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-4">Fire a clipboard event</a> named <em>copy</em></p>
+      <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-4">Fire a clipboard event</a> named <a data-link-type="dfn" href="#copy" id="ref-for-copy-8">copy</a></p>
      <li data-md="">
       <p>If the event was not canceled, then</p>
       <ol>
@@ -1959,6 +2108,8 @@ read from clipboard</a>, then</p>
         <p>Copy the selected contents, if any, to the clipboard.
 Implementations <em>should</em> create alternate text/html and
 text/plain clipboard formats when content in a web page is selected.</p>
+       <li data-md="">
+        <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-5">Fire a clipboard event</a> named <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-3">clipboardchange</a></p>
       </ol>
      <li data-md="">
       <p>Else, if the event was canceled, then</p>
@@ -1987,7 +2138,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
         </ol>
       </ol>
      <li data-md="">
-      <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-5">Fire a clipboard event</a> named <em>cut</em></p>
+      <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-6">Fire a clipboard event</a> named <a data-link-type="dfn" href="#cut" id="ref-for-cut-11">cut</a></p>
      <li data-md="">
       <p>If the event was not canceled, then</p>
       <ol>
@@ -2004,8 +2155,10 @@ in a web page is selected.</p>
           <p>Remove the contents of the selection from the document
 and collapse the selection.</p>
          <li data-md="">
+          <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-7">Fire a clipboard event</a> named <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-4">clipboardchange</a></p>
+         <li data-md="">
           <p>Queue tasks to fire any events that should fire due to the
-modification, see <a href="#integration-with-other-scripts-and-events">§5.2 Integration with other scripts and events</a> for details.</p>
+modification, see <a href="#integration-with-other-scripts-and-events">§5.3 Integration with other scripts and events</a> for details.</p>
         </ol>
        <li data-md="">
         <p>Else, if there is no selection or the context is not editable, then</p>
@@ -2021,6 +2174,8 @@ modification, see <a href="#integration-with-other-scripts-and-events">§5.2 Int
         <p>Call the <a data-link-type="dfn" href="#write-content-to-the-clipboard" id="ref-for-write-content-to-the-clipboard-2">write content to the clipboard</a> algorithm,
 passing on the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> list <em>items</em>,
 a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
+       <li data-md="">
+        <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-8">Fire a clipboard event</a> named <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-5">clipboardchange</a></p>
       </ol>
      <li data-md="">
       <p>Return true from the cut action</p>
@@ -2049,7 +2204,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
         </ol>
       </ol>
      <li data-md="">
-      <p><a href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-6">Fire a clipboard event</a> named <em>paste</em></p>
+      <p><a href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event-9">Fire a clipboard event</a> named <a data-link-type="dfn" href="#paste" id="ref-for-paste-10">paste</a></p>
      <li data-md="">
       <p>If the event was not canceled, then</p>
       <ol>
@@ -2061,7 +2216,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
 if any, into the context.</p>
          <li data-md="">
           <p>Queue tasks to fire any events that should fire due to
-the modification, see <a href="#integration-with-other-scripts-and-events">§5.2 Integration with other scripts and events</a> for details.</p>
+the modification, see <a href="#integration-with-other-scripts-and-events">§5.3 Integration with other scripts and events</a> for details.</p>
         </ol>
        <li data-md="">
         <p>Else</p>
@@ -2080,12 +2235,78 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.2
       <p>Return true from the action</p>
     </ol>
    </div>
-   <h2 class="heading settled" data-level="9" id="mandatory-data-types-x"><span class="secno">9. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
+   <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Clipboard Permissions</span><a class="self-link" href="#clipboard-permissions"></a></h2>
+   <p>This section defines how the clipboard permissions control access
+	to the clipboard APIs.</p>
+   <p class="note" role="note">Note: Clipboard permissions currently only apply to the Async Clipboard API.
+	This will updated in a future version of this specification (so it applies to all
+	Clipboard interactions).</p>
+   <h3 class="heading settled" data-level="9.1" id="read-permission"><span class="secno">9.1. </span><span class="content">Clipboard read permission</span><a class="self-link" href="#read-permission"></a></h3>
+   <div class="algorithm" data-algorithm="clipboard-read-permission">
+    <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
+    <ol>
+     <li data-md="">
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "denied", then return false.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "prompt", then</p>
+      <ol>
+       <li data-md="">
+        <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
+interaction with a "Paste" element created by the user agent or operating
+system.</p>
+       <li data-md="">
+        <p>If <var>systemPaste</var> is true, then return true.</p>
+       <li data-md="">
+        <p>Query the user for full access to the clipboard.</p>
+       <li data-md="">
+        <p>Set <var>fullAccess</var> be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
+      </ol>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>Return false.</p>
+    </ol>
+   </div>
+   <h3 class="heading settled" data-level="9.2" id="write-permission"><span class="secno">9.2. </span><span class="content">Clipboard write permission</span><a class="self-link" href="#write-permission"></a></h3>
+   <div class="algorithm" data-algorithm="clipboard-write-permission">
+    <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
+    <ol>
+     <li data-md="">
+      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
+     <li data-md="">
+      <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
+     <li data-md="">
+      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "denied", then return false.</p>
+     <li data-md="">
+      <p>If the current script is not running as a result of direct user action, then return false.</p>
+      <p class="note" role="note">Note: This is for backwards compatibility with existing clipboard access
+requirements that require a user gesture to prevent abuse of the API.</p>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "prompt", then</p>
+      <ol>
+       <li data-md="">
+        <p>Query the user for write access to the clipboard.</p>
+       <li data-md="">
+        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
+      </ol>
+     <li data-md="">
+      <p>If <var>writeAccess</var> is "granted", then return true.</p>
+     <li data-md="">
+      <p>Return false.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="10" id="mandatory-data-types-x"><span class="secno">10. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
    <p>The implementation must recognise the native OS clipboard format description
 	for the following data types, to be able to populate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code> with the correct description for paste events, and
 	set the correct data format on the OS clipboard in response to copy and cut
 	events.</p>
-   <h3 class="heading settled" data-level="9.1" id="reading-from-clipboard"><span class="secno">9.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
+   <h3 class="heading settled" data-level="10.1" id="reading-from-clipboard"><span class="secno">10.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
    <p>These data types must be exposed by <em>paste</em> events if a
 		corresponding native type exists on the clipboard:</p>
    <ul>
@@ -2118,7 +2339,7 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.2
     <li data-md="">
      <p>application/octet-stream</p>
    </ul>
-   <h3 class="heading settled" data-level="9.2" id="writing-to-clipboard"><span class="secno">9.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
+   <h3 class="heading settled" data-level="10.2" id="writing-to-clipboard"><span class="secno">10.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
    <p>These data types must be placed on the clipboard with a corresponding
 		native type description if added to a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> object during <em>copy</em> and <em>cut</em> events.</p>
    <ul>
@@ -2141,14 +2362,14 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.2
 		clipboard are limited as a security precaution. Untrusted scripts can
 		attempt to exploit security vulnerabilities in local software by placing
 		data known to trigger those vulnerabilities on the clipboard.</strong></p>
-   <h2 class="heading settled" data-level="10" id="security"><span class="secno">10. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <h2 class="heading settled" data-level="11" id="security"><span class="secno">11. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <p>Enabling authors to change what is copied by a user, or to make an automated
 	copy of something that was never selected and allowing unrestricted calls to
 	paste information can raise various security and privacy concerns.</p>
    <p>An example scenario of a problem is where a user selects a link and copies
 	it, but a different link is copied to the clipboard. The effect of this can
 	range from an unexpected result on pasting to an attempted "phishing" attack.</p>
-   <h3 class="heading settled" data-level="10.1" id="pasting-html"><span class="secno">10.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
+   <h3 class="heading settled" data-level="11.1" id="pasting-html"><span class="secno">11.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
    <p><em>This section is non-normative.</em></p>
    <p>There are certain security risks associated with pasting formatted or
 		multi-part data.</p>
@@ -2197,7 +2418,7 @@ did not intend to expose.</p>
 		and javascript: links by default when pasting rich text, but allow a
 		paste event handler to retrieve and process  the original, un-sanitized
 		data.</p>
-   <h3 class="heading settled" data-level="10.2" id="general-security-policies"><span class="secno">10.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
+   <h3 class="heading settled" data-level="11.2" id="general-security-policies"><span class="secno">11.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
    <p>The implementation <em>must not</em> download referenced online
 		resources, or expose their contents in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-files">files</a></code> list
 		or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitemlist">DataTransferItemList</a></code>.</p>
@@ -2207,14 +2428,14 @@ did not intend to expose.</p>
 		&lt;img src="file://localhost/example.jpg">
 		but the data’s origin is an online resource, the implementation must not
 		add an entry for example.jpg to the clipboardData.items list.</p>
-   <h3 class="heading settled" data-level="10.3" id="nuisances"><span class="secno">10.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
+   <h3 class="heading settled" data-level="11.3" id="nuisances"><span class="secno">11.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
    <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> API to annoy and confuse users by
 		altering the data on the system clipboard from copy and cut events. This
 		specification does not attempt to prevent such nuisances, though
 		implementations may add additional restrictions.</p>
    <p>Implementations must handle scripts that try to place excessive amounts
 		of data on the clipboard gracefully.</p>
-   <h2 class="heading settled" data-level="11" id="privacy"><span class="secno">11. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <h2 class="heading settled" data-level="12" id="privacy"><span class="secno">12. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>Untrusted scripts should not get uncontrolled access to a user’s
 	clipboard data. This specification assumes that granting access to the
 	current clipboard data when a user explicitly initiates a paste
@@ -2243,7 +2464,7 @@ it.</p>
 	by the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a></code> interface. For example, an implementation may
 	allow the user to disable this API, or configure which web sites should
 	be granted access to it.</p>
-   <h2 class="heading settled" data-level="12" id="acknowledge"><span class="secno">12. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
+   <h2 class="heading settled" data-level="13" id="acknowledge"><span class="secno">13. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
    <p><em>This section is informative</em></p>
    <p>The editors would like to acknowledge the contributions of the former
 	editors who helped shepherd this specification through various
@@ -2442,7 +2663,9 @@ read access to the OS clipboard</p>
                 <p>Ensure the text is in the encoding the
 scripting engine uses internally</p>
                <li data-md="">
-                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em></p>
+                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to <em>text/plain</em>.</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to the plain text.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2456,6 +2679,8 @@ references, then for each file reference:</p>
                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the
 corresponding MIME type, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to the file reference data.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2478,6 +2703,8 @@ another supported binary or text-based format (see <a data-link-type="dfn" href=
                 <p>Determine the MIME type of the data</p>
                <li data-md="">
                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransferitem">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string">drag data item type string</a> set to the corresponding MIME type</p>
+               <li data-md="">
+                <p>Set <var>new-data</var>’s data to be the binary or text-based data.</p>
                <li data-md="">
                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-items">items</a></code></p>
               </ol>
@@ -2661,8 +2888,10 @@ HTML code.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.2.1</span>
-   <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.2.2</span>
+   <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.3.1</span>
+   <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.3.2</span>
+   <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in §9.1.1</span>
+   <li><a href="#check-clipboard-write-permission">check clipboard write permission</a><span>, in §9.2.1</span>
    <li><a href="#clipboard">Clipboard</a><span>, in §7.2</span>
    <li>
     clipboard
@@ -2670,6 +2899,7 @@ HTML code.</p>
      <li><a href="#dom-navigator-clipboard">attribute for Navigator</a><span>, in §7.1</span>
      <li><a href="#navigator-clipboard">dfn for Navigator</a><span>, in §7.1.1</span>
     </ul>
+   <li><a href="#clipboardchange">clipboardchange</a><span>, in §5.2.1</span>
    <li>
     clipboardData
     <ul>
@@ -2678,14 +2908,17 @@ HTML code.</p>
      <li><a href="#dom-clipboardevent-clipboarddata">attribute for ClipboardEvent</a><span>, in §5.1</span>
      <li><a href="#clipboardevent-clipboarddata">dfn for ClipboardEvent</a><span>, in §5.1</span>
     </ul>
-   <li><a href="#clipboard-event">Clipboard event</a><span>, in §5.1</span>
    <li><a href="#clipboardevent">ClipboardEvent</a><span>, in §5.1</span>
    <li><a href="#dictdef-clipboardeventinit">ClipboardEventInit</a><span>, in §5.1</span>
+   <li><a href="#clipboard-events">Clipboard events</a><span>, in §5.2</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type)</a><span>, in §5.1</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type, eventInitDict)</a><span>, in §5.1</span>
+   <li><a href="#copy">copy</a><span>, in §5.2.2</span>
+   <li><a href="#cut">cut</a><span>, in §5.2.3</span>
    <li><a href="#editable-context">editable context</a><span>, in §3</span>
    <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in §Unnumbered section</span>
-   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §9</span>
+   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §10</span>
+   <li><a href="#paste">paste</a><span>, in §5.2.4</span>
    <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in §Unnumbered section</span>
    <li><a href="#dfn-processing-equivalence">processing equivalence</a><span>, in §Unnumbered section</span>
    <li>
@@ -2693,6 +2926,12 @@ HTML code.</p>
     <ul>
      <li><a href="#dom-clipboard-read">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-read">dfn for Clipboard</a><span>, in §7.2.1</span>
+    </ul>
+   <li>
+    readText()
+    <ul>
+     <li><a href="#dom-clipboard-readtext">method for Clipboard</a><span>, in §7.2</span>
+     <li><a href="#clipboard-readtext">dfn for Clipboard</a><span>, in §7.2.2</span>
     </ul>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §8</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in §8</span>
@@ -2703,7 +2942,13 @@ HTML code.</p>
     write(data)
     <ul>
      <li><a href="#dom-clipboard-write">method for Clipboard</a><span>, in §7.2</span>
-     <li><a href="#clipboard-write-data">dfn for Clipboard</a><span>, in §7.2.2</span>
+     <li><a href="#clipboard-write-data">dfn for Clipboard</a><span>, in §7.2.3</span>
+    </ul>
+   <li>
+    writeText(data)
+    <ul>
+     <li><a href="#dom-clipboard-writetext">method for Clipboard</a><span>, in §7.2</span>
+     <li><a href="#clipboard-writetext-data">dfn for Clipboard</a><span>, in §7.2.4</span>
     </ul>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -2749,6 +2994,8 @@ HTML code.</p>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
      <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
+     <li><a href="https://heycam.github.io/webidl/#Exposed">Exposed</a>
+     <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
      <li><a href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>
     </ul>
   </ul>
@@ -2792,12 +3039,14 @@ HTML code.</p>
 };
 
 <span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/webappapis.html#navigator">Navigator</a> {
-  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
+  [<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject">SameObject</a>] <span class="kt">readonly</span> <span class="kt">attribute</span> <a class="n" data-link-type="idl-name" href="#clipboard">Clipboard</a> <a class="nv" data-readonly="" data-type="Clipboard" href="#dom-navigator-clipboard">clipboard</a>;
 };
 
-[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
+[<a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>, <a class="nv idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed">Exposed</a>=<span class="n">Window</span>] <span class="kt">interface</span> <a class="nv" href="#clipboard">Clipboard</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a> {
   <span class="kt">Promise</span>&lt;<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a>> <a class="nv" href="#dom-clipboard-read">read</a>();
+  <span class="kt">Promise</span>&lt;<span class="kt">DOMString</span>> <a class="nv" href="#dom-clipboard-readtext">readText</a>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-write">write</a>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/interaction.html#datatransfer">DataTransfer</a> <a class="nv" href="#dom-clipboard-write-data-data">data</a>);
+  <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-writetext">writeText</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboard-writetext-data-data">data</a>);
 };
 
 </pre>
@@ -2819,8 +3068,8 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
   <aside class="dfn-panel" data-for="editable-context">
    <b><a href="#editable-context">#editable-context</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-editable-context-1">6.2. Overriding the cut event</a> <a href="#ref-for-editable-context-2">(2)</a>
-    <li><a href="#ref-for-editable-context-3">6.3. Overriding the paste event</a> <a href="#ref-for-editable-context-4">(2)</a>
+    <li><a href="#ref-for-editable-context-1">5.2.3. The cut event</a> <a href="#ref-for-editable-context-2">(2)</a>
+    <li><a href="#ref-for-editable-context-3">5.2.4. The paste event</a> <a href="#ref-for-editable-context-4">(2)</a>
     <li><a href="#ref-for-editable-context-5">8.2. The cut action</a>
     <li><a href="#ref-for-editable-context-6">8.3. The paste action</a>
    </ul>
@@ -2829,9 +3078,12 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <b><a href="#system-clipboard">#system-clipboard</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-system-clipboard-1">4. Model</a>
-    <li><a href="#ref-for-system-clipboard-2">6.1. Overriding the copy event</a> <a href="#ref-for-system-clipboard-3">(2)</a>
-    <li><a href="#ref-for-system-clipboard-4">6.2. Overriding the cut event</a> <a href="#ref-for-system-clipboard-5">(2)</a>
-    <li><a href="#ref-for-system-clipboard-6">6.3. Overriding the paste event</a>
+    <li><a href="#ref-for-system-clipboard-2">5.2.1. The clipboardchange event</a> <a href="#ref-for-system-clipboard-3">(2)</a>
+    <li><a href="#ref-for-system-clipboard-4">5.2.2. The copy event</a> <a href="#ref-for-system-clipboard-5">(2)</a>
+    <li><a href="#ref-for-system-clipboard-6">5.2.3. The cut event</a> <a href="#ref-for-system-clipboard-7">(2)</a>
+    <li><a href="#ref-for-system-clipboard-8">6.1. Overriding the copy event</a>
+    <li><a href="#ref-for-system-clipboard-9">6.2. Overriding the cut event</a>
+    <li><a href="#ref-for-system-clipboard-10">6.3. Overriding the paste event</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="system-clipboard-data">
@@ -2839,7 +3091,9 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <ul>
     <li><a href="#ref-for-system-clipboard-data-1">4. Model</a>
     <li><a href="#ref-for-system-clipboard-data-2">7.2.1. read()</a>
-    <li><a href="#ref-for-system-clipboard-data-3">7.2.2. write(data)</a>
+    <li><a href="#ref-for-system-clipboard-data-3">7.2.2. readText()</a>
+    <li><a href="#ref-for-system-clipboard-data-4">7.2.3. write(data)</a>
+    <li><a href="#ref-for-system-clipboard-data-5">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-clipboardeventinit">
@@ -2860,10 +3114,48 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
   <aside class="dfn-panel" data-for="dom-clipboardevent-clipboarddata">
    <b><a href="#dom-clipboardevent-clipboarddata">#dom-clipboardevent-clipboarddata</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-1">6. Synchronous Clipboard API</a>
-    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-2">6.1. Overriding the copy event</a>
-    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-3">6.2. Overriding the cut event</a> <a href="#ref-for-dom-clipboardevent-clipboarddata-4">(2)</a>
+    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-1">5.2.3. The cut event</a>
+    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-2">6. Synchronous Clipboard API</a>
+    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-3">6.1. Overriding the copy event</a>
+    <li><a href="#ref-for-dom-clipboardevent-clipboarddata-4">6.2. Overriding the cut event</a>
     <li><a href="#ref-for-dom-clipboardevent-clipboarddata-5">fire a clipboard event</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="clipboardchange">
+   <b><a href="#clipboardchange">#clipboardchange</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-clipboardchange-1">5.2.1. The clipboardchange event</a> <a href="#ref-for-clipboardchange-2">(2)</a>
+    <li><a href="#ref-for-clipboardchange-3">8.1. The copy action</a>
+    <li><a href="#ref-for-clipboardchange-4">8.2. The cut action</a> <a href="#ref-for-clipboardchange-5">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="copy">
+   <b><a href="#copy">#copy</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-copy-1">5.2.1. The clipboardchange event</a>
+    <li><a href="#ref-for-copy-2">5.2.2. The copy event</a> <a href="#ref-for-copy-3">(2)</a> <a href="#ref-for-copy-4">(3)</a>
+    <li><a href="#ref-for-copy-5">5.3.1. Event handlers that are allowed to modify the clipboard</a>
+    <li><a href="#ref-for-copy-6">6.1. Overriding the copy event</a> <a href="#ref-for-copy-7">(2)</a>
+    <li><a href="#ref-for-copy-8">8.1. The copy action</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="cut">
+   <b><a href="#cut">#cut</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cut-1">5.2.1. The clipboardchange event</a>
+    <li><a href="#ref-for-cut-2">5.2.3. The cut event</a> <a href="#ref-for-cut-3">(2)</a> <a href="#ref-for-cut-4">(3)</a> <a href="#ref-for-cut-5">(4)</a> <a href="#ref-for-cut-6">(5)</a>
+    <li><a href="#ref-for-cut-7">5.3.1. Event handlers that are allowed to modify the clipboard</a>
+    <li><a href="#ref-for-cut-8">6.2. Overriding the cut event</a> <a href="#ref-for-cut-9">(2)</a> <a href="#ref-for-cut-10">(3)</a>
+    <li><a href="#ref-for-cut-11">8.2. The cut action</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="paste">
+   <b><a href="#paste">#paste</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-paste-1">5.2.4. The paste event</a> <a href="#ref-for-paste-2">(2)</a> <a href="#ref-for-paste-3">(3)</a> <a href="#ref-for-paste-4">(4)</a>
+    <li><a href="#ref-for-paste-5">5.3.2. Event handlers that are allowed to read from clipboard</a>
+    <li><a href="#ref-for-paste-6">6.3. Overriding the paste event</a> <a href="#ref-for-paste-7">(2)</a> <a href="#ref-for-paste-8">(3)</a> <a href="#ref-for-paste-9">(4)</a>
+    <li><a href="#ref-for-paste-10">8.3. The paste action</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="allowed-to-modify-the-clipboard">
@@ -2896,10 +3188,36 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
     <li><a href="#ref-for-clipboard-read-1">7.2.1. read()</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="clipboard-readtext">
+   <b><a href="#clipboard-readtext">#clipboard-readtext</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-clipboard-readtext-1">7.2.2. readText()</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="clipboard-write-data">
    <b><a href="#clipboard-write-data">#clipboard-write-data</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-clipboard-write-data-1">7.2.2. write(data)</a>
+    <li><a href="#ref-for-clipboard-write-data-1">7.2.3. write(data)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="clipboard-writetext-data">
+   <b><a href="#clipboard-writetext-data">#clipboard-writetext-data</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-clipboard-writetext-data-1">7.2.4. writeText(data)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="check-clipboard-read-permission">
+   <b><a href="#check-clipboard-read-permission">#check-clipboard-read-permission</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-check-clipboard-read-permission-1">7.2.1. read()</a>
+    <li><a href="#ref-for-check-clipboard-read-permission-2">7.2.2. readText()</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="check-clipboard-write-permission">
+   <b><a href="#check-clipboard-write-permission">#check-clipboard-write-permission</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-check-clipboard-write-permission-1">7.2.3. write(data)</a>
+    <li><a href="#ref-for-check-clipboard-write-permission-2">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="mandatory-data-types">
@@ -2920,12 +3238,12 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
   <aside class="dfn-panel" data-for="fire-a-clipboard-event">
    <b><a href="#fire-a-clipboard-event">#fire-a-clipboard-event</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-fire-a-clipboard-event-1">6.1. Overriding the copy event</a>
-    <li><a href="#ref-for-fire-a-clipboard-event-2">6.2. Overriding the cut event</a>
-    <li><a href="#ref-for-fire-a-clipboard-event-3">6.3. Overriding the paste event</a>
-    <li><a href="#ref-for-fire-a-clipboard-event-4">8.1. The copy action</a>
-    <li><a href="#ref-for-fire-a-clipboard-event-5">8.2. The cut action</a>
-    <li><a href="#ref-for-fire-a-clipboard-event-6">8.3. The paste action</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-1">5.2.2. The copy event</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-2">5.2.3. The cut event</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-3">5.2.4. The paste event</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-4">8.1. The copy action</a> <a href="#ref-for-fire-a-clipboard-event-5">(2)</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-6">8.2. The cut action</a> <a href="#ref-for-fire-a-clipboard-event-7">(2)</a> <a href="#ref-for-fire-a-clipboard-event-8">(3)</a>
+    <li><a href="#ref-for-fire-a-clipboard-event-9">8.3. The paste action</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="process-an-html-paste-event">

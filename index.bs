@@ -123,9 +123,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 
-<h2 id="clipboard-events">Clipboard Events</h2>
+<h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
 
-	<h3 id="clipboard-event-interfaces"><dfn>Clipboard event</dfn> interfaces</h3>
+	<h3 id="clipboard-event-interfaces">Clipboard event interfaces</h3>
 
 		The ClipboardEvent interface extends the {{Event}} interface.
 
@@ -144,7 +144,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<div id="clipboardevent-idl">
 
 		<pre class="idl" data-highlight="webidl">
-		[Constructor(DOMString type, optional ClipboardEventInit eventInitDict)]
+		[Constructor(DOMString type, optional ClipboardEventInit eventInitDict), Exposed=Window]
 		interface ClipboardEvent : Event {
 		  readonly attribute DataTransfer? clipboardData;
 		};
@@ -183,6 +183,88 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		the clipboard! event.clipboardData.isTypeSupported('mime/type')</em>?
 		-->
 
+	<h3 id="clipboard-event-definitions"><dfn>Clipboard events</dfn></h3>
+
+		<h4 id="clipboard-event-clipboardchange">The <dfn>clipboardchange</dfn> event</h4>
+
+			The [=clipboardchange=] event fires whenever the contents of the
+			[=system clipboard=] are changed. These changes could be due to any of the
+			following (non-exhaustive):
+			
+			* User-initiated cut or copy actions
+			* Scripts that use the [[#async-clipboard-api]] to write to the clipboard
+			* Actions that update the clipboard outside the user agent
+
+			If the clipboard contents are changed outside the user agent, then the
+			[=clipboardchange=] event MUST fire when the user agent regains focus.
+			
+			Since synthetic [=cut=] and [=copy=] events do not update the [=system clipboard=],
+			they will not trigger a "clipboardchange" event.
+
+		<h4 id="clipboard-event-copy">The <dfn>copy</dfn> event</h4>
+
+			When the user initiates a copy action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=copy=].
+			
+			If the event is not canceled, the currently selected
+			data will be copied to the [=system clipboard=].
+			The current document selection is not affected.
+
+			The [=copy=] event bubbles and is cancelable.
+			
+			See [[#copy-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=copy=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the [=system clipboard=].
+
+		<h4 id="clipboard-event-cut">The <dfn>cut</dfn> event</h4>
+
+			When the user initiates a cut action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=cut=].
+			
+			In an [=editable context=], if the event is not
+			canceled the action will place the currently selected data on the
+			[=system clipboard=] and remove the selection from the document.
+			The [=cut=] event fires before the selected data is removed. When
+			the cut operation is completed, the selection is collapsed.
+
+			In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
+			be an empty list. Note that the [=cut=] event will still be fired
+			in this case.
+
+			The [=cut=] event bubbles and is cancelable.
+
+			See [[#cut-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=cut=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the document or of the [=system clipboard=].
+
+		<h4 id="clipboard-event-paste">The <dfn>paste</dfn> event</h4>
+
+			When a user initiates a paste action, the user agent
+			[=fire a clipboard event|fires a clipboard event=] named
+			[=paste=]. The event fires before any clipboard data is inserted
+			into the document.
+
+			If the cursor is in an [=editable context=], the paste action will
+			insert clipboard data in the most suitable format (if any) supported
+			for the given context.
+
+			The paste action has no effect in a non-[=editable context=],
+			but the [=paste=] event fires regardless.
+
+			The [=paste=] event bubbles and is cancelable.
+
+			See [[#paste-action]] for a detailed description of the processing model for
+			this event.
+			
+			A synthetic [=paste=] event can be manually constructed and dispatched, but it
+			will not affect the contents of the document.
+
 	<h3 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h3>
 
 		<h4 id="allow-modify-clipboard">Event handlers that are <dfn>allowed to modify the clipboard</dfn></h4>
@@ -202,7 +284,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			apps to modify the clipboard regardless of the origin of the scripting
 			thread.
 
-			Synthetic cut and copy events <em>must not</em> modify data on the
+			Synthetic [=cut=] and [=copy=] events <em>must not</em> modify data on the
 			system clipboard.
 
 		<h4 id="allow-read-clipboard">Event handlers that are <dfn>allowed to read from clipboard</dfn></h4>
@@ -218,7 +300,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			* The action that triggers the event is triggered in an app with
 				permissions to read the clipboard.
 
-			Synthetic paste events <em>must not</em> give a script access to data on
+			Synthetic [=paste=] events <em>must not</em> give a script access to data on
 			the real system clipboard.
 
 		<h4 id="integration-with-rich-text-editing">Integration with rich text editing APIs</h4>
@@ -283,14 +365,14 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 	<h3 id="override-copy">Overriding the copy event</h3>
 
-		When the user initiates a copy action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>copy</em>. If the event is not canceled, the currently selected
-		data will be copied to the [=system clipboard=].
-
-		The event bubbles and is cancelable.
-
-		The current document selection is not affected.
+		To override the default [=copy=] event behavior, a [=copy=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required in order for the [=system clipboard=] to be
+		updated with the data in {{ClipboardEvent/clipboardData}}.
+		If the {{ClipboardEvent}} is not canceled, then the data from the
+		current document selection will be copied instead.
 
 		<pre class="example javascript">
 		// Overwrite what is being copied to the clipboard.
@@ -306,29 +388,22 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event in order for the [=system clipboard=] to be updated with the
-		data in {{ClipboardEvent/clipboardData}}.
+	<h3 id="override-cut">Overriding the cut event</h3>
+
+		To override the default [=cut=] event behavior, a [=cut=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required in order for the [=system clipboard=] to be
+		updated with the data in {{ClipboardEvent/clipboardData}}.
 		If the {{ClipboardEvent}} is not canceled, then the data from the
 		current document selection will be copied instead.
 
-	<h3 id="override-cut">Overriding the cut event</h3>
-
-		When the user initiates a cut action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>cut</em>. In an [=editable context=], if the event is not
-		canceled the action will place the currently selected data on the
-		[=system clipboard=] and remove the selection from the document.
-
-		The event bubbles and is cancelable.
-
-		The <em>cut</em> event fires before the selected data is removed. When
-		the cut operation is completed, the selection is collapsed.
-
-		In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
-		be an empty list. Not that the <em>cut</em> event will still be fired
-		in this case.
-
+		Note that canceling the [=cut=] event will also prevent the document from
+		being updated (i.e., the current selection will not be removed). The event
+		handler will need to manually update the document to remove the currently
+		selected text.
+		
 		<pre class="example javascript">
 		// Overwrite what is copied to the clipboard.
 		document.addEventListener('cut', function(e) {
@@ -348,31 +423,22 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event in order for the [=system clipboard=] to be updated with the
-		data in {{ClipboardEvent/clipboardData}}.
-		If the {{ClipboardEvent}} is not canceled, then the data from the
-		current document selection will be copied instead.
-
 	<h3 id="override-paste">Overriding the paste event</h3>
 
-		When a user initiates a paste action, the user agent
-		[=fire a clipboard event|fires a clipboard event=] named
-		<em>paste</em>. The event fires before any clipboard data is inserted
-		into the document.
+		To override the default [=paste=] event behavior, a [=paste=] event
+		handler must be added and this event handler must call
+		{{Event/preventDefault()}} to cancel the event.
+		
+		Canceling the event is required so that the user agent does not update the
+		document with data from the [=system clipboard=].
 
-		The event bubbles and is cancelable.
-
-		If the cursor is in an [=editable context=], the paste action will
-		insert clipboard data in the most suitable format (if any) supported
-		for the given context.
-
-		The paste action has no effect in a non-[=editable context=],
-		but the event fires regardless.
-
-		When pasting, the [=drag data store mode=] flag is
+		Note that canceling the [=paste=] event will also prevent the document from
+		being updated (i.e., nothing will be pasted into the document). The event
+		handler will need to manually paste the data into the document.
+		
+		Also note that, when pasting, the [=drag data store mode=] flag is
 		<a lt="concept dnd ro">read/only</a>, hence calling {{DataTransfer/setData()}} from a
-		<em>paste</em> event handler will not modify the data that is
+		[=paste=] event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.
 
 		<pre class="example javascript">
@@ -381,7 +447,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			// e.clipboardData contains the data that is about to be pasted.
 			if (e.clipboardData.types.indexOf('text/html') > -1) {
 				var oldData = e.clipboardData.getData('text/html');
-				var newData = '<b>Ha Ha!</b> ' + oldData;
+				var newData = '&lt;b&gt;Ha Ha!&lt;/b&gt; ' + oldData;
 
 				// Since we are canceling the paste operation, we need to manually
 				// paste the data into the document.
@@ -393,9 +459,6 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		});
 		</pre>
 
-		Note: The event handler must call {{Event/preventDefault()}} to cancel
-		the event so that the user agent does not update the document with data
-		from the [=system clipboard=].
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -404,7 +467,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 		<pre class="idl" data-highlight="webidl">
 		partial interface Navigator {
-		  [SecureContext] readonly attribute Clipboard clipboard;
+		  [SecureContext, SameObject] readonly attribute Clipboard clipboard;
 		};
 		</pre>
 
@@ -420,9 +483,11 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
 		<pre class="idl" data-highlight="webidl">
-		[SecureContext] interface Clipboard : EventTarget {
+		[SecureContext, Exposed=Window] interface Clipboard : EventTarget {
 		  Promise&lt;DataTransfer> read();
+		  Promise&lt;DOMString> readText();
 		  Promise&lt;void> write(DataTransfer data);
+		  Promise&lt;void> writeText(DOMString data);
 		};
 		</pre>
 
@@ -434,7 +499,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 			1. Let |p| be a new [=Promise=].
 
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			1. If the result of [=check clipboard read permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -450,7 +515,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				navigator.clipboard.read().then(function(data) {
 					for (var i = 0; i < data.items.length; i++) {
 						if (data.items[i].type == "text/plain") {
-							console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+							console.log(“Your string: ”, data.items[i].getAs(“text/plain”));
 						} else {
 							console.error(“No text/plain data on clipboard.”);
 						}
@@ -458,15 +523,47 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				});
 			</pre>
 
-		</div>
+		</div><!-- read() -->
+
+		<div class="algorithm" data-algorithm="clipboard-readtext">
+		<h4 id="h-clipboard-readtext"><dfn>readText()</dfn></h4>
+		The [=readText()=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. If the result of [=check clipboard read permission=] is false, then reject |p|
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |data| be a copy of the [=system clipboard data=].
+				
+				1. Let |textData| be an empty string.
+				
+				1. If |data|'s {{DataTransfer/items}} list contains a "text/plain" item |textItem|, then:
+				
+					1. Set |textData| to be a copy of |textItem|'s string data
+
+				1. Resolve |p| with |textData|.
+
+			1. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				navigator.clipboard.read().then(function(data) {
+					console.log(“Your string: ”, data);
+				});
+			</pre>
+
+		</div><!-- readText() -->
 
 		<div class="algorithm" data-algorithm="clipboard-write">
 		<h4 id="h-clipboard-write-data"><dfn>write(|data|)</dfn></h4>
 		The [=write(data)=] method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
-
-			1. TODO: Handle access permissions. Reject promise if not allowed.
+			
+			1. If the result of [=check clipboard write permission=] is false, then reject |p|
 
 			1. Run the following steps [=in parallel=]:
 
@@ -499,14 +596,53 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				});
 			</pre>
 
-		</div>
+		</div><!-- write() -->
 
+		<div class="algorithm" data-algorithm="clipboard-writetext">
+		<h4 id="h-clipboard-writetext-data"><dfn>writeText(|data|)</dfn></h4>
+		The [=writeText(data)=] method must run these steps:
+
+			1. Let |p| be a new [=Promise=].
+
+			1. If the result of [=check clipboard write permission=] is false, then reject |p|
+
+			1. Run the following steps [=in parallel=]:
+
+				1. Let |newItemList| be an empty {{DataTransferItemList}}.
+
+				1. Let |newItem| be a new {{DataTransferItem}} with
+					[=drag data item kind=] set to <em>string</em> and
+					[=drag data item type string=] set to <em>text/plain</em>.
+					
+				1. Set |newItem|'s data to |data|.
+
+				1. Add |newItem| to |newItemList|.
+
+				1. Replace the [=system clipboard data=]'s {{DataTransfer/items}}
+					list with |newItemList|.
+
+				1. Resolve |p|.
+
+			1. Return |p|.
+
+			<div></div>
+
+			<pre class="example javascript">
+				navigator.clipboard.writeText("Howdy, partner!").then(function() {
+					console.log(“Copied to clipboard successfully!”);
+				}, function() {
+					console.error(“Unable to write to clipboard. :-(”);
+				});
+			</pre>
+
+		</div><!-- writeText() -->
+		
 		</div><!-- dfn-for Clipboard -->
 
 
 <h2 id="clipboard-actions">Clipboard Actions</h2>
 
-	This section defines clipboard actions and events and the processing model
+	This section defines clipboard actions and the processing model
 	for event dispatch.
 
 	Each clipboard action has two flags called <em>script-triggered</em> and
@@ -546,13 +682,15 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Return false from the copy action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named <em>copy</em>
+		1. [=Fire a clipboard event=] named [=copy=]
 
 		1. If the event was not canceled, then
 
 			1. Copy the selected contents, if any, to the clipboard.
 				Implementations <em>should</em> create alternate text/html and
 				text/plain clipboard formats when content in a web page is selected.
+
+			1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 		1. Else, if the event was canceled, then
 
@@ -577,7 +715,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Return false from the cut action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named <em>cut</em>
+		1. [=Fire a clipboard event=] named [=cut=]
 
 		1. If the event was not canceled, then
 
@@ -591,6 +729,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 				1. Remove the contents of the selection from the document
 					and collapse the selection.
+
+				1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 				1. Queue tasks to fire any events that should fire due to the
 					modification, see
@@ -607,6 +747,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				passing on the {{DataTransferItemList}} list <em>items</em>,
 				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 				list.
+
+			1. [=Fire a clipboard event=] named [=clipboardchange=]
 
 		1. Return true from the cut action
 
@@ -634,7 +776,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 				1. Return false from the paste action, terminate this algorithm
 
 		1. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
-			named <em>paste</em>
+			named [=paste=]
 
 		1. If the event was not canceled, then
 
@@ -657,6 +799,82 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 			1. Return false
 
 		1. Return true from the action
+
+		</div><!-- algorithm -->
+
+
+<h2 id="clipboard-permissions">Clipboard Permissions</h2>
+
+	This section defines how the clipboard permissions control access
+	to the clipboard APIs.
+	
+	Note: Clipboard permissions currently only apply to the Async Clipboard API.
+	This will updated in a future version of this specification (so it applies to all
+	Clipboard interactions).
+
+	<h3 id="read-permission">Clipboard read permission</h3>
+
+		<div class="algorithm" data-algorithm="clipboard-read-permission">
+		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
+
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
+		
+		1. If |fullAccess| is "denied", then return false.
+
+		1. If |fullAccess| is "granted", then return true.
+
+		1. If |fullAccess| is "prompt", then
+		
+			<!-- System paste buttons don't require permission -->
+			1. Let |systemPaste| be true if the current script is running as a result of user
+				interaction with a "Paste" element created by the user agent or operating
+				system.
+		
+			1. If |systemPaste| is true, then return true.
+			
+			1. Query the user for full access to the clipboard.
+			
+			1. Set |fullAccess| be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.
+		
+		1. If |fullAccess| is "granted", then return true.
+
+		1. Return false.
+
+		</div><!-- algorithm -->
+
+	<h3 id="write-permission">Clipboard write permission</h3>
+
+		<div class="algorithm" data-algorithm="clipboard-write-permission">
+		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
+
+		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
+
+		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.
+
+		<!-- If full access is granted, then don't require a user gesture for writes. 
+			This is to allow backwards compat with current gesture requirements, while
+			permitting full-access to grant access without a gesture. -->
+		1. If |fullAccess| is "granted", then return true.
+
+		<!-- User has explicitly denied write access. We respect that. -->
+		1. If |writeAccess| is "denied", then return false.
+
+		<!-- User gesture is still required for backwards compat. Even if granted.
+			This to allow Write permission to be more easily granted by default by the UA. -->
+		1. If the current script is not running as a result of direct user action, then return false.
+		
+			Note: This is for backwards compatibility with existing clipboard access
+			requirements that require a user gesture to prevent abuse of the API.
+
+		1. If |writeAccess| is "prompt", then
+
+			1. Query the user for write access to the clipboard.
+			
+			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.
+		
+		1. If |writeAccess| is "granted", then return true.
+
+		1. Return false.
 
 		</div><!-- algorithm -->
 
@@ -1007,7 +1225,9 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 
 							1. Let |new-data| be a new {{DataTransferItem}} with
 								[=drag data item kind=] set to <em>string</em> and
-								[=drag data item type string=] set to <em>text/plain</em>
+								[=drag data item type string=] set to <em>text/plain</em>.
+
+							1. Set |new-data|'s data to the plain text.
 
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
@@ -1023,6 +1243,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 								<code>application/octet-stream</code> if the
 								file's type is unknown.
 
+							1. Set |new-data|'s data to the file reference data.
+							
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
 						1. If |clipboard-part| contains HTML- or
@@ -1045,6 +1267,8 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 								with [=drag data item kind=] set to
 								<em>file</em>, [=drag data item type string=]
 								set to the corresponding MIME type
+							
+							1. Set |new-data|'s data to be the binary or text-based data.
 
 							1. Add |new-data| to |clipboard-event-data|'s {{DataTransfer/items}}
 
