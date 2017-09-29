@@ -14,6 +14,7 @@ Editor: Hallvord R. M. Steen, Mozilla - emeritus
 Abstract:
 	This document describes APIs for clipboard operations such as copy, cut and
     paste in web applications.
+Status Text: <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/clipboard-apis">https://github.com/w3c/clipboard-apis</a>.</strong> </p>
 </pre>
 
 <pre class="anchors">
@@ -93,7 +94,7 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 	<h3 id="graphics-semantics">Graphics with built-in semantics</h3>
 
 		In order to make web applications which allow the manipulation of rich
-		text, or of graphic content such as [[SVG]], it is useful to provide a
+		text, or of graphic content such as [[SVG11]], it is useful to provide a
 		mechanism that allows for copying more than just the rendered content.
 
 	<h3 id="Mathematic">Mathematical information</h3>
