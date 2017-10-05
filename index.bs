@@ -9,7 +9,7 @@ TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
 Repository: w3c/clipboard-apis
 Editor: Gary Kacmarcik, Google, garykac@google.com
-Editor: Grisha Lyukshin, Microsoft, gked@microsoft.com
+Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com
 Editor: Hallvord R. M. Steen, Mozilla - emeritus
 Abstract:
 	This document describes APIs for clipboard operations such as copy, cut and
