@@ -1177,9 +1177,9 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 4d549d160154c50f1bf2363e39ca11c198c5f511" name="generator">
+  <meta content="Bikeshed version 2d63ad75df4c3282ed7d8d3fb42b0c483a131ce1" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="3fc0391895d08585f040c5384f1500e8421c5f4c" name="document-revision">
+  <meta content="fa63edde81afad754c5bb2d9e500f91b3f1ccc99" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1426,7 +1426,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-05">5 October 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-12">12 October 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1459,7 +1459,7 @@ paste in web applications.</p>
    <p></p>
    <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/clipboard-apis">https://github.com/w3c/clipboard-apis</a>.</strong> </p>
    <p></p>
-   <p> Feedback and comments on this specification are welcome, please send them to <a href="mailto:public-webapps@w3.org?subject=%5Bclipboard-apis%5D">public-webapps@w3.org</a> (<a href="mailto:public-webapps@w3.org?subject=subscribe">subscribe</a>, <a href="https://lists.w3.org/Archives/Public/public-webapps/">archives</a>) with <code>%5Bclipboard-apis%5D</code> at the start of your email’s subject. </p>
+   <p> Feedback and comments on this specification are welcome, please send them to <a href="mailto:public-webapps@w3.org?subject=%5Bclipboard-apis%5D">public-webapps@w3.org</a> (<a href="mailto:public-webapps@w3.org?subject=subscribe">subscribe</a>, <a href="https://lists.w3.org/Archives/Public/public-webapps/">archives</a>) with <code>[clipboard-apis]</code> at the start of your email’s subject. </p>
    <p> Publication as an Editors Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may
     be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
     this document as other than work in progress. </p>
@@ -1534,7 +1534,7 @@ paste in web applications.</p>
       <li><a href="#paste-action"><span class="secno">8.3</span> <span class="content">The paste action</span></a>
      </ol>
     <li>
-     <a href="#clipboard-permissions"><span class="secno">9</span> <span class="content">Clipboard Permissions</span></a>
+     <a href="#clipboard-permissions"><span class="secno">9</span> <span class="content">Permissions API Integration</span></a>
      <ol class="toc">
       <li>
        <a href="#read-permission"><span class="secno">9.1</span> <span class="content">Clipboard read permission</span></a>
@@ -2218,250 +2218,364 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
       <p>Return true from the action</p>
     </ol>
    </div>
-   <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Clipboard Permissions</span><a class="self-link" href="#clipboard-permissions"></a></h2>
-   <p>This section defines how the clipboard permissions control access
-	to the clipboard APIs.</p>
+   <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Permissions API Integration</span><a class="self-link" href="#clipboard-permissions"></a></h2>
+   <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to request permissions
+	from users and query which permissions they have.</p>
    <p class="note" role="note"><span>Note:</span> Clipboard permissions currently only apply to the Async Clipboard API.
-	This will updated in a future version of this specification (so it applies to all
-	Clipboard interactions).</p>
-   <h3 class="heading settled" data-level="9.1" id="read-permission"><span class="secno">9.1. </span><span class="content">Clipboard read permission</span><a class="self-link" href="#read-permission"></a></h3>
-   <div class="algorithm" data-algorithm="clipboard-read-permission">
-    <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
-    <ol>
+	Future versions of this specification may be updated to apply this permission
+	to other Clipboard interactions.</p>
+   <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export="" id="dom-permissionname-clipboard"><code>"clipboard"</code><a class="self-link" href="#dom-permissionname-clipboard"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature">powerful feature</a>’s
+	permission-related algorithms and types
+	are defined as follows:</p>
+   <dl>
+    <dt> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-descriptor-type" id="ref-for-permission-descriptor-type">permission descriptor type</a> 
+    <dd>
+<pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-clipboardpermissionaccess"><code>ClipboardPermissionAccess</code></dfn> {
+  <dfn class="s idl-code" data-dfn-for="ClipboardPermissionAccess" data-dfn-type="enum-value" data-export="" data-lt="&quot;read&quot;|read" id="dom-clipboardpermissionaccess-read"><code>"read"</code><a class="self-link" href="#dom-clipboardpermissionaccess-read"></a></dfn>,
+  <dfn class="s idl-code" data-dfn-for="ClipboardPermissionAccess" data-dfn-type="enum-value" data-export="" data-lt="&quot;write&quot;|write" id="dom-clipboardpermissionaccess-write"><code>"write"</code><a class="self-link" href="#dom-clipboardpermissionaccess-write"></a></dfn>,
+};
+
+<span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-clipboardpermissiondescriptor"><code>ClipboardPermissionDescriptor</code></dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor" id="ref-for-dictdef-permissiondescriptor">PermissionDescriptor</a> {
+  <a class="n" data-link-type="idl-name" href="#enumdef-clipboardpermissionaccess" id="ref-for-enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</a> <dfn class="nv idl-code" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export="" data-type="ClipboardPermissionAccess " id="dom-clipboardpermissiondescriptor-access"><code>access</code><a class="self-link" href="#dom-clipboardpermissiondescriptor-access"></a></dfn>;
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean"><span class="kt">boolean</span></a> <dfn class="nv idl-code" data-default="true" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export="" data-type="boolean " id="dom-clipboardpermissiondescriptor-requiregesture"><code>requireGesture</code><a class="self-link" href="#dom-clipboardpermissiondescriptor-requiregesture"></a></dfn> = <span class="kt">true</span>;
+};
+</pre>
+    <p>The <code class="idl"><a data-link-type="idl" href="#dictdef-clipboardpermissiondescriptor" id="ref-for-dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a></code> defines 4 clipboard permissions:</p>
+    <ul>
      <li data-md="">
-      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
+      <p>{ access: "read", requireGesture: true }</p>
      <li data-md="">
-      <p>If <var>fullAccess</var> is "denied", then return false.</p>
+      <p>{ access: "read", requireGesture: false }</p>
      <li data-md="">
-      <p>If <var>fullAccess</var> is "granted", then return true.</p>
+      <p>{ access: "write", requireGesture: true }</p>
      <li data-md="">
-      <p>If <var>fullAccess</var> is "prompt", then</p>
-      <ol>
-       <li data-md="">
-        <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
+      <p>{ access: "write", requireGesture: false }</p>
+    </ul>
+    <p>With the following relationships:</p>
+    <ul>
+     <li data-md="">
+      <p><code>"read" + true</code> is stronger than <code>"read" + false</code></p>
+     <li data-md="">
+      <p><code>"write" + true</code> is stronger than <code>"write" + false</code></p>
+    </ul>
+    <p>"read" access is not inherently stronger than "write" access, although user agents
+	MAY choose to impose such a strength ordering. Doing this would effectively turn
+	"read" access into a "full" access since granting (or denying) "read" would also
+	grant (deny) "write" access.</p>
+    <p>While user agents MUST support the <code class="idl"><a data-link-type="idl" href="#dictdef-clipboardpermissiondescriptor" id="ref-for-dictdef-clipboardpermissiondescriptor①">ClipboardPermissionDescriptor</a></code> as described
+	in this specification, they, of course, retain complete control over the default
+	settings and how they are exposed to the user.</p>
+    <div class="example" id="example-3b9f39f8">
+     <a class="self-link" href="#example-3b9f39f8"></a> A user agent that wants to have separate read and write controls over the clipboad
+		and always require a user gesture would handle each descriptor as follows: 
+     <ul>
+      <li data-md="">
+       <p><code class="perm">"read" + true</code> is exposed for user control</p>
+      <li data-md="">
+       <p><code class="perm">"read" + false</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></p>
+      <li data-md="">
+       <p><code class="perm">"write" + true</code> is exposed for user control</p>
+      <li data-md="">
+       <p><code class="perm">"write" + false</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied①">denied</a></p>
+     </ul>
+    </div>
+    <div class="example" id="example-9f749d62">
+     <a class="self-link" href="#example-9f749d62"></a> A user agent that wants to automatically grant "write" access (with a gesture),
+		but have a single permission that controls full gesture-less access would
+		define "read" as being stronger than "write" and then handle each descriptor as
+		follows: 
+     <ul>
+      <li data-md="">
+       <p><code class="perm">"read" + true</code> is exposed for user control</p>
+      <li data-md="">
+       <p><code class="perm">"read" + false</code> is inherited from <code class="perm">"read" + true</code></p>
+      <li data-md="">
+       <p><code class="perm">"write" + true</code> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted">granted</a> by default, but
+may be overridden by <code class="perm">"read" + true</code></p>
+      <li data-md="">
+       <p><code class="perm">"write" + false</code> is inherited from <code class="perm">"write" + true</code></p>
+     </ul>
+    </div>
+    <h3 class="heading settled" data-level="9.1" id="read-permission"><span class="secno">9.1. </span><span class="content">Clipboard read permission</span><a class="self-link" href="#read-permission"></a></h3>
+    <div class="algorithm" data-algorithm="clipboard-read-permission">
+     <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
+     <ol>
+      <li data-md="">
+       <p>Let <var>readWithoutGesture</var> be the current value of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+      <li data-md="">
+       <p>Let <var>readWithGesture</var> be the current value of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+      <li data-md="">
+       <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
+direct user action, false otherwise.</p>
+      <li data-md="">
+       <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted①">granted</a>, then return true.</p>
+      <li data-md="">
+       <p>If <var>hasGesture</var> then,</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>systemPaste</var> be true if the current script is running as a result of user
 interaction with a "Paste" element created by the user agent or operating
 system.</p>
-       <li data-md="">
-        <p>If <var>systemPaste</var> is true, then return true.</p>
-       <li data-md="">
-        <p>Query the user for full access to the clipboard.</p>
-       <li data-md="">
-        <p>Set <var>fullAccess</var> be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
-      </ol>
-     <li data-md="">
-      <p>If <var>fullAccess</var> is "granted", then return true.</p>
-     <li data-md="">
-      <p>Return false.</p>
-    </ol>
-   </div>
-   <h3 class="heading settled" data-level="9.2" id="write-permission"><span class="secno">9.2. </span><span class="content">Clipboard write permission</span><a class="self-link" href="#write-permission"></a></h3>
-   <div class="algorithm" data-algorithm="clipboard-write-permission">
-    <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
-    <ol>
-     <li data-md="">
-      <p>Let <var>fullAccess</var> be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.</p>
-     <li data-md="">
-      <p>Let <var>writeAccess</var> be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
-     <li data-md="">
-      <p>If <var>fullAccess</var> is "granted", then return true.</p>
-     <li data-md="">
-      <p>If <var>writeAccess</var> is "denied", then return false.</p>
-     <li data-md="">
-      <p>If the current script is not running as a result of direct user action, then return false.</p>
-      <p class="note" role="note"><span>Note:</span> This is for backwards compatibility with existing clipboard access
-requirements that require a user gesture to prevent abuse of the API.</p>
-     <li data-md="">
-      <p>If <var>writeAccess</var> is "prompt", then</p>
-      <ol>
-       <li data-md="">
-        <p>Query the user for write access to the clipboard.</p>
-       <li data-md="">
-        <p>Set <var>writeAccess</var> be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.</p>
-      </ol>
-     <li data-md="">
-      <p>If <var>writeAccess</var> is "granted", then return true.</p>
-     <li data-md="">
-      <p>Return false.</p>
-    </ol>
-   </div>
-   <h2 class="heading settled" data-level="10" id="mandatory-data-types-x"><span class="secno">10. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
-   <p>The implementation must recognise the native OS clipboard format description
+        <li data-md="">
+         <p>If <var>systemPaste</var> is true, then return true.</p>
+        <li data-md="">
+         <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt">prompt</a>, then,</p>
+         <ol>
+          <li data-md="">
+           <p>Query the user for <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+          <li data-md="">
+           <p>Set <var>readWithGesture</var> be the updated value of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+         </ol>
+        <li data-md="">
+         <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted②">granted</a>, then return true.</p>
+       </ol>
+      <li data-md="">
+       <p>Else</p>
+       <ol>
+        <li data-md="">
+         <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt①">prompt</a>, then,</p>
+         <ol>
+          <li data-md="">
+           <p>Query the user for <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+          <li data-md="">
+           <p>Set <var>readWithoutGesture</var> be the updated value of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+         </ol>
+        <li data-md="">
+         <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted③">granted</a>, then return true.</p>
+       </ol>
+      <li data-md="">
+       <p>Return false</p>
+     </ol>
+    </div>
+    <h3 class="heading settled" data-level="9.2" id="write-permission"><span class="secno">9.2. </span><span class="content">Clipboard write permission</span><a class="self-link" href="#write-permission"></a></h3>
+    <div class="algorithm" data-algorithm="clipboard-write-permission">
+     <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
+     <ol>
+      <li data-md="">
+       <p>Let <var>writeWithoutGesture</var> be the current value of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+      <li data-md="">
+       <p>Let <var>writeWithGesture</var> be the current value of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+      <li data-md="">
+       <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
+direct user action, false otherwise.</p>
+      <li data-md="">
+       <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted④">granted</a>, then return true.</p>
+      <li data-md="">
+       <p>If <var>hasGesture</var> then,</p>
+       <ol>
+        <li data-md="">
+         <p>Let <var>systemCopy</var> be true if the current script is running as a result of user
+interaction with a "cut" or "copy" element created by the user agent or operating
+system.</p>
+        <li data-md="">
+         <p>If <var>systemCopy</var> is true, then return true.</p>
+        <li data-md="">
+         <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt②">prompt</a>, then,</p>
+         <ol>
+          <li data-md="">
+           <p>Query the user for <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+          <li data-md="">
+           <p>Set <var>writeWithGesture</var> be the updated value of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+         </ol>
+        <li data-md="">
+         <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted⑤">granted</a>, then return true.</p>
+       </ol>
+      <li data-md="">
+       <p>Else</p>
+       <ol>
+        <li data-md="">
+         <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt③">prompt</a>, then,</p>
+         <ol>
+          <li data-md="">
+           <p>Query the user for <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+          <li data-md="">
+           <p>Set <var>writeWithoutGesture</var> be the updated value of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+         </ol>
+        <li data-md="">
+         <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted⑥">granted</a>, then return true.</p>
+       </ol>
+      <li data-md="">
+       <p>Return false</p>
+     </ol>
+    </div>
+    <h2 class="heading settled" data-level="10" id="mandatory-data-types-x"><span class="secno">10. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
+    <p>The implementation must recognise the native OS clipboard format description
 	for the following data types, to be able to populate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist④">DataTransferItemList</a></code> with the correct description for paste events, and
 	set the correct data format on the OS clipboard in response to copy and cut
 	events.</p>
-   <h3 class="heading settled" data-level="10.1" id="reading-from-clipboard"><span class="secno">10.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
-   <p>These data types must be exposed by <em>paste</em> events if a
+    <h3 class="heading settled" data-level="10.1" id="reading-from-clipboard"><span class="secno">10.1. </span><span class="content">Reading from the clipboard</span><a class="self-link" href="#reading-from-clipboard"></a></h3>
+    <p>These data types must be exposed by <em>paste</em> events if a
 		corresponding native type exists on the clipboard:</p>
-   <ul>
-    <li data-md="">
-     <p>text/plain</p>
-    <li data-md="">
-     <p>text/uri-list</p>
-    <li data-md="">
-     <p>text/csv</p>
-    <li data-md="">
-     <p>text/css</p>
-    <li data-md="">
-     <p>text/html</p>
-    <li data-md="">
-     <p>application/xhtml+xml</p>
-    <li data-md="">
-     <p>image/png</p>
-    <li data-md="">
-     <p>image/jpg, image/jpeg</p>
-    <li data-md="">
-     <p>image/gif</p>
-    <li data-md="">
-     <p>image/svg+xml</p>
-    <li data-md="">
-     <p>application/xml, text/xml</p>
-    <li data-md="">
-     <p>application/javascript</p>
-    <li data-md="">
-     <p>application/json</p>
-    <li data-md="">
-     <p>application/octet-stream</p>
-   </ul>
-   <h3 class="heading settled" data-level="10.2" id="writing-to-clipboard"><span class="secno">10.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
-   <p>These data types must be placed on the clipboard with a corresponding
+    <ul>
+     <li data-md="">
+      <p>text/plain</p>
+     <li data-md="">
+      <p>text/uri-list</p>
+     <li data-md="">
+      <p>text/csv</p>
+     <li data-md="">
+      <p>text/css</p>
+     <li data-md="">
+      <p>text/html</p>
+     <li data-md="">
+      <p>application/xhtml+xml</p>
+     <li data-md="">
+      <p>image/png</p>
+     <li data-md="">
+      <p>image/jpg, image/jpeg</p>
+     <li data-md="">
+      <p>image/gif</p>
+     <li data-md="">
+      <p>image/svg+xml</p>
+     <li data-md="">
+      <p>application/xml, text/xml</p>
+     <li data-md="">
+      <p>application/javascript</p>
+     <li data-md="">
+      <p>application/json</p>
+     <li data-md="">
+      <p>application/octet-stream</p>
+    </ul>
+    <h3 class="heading settled" data-level="10.2" id="writing-to-clipboard"><span class="secno">10.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h3>
+    <p>These data types must be placed on the clipboard with a corresponding
 		native type description if added to a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑧">DataTransfer</a></code> object during <em>copy</em> and <em>cut</em> events.</p>
-   <ul>
-    <li data-md="">
-     <p>text/plain</p>
-    <li data-md="">
-     <p>text/uri-list</p>
-    <li data-md="">
-     <p>text/csv</p>
-    <li data-md="">
-     <p>text/html</p>
-    <li data-md="">
-     <p>image/svg+xml</p>
-    <li data-md="">
-     <p>application/xml, text/xml</p>
-    <li data-md="">
-     <p>application/json</p>
-   </ul>
-   <p><strong class="advisement"> Warning! The data types that untrusted scripts are allowed to write to the
+    <ul>
+     <li data-md="">
+      <p>text/plain</p>
+     <li data-md="">
+      <p>text/uri-list</p>
+     <li data-md="">
+      <p>text/csv</p>
+     <li data-md="">
+      <p>text/html</p>
+     <li data-md="">
+      <p>image/svg+xml</p>
+     <li data-md="">
+      <p>application/xml, text/xml</p>
+     <li data-md="">
+      <p>application/json</p>
+    </ul>
+    <p><strong class="advisement"> Warning! The data types that untrusted scripts are allowed to write to the
 		clipboard are limited as a security precaution. Untrusted scripts can
 		attempt to exploit security vulnerabilities in local software by placing
 		data known to trigger those vulnerabilities on the clipboard.</strong></p>
-   <h2 class="heading settled" data-level="11" id="security"><span class="secno">11. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
-   <p>Enabling authors to change what is copied by a user, or to make an automated
+    <h2 class="heading settled" data-level="11" id="security"><span class="secno">11. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+    <p>Enabling authors to change what is copied by a user, or to make an automated
 	copy of something that was never selected and allowing unrestricted calls to
 	paste information can raise various security and privacy concerns.</p>
-   <p>An example scenario of a problem is where a user selects a link and copies
+    <p>An example scenario of a problem is where a user selects a link and copies
 	it, but a different link is copied to the clipboard. The effect of this can
 	range from an unexpected result on pasting to an attempted "phishing" attack.</p>
-   <h3 class="heading settled" data-level="11.1" id="pasting-html"><span class="secno">11.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
-   <p><em>This section is non-normative.</em></p>
-   <p>There are certain security risks associated with pasting formatted or
+    <h3 class="heading settled" data-level="11.1" id="pasting-html"><span class="secno">11.1. </span><span class="content">Pasting HTML and multi-part data</span><a class="self-link" href="#pasting-html"></a></h3>
+    <p><em>This section is non-normative.</em></p>
+    <p>There are certain security risks associated with pasting formatted or
 		multi-part data.</p>
-   <ul>
-    <li data-md="">
-     <p>The user might paste hidden data without realising is there. This may
+    <ul>
+     <li data-md="">
+      <p>The user might paste hidden data without realising is there. This may
 happen if, for example, the markup includes
 &lt;input type="hidden"> tags or HTML comments. Such hidden data
 might contain sensitive information.</p>
-    <li data-md="">
-     <p>The user might paste malicious JavaScript into a trusted page.</p>
-    <li data-md="">
-     <p>The implementation might grant scripts access to local files the user
+     <li data-md="">
+      <p>The user might paste malicious JavaScript into a trusted page.</p>
+     <li data-md="">
+      <p>The implementation might grant scripts access to local files the user
 did not intend to expose.</p>
-   </ul>
-   <p>To determine what policies to use, the factors we consider are:</p>
-   <ul>
-    <li data-md="">
-     <p>The origin of the data being pasted</p>
-    <li data-md="">
-     <p>The origin of data sub-parts such as referenced images</p>
-    <li data-md="">
-     <p>The origin of the running script</p>
-   </ul>
-   <p>This is an overview of the scenarios and the possible security policies:</p>
-   <table class="simple">
-    <tbody>
-     <tr>
-      <th>Origin of data
-      <th>Origin of script
-      <th>Rules
-     <tr>
-      <td rowspan="2">Originates from online source
-      <td>Same as data
-      <td>Do not sanitize HTML. Do not access any local files.
-     <tr>
-      <td>Different origin
-      <td>Optionally sanitize content. Do not access any local files.
-     <tr>
-      <td>Originates from local application
-      <td>Any
-      <td>Do not sanitize HTML. Grant access to local files
-   </table>
-   <p>Some implementations mitigate the risks associated with pasting rich
+    </ul>
+    <p>To determine what policies to use, the factors we consider are:</p>
+    <ul>
+     <li data-md="">
+      <p>The origin of the data being pasted</p>
+     <li data-md="">
+      <p>The origin of data sub-parts such as referenced images</p>
+     <li data-md="">
+      <p>The origin of the running script</p>
+    </ul>
+    <p>This is an overview of the scenarios and the possible security policies:</p>
+    <table class="simple">
+     <tbody>
+      <tr>
+       <th>Origin of data
+       <th>Origin of script
+       <th>Rules
+      <tr>
+       <td rowspan="2">Originates from online source
+       <td>Same as data
+       <td>Do not sanitize HTML. Do not access any local files.
+      <tr>
+       <td>Different origin
+       <td>Optionally sanitize content. Do not access any local files.
+      <tr>
+       <td>Originates from local application
+       <td>Any
+       <td>Do not sanitize HTML. Grant access to local files
+    </table>
+    <p>Some implementations mitigate the risks associated with pasting rich
 		text by stripping potentially malicious content such as SCRIPT elements
 		and javascript: links by default when pasting rich text, but allow a
 		paste event handler to retrieve and process  the original, un-sanitized
 		data.</p>
-   <h3 class="heading settled" data-level="11.2" id="general-security-policies"><span class="secno">11.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
-   <p>The implementation <em>must not</em> download referenced online
+    <h3 class="heading settled" data-level="11.2" id="general-security-policies"><span class="secno">11.2. </span><span class="content">General security policies</span><a class="self-link" href="#general-security-policies"></a></h3>
+    <p>The implementation <em>must not</em> download referenced online
 		resources, or expose their contents in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files" id="ref-for-dom-datatransfer-files①">files</a></code> list
 		or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑤">DataTransferItemList</a></code>.</p>
-   <p>If the data on the clipboard is not from a local application, the
+    <p>If the data on the clipboard is not from a local application, the
 		implementation <em>must not</em> give access to any referenced local
 		files. For example, if the data contains
 		&lt;img src="file://localhost/example.jpg">
 		but the data’s origin is an online resource, the implementation must not
 		add an entry for example.jpg to the clipboardData.items list.</p>
-   <h3 class="heading settled" data-level="11.3" id="nuisances"><span class="secno">11.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
-   <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑨">DataTransfer</a></code> API to annoy and confuse users by
+    <h3 class="heading settled" data-level="11.3" id="nuisances"><span class="secno">11.3. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
+    <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑨">DataTransfer</a></code> API to annoy and confuse users by
 		altering the data on the system clipboard from copy and cut events. This
 		specification does not attempt to prevent such nuisances, though
 		implementations may add additional restrictions.</p>
-   <p>Implementations must handle scripts that try to place excessive amounts
+    <p>Implementations must handle scripts that try to place excessive amounts
 		of data on the clipboard gracefully.</p>
-   <h2 class="heading settled" data-level="12" id="privacy"><span class="secno">12. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
-   <p>Untrusted scripts should not get uncontrolled access to a user’s
+    <h2 class="heading settled" data-level="12" id="privacy"><span class="secno">12. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+    <p>Untrusted scripts should not get uncontrolled access to a user’s
 	clipboard data. This specification assumes that granting access to the
 	current clipboard data when a user explicitly initiates a paste
 	operation from the user agent’s trusted chrome is acceptable. However,
 	implementors must proceed carefully, and as a minimum implement the
 	precautions below:</p>
-   <ul>
-    <li data-md="">
-     <p>Objects implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⓪">DataTransfer</a></code> interface to return
+    <ul>
+     <li data-md="">
+      <p>Objects implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⓪">DataTransfer</a></code> interface to return
 clipboard data <em>must not</em> be available outside the
 ClipboardEvent event handler.</p>
-    <li data-md="">
-     <p>If a script stores a reference to an object implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①①">DataTransfer</a></code> interface to use from outside the ClipboardEvent
+     <li data-md="">
+      <p>If a script stores a reference to an object implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①①">DataTransfer</a></code> interface to use from outside the ClipboardEvent
 event handler, all methods <em>must</em> be no-ops when called
 outside the expected context.</p>
-    <li data-md="">
-     <p>Implementations <em>must not</em> let scripts create synthetic
+     <li data-md="">
+      <p>Implementations <em>must not</em> let scripts create synthetic
 clipboard events to get access to real clipboard data except if
 configured to do so.</p>
-    <li data-md="">
-     <p>Implementations <em>should not</em> let scripts call
+     <li data-md="">
+      <p>Implementations <em>should not</em> let scripts call
 document.execCommand("paste") unless the user has explicitly allowed
 it.</p>
-   </ul>
-   <p>Implementations may choose to further limit the functionality provided
+    </ul>
+    <p>Implementations may choose to further limit the functionality provided
 	by the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①②">DataTransfer</a></code> interface. For example, an implementation may
 	allow the user to disable this API, or configure which web sites should
 	be granted access to it.</p>
-   <h2 class="heading settled" data-level="13" id="acknowledge"><span class="secno">13. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
-   <p><em>This section is informative</em></p>
-   <p>The editors would like to acknowledge the contributions of the former
+    <h2 class="heading settled" data-level="13" id="acknowledge"><span class="secno">13. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledge"></a></h2>
+    <p><em>This section is informative</em></p>
+    <p>The editors would like to acknowledge the contributions of the former
 	editors who helped shepherd this specification through various
 	meetings and mailing-list discussions to bring it to its current state.</p>
-   <ul>
-    <li data-md="">
-     <p>Hallvord R. M. Steen</p>
-   </ul>
-   <p>The editors would also like to acknowledge their intellectual debt to the
+    <ul>
+     <li data-md="">
+      <p>Hallvord R. M. Steen</p>
+    </ul>
+    <p>The editors would also like to acknowledge their intellectual debt to the
 	documentation of Data Transfer functionalities from Microsoft <a data-link-type="biblio" href="#biblio-microsoft-clip-op">[MICROSOFT-CLIP-OP]</a> and earlier drafts of the <a data-link-type="biblio" href="#biblio-html5">[HTML5]</a> specification.
 	We are also grateful for the draft "safe copy and paste" from Paul Libbrecht
 	(this draft is no longer available on the Web).</p>
-   <p>And finally, we would like to acknowledge the contributions made by the following:</p>
-   <p>Adam Barth,
+    <p>And finally, we would like to acknowledge the contributions made by the following:</p>
+    <p>Adam Barth,
 	Shawn Carnell,
 	Daniel Cheng,
 	Daniel Dardailler,
@@ -2493,346 +2607,347 @@ it.</p>
 	Tarquin Wilton-Jones,
 	Tom Wlodkowski,
 	and Boris Zbarsky.</p>
-   <h2 class="heading settled" id="algorithms"><span class="content">Appendix A: Algorithms</span><a class="self-link" href="#algorithms"></a></h2>
-   <div class="algorithm" data-algorithm="write-content-to-clipboard">
-    <h3 class="heading settled" id="to-write-content-to-clipboard"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="write-content-to-the-clipboard">write content to the clipboard</dfn></span><a class="self-link" href="#to-write-content-to-clipboard"></a></h3>
-    <dl>
-     <dt data-md="">Input
-     <dd data-md="">
-      <p><var>items</var>, a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑥">DataTransferItemList</a></code> list of items to write</p>
-     <dd data-md="">
-      <p><var>clear-was-called</var>, a boolean</p>
-     <dd data-md="">
-      <p><var>types-to-clear</var>, a list</p>
-     <dt data-md="">Output
-     <dd data-md="">
-      <p>None</p>
-    </dl>
-    <ol>
-     <li data-md="">
-      <p>If the <var>items</var> list is not empty, then</p>
-      <ol>
-       <li data-md="">
-        <p>Clear the clipboard</p>
-       <li data-md="">
-        <p>For each part in the list,</p>
-        <ol>
-         <li data-md="">
-          <p>If data type is <i>text/plain</i>, then</p>
-          <ol>
-           <li data-md="">
-            <p>Ensure encoding is correct per OS and locale conventions</p>
-           <li data-md="">
-            <p>Normalize line endings according to platform conventions</p>
-           <li data-md="">
-            <p>Place text on clipboard with the appropriate OS clipboard
+    <h2 class="heading settled" id="algorithms"><span class="content">Appendix A: Algorithms</span><a class="self-link" href="#algorithms"></a></h2>
+    <div class="algorithm" data-algorithm="write-content-to-clipboard">
+     <h3 class="heading settled" id="to-write-content-to-clipboard"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="write-content-to-the-clipboard">write content to the clipboard</dfn></span><a class="self-link" href="#to-write-content-to-clipboard"></a></h3>
+     <dl>
+      <dt data-md="">Input
+      <dd data-md="">
+       <p><var>items</var>, a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑥">DataTransferItemList</a></code> list of items to write</p>
+      <dd data-md="">
+       <p><var>clear-was-called</var>, a boolean</p>
+      <dd data-md="">
+       <p><var>types-to-clear</var>, a list</p>
+      <dt data-md="">Output
+      <dd data-md="">
+       <p>None</p>
+     </dl>
+     <ol>
+      <li data-md="">
+       <p>If the <var>items</var> list is not empty, then</p>
+       <ol>
+        <li data-md="">
+         <p>Clear the clipboard</p>
+        <li data-md="">
+         <p>For each part in the list,</p>
+         <ol>
+          <li data-md="">
+           <p>If data type is <i>text/plain</i>, then</p>
+           <ol>
+            <li data-md="">
+             <p>Ensure encoding is correct per OS and locale conventions</p>
+            <li data-md="">
+             <p>Normalize line endings according to platform conventions</p>
+            <li data-md="">
+             <p>Place text on clipboard with the appropriate OS clipboard
 format description</p>
-          </ol>
-         <li data-md="">
-          <p>Else, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types①">mandatory data types</a> list, then</p>
-          <ol>
-           <li data-md="">
-            <p>Place part on clipboard with the appropriate OS clipboard
+           </ol>
+          <li data-md="">
+           <p>Else, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types①">mandatory data types</a> list, then</p>
+           <ol>
+            <li data-md="">
+             <p>Place part on clipboard with the appropriate OS clipboard
 format description</p>
-          </ol>
-         <li data-md="">
-          <p>Else</p>
-          <ol>
-           <li data-md="">
-            <p>This is left to the implementation...</p>
-            <p class="issue" id="issue-0b93e4b8"><a class="self-link" href="#issue-0b93e4b8"></a> It’s not good to leave things up to the
+           </ol>
+          <li data-md="">
+           <p>Else</p>
+           <ol>
+            <li data-md="">
+             <p>This is left to the implementation...</p>
+             <p class="issue" id="issue-0b93e4b8"><a class="self-link" href="#issue-0b93e4b8"></a> It’s not good to leave things up to the
 implementation. What should happen here?</p>
-            <p class="note" role="note"><span>Note:</span> Due to limitations in the implementation of operating
+             <p class="note" role="note"><span>Note:</span> Due to limitations in the implementation of operating
 system clipboards, scripts should not assume that custom
 formats will be available to other applications on the
 system. For example, there is a limit to how many custom
 clipboard formats can be registered in Microsoft Windows.
 While it is possible to use any string for <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata①">setData()</a>’s type argument, sticking to the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types②">mandatory data types</a> is strongly recommended.</p>
-          </ol>
-        </ol>
-      </ol>
-     <li data-md="">
-      <p>Else, the <var>items</var> list is empty. Follow these steps to determine
+           </ol>
+         </ol>
+       </ol>
+      <li data-md="">
+       <p>Else, the <var>items</var> list is empty. Follow these steps to determine
 whether to clear the clipboard:</p>
-      <ol>
-       <li data-md="">
-        <p>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i>, then</p>
-        <ol>
-         <li data-md="">
-          <p>If the <var>types-to-clear</var> list is empty, then</p>
-          <ol>
-           <li data-md="">
-            <p>Clear the clipboard</p>
-          </ol>
-         <li data-md="">
-          <p>Else</p>
-          <ol>
-           <li data-md="">
-            <p>Remove types in the <var>types-to-clear</var> list from the
+       <ol>
+        <li data-md="">
+         <p>If the list of items is empty and the <var>clear-was-called</var> flag is <i>true</i>, then</p>
+         <ol>
+          <li data-md="">
+           <p>If the <var>types-to-clear</var> list is empty, then</p>
+           <ol>
+            <li data-md="">
+             <p>Clear the clipboard</p>
+           </ol>
+          <li data-md="">
+           <p>Else</p>
+           <ol>
+            <li data-md="">
+             <p>Remove types in the <var>types-to-clear</var> list from the
 clipboard in an operating system and implementation-specific
 way</p>
-            <p class="issue" id="issue-1c8bdbac"><a class="self-link" href="#issue-1c8bdbac"></a> The "remove specific types from clipboard" feature is
+             <p class="issue" id="issue-1c8bdbac"><a class="self-link" href="#issue-1c8bdbac"></a> The "remove specific types from clipboard" feature is
 at risk. It doesn’t seem all that important, and it’s
 unclear if it can be implemented easily across relevant
 platforms.</p>
-          </ol>
-        </ol>
-      </ol>
-    </ol>
-   </div>
-   <div class="algorithm" data-algorithm="algo-fire-a-clipboard-event">
-    <h3 class="heading settled" id="to-fire-a-clipboard-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="fire-a-clipboard-event">fire a clipboard event</dfn></span><a class="self-link" href="#to-fire-a-clipboard-event"></a></h3>
-    <dl>
-     <dt data-md="">Input
-     <dd data-md="">
-      <p><var>e</var>, the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent④">ClipboardEvent</a></code> to fire</p>
-     <dt data-md="">Output
-     <dd data-md="">
-      <p>None</p>
-    </dl>
-    <ol>
-     <li data-md="">
-      <p>Let <var>clear-was-called</var> be <em>false</em></p>
-     <li data-md="">
-      <p>Let <var>types-to-clear</var> be an empty list</p>
-     <li data-md="">
-      <p>Let <var>clipboard-event-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①③">DataTransfer</a></code> object with an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑥">items</a></code> list.</p>
-     <li data-md="">
-      <p>Let <var>clipboard-entry</var> be the sequence number of the current
+           </ol>
+         </ol>
+       </ol>
+     </ol>
+    </div>
+    <div class="algorithm" data-algorithm="algo-fire-a-clipboard-event">
+     <h3 class="heading settled" id="to-fire-a-clipboard-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="fire-a-clipboard-event">fire a clipboard event</dfn></span><a class="self-link" href="#to-fire-a-clipboard-event"></a></h3>
+     <dl>
+      <dt data-md="">Input
+      <dd data-md="">
+       <p><var>e</var>, the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent④">ClipboardEvent</a></code> to fire</p>
+      <dt data-md="">Output
+      <dd data-md="">
+       <p>None</p>
+     </dl>
+     <ol>
+      <li data-md="">
+       <p>Let <var>clear-was-called</var> be <em>false</em></p>
+      <li data-md="">
+       <p>Let <var>types-to-clear</var> be an empty list</p>
+      <li data-md="">
+       <p>Let <var>clipboard-event-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①③">DataTransfer</a></code> object with an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑥">items</a></code> list.</p>
+      <li data-md="">
+       <p>Let <var>clipboard-entry</var> be the sequence number of the current
 clipboard content, or null if the OS clipboard does not support
 sequence numbers</p>
-     <li data-md="">
-      <p>Let <var>trusted</var> be <em>true</em> if the event is generated by the
+      <li data-md="">
+       <p>Let <var>trusted</var> be <em>true</em> if the event is generated by the
 user agent, <em>false</em> otherwise</p>
-     <li data-md="">
-      <p>Let <var>target</var> be set as follows:</p>
-      <ol>
-       <li data-md="">
-        <p>If the context is editable, then</p>
-        <ol>
-         <li data-md="">
-          <p>Set <var>target</var> to be the element that contains the
+      <li data-md="">
+       <p>Let <var>target</var> be set as follows:</p>
+       <ol>
+        <li data-md="">
+         <p>If the context is editable, then</p>
+         <ol>
+          <li data-md="">
+           <p>Set <var>target</var> to be the element that contains the
 start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2" id="ref-for-the-body-element-2">the body element</a> if there is no selection or cursor.</p>
-        </ol>
-       <li data-md="">
-        <p>Else, if the context is not editable, then</p>
-        <ol>
-         <li data-md="">
-          <p>Set <var>target</var> to be the element that contains the
+         </ol>
+        <li data-md="">
+         <p>Else, if the context is not editable, then</p>
+         <ol>
+          <li data-md="">
+           <p>Set <var>target</var> to be the element that contains the
 start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2" id="ref-for-the-body-element-2①">the body element</a> if there is no selection or cursor.</p>
-        </ol>
-      </ol>
-     <li data-md="">
-      <p>Process the event as follows:</p>
-      <ol>
-       <li data-md="">
-        <p>If <var>e</var> is "paste", then</p>
-        <ol>
-         <li data-md="">
-          <p>Set the <var>clipboard-event-data</var>’s
+         </ol>
+       </ol>
+      <li data-md="">
+       <p>Process the event as follows:</p>
+       <ol>
+        <li data-md="">
+         <p>If <var>e</var> is "paste", then</p>
+         <ol>
+          <li data-md="">
+           <p>Set the <var>clipboard-event-data</var>’s
 internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode①">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw">read/write</a>.</p>
-         <li data-md="">
-          <p>If <var>trusted</var> is <em>true</em>, or the
+          <li data-md="">
+           <p>If <var>trusted</var> is <em>true</em>, or the
 implementation is configured to give script-generated events
 read access to the OS clipboard</p>
-          <ol>
-           <li data-md="">
-            <p>For each <var>clipboard-part</var> on the OS clipboard, carry out these steps:</p>
-            <ol>
-             <li data-md="">
-              <p>If <var>clipboard-part</var> contains plain text, then</p>
-              <ol>
-               <li data-md="">
-                <p>Ensure the text is in the encoding the
+           <ol>
+            <li data-md="">
+             <p>For each <var>clipboard-part</var> on the OS clipboard, carry out these steps:</p>
+             <ol>
+              <li data-md="">
+               <p>If <var>clipboard-part</var> contains plain text, then</p>
+               <ol>
+                <li data-md="">
+                 <p>Ensure the text is in the encoding the
 scripting engine uses internally</p>
-               <li data-md="">
-                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem②">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind①">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string①">drag data item type string</a> set to <em>text/plain</em>.</p>
-               <li data-md="">
-                <p>Set <var>new-data</var>’s data to the plain text.</p>
-               <li data-md="">
-                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑦">items</a></code></p>
-              </ol>
-             <li data-md="">
-              <p>If <var>clipboard-part</var> represents file
+                <li data-md="">
+                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem②">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind①">drag data item kind</a> set to <em>string</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string①">drag data item type string</a> set to <em>text/plain</em>.</p>
+                <li data-md="">
+                 <p>Set <var>new-data</var>’s data to the plain text.</p>
+                <li data-md="">
+                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑦">items</a></code></p>
+               </ol>
+              <li data-md="">
+               <p>If <var>clipboard-part</var> represents file
 references, then for each file reference:</p>
-              <ol>
-               <li data-md="">
-                <p>Determine MIME type of referenced file</p>
-               <li data-md="">
-                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem③">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind②">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string②">drag data item type string</a> set to the
+               <ol>
+                <li data-md="">
+                 <p>Determine MIME type of referenced file</p>
+                <li data-md="">
+                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem③">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind②">drag data item kind</a> set to <em>file</em> and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string②">drag data item type string</a> set to the
 corresponding MIME type, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
-               <li data-md="">
-                <p>Set <var>new-data</var>’s data to the file reference data.</p>
-               <li data-md="">
-                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑧">items</a></code></p>
-              </ol>
-             <li data-md="">
-              <p>If <var>clipboard-part</var> contains HTML- or
+                <li data-md="">
+                 <p>Set <var>new-data</var>’s data to the file reference data.</p>
+                <li data-md="">
+                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑧">items</a></code></p>
+               </ol>
+              <li data-md="">
+               <p>If <var>clipboard-part</var> contains HTML- or
 XHTML-formatted text, according to the operating
 system’s convention for describing such clipboard
 formats, then</p>
-              <ol>
-               <li data-md="">
-                <p>If the implementation supports pasting HTML, then
+               <ol>
+                <li data-md="">
+                 <p>If the implementation supports pasting HTML, then
 the implementation <em>must</em> process the
 markup by calling <a data-link-type="dfn" href="#process-an-html-paste-event" id="ref-for-process-an-html-paste-event">process an html paste event</a> with <var>clipboard-part</var> and <var>clipboard-event-data</var>.</p>
-              </ol>
-             <li data-md="">
-              <p>If <var>clipboard-part</var> contains data in
+               </ol>
+              <li data-md="">
+               <p>If <var>clipboard-part</var> contains data in
 another supported binary or text-based format (see <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types③">mandatory data types</a>), then</p>
-              <ol>
-               <li data-md="">
-                <p>Determine the MIME type of the data</p>
-               <li data-md="">
-                <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem④">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind③">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string③">drag data item type string</a> set to the corresponding MIME type</p>
-               <li data-md="">
-                <p>Set <var>new-data</var>’s data to be the binary or text-based data.</p>
-               <li data-md="">
-                <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑨">items</a></code></p>
-              </ol>
-            </ol>
-          </ol>
-         <li data-md="">
-          <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files" id="ref-for-dom-datatransfer-files②">files</a></code> property to match
+               <ol>
+                <li data-md="">
+                 <p>Determine the MIME type of the data</p>
+                <li data-md="">
+                 <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem④">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind③">drag data item kind</a> set to <em>file</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string③">drag data item type string</a> set to the corresponding MIME type</p>
+                <li data-md="">
+                 <p>Set <var>new-data</var>’s data to be the binary or text-based data.</p>
+                <li data-md="">
+                 <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items⑨">items</a></code></p>
+               </ol>
+             </ol>
+           </ol>
+          <li data-md="">
+           <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files" id="ref-for-dom-datatransfer-files②">files</a></code> property to match
 entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①⓪">items</a></code>.</p>
-         <li data-md="">
-          <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types" id="ref-for-dom-datatransfer-types">types</a></code> property to match
+          <li data-md="">
+           <p>Update <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types" id="ref-for-dom-datatransfer-types">types</a></code> property to match
 entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①①">items</a></code>.</p>
-        </ol>
-       <li data-md="">
-        <p>If <var>e</var> is "copy" or "cut", then</p>
-        <ol>
-         <li data-md="">
-          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①④">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode②">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw①">read/write</a></p>
-        </ol>
-      </ol>
-     <li data-md="">
-      <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata④">clipboardData</a></code> to <var>clipboard-event-data</var>.</p>
-     <li data-md="">
-      <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted" id="ref-for-dom-event-istrusted">isTrusted</a></code> to <var>trusted</var>.</p>
-     <li data-md="">
-      <p>Dispatch the event <var>e</var> which bubbles and is cancelable, and which
+         </ol>
+        <li data-md="">
+         <p>If <var>e</var> is "copy" or "cut", then</p>
+         <ol>
+          <li data-md="">
+           <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①④">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode②">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw①">read/write</a></p>
+         </ol>
+       </ol>
+      <li data-md="">
+       <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata④">clipboardData</a></code> to <var>clipboard-event-data</var>.</p>
+      <li data-md="">
+       <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted" id="ref-for-dom-event-istrusted">isTrusted</a></code> to <var>trusted</var>.</p>
+      <li data-md="">
+       <p>Dispatch the event <var>e</var> which bubbles and is cancelable, and which
 uses the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent⑤">ClipboardEvent</a></code> interface, at <var>target</var>.</p>
-      <p>Implementation requirements for access to data during event
+       <p>Implementation requirements for access to data during event
 dispatch are defined in <a data-link-type="biblio" href="#biblio-htmlls">[HTMLLS]</a>. Some additional clipboard
 event-specific processing rules are given below:</p>
-      <p class="issue" id="issue-7d2ab940"><a class="self-link" href="#issue-7d2ab940"></a> Why here? Why not in the HTML spec?</p>
-      <ol>
-       <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata" id="ref-for-dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear" id="ref-for-dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⑤">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode③">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw②">read/write</a>, then</p>
-        <ol>
-         <li data-md="">
-          <p>Set the <var>clear-was-called</var> flag to true. If an
+       <p class="issue" id="issue-7d2ab940"><a class="self-link" href="#issue-7d2ab940"></a> Why here? Why not in the HTML spec?</p>
+       <ol>
+        <li data-md="">
+         <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata" id="ref-for-dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear" id="ref-for-dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⑤">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode③">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw②">read/write</a>, then</p>
+         <ol>
+          <li data-md="">
+           <p>Set the <var>clear-was-called</var> flag to true. If an
 argument is given, add the argument to the <var>types-to-clear</var> list.</p>
-        </ol>
-       <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata②">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true, then</p>
-        <ol>
-         <li data-md="">
-          <p>If the <var>types-to-clear</var> list is empty, then</p>
-          <ol>
-           <li data-md="">
-            <p>Set the <var>clear-was-called</var> flag to false, then</p>
-          </ol>
-         <li data-md="">
-          <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata③">setData()</a>’s <code>type</code> argument or
+         </ol>
+        <li data-md="">
+         <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata②">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true, then</p>
+         <ol>
+          <li data-md="">
+           <p>If the <var>types-to-clear</var> list is empty, then</p>
+           <ol>
+            <li data-md="">
+             <p>Set the <var>clear-was-called</var> flag to false, then</p>
+           </ol>
+          <li data-md="">
+           <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata③">setData()</a>’s <code>type</code> argument or
 the new item’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string④">drag data item type string</a> is
 found in the <var>types-to-clear</var> list, then</p>
-          <ol>
-           <li data-md="">
-            <p>Remove it from the list. If the list is now empty,
+           <ol>
+            <li data-md="">
+             <p>Remove it from the list. If the list is now empty,
 set the <var>clear-was-called</var> flag to false.</p>
-          </ol>
-        </ol>
-       <li data-md="">
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata" id="ref-for-dom-datatransfer-getdata">getData()</a> or accesses items in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑦">DataTransferItemList</a></code> and <var>clipboard-entry</var> is
+           </ol>
+         </ol>
+        <li data-md="">
+         <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata" id="ref-for-dom-datatransfer-getdata">getData()</a> or accesses items in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑦">DataTransferItemList</a></code> and <var>clipboard-entry</var> is
 set, then</p>
-        <ol>
-         <li data-md="">
-          <p>Check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer
+         <ol>
+          <li data-md="">
+           <p>Check that the clipboard data’s sequence number matches <var>clipboard-entry</var>. If the clipboard no longer
 contains the same entry, set the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑧">DataTransferItemList</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode④">drag data store mode</a> to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p" id="ref-for-concept-dnd-p">protected</a>.</p>
-        </ol>
-      </ol>
-      <p><strong class="advisement"> Warning! A malicious script listening to a paste event may set
+         </ol>
+       </ol>
+       <p><strong class="advisement"> Warning! A malicious script listening to a paste event may set
 up a never-ending loop in order to read what the user places on
 the clipboard in the future. On platforms where a clipboard
 sequence number is not available, other limitations should be
 implemented.</strong></p>
-    </ol>
-   </div>
-   <div class="algorithm" data-algorithm="process-an-html-paste-event">
-    <h3 class="heading settled" id="to-process-html-paste-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="process-an-html-paste-event">process an HTML paste event</dfn></span><a class="self-link" href="#to-process-html-paste-event"></a></h3>
-    <dl>
-     <dt data-md="">Input
-     <dd data-md="">
-      <p><var>clipboard-part</var>, the clipboard part to process</p>
-     <dd data-md="">
-      <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⑥">DataTransfer</a></code> object for this event</p>
-     <dt data-md="">Output
-     <dd data-md="">
-      <p>None</p>
-    </dl>
-    <ol>
-     <li data-md="">
-      <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem⑤">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind④">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string⑤">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly.</p>
-     <li data-md="">
-      <p>Extract the markup from <var>clipboard-part</var> and use the relevant parser to
+     </ol>
+    </div>
+    <div class="algorithm" data-algorithm="process-an-html-paste-event">
+     <h3 class="heading settled" id="to-process-html-paste-event"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="process-an-html-paste-event">process an HTML paste event</dfn></span><a class="self-link" href="#to-process-html-paste-event"></a></h3>
+     <dl>
+      <dt data-md="">Input
+      <dd data-md="">
+       <p><var>clipboard-part</var>, the clipboard part to process</p>
+      <dd data-md="">
+       <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⑥">DataTransfer</a></code> object for this event</p>
+      <dt data-md="">Output
+      <dd data-md="">
+       <p>None</p>
+     </dl>
+     <ol>
+      <li data-md="">
+       <p>Let <var>new-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem⑤">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind④">drag data item kind</a> set to <em>Plain Unicode string</em>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string⑤">drag data item type string</a> set to <em>text/html</em> or <em>application/xhtml+xml</em> accordingly.</p>
+      <li data-md="">
+       <p>Extract the markup from <var>clipboard-part</var> and use the relevant parser to
 construct a DOM tree.</p>
-     <li data-md="">
-      <p>If the markup’s source URL is known, then resolve all relative URLs in
+      <li data-md="">
+       <p>If the markup’s source URL is known, then resolve all relative URLs in
 HREF and SRC attributes using the source URL as base URL, and set the
 respective attributes to the resolved absolute URL.</p>
-     <li data-md="">
-      <p>If the markup’s origin is from a local application, then check whether
+      <li data-md="">
+       <p>If the markup’s origin is from a local application, then check whether
 there are references to local files and/or other parts of the OS
 clipboard’s contents. If such references are found, references to
 sub-parts <em>must</em> be replaced by content-id references using the
 cid: URL scheme <a data-link-type="biblio" href="#biblio-rfc2392">[RFC2392]</a>. To do so, process each attribute
 referencing a local file or clipboard part according to the following
 steps:</p>
-      <p class="issue" id="issue-9f40691b"><a class="self-link" href="#issue-9f40691b"></a> Are these steps necessary? Do we know about native (platform)
+       <p class="issue" id="issue-9f40691b"><a class="self-link" href="#issue-9f40691b"></a> Are these steps necessary? Do we know about native (platform)
 clipboard implementations that support multiple parts with internal
 references?</p>
-      <p class="issue" id="issue-f5823941"><a class="self-link" href="#issue-f5823941"></a> This feature is at risk because it’s unclear whether it is
+       <p class="issue" id="issue-f5823941"><a class="self-link" href="#issue-f5823941"></a> This feature is at risk because it’s unclear whether it is
 required, and because it’s hard to test in a cross-platform way.</p>
-      <ol>
-       <li data-md="">
-        <p>If <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①②">items</a></code> already
+       <ol>
+        <li data-md="">
+         <p>If <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①②">items</a></code> already
 contains an entry for the referenced file or clipboard part, then</p>
-        <ol>
-         <li data-md="">
-          <p>Set <var>itemNumber</var> to the index of the existing
+         <ol>
+          <li data-md="">
+           <p>Set <var>itemNumber</var> to the index of the existing
 entry.</p>
-        </ol>
-       <li data-md="">
-        <p>Else,</p>
-        <ol>
-         <li data-md="">
-          <p>Let <var>new-file-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem⑥">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind⑤">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string⑥">drag data item type string</a> set to the MIME type of
+         </ol>
+        <li data-md="">
+         <p>Else,</p>
+         <ol>
+          <li data-md="">
+           <p>Let <var>new-file-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem" id="ref-for-datatransferitem⑥">DataTransferItem</a></code> with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind" id="ref-for-drag-data-item-kind⑤">drag data item kind</a> set to "file", and <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string⑥">drag data item type string</a> set to the MIME type of
 the file or clipboard part if known, or <code>application/octet-stream</code> if the
 file’s type is unknown.</p>
-         <li data-md="">
-          <p>Let <var>file-info</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file" id="ref-for-dfn-file">File</a></code> object with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-name" id="ref-for-dfn-name">name</a></code> set to the name part of the HTML attribute contents,
+          <li data-md="">
+           <p>Let <var>file-info</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file" id="ref-for-dfn-file">File</a></code> object with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-name" id="ref-for-dfn-name">name</a></code> set to the name part of the HTML attribute contents,
 and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-lastModified" id="ref-for-dfn-lastModified">lastModified</a></code> set to the
 timestamp of the referenced file or 0 if the entry
 references a clipboard part.</p>
-         <li data-md="">
-          <p>Set <var>new-file-data</var>’s internal <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file" id="ref-for-dfn-file①">File</a></code> object to <var>file-info</var>.</p>
-         <li data-md="">
-          <p>Add <var>new-file-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①③">items</a></code> and let <var>itemNumber</var> be the index of this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑨">DataTransferItemList</a></code>.</p>
-        </ol>
-       <li data-md="">
-        <p>Update the DOM attribute that referenced the local file or
+          <li data-md="">
+           <p>Set <var>new-file-data</var>’s internal <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-file" id="ref-for-dfn-file①">File</a></code> object to <var>file-info</var>.</p>
+          <li data-md="">
+           <p>Add <var>new-file-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①③">items</a></code> and let <var>itemNumber</var> be the index of this entry in the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist⑨">DataTransferItemList</a></code>.</p>
+         </ol>
+        <li data-md="">
+         <p>Update the DOM attribute that referenced the local file or
 clipboard part to contain the string 'cid:' followed by <var>itemNumber</var>.</p>
-      </ol>
-     <li data-md="">
-      <p>Serialize the processed DOM and update <var>new-data</var> with the resulting
+       </ol>
+      <li data-md="">
+       <p>Serialize the processed DOM and update <var>new-data</var> with the resulting
 HTML code.</p>
-     <li data-md="">
-      <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①④">items</a></code>.</p>
-    </ol>
-   </div>
+      <li data-md="">
+       <p>Add <var>new-data</var> to <var>clipboard-event-data</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①④">items</a></code>.</p>
+     </ol>
+    </div>
+   </dl>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -2873,6 +2988,7 @@ HTML code.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
+   <li><a href="#dom-clipboardpermissiondescriptor-access">access</a><span>, in §9</span>
    <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.3.1</span>
    <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.3.2</span>
    <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in §9.1.1</span>
@@ -2884,6 +3000,7 @@ HTML code.</p>
      <li><a href="#dom-navigator-clipboard">attribute for Navigator</a><span>, in §7.1</span>
      <li><a href="#navigator-clipboard">dfn for Navigator</a><span>, in §7.1.1</span>
     </ul>
+   <li><a href="#dom-permissionname-clipboard">"clipboard"</a><span>, in §9</span>
    <li><a href="#clipboardchange">clipboardchange</a><span>, in §5.2.1</span>
    <li>
     clipboardData
@@ -2898,6 +3015,8 @@ HTML code.</p>
    <li><a href="#clipboard-events">Clipboard events</a><span>, in §5.2</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type)</a><span>, in §5.1</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type, eventInitDict)</a><span>, in §5.1</span>
+   <li><a href="#enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</a><span>, in §9</span>
+   <li><a href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a><span>, in §9</span>
    <li><a href="#copy">copy</a><span>, in §5.2.2</span>
    <li><a href="#cut">cut</a><span>, in §5.2.3</span>
    <li><a href="#editable-context">editable context</a><span>, in §3</span>
@@ -2906,22 +3025,27 @@ HTML code.</p>
    <li><a href="#paste">paste</a><span>, in §5.2.4</span>
    <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in §Unnumbered section</span>
    <li><a href="#dfn-processing-equivalence">processing equivalence</a><span>, in §Unnumbered section</span>
+   <li><a href="#dom-clipboardpermissionaccess-read">read</a><span>, in §9</span>
    <li>
     read()
     <ul>
      <li><a href="#dom-clipboard-read">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-read">dfn for Clipboard</a><span>, in §7.2.1</span>
     </ul>
+   <li><a href="#dom-clipboardpermissionaccess-read">"read"</a><span>, in §9</span>
    <li>
     readText()
     <ul>
      <li><a href="#dom-clipboard-readtext">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-readtext">dfn for Clipboard</a><span>, in §7.2.2</span>
     </ul>
+   <li><a href="#dom-clipboardpermissiondescriptor-requiregesture">requireGesture</a><span>, in §9</span>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §8</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in §8</span>
    <li><a href="#system-clipboard">system clipboard</a><span>, in §4</span>
    <li><a href="#system-clipboard-data">system clipboard data</a><span>, in §4</span>
+   <li><a href="#dom-clipboardpermissionaccess-write">"write"</a><span>, in §9</span>
+   <li><a href="#dom-clipboardpermissionaccess-write">write</a><span>, in §9</span>
    <li><a href="#write-content-to-the-clipboard">write content to the clipboard</a><span>, in §Unnumbered section</span>
    <li>
     write(data)
@@ -2976,12 +3100,20 @@ HTML code.</p>
      <li><a href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types">types</a>
     </ul>
    <li>
+    <a data-link-type="biblio">[permissions]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a>
+     <li><a href="https://w3c.github.io/permissions/#permission-descriptor-type">permission descriptor type</a>
+     <li><a href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>
+    </ul>
+   <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
      <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
      <li><a href="https://heycam.github.io/webidl/#Exposed">Exposed</a>
      <li><a href="https://heycam.github.io/webidl/#SameObject">SameObject</a>
      <li><a href="https://heycam.github.io/webidl/#SecureContext">SecureContext</a>
+     <li><a href="https://heycam.github.io/webidl/#idl-boolean">boolean</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2997,6 +3129,8 @@ HTML code.</p>
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-htmlls">[HTMLLS]
    <dd>Ian Hickson. WHATWG.. <a href="https://html.spec.whatwg.org/multipage/">HTML Living Standard</a>. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-permissions">[PERMISSIONS]
+   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 25 September 2017. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
@@ -3032,6 +3166,16 @@ HTML code.</p>
   <span class="kt">Promise</span>&lt;<a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①①"><span class="kt">DOMString</span></a>> <a class="nv" href="#dom-clipboard-readtext"><code>readText</code></a>();
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-write"><code>write</code></a>(<a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑦①">DataTransfer</a> <a class="nv" href="#dom-clipboard-write-data-data"><code>data</code></a>);
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-writetext"><code>writeText</code></a>(<a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><span class="kt">DOMString</span></a> <a class="nv" href="#dom-clipboard-writetext-data-data"><code>data</code></a>);
+};
+
+<span class="kt">enum</span> <a class="nv" href="#enumdef-clipboardpermissionaccess"><code>ClipboardPermissionAccess</code></a> {
+  <a class="s" href="#dom-clipboardpermissionaccess-read"><code>"read"</code></a>,
+  <a class="s" href="#dom-clipboardpermissionaccess-write"><code>"write"</code></a>,
+};
+
+<span class="kt">dictionary</span> <a class="nv" href="#dictdef-clipboardpermissiondescriptor"><code>ClipboardPermissionDescriptor</code></a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor" id="ref-for-dictdef-permissiondescriptor①">PermissionDescriptor</a> {
+  <a class="n" data-link-type="idl-name" href="#enumdef-clipboardpermissionaccess" id="ref-for-enumdef-clipboardpermissionaccess①">ClipboardPermissionAccess</a> <a class="nv" data-type="ClipboardPermissionAccess " href="#dom-clipboardpermissiondescriptor-access"><code>access</code></a>;
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><span class="kt">boolean</span></a> <a class="nv" data-default="true" data-type="boolean " href="#dom-clipboardpermissiondescriptor-requiregesture"><code>requireGesture</code></a> = <span class="kt">true</span>;
 };
 
 </pre>
@@ -3189,6 +3333,18 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <b><a href="#clipboard-writetext-data">#clipboard-writetext-data</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-clipboard-writetext-data">7.2.4. writeText(data)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="enumdef-clipboardpermissionaccess">
+   <b><a href="#enumdef-clipboardpermissionaccess">#enumdef-clipboardpermissionaccess</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-enumdef-clipboardpermissionaccess">9. Permissions API Integration</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dictdef-clipboardpermissiondescriptor">
+   <b><a href="#dictdef-clipboardpermissiondescriptor">#dictdef-clipboardpermissiondescriptor</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dictdef-clipboardpermissiondescriptor">9. Permissions API Integration</a> <a href="#ref-for-dictdef-clipboardpermissiondescriptor①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="check-clipboard-read-permission">
