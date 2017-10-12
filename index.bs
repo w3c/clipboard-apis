@@ -39,6 +39,10 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
     type: dfn
         text: Assert; url: sec-algorithm-conventions
         text: promise; url: sec-promise-objects
+urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
+	text: denied
+	text: granted
+	text: prompt
 </pre>
 
 <pre class="biblio">
@@ -804,27 +808,103 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		</div><!-- algorithm -->
 
 
-<h2 id="clipboard-permissions">Clipboard Permissions</h2>
+<h2 id="clipboard-permissions">Permissions API Integration</h2>
 
-	This section defines how the clipboard permissions control access
-	to the clipboard APIs.
-	
+	The [[permissions]] API provides a uniform way for websites to request permissions
+	from users and query which permissions they have.
+
 	Note: Clipboard permissions currently only apply to the Async Clipboard API.
-	This will updated in a future version of this specification (so it applies to all
-	Clipboard interactions).
+	Future versions of this specification may be updated to apply this permission
+	to other Clipboard interactions.
 
+	The <dfn enum-value for="PermissionName">"clipboard"</dfn> <a>powerful feature</a>'s
+	permission-related algorithms and types
+	are defined as follows:
+	
+	<dl>
+	<dt>
+		<a>permission descriptor type</a>
+	</dt>
+	<dd>
+		<pre class="idl">
+
+			enum ClipboardPermissionAccess {
+				"read",
+				"write",
+			};
+
+			dictionary ClipboardPermissionDescriptor : PermissionDescriptor {
+				ClipboardPermissionAccess access;
+				boolean requireGesture = true;
+			};
+		</pre>
+	</dd>
+
+	The {{ClipboardPermissionDescriptor}} defines 4 clipboard permissions:
+	
+	* { access: "read", requireGesture: true }
+	* { access: "read", requireGesture: false }
+	* { access: "write", requireGesture: true }
+	* { access: "write", requireGesture: false }
+
+	With the following relationships:
+	
+	* <code>"read" + true</code> is stronger than <code>"read" + false</code>
+	* <code>"write" + true</code> is stronger than <code>"write" + false</code>
+
+	"read" access is not inherently stronger than "write" access, although user agents
+	MAY choose to impose such a strength ordering. Doing this would effectively turn
+	"read" access into a "full" access since granting (or denying) "read" would also
+	grant (deny) "write" access.
+
+	While user agents MUST support the {{ClipboardPermissionDescriptor}} as described
+	in this specification, they, of course, retain complete control over the default
+	settings and how they are exposed to the user.
+	
+	<div class="example">
+		A user agent that wants to have separate read and write controls over the clipboad
+		and always require a user gesture would handle each descriptor as follows:
+		
+		* <code class="perm">"read" + true</code> is exposed for user control
+		* <code class="perm">"read" + false</code> is always <a>denied</a>
+		* <code class="perm">"write" + true</code> is exposed for user control
+		* <code class="perm">"write" + false</code> is always <a>denied</a>
+	</div>
+				
+	<div class="example">
+		A user agent that wants to automatically grant "write" access (with a gesture),
+		but have a single permission that controls full gesture-less access would
+		define "read" as being stronger than "write" and then handle each descriptor as
+		follows:
+		
+		* <code class="perm">"read" + true</code> is exposed for user control
+		* <code class="perm">"read" + false</code> is inherited from
+			<code class="perm">"read" + true</code>
+		* <code class="perm">"write" + true</code> is <a>granted</a> by default, but
+			may be overridden by <code class="perm">"read" + true</code>
+		* <code class="perm">"write" + false</code> is inherited from
+			<code class="perm">"write" + true</code>
+	</div>
+				
 	<h3 id="read-permission">Clipboard read permission</h3>
 
 		<div class="algorithm" data-algorithm="clipboard-read-permission">
 		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
 
-		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
+		1. Let |readWithoutGesture| be the current value of the
+			<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+			permission.
 		
-		1. If |fullAccess| is "denied", then return false.
-
-		1. If |fullAccess| is "granted", then return true.
-
-		1. If |fullAccess| is "prompt", then
+		1. Let |readWithGesture| be the current value of the
+			<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+			permission.
+		
+		1. Let |hasGesture| be true if the current script is not running as a result of
+			direct user action, false otherwise.
+		
+		1. If |readWithoutGesture| is <a>granted</a>, then return true.
+		
+		1. If |hasGesture| then,
 		
 			<!-- System paste buttons don't require permission -->
 			1. Let |systemPaste| be true if the current script is running as a result of user
@@ -833,13 +913,33 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		
 			1. If |systemPaste| is true, then return true.
 			
-			1. Query the user for full access to the clipboard.
+			1. If |readWithGesture| is <a>prompt</a>, then,
+						
+				1. Query the user for
+					<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+					permission.
 			
-			1. Set |fullAccess| be the updated value of the <code>{ name: "clipboard", access: "full" }</code> permission.
-		
-		1. If |fullAccess| is "granted", then return true.
+				1. Set |readWithGesture| be the updated value of the
+					<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+					permission.
 
-		1. Return false.
+			1. If |readWithGesture| is <a>granted</a>, then return true.
+			
+		1. Else
+
+			1. If |readWithoutGesture| is <a>prompt</a>, then,
+
+				1. Query the user for
+					<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+					permission.
+			
+				1. Set |readWithoutGesture| be the updated value of the
+					<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+					permission.
+
+			1. If |readWithoutGesture| is <a>granted</a>, then return true.
+
+		1. Return false
 
 		</div><!-- algorithm -->
 
@@ -848,34 +948,55 @@ spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
 		<div class="algorithm" data-algorithm="clipboard-write-permission">
 		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
 
-		1. Let |fullAccess| be the current value of the <code>{ name: "clipboard", access: "full" }</code> permission.
-
-		1. Let |writeAccess| be the current value of the <code>{ name: "clipboard", access: "write" }</code> permission.
-
-		<!-- If full access is granted, then don't require a user gesture for writes. 
-			This is to allow backwards compat with current gesture requirements, while
-			permitting full-access to grant access without a gesture. -->
-		1. If |fullAccess| is "granted", then return true.
-
-		<!-- User has explicitly denied write access. We respect that. -->
-		1. If |writeAccess| is "denied", then return false.
-
-		<!-- User gesture is still required for backwards compat. Even if granted.
-			This to allow Write permission to be more easily granted by default by the UA. -->
-		1. If the current script is not running as a result of direct user action, then return false.
+		1. Let |writeWithoutGesture| be the current value of the
+			<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+			permission.
 		
-			Note: This is for backwards compatibility with existing clipboard access
-			requirements that require a user gesture to prevent abuse of the API.
+		1. Let |writeWithGesture| be the current value of the
+			<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+			permission.
+		
+		1. Let |hasGesture| be true if the current script is not running as a result of
+			direct user action, false otherwise.
+		
+		1. If |writeWithoutGesture| is <a>granted</a>, then return true.
 
-		1. If |writeAccess| is "prompt", then
+		1. If |hasGesture| then,
 
-			1. Query the user for write access to the clipboard.
+			<!-- System paste buttons don't require permission -->
+			1. Let |systemCopy| be true if the current script is running as a result of user
+				interaction with a "cut" or "copy" element created by the user agent or operating
+				system.
+		
+			1. If |systemCopy| is true, then return true.
 			
-			1. Set |writeAccess| be the updated value of the <code>{ name: "clipboard", access: "write" }</code> permission.
-		
-		1. If |writeAccess| is "granted", then return true.
+			1. If |writeWithGesture| is <a>prompt</a>, then,
+						
+				1. Query the user for
+					<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+					permission.
+			
+				1. Set |writeWithGesture| be the updated value of the
+					<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+					permission.
 
-		1. Return false.
+			1. If |writeWithGesture| is <a>granted</a>, then return true.
+			
+		1. Else
+
+			1. If |writeWithoutGesture| is <a>prompt</a>, then,
+
+				1. Query the user for
+					<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+					permission.
+			
+				1. Set |writeWithoutGesture| be the updated value of the
+					<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+					permission.
+
+			1. If |writeWithoutGesture| is <a>granted</a>, then return true.
+
+		1. Return false
 
 		</div><!-- algorithm -->
 
