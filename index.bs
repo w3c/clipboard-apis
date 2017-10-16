@@ -12,8 +12,9 @@ Editor: Gary Kacmarcik, Google, garykac@google.com
 Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com
 Editor: Hallvord R. M. Steen, Mozilla - emeritus
 Abstract:
-	This document describes APIs for clipboard operations such as copy, cut and
-    paste in web applications.
+	This document describes APIs for accessing data on the system clipboard. It provides
+	operations for overriding the default clipboard actions (cut, copy and paste), and
+	for directly accessing the clipboard contents.
 Status Text: <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/clipboard-apis">https://github.com/w3c/clipboard-apis</a>.</strong> </p>
 </pre>
 
@@ -74,43 +75,71 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 	<i>This section is non-normative.</i>
 
-	This specification defines the common clipboard operations of cutting,
-	copying and pasting, in such a way that they are exposed to Web Applications
-	and can be adapted to provide advanced functionalities. Its goal is to
-	provide for compatibility where possible with existing implementations.
+	This specification defines how the system clipboard is exposed to web applications.
+	
+	There are two general APIs described in this specification:
+	
+	* Clipboard Event API - This API provides a way to hook into the common clipboard
+		operations of cutting, copying and pasting so that web application can
+		adjust the clipboard data as required.
 
+	* Async Clipboard API - This API provides direct access to read and write the
+		clipboard data. Since this is considered to be a <a>powerful feature</a>,
+		access to this API is controlled by a permission.
 
 <h2 id="Cases">Use Cases</h2>
 
 	<i>This section is non-normative.</i>
 
-	There are many use cases for being able to change the default clipboard
-	operations (cut/copy/paste). We have collected
-	a few samples to demonstrate possible uses, although these may not all be
-	supported by this specification.
+	<h3 id="change-default-clipboard-ops">Changing Default Clipboard Operations</h3>
+	
+		There are many scenarios where it is desireable to change the default clipboard
+		operations (cut/copy/paste). Here are a few examples:
 
-	<h3 id="Rich">Rich content editing</h3>
+		<ul>
+			<li><strong>Rich content editing</strong>
+			When copying text which contains hyperlinks or other structure,
+			it is often useful to be able to reformat the content to preserve
+			important information.
+			</li>
 
-		When copying text which contains hyperlinks or other structure,
-		it is often useful to be able to reformat the content to preserve
-		important information.
+			<li><strong>Graphics with built-in semantics</strong>
+			In order to make web applications which allow the manipulation of rich
+			text, or of graphic content such as [[SVG11]], it is useful to provide a
+			mechanism that allows for copying more than just the rendered content.
+			</li>
 
-	<h3 id="graphics-semantics">Graphics with built-in semantics</h3>
+			<li><strong>Mathematical information</strong>
+			With content such as mathematics, simply copying rendered text and pasting
+			it into another application generally leads to most of the semantics being
+			lost. MathML often needs to be transformed to be copied as plain text, for
+			example to make sure "to the power of" is shown with the caret  "^" sign
+			in a formula plain-text input. The XML source could also be placed in the
+			clipboard with the appropriate transformation occurring at paste time.
+			</li>
+		</ul>
 
-		In order to make web applications which allow the manipulation of rich
-		text, or of graphic content such as [[SVG11]], it is useful to provide a
-		mechanism that allows for copying more than just the rendered content.
+	<h3 id="remove-clipboard-sync">Remote Clipboard Synchronization</h3>
 
-	<h3 id="Mathematic">Mathematical information</h3>
+		For web applications that communicate with remote devices (e.g., remote access
+		or remote shell applications), there is often a need for the clipboard data
+		to be kept in sync between the two devices.
+		
+		One important aspect of this use case is that it requires access to the
+		clipboard in the absense of a user gesture or interaction.
+		
+		<div class="example">
+		To copy the clipboard data from a remote device to the local clipboard, a web
+		application would take the remote clipboard data and then {{Clipboard/write()}}
+		the data to the local clipboard.
+		</div>
 
-		With content such as mathematics, simply copying rendered text and pasting
-		it into another application generally leads to most of the semantics being
-		lost. MathML often needs to be transformed to be copied as plain text, for
-		example to make sure "to the power of" is shown with the caret  "^" sign
-		in a formula plain-text input. The XML source could also be placed in the
-		clipboard with the appropriate transformation occurring at paste time.
-
-
+		<div class="example">
+		To copy the local clipboard data to a remote device, a web application would
+		listen for [=clipboardchange=] events, {{Clipboard/read()}} from the clipboard
+		whenever it is updated, and then send the new clipboard data to the remote device.
+		</div>
+		
 <h2 id="terminolofy">Terminology</h2>
 
 	The term <dfn>editable context</dfn> means any element that is either an
@@ -354,20 +383,26 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			If the event listener modifies the selection or [=focusable area=], the clipboard
 			action <em>must</em> be completed on the modified selection.
 
-<h2 id="sync-clipboard-api">Synchronous Clipboard API</h2>
+<h2 id="clipboard-event-api">Clipboard Event API</h2>
 
-	The Synchronous Clipboard API allows you to override the default cut, copy
+	The Clipboard Event API allows you to override the default cut, copy
 	and paste behavior of the user agent.
 
-	Synchronous access to the clipboard is performed using the standard
+	Access to the clipboard is performed using the standard
 	{{DataTransfer}} methods to mutate the {{DataTransfer/items}} on a
 	{{ClipboardEvent}}'s {{ClipboardEvent/clipboardData}} attribute.
-	One consequence of this is that the synchronous clipboard APIs can only
+	One consequence of this is that these clipboard APIs can only
 	access clipboard data in the context of a {{ClipboardEvent}} handler.
 
 	Note: If you need to access the clipboard outside of a clipboard event
 	handler, see [[#async-clipboard-api]].
 
+	Note: The Clipboard Event APIs are synchronous, so they are limited in what they can
+	do. Actions which are potentially blocking (like asking for permission or
+	transcoding a image) are not supported by these APIs. See [[#async-clipboard-api]]
+	for a more powerful API that can support blocking or other time-consuming
+	actions.
+	
 	<h3 id="override-copy">Overriding the copy event</h3>
 
 		To override the default [=copy=] event behavior, a [=copy=] event
@@ -818,8 +853,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 	to other Clipboard interactions.
 
 	The <dfn enum-value for="PermissionName">"clipboard"</dfn> <a>powerful feature</a>'s
-	permission-related algorithms and types
-	are defined as follows:
+	permission-related algorithms and types are defined as follows:
 	
 	<dl>
 	<dt>
@@ -849,10 +883,10 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 	With the following relationships:
 	
-	* <code>"read" + true</code> is stronger than <code>"read" + false</code>
-	* <code>"write" + true</code> is stronger than <code>"write" + false</code>
+	* <code>{ "read" + true }</code> is stronger than <code>{ "read" + false }</code>
+	* <code>{ "write" + true }</code> is stronger than <code>{ "write" + false }</code>
 
-	"read" access is not inherently stronger than "write" access, although user agents
+	Note: "read" access is not inherently stronger than "write" access, although user agents
 	MAY choose to impose such a strength ordering. Doing this would effectively turn
 	"read" access into a "full" access since granting (or denying) "read" would also
 	grant (deny) "write" access.
@@ -865,10 +899,10 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		A user agent that wants to have separate read and write controls over the clipboad
 		and always require a user gesture would handle each descriptor as follows:
 		
-		* <code class="perm">"read" + true</code> is exposed for user control
-		* <code class="perm">"read" + false</code> is always <a>denied</a>
-		* <code class="perm">"write" + true</code> is exposed for user control
-		* <code class="perm">"write" + false</code> is always <a>denied</a>
+		* <code class="perm">{ "read" + true }</code> is exposed for user control
+		* <code class="perm">{ "read" + false }</code> is always <a>denied</a>
+		* <code class="perm">{ "write" + true }</code> is exposed for user control
+		* <code class="perm">{ "write" + false }</code> is always <a>denied</a>
 	</div>
 				
 	<div class="example">
@@ -877,13 +911,14 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		define "read" as being stronger than "write" and then handle each descriptor as
 		follows:
 		
-		* <code class="perm">"read" + true</code> is exposed for user control
-		* <code class="perm">"read" + false</code> is inherited from
-			<code class="perm">"read" + true</code>
-		* <code class="perm">"write" + true</code> is <a>granted</a> by default, but
-			may be overridden by <code class="perm">"read" + true</code>
-		* <code class="perm">"write" + false</code> is inherited from
-			<code class="perm">"write" + true</code>
+		* <code class="perm">{ "read" + true }</code> is exposed for user control
+		* <code class="perm">{ "read" + false }</code> is inherited from
+			<code class="perm">{ "read" + true }</code>
+		* <code class="perm">{ "write" + true }</code> is <a>granted</a> by default, but
+			may be overridden by <code class="perm">{ "read" + true }</code> because
+			"read" is stronger than "write".
+		* <code class="perm">{ "write" + false }</code> is inherited from
+			<code class="perm">{ "write" + true }</code>
 	</div>
 				
 	<h3 id="read-permission">Clipboard read permission</h3>
