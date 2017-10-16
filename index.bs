@@ -477,7 +477,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		handler will need to manually paste the data into the document.
 		
 		Also note that, when pasting, the [=drag data store mode=] flag is
-		<a lt="concept dnd ro">read/only</a>, hence calling {{DataTransfer/setData()}} from a
+		<a lt="concept dnd ro">read-only</a>, hence calling {{DataTransfer/setData()}} from a
 		[=paste=] event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.
 
@@ -1367,7 +1367,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 				1. Set the |clipboard-event-data|'s
 					internal [=drag data store mode=] flag to
-					<a lt="concept dnd rw">read/write</a>.
+					<a lt="concept dnd ro">read-only</a>.
 
 				1. If |trusted| is <em>true</em>, or the
 					implementation is configured to give script-generated events

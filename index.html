@@ -1887,7 +1887,7 @@ document.addEventListener('cut', function(e) {
    <p>Note that canceling the <a data-link-type="dfn" href="#paste" id="ref-for-paste-8">paste</a> event will also prevent the document from
 		being updated (i.e., nothing will be pasted into the document). The event
 		handler will need to manually paste the data into the document.</p>
-   <p>Also note that, when pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read/only</a>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <a data-link-type="dfn" href="#paste" id="ref-for-paste-9">paste</a> event handler will not modify the data that is
+   <p>Also note that, when pasting, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read-only</a>, hence calling <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-datatransfer-setdata">setData()</a></code> from a <a data-link-type="dfn" href="#paste" id="ref-for-paste-9">paste</a> event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.</p>
 <pre class="example javascript" id="example-ce8e183c"><a class="self-link" href="#example-ce8e183c"></a>// Overwrite what is being pasted onto the clipboard.
 document.addEventListener('paste', function(e) {
@@ -2775,7 +2775,7 @@ start of the selection in document order, or <a data-link-type="dfn" href="https
          <ol>
           <li data-md="">
            <p>Set the <var>clipboard-event-data</var>’s
-internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw">read/write</a>.</p>
+internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro">read-only</a>.</p>
           <li data-md="">
            <p>If <var>trusted</var> is <em>true</em>, or the
 implementation is configured to give script-generated events
