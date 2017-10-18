@@ -1179,7 +1179,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version ba473502a120361710488ab9b7f538b47858631e" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="b6bf11a027d46db645f74f24d5b62ceb26f37df1" name="document-revision">
+  <meta content="e786fc7dd67d4380132fb767fa03100d0138c2d2" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1426,7 +1426,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-16">16 October 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-18">18 October 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2322,9 +2322,9 @@ may be overridden by <code class="perm">{ "read" + true }</code> because
      <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
      <ol>
       <li data-md="">
-       <p>Let <var>readWithoutGesture</var> be the current value of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+       <p>Let <var>readWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state">permission state</a> of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
       <li data-md="">
-       <p>Let <var>readWithGesture</var> be the current value of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+       <p>Let <var>readWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state①">permission state</a> of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
       <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
@@ -2373,9 +2373,9 @@ system.</p>
      <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
      <ol>
       <li data-md="">
-       <p>Let <var>writeWithoutGesture</var> be the current value of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+       <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state②">permission state</a> of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
       <li data-md="">
-       <p>Let <var>writeWithGesture</var> be the current value of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+       <p>Let <var>writeWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state③">permission state</a> of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
       <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
@@ -3125,6 +3125,7 @@ HTML code.</p>
     <ul>
      <li><a href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a>
      <li><a href="https://w3c.github.io/permissions/#permission-descriptor-type">permission descriptor type</a>
+     <li><a href="https://w3c.github.io/permissions/#permission-state">permission state</a>
      <li><a href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>
     </ul>
    <li>
