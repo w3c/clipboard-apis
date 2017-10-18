@@ -926,11 +926,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		<div class="algorithm" data-algorithm="clipboard-read-permission">
 		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
 
-		1. Let |readWithoutGesture| be the current value of the
+		1. Let |readWithoutGesture| be the [=permission state=] of the
 			<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
 			permission.
 		
-		1. Let |readWithGesture| be the current value of the
+		1. Let |readWithGesture| be the [=permission state=] of the
 			<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
 			permission.
 		
@@ -983,11 +983,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		<div class="algorithm" data-algorithm="clipboard-write-permission">
 		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
 
-		1. Let |writeWithoutGesture| be the current value of the
+		1. Let |writeWithoutGesture| be the [=permission state=] of the
 			<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
 			permission.
 		
-		1. Let |writeWithGesture| be the current value of the
+		1. Let |writeWithGesture| be the [=permission state=] of the
 			<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
 			permission.
 		
