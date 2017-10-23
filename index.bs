@@ -845,14 +845,19 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 <h2 id="clipboard-permissions">Permissions API Integration</h2>
 
-	The [[permissions]] API provides a uniform way for websites to request permissions
+	The [[permissions]] API provides a uniform way for websites access
+	<a>powerful feature</a>s like the clipboard. It allows websites to request permissions
 	from users and query which permissions they have.
-
+	
+	For the clipboard, two separate permissions are defined:
+	<dfn enum-value for="PermissionName">"clipboard-read"</dfn> and
+	<dfn enum-value for="PermissionName">"clipboard-write"</dfn>
+	
 	Note: Clipboard permissions currently only apply to the Async Clipboard API.
 	Future versions of this specification may be updated to apply this permission
 	to other Clipboard interactions.
 
-	The <dfn enum-value for="PermissionName">"clipboard"</dfn> <a>powerful feature</a>'s
+	These clipboard permissions are <a>powerful feature</a>s
 	permission-related algorithms and types are defined as follows:
 	
 	<dl>
@@ -861,64 +866,60 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 	</dt>
 	<dd>
 		<pre class="idl">
-
-			enum ClipboardPermissionAccess {
-				"read",
-				"write",
-			};
-
 			dictionary ClipboardPermissionDescriptor : PermissionDescriptor {
-				ClipboardPermissionAccess access;
-				boolean requireGesture = true;
+				boolean allowWithoutGesture = false;
 			};
 		</pre>
 	</dd>
 
-	The {{ClipboardPermissionDescriptor}} defines 4 clipboard permissions:
+	There are 4 clipboard permissions:
 	
-	* { access: "read", requireGesture: true }
-	* { access: "read", requireGesture: false }
-	* { access: "write", requireGesture: true }
-	* { access: "write", requireGesture: false }
+	* { name: "clipboard-read", allowWithoutGesture: false }
+	* { name: "clipboard-read", allowWithoutGesture: true }
+	* { name: "clipboard-write", allowWithoutGesture: false }
+	* { name: "clipboard-write", allowWithoutGesture: true }
 
 	With the following relationships:
 	
-	* <code>{ "read" + true }</code> is stronger than <code>{ "read" + false }</code>
-	* <code>{ "write" + true }</code> is stronger than <code>{ "write" + false }</code>
+	* <code>{ "clipboard-read" + true }</code> is stronger than <code>{ "clipboard-read" + false }</code>
+	* <code>{ "clipboard-write" + true }</code> is stronger than <code>{ "clipboard-write" + false }</code>
 
-	Note: "read" access is not inherently stronger than "write" access, although user agents
-	MAY choose to impose such a strength ordering. Doing this would effectively turn
-	"read" access into a "full" access since granting (or denying) "read" would also
-	grant (deny) "write" access.
+	Note: "clipboard-read" and "clipboard-write" are two separate permissions with no
+	inherent strength relationship. However, user agents MAY choose to impose such a
+	strength ordering on these permissions, for example by making the "clipboard-read"
+	permission act stronger than the "clipboard-write" permission. Doing this would
+	effectively turn the "clipboad-read" permission into a way to provide full
+	read/write access to the clipboard since granting (or denying) "clipboard-read" would
+	also grant (deny) "clipboard-write" access.
 
 	While user agents MUST support the {{ClipboardPermissionDescriptor}} as described
 	in this specification, they, of course, retain complete control over the default
-	settings and how they are exposed to the user.
+	settings and how (or if) they are exposed to the user.
 	
 	<div class="example">
-		A user agent that wants to have separate read and write controls over the clipboad
+		A user agent that wants to have separate user-settable read and write controls over the clipboad
 		and always require a user gesture would handle each descriptor as follows:
 		
-		* <code class="perm">{ "read" + true }</code> is exposed for user control
-		* <code class="perm">{ "read" + false }</code> is always <a>denied</a>
-		* <code class="perm">{ "write" + true }</code> is exposed for user control
-		* <code class="perm">{ "write" + false }</code> is always <a>denied</a>
+		* <code class="perm">{ "clipboard-read" + false }</code> is exposed for user control
+		* <code class="perm">{ "clipboard-read" + true }</code> is always <a>denied</a>
+		* <code class="perm">{ "clipboard-write" + false }</code> is exposed for user control
+		* <code class="perm">{ "clipboard-write" + true }</code> is always <a>denied</a>
 	</div>
 				
 	<div class="example">
 		A user agent that wants to automatically grant "write" access (with a gesture),
-		but have a single permission that controls full gesture-less access would
-		define "read" as being stronger than "write" and then handle each descriptor as
-		follows:
+		but have a single user-settable permission that controls full gesture-less access would
+		define "clipboard-read" as being stronger than "clipboard-write" and then handle
+		each descriptor as follows:
 		
-		* <code class="perm">{ "read" + true }</code> is exposed for user control
-		* <code class="perm">{ "read" + false }</code> is inherited from
-			<code class="perm">{ "read" + true }</code>
-		* <code class="perm">{ "write" + true }</code> is <a>granted</a> by default, but
-			may be overridden by <code class="perm">{ "read" + true }</code> because
+		* <code class="perm">{ "clipboard-read" + false }</code> is inherited from
+			<code class="perm">{ "clipboard-read" + true }</code>
+		* <code class="perm">{ "clipboard-read" + true }</code> is exposed for user control
+		* <code class="perm">{ "clipboard-write" + false }</code> is inherited from
+			<code class="perm">{ "clipboard-write" + true }</code>
+		* <code class="perm">{ "clipboard-write" + true }</code> is <a>granted</a> by default, but
+			may be overridden by <code class="perm">{ "clipboard-read" + true }</code> because
 			"read" is stronger than "write".
-		* <code class="perm">{ "write" + false }</code> is inherited from
-			<code class="perm">{ "write" + true }</code>
 	</div>
 				
 	<h3 id="read-permission">Clipboard read permission</h3>
@@ -927,11 +928,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		<h4 id="h-clipboard-read-permission"><dfn>check clipboard read permission</dfn></h4>
 
 		1. Let |readWithoutGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 			permission.
 		
 		1. Let |readWithGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+			<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
 			permission.
 		
 		1. Let |hasGesture| be true if the current script is not running as a result of
@@ -951,11 +952,14 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			1. If |readWithGesture| is <a>prompt</a>, then,
 						
 				1. Query the user for
-					<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+					<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
 					permission.
+					
+					Note: User agents may choose to query for a stronger permission that
+					will implicitly update this permission.
 			
 				1. Set |readWithGesture| be the updated value of the
-					<code>{ name: "clipboard", access: "read", requireGesture: true }</code>
+					<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
 					permission.
 
 			1. If |readWithGesture| is <a>granted</a>, then return true.
@@ -965,11 +969,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			1. If |readWithoutGesture| is <a>prompt</a>, then,
 
 				1. Query the user for
-					<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+					<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 					permission.
 			
 				1. Set |readWithoutGesture| be the updated value of the
-					<code>{ name: "clipboard", access: "read", requireGesture: false }</code>
+					<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 					permission.
 
 			1. If |readWithoutGesture| is <a>granted</a>, then return true.
@@ -984,11 +988,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		<h4 id="h-clipboard-write-permission"><dfn>check clipboard write permission</dfn></h4>
 
 		1. Let |writeWithoutGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 			permission.
 		
 		1. Let |writeWithGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+			<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
 			permission.
 		
 		1. Let |hasGesture| be true if the current script is not running as a result of
@@ -1008,11 +1012,14 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			1. If |writeWithGesture| is <a>prompt</a>, then,
 						
 				1. Query the user for
-					<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+					<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
 					permission.
 			
+					Note: User agents may choose to query for a stronger permission that
+					will implicitly update this permission.
+
 				1. Set |writeWithGesture| be the updated value of the
-					<code>{ name: "clipboard", access: "write", requireGesture: true }</code>
+					<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
 					permission.
 
 			1. If |writeWithGesture| is <a>granted</a>, then return true.
@@ -1022,11 +1029,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			1. If |writeWithoutGesture| is <a>prompt</a>, then,
 
 				1. Query the user for
-					<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+					<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 					permission.
 			
 				1. Set |writeWithoutGesture| be the updated value of the
-					<code>{ name: "clipboard", access: "write", requireGesture: false }</code>
+					<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 					permission.
 
 			1. If |writeWithoutGesture| is <a>granted</a>, then return true.

@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-18">18 October 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-23">23 October 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2246,81 +2246,79 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§5.3
     </ol>
    </div>
    <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Permissions API Integration</span><a class="self-link" href="#clipboard-permissions"></a></h2>
-   <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to request permissions
+   <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites access <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>s like the clipboard. It allows websites to request permissions
 	from users and query which permissions they have.</p>
+   <p>For the clipboard, two separate permissions are defined: <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export="" id="dom-permissionname-clipboard-read">"clipboard-read"<a class="self-link" href="#dom-permissionname-clipboard-read"></a></dfn> and <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export="" id="dom-permissionname-clipboard-write">"clipboard-write"<a class="self-link" href="#dom-permissionname-clipboard-write"></a></dfn></p>
    <p class="note" role="note">Note: Clipboard permissions currently only apply to the Async Clipboard API.
 	Future versions of this specification may be updated to apply this permission
 	to other Clipboard interactions.</p>
-   <p>The <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export="" id="dom-permissionname-clipboard">"clipboard"<a class="self-link" href="#dom-permissionname-clipboard"></a></dfn> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>’s
+   <p>These clipboard permissions are <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>s
 	permission-related algorithms and types are defined as follows:</p>
    <dl>
     <dt> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-descriptor-type">permission descriptor type</a> 
     <dd>
-<pre class="idl highlight def"><span class="kt">enum</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="enum" data-export="" id="enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</dfn> {
-  <dfn class="s idl-code" data-dfn-for="ClipboardPermissionAccess" data-dfn-type="enum-value" data-export="" data-lt="&quot;read&quot;|read" id="dom-clipboardpermissionaccess-read">"read"<a class="self-link" href="#dom-clipboardpermissionaccess-read"></a></dfn>,
-  <dfn class="s idl-code" data-dfn-for="ClipboardPermissionAccess" data-dfn-type="enum-value" data-export="" data-lt="&quot;write&quot;|write" id="dom-clipboardpermissionaccess-write">"write"<a class="self-link" href="#dom-clipboardpermissionaccess-write"></a></dfn>,
-};
-
-<span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a> {
-  <a class="n" data-link-type="idl-name" href="#enumdef-clipboardpermissionaccess" id="ref-for-enumdef-clipboardpermissionaccess-1">ClipboardPermissionAccess</a> <dfn class="nv idl-code" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export="" data-type="ClipboardPermissionAccess " id="dom-clipboardpermissiondescriptor-access">access<a class="self-link" href="#dom-clipboardpermissiondescriptor-access"></a></dfn>;
-  <span class="kt">boolean</span> <dfn class="nv idl-code" data-default="true" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export="" data-type="boolean " id="dom-clipboardpermissiondescriptor-requiregesture">requireGesture<a class="self-link" href="#dom-clipboardpermissiondescriptor-requiregesture"></a></dfn> = <span class="kt">true</span>;
+<pre class="idl highlight def"><span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</dfn> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a> {
+  <span class="kt">boolean</span> <dfn class="nv idl-code" data-default="false" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export="" data-type="boolean " id="dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture<a class="self-link" href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"></a></dfn> = <span class="kt">false</span>;
 };
 </pre>
-    <p>The <code class="idl"><a data-link-type="idl" href="#dictdef-clipboardpermissiondescriptor" id="ref-for-dictdef-clipboardpermissiondescriptor-1">ClipboardPermissionDescriptor</a></code> defines 4 clipboard permissions:</p>
+    <p>There are 4 clipboard permissions:</p>
     <ul>
      <li data-md="">
-      <p>{ access: "read", requireGesture: true }</p>
+      <p>{ name: "clipboard-read", allowWithoutGesture: false }</p>
      <li data-md="">
-      <p>{ access: "read", requireGesture: false }</p>
+      <p>{ name: "clipboard-read", allowWithoutGesture: true }</p>
      <li data-md="">
-      <p>{ access: "write", requireGesture: true }</p>
+      <p>{ name: "clipboard-write", allowWithoutGesture: false }</p>
      <li data-md="">
-      <p>{ access: "write", requireGesture: false }</p>
+      <p>{ name: "clipboard-write", allowWithoutGesture: true }</p>
     </ul>
     <p>With the following relationships:</p>
     <ul>
      <li data-md="">
-      <p><code>{ "read" + true }</code> is stronger than <code>{ "read" + false }</code></p>
+      <p><code>{ "clipboard-read" + true }</code> is stronger than <code>{ "clipboard-read" + false }</code></p>
      <li data-md="">
-      <p><code>{ "write" + true }</code> is stronger than <code>{ "write" + false }</code></p>
+      <p><code>{ "clipboard-write" + true }</code> is stronger than <code>{ "clipboard-write" + false }</code></p>
     </ul>
-    <p class="note" role="note">Note: "read" access is not inherently stronger than "write" access, although user agents
-	MAY choose to impose such a strength ordering. Doing this would effectively turn
-	"read" access into a "full" access since granting (or denying) "read" would also
-	grant (deny) "write" access.</p>
-    <p>While user agents MUST support the <code class="idl"><a data-link-type="idl" href="#dictdef-clipboardpermissiondescriptor" id="ref-for-dictdef-clipboardpermissiondescriptor-2">ClipboardPermissionDescriptor</a></code> as described
+    <p class="note" role="note">Note: "clipboard-read" and "clipboard-write" are two separate permissions with no
+	inherent strength relationship. However, user agents MAY choose to impose such a
+	strength ordering on these permissions, for example by making the "clipboard-read"
+	permission act stronger than the "clipboard-write" permission. Doing this would
+	effectively turn the "clipboad-read" permission into a way to provide full
+	read/write access to the clipboard since granting (or denying) "clipboard-read" would
+	also grant (deny) "clipboard-write" access.</p>
+    <p>While user agents MUST support the <code class="idl"><a data-link-type="idl" href="#dictdef-clipboardpermissiondescriptor" id="ref-for-dictdef-clipboardpermissiondescriptor-1">ClipboardPermissionDescriptor</a></code> as described
 	in this specification, they, of course, retain complete control over the default
-	settings and how they are exposed to the user.</p>
-    <div class="example" id="example-f870f002">
-     <a class="self-link" href="#example-f870f002"></a> A user agent that wants to have separate read and write controls over the clipboad
+	settings and how (or if) they are exposed to the user.</p>
+    <div class="example" id="example-e3983290">
+     <a class="self-link" href="#example-e3983290"></a> A user agent that wants to have separate user-settable read and write controls over the clipboad
 		and always require a user gesture would handle each descriptor as follows: 
      <ul>
       <li data-md="">
-       <p><code class="perm">{ "read" + true }</code> is exposed for user control</p>
+       <p><code class="perm">{ "clipboard-read" + false }</code> is exposed for user control</p>
       <li data-md="">
-       <p><code class="perm">{ "read" + false }</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied">denied</a></p>
+       <p><code class="perm">{ "clipboard-read" + true }</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied">denied</a></p>
       <li data-md="">
-       <p><code class="perm">{ "write" + true }</code> is exposed for user control</p>
+       <p><code class="perm">{ "clipboard-write" + false }</code> is exposed for user control</p>
       <li data-md="">
-       <p><code class="perm">{ "write" + false }</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied">denied</a></p>
+       <p><code class="perm">{ "clipboard-write" + true }</code> is always <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-denied">denied</a></p>
      </ul>
     </div>
-    <div class="example" id="example-823ba101">
-     <a class="self-link" href="#example-823ba101"></a> A user agent that wants to automatically grant "write" access (with a gesture),
-		but have a single permission that controls full gesture-less access would
-		define "read" as being stronger than "write" and then handle each descriptor as
-		follows: 
+    <div class="example" id="example-c0107977">
+     <a class="self-link" href="#example-c0107977"></a> A user agent that wants to automatically grant "write" access (with a gesture),
+		but have a single user-settable permission that controls full gesture-less access would
+		define "clipboard-read" as being stronger than "clipboard-write" and then handle
+		each descriptor as follows: 
      <ul>
       <li data-md="">
-       <p><code class="perm">{ "read" + true }</code> is exposed for user control</p>
+       <p><code class="perm">{ "clipboard-read" + false }</code> is inherited from <code class="perm">{ "clipboard-read" + true }</code></p>
       <li data-md="">
-       <p><code class="perm">{ "read" + false }</code> is inherited from <code class="perm">{ "read" + true }</code></p>
+       <p><code class="perm">{ "clipboard-read" + true }</code> is exposed for user control</p>
       <li data-md="">
-       <p><code class="perm">{ "write" + true }</code> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a> by default, but
-may be overridden by <code class="perm">{ "read" + true }</code> because
+       <p><code class="perm">{ "clipboard-write" + false }</code> is inherited from <code class="perm">{ "clipboard-write" + true }</code></p>
+      <li data-md="">
+       <p><code class="perm">{ "clipboard-write" + true }</code> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a> by default, but
+may be overridden by <code class="perm">{ "clipboard-read" + true }</code> because
 "read" is stronger than "write".</p>
-      <li data-md="">
-       <p><code class="perm">{ "write" + false }</code> is inherited from <code class="perm">{ "write" + true }</code></p>
      </ul>
     </div>
     <h3 class="heading settled" data-level="9.1" id="read-permission"><span class="secno">9.1. </span><span class="content">Clipboard read permission</span><a class="self-link" href="#read-permission"></a></h3>
@@ -2328,9 +2326,9 @@ may be overridden by <code class="perm">{ "read" + true }</code> because
      <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
      <ol>
       <li data-md="">
-       <p>Let <var>readWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+       <p>Let <var>readWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
       <li data-md="">
-       <p>Let <var>readWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+       <p>Let <var>readWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
       <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
@@ -2349,9 +2347,11 @@ system.</p>
          <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
          <ol>
           <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+           <p>Query the user for <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
+           <p class="note" role="note">Note: User agents may choose to query for a stronger permission that
+will implicitly update this permission.</p>
           <li data-md="">
-           <p>Set <var>readWithGesture</var> be the updated value of the <code>{ name: "clipboard", access: "read", requireGesture: true }</code> permission.</p>
+           <p>Set <var>readWithGesture</var> be the updated value of the <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
          </ol>
         <li data-md="">
          <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
@@ -2363,9 +2363,9 @@ system.</p>
          <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
          <ol>
           <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+           <p>Query the user for <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
           <li data-md="">
-           <p>Set <var>readWithoutGesture</var> be the updated value of the <code>{ name: "clipboard", access: "read", requireGesture: false }</code> permission.</p>
+           <p>Set <var>readWithoutGesture</var> be the updated value of the <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
          </ol>
         <li data-md="">
          <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
@@ -2379,9 +2379,9 @@ system.</p>
      <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
      <ol>
       <li data-md="">
-       <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+       <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
       <li data-md="">
-       <p>Let <var>writeWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+       <p>Let <var>writeWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
       <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
@@ -2400,9 +2400,11 @@ system.</p>
          <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
          <ol>
           <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+           <p>Query the user for <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
+           <p class="note" role="note">Note: User agents may choose to query for a stronger permission that
+will implicitly update this permission.</p>
           <li data-md="">
-           <p>Set <var>writeWithGesture</var> be the updated value of the <code>{ name: "clipboard", access: "write", requireGesture: true }</code> permission.</p>
+           <p>Set <var>writeWithGesture</var> be the updated value of the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
          </ol>
         <li data-md="">
          <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
@@ -2414,9 +2416,9 @@ system.</p>
          <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
          <ol>
           <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+           <p>Query the user for <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
           <li data-md="">
-           <p>Set <var>writeWithoutGesture</var> be the updated value of the <code>{ name: "clipboard", access: "write", requireGesture: false }</code> permission.</p>
+           <p>Set <var>writeWithoutGesture</var> be the updated value of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
          </ol>
         <li data-md="">
          <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
@@ -3019,9 +3021,9 @@ HTML code.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#dom-clipboardpermissiondescriptor-access">access</a><span>, in §9</span>
    <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.3.1</span>
    <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.3.2</span>
+   <li><a href="#dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture</a><span>, in §9</span>
    <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in §9.1.1</span>
    <li><a href="#check-clipboard-write-permission">check clipboard write permission</a><span>, in §9.2.1</span>
    <li><a href="#clipboard">Clipboard</a><span>, in §7.2</span>
@@ -3031,7 +3033,6 @@ HTML code.</p>
      <li><a href="#dom-navigator-clipboard">attribute for Navigator</a><span>, in §7.1</span>
      <li><a href="#navigator-clipboard">dfn for Navigator</a><span>, in §7.1.1</span>
     </ul>
-   <li><a href="#dom-permissionname-clipboard">"clipboard"</a><span>, in §9</span>
    <li><a href="#clipboardchange">clipboardchange</a><span>, in §5.2.1</span>
    <li>
     clipboardData
@@ -3046,8 +3047,9 @@ HTML code.</p>
    <li><a href="#clipboard-events">Clipboard events</a><span>, in §5.2</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type)</a><span>, in §5.1</span>
    <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type, eventInitDict)</a><span>, in §5.1</span>
-   <li><a href="#enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</a><span>, in §9</span>
    <li><a href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a><span>, in §9</span>
+   <li><a href="#dom-permissionname-clipboard-read">"clipboard-read"</a><span>, in §9</span>
+   <li><a href="#dom-permissionname-clipboard-write">"clipboard-write"</a><span>, in §9</span>
    <li><a href="#copy">copy</a><span>, in §5.2.2</span>
    <li><a href="#cut">cut</a><span>, in §5.2.3</span>
    <li><a href="#editable-context">editable context</a><span>, in §3</span>
@@ -3056,27 +3058,22 @@ HTML code.</p>
    <li><a href="#paste">paste</a><span>, in §5.2.4</span>
    <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in §Unnumbered section</span>
    <li><a href="#dfn-processing-equivalence">processing equivalence</a><span>, in §Unnumbered section</span>
-   <li><a href="#dom-clipboardpermissionaccess-read">read</a><span>, in §9</span>
    <li>
     read()
     <ul>
      <li><a href="#dom-clipboard-read">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-read">dfn for Clipboard</a><span>, in §7.2.1</span>
     </ul>
-   <li><a href="#dom-clipboardpermissionaccess-read">"read"</a><span>, in §9</span>
    <li>
     readText()
     <ul>
      <li><a href="#dom-clipboard-readtext">method for Clipboard</a><span>, in §7.2</span>
      <li><a href="#clipboard-readtext">dfn for Clipboard</a><span>, in §7.2.2</span>
     </ul>
-   <li><a href="#dom-clipboardpermissiondescriptor-requiregesture">requireGesture</a><span>, in §9</span>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §8</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in §8</span>
    <li><a href="#system-clipboard">system clipboard</a><span>, in §4</span>
    <li><a href="#system-clipboard-data">system clipboard data</a><span>, in §4</span>
-   <li><a href="#dom-clipboardpermissionaccess-write">"write"</a><span>, in §9</span>
-   <li><a href="#dom-clipboardpermissionaccess-write">write</a><span>, in §9</span>
    <li><a href="#write-content-to-the-clipboard">write content to the clipboard</a><span>, in §Unnumbered section</span>
    <li>
     write(data)
@@ -3198,14 +3195,8 @@ HTML code.</p>
   <span class="kt">Promise</span>&lt;<span class="kt">void</span>> <a class="nv" href="#dom-clipboard-writetext">writeText</a>(<span class="kt">DOMString</span> <a class="nv" href="#dom-clipboard-writetext-data-data">data</a>);
 };
 
-<span class="kt">enum</span> <a class="nv" href="#enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</a> {
-  <a class="s" href="#dom-clipboardpermissionaccess-read">"read"</a>,
-  <a class="s" href="#dom-clipboardpermissionaccess-write">"write"</a>,
-};
-
 <span class="kt">dictionary</span> <a class="nv" href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a> {
-  <a class="n" data-link-type="idl-name" href="#enumdef-clipboardpermissionaccess">ClipboardPermissionAccess</a> <a class="nv" data-type="ClipboardPermissionAccess " href="#dom-clipboardpermissiondescriptor-access">access</a>;
-  <span class="kt">boolean</span> <a class="nv" data-default="true" data-type="boolean " href="#dom-clipboardpermissiondescriptor-requiregesture">requireGesture</a> = <span class="kt">true</span>;
+  <span class="kt">boolean</span> <a class="nv" data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture</a> = <span class="kt">false</span>;
 };
 
 </pre>
@@ -3378,16 +3369,10 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
     <li><a href="#ref-for-clipboard-writetext-data-1">7.2.4. writeText(data)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="enumdef-clipboardpermissionaccess">
-   <b><a href="#enumdef-clipboardpermissionaccess">#enumdef-clipboardpermissionaccess</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-enumdef-clipboardpermissionaccess-1">9. Permissions API Integration</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="dictdef-clipboardpermissiondescriptor">
    <b><a href="#dictdef-clipboardpermissiondescriptor">#dictdef-clipboardpermissiondescriptor</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dictdef-clipboardpermissiondescriptor-1">9. Permissions API Integration</a> <a href="#ref-for-dictdef-clipboardpermissiondescriptor-2">(2)</a>
+    <li><a href="#ref-for-dictdef-clipboardpermissiondescriptor-1">9. Permissions API Integration</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="check-clipboard-read-permission">
