@@ -2328,8 +2328,6 @@ may be overridden by <code class="perm">{ "clipboard-read" + true }</code> becau
       <li data-md="">
        <p>Let <var>readWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
       <li data-md="">
-       <p>Let <var>readWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
-      <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
       <li data-md="">
@@ -2344,34 +2342,12 @@ system.</p>
         <li data-md="">
          <p>If <var>systemPaste</var> is true, then return true.</p>
         <li data-md="">
-         <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
-         <ol>
-          <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
-           <p class="note" role="note">Note: User agents may choose to query for a stronger permission that
+         <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
+         <p class="note" role="note">Note: User agents may choose to request a stronger permission that
 will implicitly update this permission.</p>
-          <li data-md="">
-           <p>Set <var>readWithGesture</var> be the updated value of the <code>{ name: "clipboard-read", allowWithoutGesture: false }</code> permission.</p>
-         </ol>
-        <li data-md="">
-         <p>If <var>readWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
        </ol>
       <li data-md="">
-       <p>Else</p>
-       <ol>
-        <li data-md="">
-         <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
-         <ol>
-          <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
-          <li data-md="">
-           <p>Set <var>readWithoutGesture</var> be the updated value of the <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
-         </ol>
-        <li data-md="">
-         <p>If <var>readWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
-       </ol>
-      <li data-md="">
-       <p>Return false</p>
+       <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-read", allowWithoutGesture: true }</code> permission.</p>
      </ol>
     </div>
     <h3 class="heading settled" data-level="9.2" id="write-permission"><span class="secno">9.2. </span><span class="content">Clipboard write permission</span><a class="self-link" href="#write-permission"></a></h3>
@@ -2380,8 +2356,6 @@ will implicitly update this permission.</p>
      <ol>
       <li data-md="">
        <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
-      <li data-md="">
-       <p>Let <var>writeWithGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
       <li data-md="">
        <p>Let <var>hasGesture</var> be true if the current script is not running as a result of
 direct user action, false otherwise.</p>
@@ -2397,34 +2371,12 @@ system.</p>
         <li data-md="">
          <p>If <var>systemCopy</var> is true, then return true.</p>
         <li data-md="">
-         <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
-         <ol>
-          <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
-           <p class="note" role="note">Note: User agents may choose to query for a stronger permission that
+         <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
+         <p class="note" role="note">Note: User agents may choose to request a stronger permission that
 will implicitly update this permission.</p>
-          <li data-md="">
-           <p>Set <var>writeWithGesture</var> be the updated value of the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
-         </ol>
-        <li data-md="">
-         <p>If <var>writeWithGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
        </ol>
       <li data-md="">
-       <p>Else</p>
-       <ol>
-        <li data-md="">
-         <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt">prompt</a>, then,</p>
-         <ol>
-          <li data-md="">
-           <p>Query the user for <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
-          <li data-md="">
-           <p>Set <var>writeWithoutGesture</var> be the updated value of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
-         </ol>
-        <li data-md="">
-         <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted">granted</a>, then return true.</p>
-       </ol>
-      <li data-md="">
-       <p>Return false</p>
+       <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
      </ol>
     </div>
     <h2 class="heading settled" data-level="10" id="mandatory-data-types-x"><span class="secno">10. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="mandatory-data-types">Mandatory data types</dfn></span><a class="self-link" href="#mandatory-data-types-x"></a></h2>
@@ -3134,6 +3086,7 @@ HTML code.</p>
      <li><a href="https://w3c.github.io/permissions/#permission-descriptor-type">permission descriptor type</a>
      <li><a href="https://w3c.github.io/permissions/#permission-state">permission state</a>
      <li><a href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>
+     <li><a href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:

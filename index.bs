@@ -931,10 +931,6 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 			permission.
 		
-		1. Let |readWithGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
-			permission.
-		
 		1. Let |hasGesture| be true if the current script is not running as a result of
 			direct user action, false otherwise.
 		
@@ -949,36 +945,16 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		
 			1. If |systemPaste| is true, then return true.
 			
-			1. If |readWithGesture| is <a>prompt</a>, then,
+			1. Return the result of [=request permission to use=] the 
+				<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
+				permission.
 						
-				1. Query the user for
-					<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
-					permission.
-					
-					Note: User agents may choose to query for a stronger permission that
-					will implicitly update this permission.
-			
-				1. Set |readWithGesture| be the updated value of the
-					<code>{ name: "clipboard-read", allowWithoutGesture: false }</code>
-					permission.
-
-			1. If |readWithGesture| is <a>granted</a>, then return true.
-			
-		1. Else
-
-			1. If |readWithoutGesture| is <a>prompt</a>, then,
-
-				1. Query the user for
-					<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
-					permission.
-			
-				1. Set |readWithoutGesture| be the updated value of the
-					<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
-					permission.
-
-			1. If |readWithoutGesture| is <a>granted</a>, then return true.
-
-		1. Return false
+				Note: User agents may choose to request a stronger permission that
+				will implicitly update this permission.
+				
+		1. Return the result of [=request permission to use=] the 
+			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
+			permission.
 
 		</div><!-- algorithm -->
 
@@ -989,10 +965,6 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 		1. Let |writeWithoutGesture| be the [=permission state=] of the
 			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
-			permission.
-		
-		1. Let |writeWithGesture| be the [=permission state=] of the
-			<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
 			permission.
 		
 		1. Let |hasGesture| be true if the current script is not running as a result of
@@ -1009,36 +981,16 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		
 			1. If |systemCopy| is true, then return true.
 			
-			1. If |writeWithGesture| is <a>prompt</a>, then,
+			1. Return the result of [=request permission to use=] the 
+				<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
+				permission.
 						
-				1. Query the user for
-					<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
-					permission.
-			
-					Note: User agents may choose to query for a stronger permission that
-					will implicitly update this permission.
+				Note: User agents may choose to request a stronger permission that
+				will implicitly update this permission.
 
-				1. Set |writeWithGesture| be the updated value of the
-					<code>{ name: "clipboard-write", allowWithoutGesture: false }</code>
-					permission.
-
-			1. If |writeWithGesture| is <a>granted</a>, then return true.
-			
-		1. Else
-
-			1. If |writeWithoutGesture| is <a>prompt</a>, then,
-
-				1. Query the user for
-					<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
-					permission.
-			
-				1. Set |writeWithoutGesture| be the updated value of the
-					<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
-					permission.
-
-			1. If |writeWithoutGesture| is <a>granted</a>, then return true.
-
-		1. Return false
+		1. Return the result of [=request permission to use=] the 
+			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
+			permission.
 
 		</div><!-- algorithm -->
 
