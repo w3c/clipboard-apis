@@ -97,6 +97,10 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		operations (cut/copy/paste). Here are a few examples:
 
 		<ul>
+			<li><strong>Metadata</strong>
+			When copying text from a repository of documents, it can be useful for the
+			copied text to include metadata about the source of the copied content.
+
 			<li><strong>Rich content editing</strong>
 			When copying text which contains hyperlinks or other structure,
 			it is often useful to be able to reformat the content to preserve
@@ -119,7 +123,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			</li>
 		</ul>
 
-	<h3 id="remove-clipboard-sync">Remote Clipboard Synchronization</h3>
+	<h3 id="remote-clipboard-sync">Remote Clipboard Synchronization</h3>
 
 		For web applications that communicate with remote devices (e.g., remote access
 		or remote shell applications), there is often a need for the clipboard data
@@ -139,6 +143,17 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		listen for [=clipboardchange=] events, {{Clipboard/read()}} from the clipboard
 		whenever it is updated, and then send the new clipboard data to the remote device.
 		</div>
+		
+	<h3 id="trigger-clipboard-actions">Trigger Clipboard Actions</h3>
+
+		Applications that provide an alternate interface to a user agent sometimes need
+		to be able to trigger clipboard actions in the user agent.
+		
+		As an example, consider a screen reader application that provides a more accessible
+		interface to a standard web browser. While the reader can display content and
+		allow the user to interact with it, actions like clipboard copy need
+		to occur in the underlying browser to ensure that the clipboard content is set
+		correctly (with any metadata added by the browser during copy).
 		
 <h2 id="terminolofy">Terminology</h2>
 

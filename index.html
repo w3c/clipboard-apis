@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-10-23">23 October 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-11-07">7 November 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1480,7 +1480,8 @@ for directly accessing the clipboard contents.</p>
      <a href="#Cases"><span class="secno">2</span> <span class="content">Use Cases</span></a>
      <ol class="toc">
       <li><a href="#change-default-clipboard-ops"><span class="secno">2.1</span> <span class="content">Changing Default Clipboard Operations</span></a>
-      <li><a href="#remove-clipboard-sync"><span class="secno">2.2</span> <span class="content">Remote Clipboard Synchronization</span></a>
+      <li><a href="#remote-clipboard-sync"><span class="secno">2.2</span> <span class="content">Remote Clipboard Synchronization</span></a>
+      <li><a href="#trigger-clipboard-actions"><span class="secno">2.3</span> <span class="content">Trigger Clipboard Actions</span></a>
      </ol>
     <li><a href="#terminolofy"><span class="secno">3</span> <span class="content">Terminology</span></a>
     <li><a href="#model"><span class="secno">4</span> <span class="content">Model</span></a>
@@ -1616,6 +1617,8 @@ access to this API is controlled by a permission.</p>
    <p>There are many scenarios where it is desireable to change the default clipboard
 		operations (cut/copy/paste). Here are a few examples:</p>
    <ul>
+    <li><strong>Metadata</strong> When copying text from a repository of documents, it can be useful for the
+			copied text to include metadata about the source of the copied content. 
     <li><strong>Rich content editing</strong> When copying text which contains hyperlinks or other structure,
 			it is often useful to be able to reformat the content to preserve
 			important information. 
@@ -1629,7 +1632,7 @@ access to this API is controlled by a permission.</p>
 			in a formula plain-text input. The XML source could also be placed in the
 			clipboard with the appropriate transformation occurring at paste time. 
    </ul>
-   <h3 class="heading settled" data-level="2.2" id="remove-clipboard-sync"><span class="secno">2.2. </span><span class="content">Remote Clipboard Synchronization</span><a class="self-link" href="#remove-clipboard-sync"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="remote-clipboard-sync"><span class="secno">2.2. </span><span class="content">Remote Clipboard Synchronization</span><a class="self-link" href="#remote-clipboard-sync"></a></h3>
    <p>For web applications that communicate with remote devices (e.g., remote access
 		or remote shell applications), there is often a need for the clipboard data
 		to be kept in sync between the two devices.</p>
@@ -1640,6 +1643,14 @@ access to this API is controlled by a permission.</p>
    <div class="example" id="example-62235a22"><a class="self-link" href="#example-62235a22"></a> To copy the local clipboard data to a remote device, a web application would
 		listen for <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange-1">clipboardchange</a> events, <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read-1">read()</a></code> from the clipboard
 		whenever it is updated, and then send the new clipboard data to the remote device. </div>
+   <h3 class="heading settled" data-level="2.3" id="trigger-clipboard-actions"><span class="secno">2.3. </span><span class="content">Trigger Clipboard Actions</span><a class="self-link" href="#trigger-clipboard-actions"></a></h3>
+   <p>Applications that provide an alternate interface to a user agent sometimes need
+		to be able to trigger clipboard actions in the user agent.</p>
+   <p>As an example, consider a screen reader application that provides a more accessible
+		interface to a standard web browser. While the reader can display content and
+		allow the user to interact with it, actions like clipboard copy need
+		to occur in the underlying browser to ensure that the clipboard content is set
+		correctly (with any metadata added by the browser during copy).</p>
    <h2 class="heading settled" data-level="3" id="terminolofy"><span class="secno">3. </span><span class="content">Terminology</span><a class="self-link" href="#terminolofy"></a></h2>
    <p>The term <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="editable-context">editable context</dfn> means any element that is either an <a data-link-type="dfn" href="http://w3c.github.io/editing/contentEditable.html#dfn-editing-host">editing host</a>, a textarea element, or an input element with its type
 	attribute set to any of "text", "search", "tel",
