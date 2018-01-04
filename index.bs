@@ -1062,12 +1062,18 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 	Enabling authors to change what is copied by a user, or to make an automated
 	copy of something that was never selected and allowing unrestricted calls to
-	paste information can raise various security and privacy concerns.
+	paste information can raise various security concerns.
 
-	An example scenario of a problem is where a user selects a link and copies
-	it, but a different link is copied to the clipboard. The effect of this can
-	range from an unexpected result on pasting to an attempted "phishing" attack.
-
+	Some example scenarios include:
+	
+	* A user selects a link and copies it, but a different link is copied to the clipboard.
+		The effect of this can range from an unexpected result on pasting to an attempted
+		"phishing" attack.
+	* (Self-XSS) Shell commands or executable script can be placed in the clipboard with the
+		intent that the user will run the pasted content.
+	* An image that is specially crafted to exploit bugs in the core OS image handling
+		code can be written to the clipboard.
+		
 	<h3 id="pasting-html">Pasting HTML and multi-part data</h3>
 
 		<em>This section is non-normative.</em>
@@ -1133,6 +1139,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		but the data's origin is an online resource, the implementation must not
 		add an entry for example.jpg to the clipboardData.items list.
 
+	<h3 id="image-transcode">Transcoding images</h3>
+	
+		To prevent malicious image data from being placed on the clipboard, the image
+		data may be transcoded to produce a safe version of the image.
+		
 	<h3 id="nuisances">Nuisance considerations</h3>
 
 		Scripts may use the {{DataTransfer}} API to annoy and confuse users by
