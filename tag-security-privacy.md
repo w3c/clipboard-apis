@@ -2,6 +2,8 @@
 
 Answering questions from [the questionaire doc here](https://w3ctag.github.io/security-questionnaire/).
 
+## Questions to Consider
+
 ### 3.1. Does this specification deal with personally-identifiable information?
 Yes. It provides access to the clipboard (protected behind a Permission).
 
@@ -53,3 +55,12 @@ Yes.
 
 ### 3.17. Does this specification allow downgrading default security characteristics?
 No.
+
+## Mitigation Strategies 
+
+### 4.1 Secure Contexts
+This API is only available in Secure contexts
+
+### 4.2 Explicit user mediation
+A Clipboard permission is defined so that the user agents can give the user control over which
+sites can use this feature.
