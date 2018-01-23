@@ -1,25 +1,14 @@
-= Clipboard
+= Async Clipboard API
 
-DRAFT
+A modern API for asynchronous clipboard access.
 
-Proposal for a modern, asynchronous clipboard interface.
+== Overview of API
 
-== Proposal Summary
+1. A new object: `navigator.clipboard`.
 
-1. Introduce a new object: `navigator.clipboard`
+2. Basic methods for reading/writing that return a `Promise`.
 
-2. Have `read()` and `write()` methods that return a `Promise`
-
-3. Add a new event listener to detect clipboard change events.
-
-=== Goals
-
-* API for safe, asynchronous clipboard access
-
-=== Non-Goals
-
-* Eliminate all usage of `document.execCommand()`
-
+3. A new event listener to detect clipboard change events.
 
 == Background
 
@@ -37,22 +26,19 @@ using link:https://w3c.github.io/editing/execCommand.html[`document.execCommand(
 
 [cols=4*, options=header]
 |===
-|             | cut  | copy | paste
-| IE ^1^      |   9  |   9  |    9
-| Chrome ^2^  |  43  |  43  |   no
-| Firefox ^2^ |  41  |  41  |    ?
-| Opera ^2^   |  29  |  29  |   29
-| Safari ^2^  | yes ^3^  |  yes ^3^  |   ?
-| Edge ^2^    |  12  | 12   |  14 ^4^
+|             | cut     | copy    | paste
+| IE ^1^      |   9     |   9     |    9
+| Chrome ^2^  |  43     |  43     |   no
+| Firefox ^2^ |  41     |  41     |    ?
+| Opera ^2^   |  29     |  29     |   29
+| Safari ^2^  | yes ^3^ | yes ^3^ |   ?
+| Edge ^2^    |  12     |  12     |   14 ^4^
 |===
 
-^1^ A permission prompt to the user when the feature is used.
-
-^2^ Only permitted when executing code in response to a user action or gesture.
-
+^1^ A permission prompt to the user when the feature is used. +
+^2^ Only permitted when executing code in response to a user action or gesture. +
 ^3^ The Safari Technology Preview (link:https://webkit.org/blog/6017/introducing-safari-technology-preview/[announced on 2016-Mar-30])
-has support for cut and copy.
-
+has support for cut and copy. +
 ^4^ Edge 14 supports paste only through an offline-managed Allow List.
 
 However, even with this increased support, there are still many inconsistencies across
@@ -73,7 +59,7 @@ questioning whether this is appropriate in the long term.
 
 == Motivation
 
-The specific issues that motivate this proposal are:
+The specific issues that motivate this updated API are:
 
 * The current model is synchronous, so it blocks the main page.
   * This makes permission prompts more irritating (since the page is blocked).
@@ -105,72 +91,104 @@ And finally,
    * Enable use of the Permissions API or a consent dialog that doesn't block the browser.
 
 
-== Proposal
+== Async Clipboard API
 
-This section provides more details about the proposal.
+This section provides more details about the new API.
 
 === `navigator.clipboard`
 
 The main clipboard object is part of the `navigator` because it is a
 "system" level object that is not tied to the current window or document.
 
-Note: Having this on the `navigator` means that it would be accessible
-from workers.
+=== Writing to the clipboard
 
-=== `read()` and `write()` methods
+The general `write()` method takes a DataTransfer object and returns a
+`Promise<>`.
 
-These methods would return a `Promise` that is resolved when the reading or
-writing operation is complete.
-
-* `write()` would take a `DataTransfer` and return a `Promise<>`
-* `read()` would return a `Promise<DataTransfer>`
-
-It is also desireable to have some convenience methods like `writeText()`
-or `writeHtml()`.
-
-=== Event listener for clipboard change events
-
-This event would fire whenever the clipboard contents are changed. If the
-clipboard contents are changed outside the browser, then this event would
-fire when the browser regains focus.
-
-
-== Example Usage
-
-Example of writing to the clipboard:
+Example of writing to the clipboard using `write()`:
 
 ```javascript
-  // Using convenience function to write a specific MIME type.
-  navigator.clipboard.writeText("Howdy, partner!");
-
-  // Multiple MIME types.
   var data = new DataTransfer();
-  data.items.add("Howdy, partner!""text/plain");
+  data.items.add("Howdy, partner!", "text/plain");
+  navigator.clipboard.write(data);
+```
+
+Multiple MIME types can be added to the `DataTransfer` object and they
+will all be written to the clipboard:
+
+```javascript
+  var data = new DataTransfer();
+  data.items.add("Howdy, partner!", "text/plain");
   data.items.add("<b>Howdy</b>, partner!", "text/html");
   navigator.clipboard.write(data);
+```
 
-  // Use the Promise outcome to perform an action.
+For convenience, when writing text to the clipboard, `writeText()` can
+be used:
+
+```javascript
+  navigator.clipboard.writeText("some text");
+```
+
+Because the return type of these write methods is a `Promise<>`, they will
+return immediately. If it is necessary to know when the operation has been
+completed, then the `Promise<>` can be handled as follows:
+
+```javascript
   navigator.clipboard.writeText("some text").then(function() {
-      console.log(“Copied to clipboard successfully!”);
+      // Promise resolved successfully.
+      console.log("Copied to clipboard successfully!");
   }, function() {
-      console.error(“Unable to write to clipboard. :-(”);
+      // Promise rejected.
+      console.error("Unable to write to clipboard. :-(");
   });
 ```
 
-Example of reading from the clipboard:
+=== Reading from the clipboard
+
+The general `read()` method returns a `Promise<DataTransfer>`.
+
+Example of reading from the clipboard using `read()`:
 
 ```javascript
-  // Reading data from the clipboard.
   navigator.clipboard.read().then(function(data) {
       for (var i = 0; i < data.items.length; i++) {
           if (data.items[i].type == "text/plain") {
-              console.log(“Your string:”, data.items[i].getAs(“text/plain”))
+              console.log("Your string: " + data.items[i].getAs("text/plain"))
           } else {
-              console.error(“No text/plain data on clipboard.”);
+              console.error("No text/plain data on clipboard.");
           }
       }
   })
 ```
+
+For convenience, when reading text from the clipboard, `readText()` can
+be used.
+
+```javascript
+  navigator.clipboard.readText().then(function(data) {
+      console.log(data);
+  })
+```
+
+To catch if the read operation fails, a second function can be passed to the
+`then` as follows:
+
+```javascript
+  navigator.clipboard.readText().then(function(data) {
+      // Successful read.
+      console.log("Read from clipboard: " + data);
+  }, function() {
+      // Read failed.
+      console.log("Failed to read from clipboard");
+  })
+```
+
+=== Event listener for `clipboardchange` events
+
+This event fires whenever the clipboard contents are changed. If the
+clipboard contents are changed outside the browser, then this event
+fires when the browser regains focus.
 
 Example of detecting clipboard changes:
 
@@ -181,6 +199,7 @@ Example of detecting clipboard changes:
 
   navigator.clipboard.addEventListener("clipboardchange", listener);
 ```
+
 
 == Current Clipboard API
 
@@ -199,34 +218,14 @@ around for compatibility reasons).
 The current model of requiring some sort of permission or opt-in before allowing
 untrusted access to the clipboard would be retained.
 
-Basically, the intent (if there's agreement) is to merge this into the
-current Clipboard API document so that all the clipboard-related APIs live
-in the same document.
-
-Note that with this proposal, the `ClipboardEvent` type could be replaced with
-a simple `Event` and all clipboard access could be through the
-`navigator.clipboard` object.
-
-Detect clipboard change example:
-
-```javascript
-  function listener(event) {
-      navigator.clipboard.read().then(function(data) {
-          // Do something with clipboard data.
-      });
-  }
-
-  navigator.clipboard.addEventListener("clipboardchange", listener);
-```
-
 
 == Potential for Abuse
 
 There are a few avenues for abuse that are not specific to this proposal,
 but are applicable to any API that provides clipboard access.
 
-It is one of these abuse vectors in particular, pasting images, that motivates
-this proposal. In order to clean up malicious images,
+It is one of these abuse vectors in particular, pasting images, that motivated
+the creation of the Async Clipboard API. In order to clean up malicious images,
 they would need to be decoded and it is not appropriate to do this on
 the main thread (large images could lock the browser while the image is
 being processed).
@@ -234,7 +233,9 @@ being processed).
 === Reading from the clipboard
 
 Sniffing the clipboard contents. Of concern not just because of the possibility
-of PII, but also because it is not uncommon for users to copy/paste passwords
+of
+link:https://en.wikipedia.org/wiki/Personally_identifiable_information[PII],
+but also because it is not uncommon for users to copy/paste passwords
 (e.g., from a password manager to a website).
 
 === Writing to the clipboard
@@ -295,21 +296,10 @@ For this feature, we should consider some combination of the following:
     name to the registry
 
 
-== MIME Types
-
-This proposal is motivated by the desire to support image types in a safe
-manner, but there is a desire to handle all types safely.
-
-To do: Need to agree on set of required mimetypes. Can we safely allow any
-mimetype and binary data? What alternatives are there for application-specific
-data on the clipboard? `DataTransfer` would need to be updated for this since
-it currently only supports text and files.
-
-
 == Acknowledgements
 
 Thanks to the following people for the discussions that lead to the creation
-of this proposal:
+of the original proposal:
 
 Daniel Cheng (Google),
 Lucas Garron (Google),
