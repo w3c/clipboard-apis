@@ -10,6 +10,10 @@ A modern API for asynchronous clipboard access.
 
 3. A new event listener to detect clipboard change events.
 
+For a complete description of this API, see the
+link:https://w3c.github.io/clipboard-apis/[Clipboard API and events]
+specification.
+
 == Background
 
 An API for clipboard actions (cut, copy and paste) has long been desired for webpages,
