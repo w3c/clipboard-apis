@@ -6,7 +6,7 @@ A modern API for asynchronous clipboard access.
 
 1. A new object: `navigator.clipboard`.
 
-2. Basic methods for reading/writing that return a `Promise`.
+2. Basic async methods for reading/writing clipboard data that return a `Promise`.
 
 3. A new event listener to detect clipboard change events.
 
@@ -41,8 +41,8 @@ using link:https://w3c.github.io/editing/execCommand.html[`document.execCommand(
 has support for cut and copy. +
 ^4^ Edge 14 supports paste only through an offline-managed Allow List.
 
-However, even with this increased support, there are still many inconsistencies across
-browser implementations. See
+However, even with this increased support, there are still many inconsistencies
+across browser implementations. See
 link:https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/[this blog post]
 for a description of the problems Javascript programmers face, and note the
 existence of various Javascript
@@ -59,7 +59,7 @@ questioning whether this is appropriate in the long term.
 
 == Motivation
 
-The specific issues that motivate this updated API are:
+The specific issues that motivated this updated API are:
 
 * The current model is synchronous, so it blocks the main page.
   * This makes permission prompts more irritating (since the page is blocked).
@@ -68,27 +68,32 @@ The specific issues that motivate this updated API are:
     * It's not reasonable to block page while large images are being sanitized.
 
 * The code required for programmatic clipboard actions is... bizarre:
-  * To modify the clipboard, you need to add an event listener for 'copy'. This listener will
-    fire when you call `execCommand('copy')` and also for any user initiated copies.
+  * To modify the clipboard, you need to add an event listener for 'copy'. This
+    listener will fire when you call `execCommand('copy')` and also for any user
+    initiated copies.
 
 * There is a need for a notification event when the clipboard is mutated.
    * Apps that synchronize the clipboard (like remote access apps) need this to
      know when to send the updated clipboard contents to the secondary
      system.
 
-* `execCommand` is old API originally designed for editing the DOM and it has a large number of
+* `execCommand` is old API originally designed for editing the DOM and it
+  has a large number of
   link:https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md[interoperability bugs].
   The latest version of the
   link:https://w3c.github.io/editing/execCommand.html[execCommand spec]
   states that it is incomplete and not expected to advance beyond draft status.
 
-* In practice, many developers load a library to use `execCommand` properly. That shouldn't be necessary for something as basic clipboard cut/copy/paste.
+* In practice, many developers load a library to use `execCommand` properly.
+  That shouldn't be necessary for something as basic clipboard cut/copy/paste.
 
 And finally,
 
 * Make it easier to support alternate permission models.
-   * For example, to enable web apps to copy to the clipboard without requiring a user gesture.
-   * Enable use of the Permissions API or a consent dialog that doesn't block the browser.
+   * For example, to enable web apps to copy to the clipboard without requiring
+     a user gesture.
+   * Enable use of the Permissions API or a consent dialog that doesn't block
+     the browser.
 
 
 == Async Clipboard API
@@ -100,7 +105,7 @@ This section provides more details about the new API.
 The main clipboard object is part of the `navigator` because it is a
 "system" level object that is not tied to the current window or document.
 
-=== Writing to the clipboard
+=== Writing to the Clipboard
 
 The general `write()` method takes a DataTransfer object and returns a
 `Promise<>`.
@@ -144,7 +149,7 @@ completed, then the `Promise<>` can be handled as follows:
   });
 ```
 
-=== Reading from the clipboard
+=== Reading from the Clipboard
 
 The general `read()` method returns a `Promise<DataTransfer>`.
 
@@ -184,7 +189,7 @@ To catch if the read operation fails, a second function can be passed to the
   })
 ```
 
-=== Event listener for `clipboardchange` events
+=== Event Listener for `clipboardchange` Events
 
 This event fires whenever the clipboard contents are changed. If the
 clipboard contents are changed outside the browser, then this event
@@ -201,13 +206,38 @@ Example of detecting clipboard changes:
 ```
 
 
-== Current Clipboard API
+== Clipboard Permissions
+
+Because of the potential for abuse, two permissions are defined that allow
+user agents to give use control over how the Async APIs are used.
+
+The `clipboard-write` permission controls access to the write methods.
+
+The `clipboard-read` permission controls access to the read methods and
+the `clipboardchange` event.
+
+Normally, there is no need to request permission before using the APIs
+because the appropriate permission will be checked whenever an API
+method is invoked. If permission is denied by the user, then the returned
+`Promise<>` will be rejected.
+
+The one case where permission must be explicitly requested is with the
+`clipboardchange` event. Because there is no API call for this event,
+permission must have already been granted (either by requesting permission
+explicitly or by calling one of the read methods).
+
+IMPORTANT: The exact method for explicitly requesting a permission is still
+an active discussion. See
+link:https://github.com/w3c/permissions/issues/158[this permission bug].
+
+
+== Relationship to Current Clipboard API
 
 The current Clipboard API describes events that are fired when either:
 
-1. the user selects one of the standard clipboard actions via the browser's UI
+1. The user selects one of the standard clipboard actions via the browser's UI
     or keyboard shortcuts (these are "trusted" events), or
-2. javascript code sends one of these events (in which case, they are
+2. Javascript code sends one of these events (in which case, they are
     "synthetic" and "untrusted").
 
 With this proposal, these events would still be present, but the recommended way
@@ -215,13 +245,13 @@ to access the clipboard would be through the Promise-based APIs rather than
 via `execCommand` (although the current `execCommand`-based API would stick
 around for compatibility reasons).
 
-The current model of requiring some sort of permission or opt-in before allowing
-untrusted access to the clipboard would be retained.
+At least initially, the new permissions being introduced for the Async
+Clipboard API will not affect the operation of the existing clipboard APIs.
 
 
-== Potential for Abuse
+== Potential for Abuse when Accessing Clipboard Data
 
-There are a few avenues for abuse that are not specific to this proposal,
+There are a few avenues for abuse that are not specific to the Async API,
 but are applicable to any API that provides clipboard access.
 
 It is one of these abuse vectors in particular, pasting images, that motivated
@@ -230,15 +260,7 @@ they would need to be decoded and it is not appropriate to do this on
 the main thread (large images could lock the browser while the image is
 being processed).
 
-=== Reading from the clipboard
-
-Sniffing the clipboard contents. Of concern not just because of the possibility
-of
-link:https://en.wikipedia.org/wiki/Personally_identifiable_information[PII],
-but also because it is not uncommon for users to copy/paste passwords
-(e.g., from a password manager to a website).
-
-=== Writing to the clipboard
+=== Writing to the Clipboard
 
 Inject malicious content onto the clipboard.
 
@@ -249,6 +271,14 @@ Note, that it is already possible to clobber the clipboard contents:
     // Modify the document selection or call e.clipboardData.setData()
   }
 ```
+
+=== Reading from the Clipboard
+
+Sniffing the clipboard contents. Of concern not just because of the possibility
+of
+link:https://en.wikipedia.org/wiki/Personally_identifiable_information[PII],
+but also because it is not uncommon for users to copy/paste passwords
+(e.g., from a password manager to a website).
 
 ==== Pasting Text
 
@@ -282,18 +312,17 @@ blocked until the command (including any permission dialogs) is complete.
 Note that replacing `execCommand` with an asychronous clipboard API would
 make these permission dialogs more user-friendly.
 
-For this feature, we should consider some combination of the following:
+To protect against abuse, implementers should consider some combination of
+the following:
 
 * Require a user gesture. To protect against drive-by access, although this may
-    not be necessary with the right set of permissions.
+  not be necessary with the right set of permissions.
 * Only allow clipboard access from code running in the front tab.
 * Pop-up Notifications. A post-facto notification similar to what is done for
-    fullscreen. Display something like: "New data pasted to clipboard" or "Data
-    read from clipboard".
-* Permission Dialog. With an async clipboard API, this would be more
-    acceptable since it wouldn't block the main process.
-* link:https://www.w3.org/TR/permissions/[Permissions API]. Add a "clipboard"
-    name to the registry
+  fullscreen. Display something like: "New data pasted to clipboard" or "Data
+  read from clipboard".
+* Permission Dialog. Require the user to grant permission before accessing
+  the clipboard.
 
 
 == Acknowledgements
