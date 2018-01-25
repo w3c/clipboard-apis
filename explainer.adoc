@@ -8,7 +8,7 @@ A modern API for asynchronous clipboard access.
 
 2. Basic async methods for reading/writing clipboard data that return a `Promise`.
 
-3. A new event listener to detect clipboard change events.
+3. A new `clipboardchange` event to detect clipboard changes.
 
 For a complete description of this API, see the
 link:https://w3c.github.io/clipboard-apis/[Clipboard API and events]
@@ -193,7 +193,7 @@ To catch if the read operation fails, a second function can be passed to the
   })
 ```
 
-=== Event Listener for `clipboardchange` Events
+=== The `clipboardchange` Event
 
 This event fires whenever the clipboard contents are changed. If the
 clipboard contents are changed outside the browser, then this event
@@ -202,11 +202,11 @@ fires when the browser regains focus.
 Example of detecting clipboard changes:
 
 ```javascript
-  function listener(event) {
+  function callback(event) {
       // Do stuff with navigator.clipboard
   }
 
-  navigator.clipboard.addEventListener("clipboardchange", listener);
+  navigator.clipboard.addEventListener("clipboardchange", callback);
 ```
 
 
