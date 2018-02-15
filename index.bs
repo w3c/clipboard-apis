@@ -515,6 +515,52 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		});
 		</pre>
 
+	<h3 id="mandatory-data-types-x"><dfn>Mandatory data types</dfn></h3>
+
+		The implementation must recognise the native OS clipboard format description
+		for the following data types, to be able to populate the
+		{{DataTransferItemList}} with the correct description for paste events, and
+		set the correct data format on the OS clipboard in response to copy and cut
+		events.
+
+		<h4 id="reading-from-clipboard">Reading from the clipboard</h4>
+
+			These data types must be exposed by <em>paste</em> events if a
+			corresponding native type exists on the clipboard:
+
+			* text/plain
+			* text/uri-list
+			* text/csv
+			* text/css
+			* text/html
+			* application/xhtml+xml
+			* image/png
+			* image/jpg, image/jpeg
+			* image/gif
+			* image/svg+xml
+			* application/xml, text/xml
+			* application/javascript
+			* application/json
+			* application/octet-stream
+
+		<h4 id="writing-to-clipboard">Writing to the clipboard</h4>
+
+			These data types must be placed on the clipboard with a corresponding
+			native type description if added to a {{DataTransfer}} object during
+			<em>copy</em> and <em>cut</em> events.
+
+			* text/plain
+			* text/uri-list
+			* text/csv
+			* text/html
+			* image/svg+xml
+			* application/xml, text/xml
+			* application/json
+
+			Advisement: Warning! The data types that untrusted scripts are allowed to write to the
+			clipboard are limited as a security precaution. Untrusted scripts can
+			attempt to exploit security vulnerabilities in local software by placing
+			data known to trigger those vulnerabilities on the clipboard.
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -1009,54 +1055,6 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			permission.
 
 		</div><!-- algorithm -->
-
-
-<h2 id="mandatory-data-types-x"><dfn>Mandatory data types</dfn></h2>
-
-	The implementation must recognise the native OS clipboard format description
-	for the following data types, to be able to populate the
-	{{DataTransferItemList}} with the correct description for paste events, and
-	set the correct data format on the OS clipboard in response to copy and cut
-	events.
-
-	<h3 id="reading-from-clipboard">Reading from the clipboard</h3>
-
-		These data types must be exposed by <em>paste</em> events if a
-		corresponding native type exists on the clipboard:
-
-		* text/plain
-		* text/uri-list
-		* text/csv
-		* text/css
-		* text/html
-		* application/xhtml+xml
-		* image/png
-		* image/jpg, image/jpeg
-		* image/gif
-		* image/svg+xml
-		* application/xml, text/xml
-		* application/javascript
-		* application/json
-		* application/octet-stream
-
-	<h3 id="writing-to-clipboard">Writing to the clipboard</h3>
-
-		These data types must be placed on the clipboard with a corresponding
-		native type description if added to a {{DataTransfer}} object during
-		<em>copy</em> and <em>cut</em> events.
-
-		* text/plain
-		* text/uri-list
-		* text/csv
-		* text/html
-		* image/svg+xml
-		* application/xml, text/xml
-		* application/json
-
-		Advisement: Warning! The data types that untrusted scripts are allowed to write to the
-		clipboard are limited as a security precaution. Untrusted scripts can
-		attempt to exploit security vulnerabilities in local software by placing
-		data known to trigger those vulnerabilities on the clipboard.
 
 
 <h2 id="security">Security Considerations</h2>
