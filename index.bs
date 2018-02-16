@@ -261,7 +261,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			data will be copied to the [=system clipboard=].
 			The current document selection is not affected.
 
-			The [=copy=] event bubbles and is cancelable.
+			The [=copy=] event bubbles, is cancelable, and is composed.
 			
 			See [[#copy-action]] for a detailed description of the processing model for
 			this event.
@@ -285,7 +285,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			be an empty list. Note that the [=cut=] event will still be fired
 			in this case.
 
-			The [=cut=] event bubbles and is cancelable.
+			The [=cut=] event bubbles, is cancelable, and is composed.
 
 			See [[#cut-action]] for a detailed description of the processing model for
 			this event.
@@ -307,7 +307,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 			The paste action has no effect in a non-[=editable context=],
 			but the [=paste=] event fires regardless.
 
-			The [=paste=] event bubbles and is cancelable.
+			The [=paste=] event bubbles, is cancelable, and is composed.
 
 			See [[#paste-action]] for a detailed description of the processing model for
 			this event.
@@ -1419,6 +1419,8 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		1. Set |e|'s {{ClipboardEvent/clipboardData}} to |clipboard-event-data|.
 
 		1. Set |e|'s {{Event/isTrusted}} to |trusted|.
+
+		1. Set |e|'s {{Event/composed}} to true.
 
 		1. Dispatch the event |e| which bubbles and is cancelable, and which
 			uses the {{ClipboardEvent}} interface, at |target|.
