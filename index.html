@@ -1424,7 +1424,7 @@ pre.idl.highlight { color: #708090; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-02-15">15 February 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-02-16">16 February 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1728,7 +1728,7 @@ document.dispatchEvent(pasteEvent);
    <p>If the event is not canceled, the currently selected
 			data will be copied to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard-4">system clipboard</a>.
 			The current document selection is not affected.</p>
-   <p>The <a data-link-type="dfn" href="#copy" id="ref-for-copy-3">copy</a> event bubbles and is cancelable.</p>
+   <p>The <a data-link-type="dfn" href="#copy" id="ref-for-copy-3">copy</a> event bubbles, is cancelable, and is composed.</p>
    <p>See <a href="#copy-action">§8.1 The copy action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#copy" id="ref-for-copy-4">copy</a> event can be manually constructed and dispatched, but it
@@ -1742,7 +1742,7 @@ document.dispatchEvent(pasteEvent);
    <p>In a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-2">editable context</a>, the <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-1">clipboardData</a></code> will
 			be an empty list. Note that the <a data-link-type="dfn" href="#cut" id="ref-for-cut-4">cut</a> event will still be fired
 			in this case.</p>
-   <p>The <a data-link-type="dfn" href="#cut" id="ref-for-cut-5">cut</a> event bubbles and is cancelable.</p>
+   <p>The <a data-link-type="dfn" href="#cut" id="ref-for-cut-5">cut</a> event bubbles, is cancelable, and is composed.</p>
    <p>See <a href="#cut-action">§8.2 The cut action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut-6">cut</a> event can be manually constructed and dispatched, but it
@@ -1755,7 +1755,7 @@ document.dispatchEvent(pasteEvent);
 			for the given context.</p>
    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context-4">editable context</a>,
 			but the <a data-link-type="dfn" href="#paste" id="ref-for-paste-2">paste</a> event fires regardless.</p>
-   <p>The <a data-link-type="dfn" href="#paste" id="ref-for-paste-3">paste</a> event bubbles and is cancelable.</p>
+   <p>The <a data-link-type="dfn" href="#paste" id="ref-for-paste-3">paste</a> event bubbles, is cancelable, and is composed.</p>
    <p>See <a href="#paste-action">§8.3 The paste action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#paste" id="ref-for-paste-4">paste</a> event can be manually constructed and dispatched, but it
@@ -2738,14 +2738,15 @@ user agent, <em>false</em> otherwise</p>
          <ol>
           <li data-md="">
            <p>Set <var>target</var> to be the element that contains the
-start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if there is no selection or cursor.</p>
+start of the visible selection or cursor in document order,
+or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if there is no visible selection or cursor.</p>
          </ol>
         <li data-md="">
          <p>Else, if the context is not editable, then</p>
          <ol>
           <li data-md="">
-           <p>Set <var>target</var> to be the element that contains the
-start of the selection in document order, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if there is no selection or cursor.</p>
+           <p>Set <var>target</var> to the focused node, or <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2">the body element</a> if no node
+has focus.</p>
          </ol>
        </ol>
       <li data-md="">
@@ -2837,6 +2838,8 @@ entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-ty
        <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata-5">clipboardData</a></code> to <var>clipboard-event-data</var>.</p>
       <li data-md="">
        <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted">isTrusted</a></code> to <var>trusted</var>.</p>
+      <li data-md="">
+       <p>Set <var>e</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-composed">composed</a></code> to true.</p>
       <li data-md="">
        <p>Dispatch the event <var>e</var> which bubbles and is cancelable, and which
 uses the <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent-6">ClipboardEvent</a></code> interface, at <var>target</var>.</p>
@@ -3075,6 +3078,7 @@ HTML code.</p>
      <li><a href="https://dom.spec.whatwg.org/#event">Event</a>
      <li><a href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a>
      <li><a href="https://dom.spec.whatwg.org/#eventtarget">EventTarget</a>
+     <li><a href="https://dom.spec.whatwg.org/#dom-event-composed">composed</a>
      <li><a href="https://dom.spec.whatwg.org/#dom-event-istrusted">isTrusted</a>
      <li><a href="https://dom.spec.whatwg.org/#dom-event-preventdefault">preventDefault()</a>
     </ul>
