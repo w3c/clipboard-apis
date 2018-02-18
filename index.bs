@@ -907,7 +907,7 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 <h2 id="clipboard-permissions">Permissions API Integration</h2>
 
-	The [[permissions]] API provides a uniform way for websites access
+	The [[permissions]] API provides a uniform way for websites to access
 	<a>powerful feature</a>s like the clipboard. It allows websites to request permissions
 	from users and query which permissions they have.
 	
