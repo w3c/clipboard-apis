@@ -1177,9 +1177,9 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version ae5d415446a9edf0c07d32303ac1d21767d86d57" name="generator">
+  <meta content="Bikeshed version 5afc3ab5248efd53ff0fd6d61ad878a3dc5a357a" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="0491e5562cf6f18ec2591ff8d7da0cb2e933e759" name="document-revision">
+  <meta content="2ac3c0b5894558a4b468be6f09feb588efff4077" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1426,7 +1426,7 @@ pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-02-18">18 February 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-03-14">14 March 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2002,10 +2002,12 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects">Promise</a>.</p>
       <li data-md="">
-       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission">check clipboard read permission</a> is false, then reject <var>p</var></p>
-      <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel">in parallel</a>:</p>
        <ol>
+        <li data-md="">
+         <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission">check clipboard read permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel①">in parallel</a></p>
+        <li data-md="">
+         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
         <li data-md="">
          <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data①">system clipboard data</a>.</p>
         <li data-md="">
@@ -2033,10 +2035,12 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a>.</p>
       <li data-md="">
-       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission①">check clipboard read permission</a> is false, then reject <var>p</var></p>
-      <li data-md="">
-       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel①">in parallel</a>:</p>
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel②">in parallel</a>:</p>
        <ol>
+        <li data-md="">
+         <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission①">check clipboard read permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel③">in parallel</a></p>
+        <li data-md="">
+         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
         <li data-md="">
          <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
         <li data-md="">
@@ -2066,10 +2070,12 @@ document.addEventListener('paste', function(e) {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects②">Promise</a>.</p>
       <li data-md="">
-       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission">check clipboard write permission</a> is false, then reject <var>p</var></p>
-      <li data-md="">
-       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel②">in parallel</a>:</p>
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel④">in parallel</a>:</p>
        <ol>
+        <li data-md="">
+         <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑤">in parallel</a></p>
+        <li data-md="">
+         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
         <li data-md="">
          <p>Let <var>cleanItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist①">DataTransferItemList</a></code>.</p>
         <li data-md="">
@@ -2107,10 +2113,12 @@ navigator.clipboard.write(data).then(function() {
       <li data-md="">
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects③">Promise</a>.</p>
       <li data-md="">
-       <p>If the result of <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission①">check clipboard write permission</a> is false, then reject <var>p</var></p>
-      <li data-md="">
-       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel③">in parallel</a>:</p>
+       <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑥">in parallel</a>:</p>
        <ol>
+        <li data-md="">
+         <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission①">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑦">in parallel</a></p>
+        <li data-md="">
+         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
         <li data-md="">
          <p>Let <var>newItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist②">DataTransferItemList</a></code>.</p>
         <li data-md="">
