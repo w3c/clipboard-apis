@@ -600,10 +600,12 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		The [=read()=] method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
-
-			1. If the result of [=check clipboard read permission=] is false, then reject |p|
-
+			
 			1. Run the following steps [=in parallel=]:
+
+				1. Let |r| be the result of running [=check clipboard read permission=] [=in parallel=]
+				
+				1. If |r| is not "granted", then reject |p|
 
 				1. Let |data| be a copy of the [=system clipboard data=].
 
@@ -633,9 +635,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
-			1. If the result of [=check clipboard read permission=] is false, then reject |p|
-
 			1. Run the following steps [=in parallel=]:
+
+				1. Let |r| be the result of running [=check clipboard read permission=] [=in parallel=]
+				
+				1. If |r| is not "granted", then reject |p|
 
 				1. Let |data| be a copy of the [=system clipboard data=].
 				
@@ -665,9 +669,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 			
-			1. If the result of [=check clipboard write permission=] is false, then reject |p|
-
 			1. Run the following steps [=in parallel=]:
+
+				1. Let |r| be the result of running [=check clipboard write permission=] [=in parallel=]
+				
+				1. If |r| is not "granted", then reject |p|
 
 				1. Let |cleanItemList| be an empty {{DataTransferItemList}}.
 
@@ -706,9 +712,11 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
-			1. If the result of [=check clipboard write permission=] is false, then reject |p|
-
 			1. Run the following steps [=in parallel=]:
+
+				1. Let |r| be the result of running [=check clipboard write permission=] [=in parallel=]
+				
+				1. If |r| is not "granted", then reject |p|
 
 				1. Let |newItemList| be an empty {{DataTransferItemList}}.
 
