@@ -2027,7 +2027,7 @@ document.addEventListener('paste', function(e) {
       The <a data-link-type="dfn" href="#clipboard-readtext" id="ref-for-clipboard-readtext">readText()</a> method must run these steps: 
      <ol>
       <li data-md="">
-       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a>.</p>
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -2109,7 +2109,7 @@ navigator.clipboard.write(data).then(function() {
       The <a data-link-type="dfn" href="#clipboard-writetext-data" id="ref-for-clipboard-writetext-data">writeText(data)</a> method must run these steps: 
      <ol>
       <li data-md="">
-       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects③">Promise</a>.</p>
+       <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects">Promise</a>.</p>
       <li data-md="">
        <p>Run the following steps <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">in parallel</a>:</p>
        <ol>
@@ -3133,6 +3133,15 @@ HTML code.</p>
      <li><a href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a>
     </ul>
    <li>
+    <a data-link-type="biblio">[permissions]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a>
+     <li><a href="https://w3c.github.io/permissions/#permission-descriptor-type">permission descriptor type</a>
+     <li><a href="https://w3c.github.io/permissions/#permission-state">permission state</a>
+     <li><a href="https://w3c.github.io/permissions/#powerful-feature">powerful feature</a>
+     <li><a href="https://w3c.github.io/permissions/#request-permission-to-use">request permission to use</a>
+    </ul>
+   <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
      <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
@@ -3196,6 +3205,10 @@ HTML code.</p>
 
 <span class="kt">dictionary</span> <a class="nv" href="#dictdef-clipboardpermissiondescriptor"><code>ClipboardPermissionDescriptor</code></a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor" id="ref-for-dictdef-permissiondescriptor①">PermissionDescriptor</a> {
   <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><span class="kt">boolean</span></a> <a class="nv" data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"><code>allowWithoutGesture</code></a> = <span class="kt">false</span>;
+};
+
+<span class="kt">dictionary</span> <a class="nv" href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a> {
+  <span class="kt">boolean</span> <a class="nv" data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture</a> = <span class="kt">false</span>;
 };
 
 <span class="kt">dictionary</span> <a class="nv" href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a> : <a class="n" data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">PermissionDescriptor</a> {
@@ -3340,6 +3353,14 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
     <li><a href="#ref-for-mandatory-data-types-4">fire a clipboard event</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="mandatory-data-types">
+   <b><a href="#mandatory-data-types">#mandatory-data-types</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-mandatory-data-types-1">5.1. Clipboard event interfaces</a>
+    <li><a href="#ref-for-mandatory-data-types-2">write content to the clipboard</a> <a href="#ref-for-mandatory-data-types-3">(2)</a>
+    <li><a href="#ref-for-mandatory-data-types-4">fire a clipboard event</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="navigator-clipboard">
    <b><a href="#navigator-clipboard">#navigator-clipboard</a></b><b>Referenced in:</b>
    <ul>
@@ -3362,6 +3383,18 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <b><a href="#dom-clipboard-write">#dom-clipboard-write</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-clipboard-write">2.2. Remote Clipboard Synchronization</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-clipboard-read">
+   <b><a href="#dom-clipboard-read">#dom-clipboard-read</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-clipboard-read-1">2.2. Remote Clipboard Synchronization</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-clipboard-write">
+   <b><a href="#dom-clipboard-write">#dom-clipboard-write</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-clipboard-write-1">2.2. Remote Clipboard Synchronization</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-clipboard-read">
@@ -3404,6 +3437,12 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <b><a href="#dictdef-clipboardpermissiondescriptor">#dictdef-clipboardpermissiondescriptor</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dictdef-clipboardpermissiondescriptor">9. Permissions API Integration</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dictdef-clipboardpermissiondescriptor">
+   <b><a href="#dictdef-clipboardpermissiondescriptor">#dictdef-clipboardpermissiondescriptor</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dictdef-clipboardpermissiondescriptor-1">9. Permissions API Integration</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-clipboardpermissiondescriptor">
