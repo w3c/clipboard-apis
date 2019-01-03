@@ -1213,9 +1213,9 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version acda2cc646176dce43c6fae1b17de6710de0cac0" name="generator">
+  <meta content="Bikeshed version 6dcb46ba8cae3704b42c05bcd8578c92d239786a" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="2b12a68a5fb0836bbc37c427740817aa76a2b3b0" name="document-revision">
+  <meta content="22e552dd8e25ef996ac74becac918230c6ef6c4b" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1473,7 +1473,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2018-12-14">14 December 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-01-03">3 January 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1492,7 +1492,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2018 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2019 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -2097,7 +2097,7 @@ document.addEventListener('paste', function(e) {
         <li data-md>
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission①">check clipboard read permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel③">in parallel</a></p>
         <li data-md>
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md>
          <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
         <li data-md>
@@ -2132,7 +2132,7 @@ document.addEventListener('paste', function(e) {
         <li data-md>
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑤">in parallel</a></p>
         <li data-md>
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md>
          <p>Let <var>cleanItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist①">DataTransferItemList</a></code>.</p>
         <li data-md>
@@ -2175,7 +2175,7 @@ navigator.clipboard.write(data).then(function() {
         <li data-md>
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission①">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑦">in parallel</a></p>
         <li data-md>
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md>
          <p>Let <var>newItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist②">DataTransferItemList</a></code>.</p>
         <li data-md>
