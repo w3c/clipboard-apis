@@ -596,8 +596,8 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		<div id="clipboard-idl" dfn-for="Clipboard">
 
 		<div class="algorithm" data-algorithm="clipboard-read">
-		<h4 id="h-clipboard-read"><dfn>read()</dfn></h4>
-		The [=read()=] method must run these steps:
+		<h4 method for="Clipboard">read()</h4>
+		The {{Clipboard/read()}} method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
 			
@@ -630,8 +630,8 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		</div><!-- read() -->
 
 		<div class="algorithm" data-algorithm="clipboard-readtext">
-		<h4 id="h-clipboard-readtext"><dfn>readText()</dfn></h4>
-		The [=readText()=] method must run these steps:
+		<h4 method for="Clipboard">readText()</h4>
+		The {{Clipboard/readText()}} method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
 
@@ -664,8 +664,8 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		</div><!-- readText() -->
 
 		<div class="algorithm" data-algorithm="clipboard-write">
-		<h4 id="h-clipboard-write-data"><dfn>write(|data|)</dfn></h4>
-		The [=write(data)=] method must run these steps:
+		<h4 method for="Clipboard">write(|data|)</h4>
+		The {{Clipboard/write(data)}} method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
 			
@@ -707,8 +707,8 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 		</div><!-- write() -->
 
 		<div class="algorithm" data-algorithm="clipboard-writetext">
-		<h4 id="h-clipboard-writetext-data"><dfn>writeText(|data|)</dfn></h4>
-		The [=writeText(data)=] method must run these steps:
+		<h4 method for="Clipboard">writeText(|data|)</h4>
+		The {{Clipboard/writeText(data)}} method must run these steps:
 
 			1. Let |p| be a new [=Promise=].
 
