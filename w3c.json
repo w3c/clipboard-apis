@@ -1,5 +1,10 @@
- {
-    "group":      ["83482"]
-,   "contacts":   ["siusin"]
-,   "shortName":  "clipboard-apis"
+{
+  "group": [
+    "83482"
+  ],
+  "contacts": [
+    "siusin"
+  ],
+  "shortName": "clipboard-apis",
+  "repo-type": "rec-track"
 }

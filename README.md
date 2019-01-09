@@ -4,7 +4,7 @@ This repository contains the specification for Clipboard Events.
 
 The editor's draft is live on [https://w3c.github.io/clipboard-apis/](https://w3c.github.io/clipboard-apis/) and the latest W3C Technical Report is [http://www.w3.org/TR/clipboard-apis/](http://www.w3.org/TR/clipboard-apis/).
 
-Tests for the spec are maintained inside the source code of the spec itself. They are extracted and built into a test suite by running TC-generator/tc-gen.py. When [web-platform-tests/pull/1242](https://github.com/w3c/web-platform-tests/pull/1242) is done, the tests will live in W3C's web-platform-tests suite.
+Tests for the spec are maintained inside the source code of the spec itself. They are extracted and built into a test suite by running TC-generator/tc-gen.py. When [web-platform-tests/pull/1242](https://github.com/web-platform-tests/wpt/pull/1242) is done, the tests will live in the web-platform-tests repo.
 
 Contributions welcome - both tests and suggested edits.
 Because this specification is written using [Bikeshed](https://github.com/tabatkins/bikeshed), all edits should be made to the `index.bs` file.
