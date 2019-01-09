@@ -1179,7 +1179,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version eef4acd901f774f3d130c245844f8ea23319c1b2" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="435fabe6f9942f12bb8b77391f5d1938a9132ef8" name="document-revision">
+  <meta content="9a891a54e154147e4e9ccba317d6f35f92ed0f4c" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -2061,7 +2061,7 @@ document.addEventListener('paste', function(e) {
         <li data-md="">
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-read-permission" id="ref-for-check-clipboard-read-permission①">check clipboard read permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel③">in parallel</a></p>
         <li data-md="">
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md="">
          <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
         <li data-md="">
@@ -2096,7 +2096,7 @@ document.addEventListener('paste', function(e) {
         <li data-md="">
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑤">in parallel</a></p>
         <li data-md="">
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md="">
          <p>Let <var>cleanItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist①">DataTransferItemList</a></code>.</p>
         <li data-md="">
@@ -2139,7 +2139,7 @@ navigator.clipboard.write(data).then(function() {
         <li data-md="">
          <p>Let <var>r</var> be the result of running <a data-link-type="dfn" href="#check-clipboard-write-permission" id="ref-for-check-clipboard-write-permission①">check clipboard write permission</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel" id="ref-for-in-parallel⑦">in parallel</a></p>
         <li data-md="">
-         <p>If <var>r</var> is not "granted", then reject <var>p</var></p>
+         <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md="">
          <p>Let <var>newItemList</var> be an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist" id="ref-for-datatransferitemlist②">DataTransferItemList</a></code>.</p>
         <li data-md="">
@@ -3160,7 +3160,7 @@ HTML code.</p>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.github.io/ecma262/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.github.io/ecma262/">https://tc39.github.io/ecma262/</a>
    <dt id="biblio-fileapi">[FileAPI]
-   <dd>Marijn Kruisselbrink. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. 26 October 2017. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
+   <dd>Marijn Kruisselbrink; Arun Ranganathan. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. 6 November 2018. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-htmlls">[HTMLLS]
