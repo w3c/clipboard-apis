@@ -1215,7 +1215,7 @@ Possible extra rowspan handling
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet" type="text/css">
   <meta content="Bikeshed version c03af8da7325f5ae3f9ca742161b5d270bbce12f" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="c9dc449fe17c532fc4ecee5d3fc296bb82e217c3" name="document-revision">
+  <meta content="95de42906bfbc55206dc9f5d115200b2d6c5b5fe" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -2103,7 +2103,8 @@ document.addEventListener('paste', function(e) {
         <li data-md>
          <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md>
-         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
+         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a> represented as
+a sequence of <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem③">ClipboardItem</a></code>s.</p>
         <li data-md>
          <p>Resolve <var>p</var> with <var>data</var>.</p>
        </ol>
@@ -2111,15 +2112,9 @@ document.addEventListener('paste', function(e) {
        <p>Return <var>p</var>.</p>
      </ol>
      <div></div>
-<pre class="example javascript" id="example-cfa6357c"><a class="self-link" href="#example-cfa6357c"></a>navigator.clipboard.read().then(function(data) {
-  for (var i = 0; i &lt; data.items.length; i++) {
-    if (data.items[i].type == "text/plain") {
-      console.log(“Your string: ”, data.items[i].getAs(“text/plain”));
-    } else {
-      console.error(“No text/plain data on clipboard.”);
-    }
-  }
-});
+<pre class="example javascript" id="example-c237e9e8"><a class="self-link" href="#example-c237e9e8"></a>const items = await navigator.clipboard.read();
+const textBlob = await items[0].getType("text/plain");
+const text = await (new Response(textBlob)).text();
 </pre>
     </div>
     <div class="algorithm" data-algorithm="clipboard-readtext">
@@ -2213,11 +2208,12 @@ navigator.clipboard.write(data).then(function() {
         <li data-md>
          <p>If <var>r</var> is not "granted", then reject <var>p</var> with a "NotAllowedError" DOMException</p>
         <li data-md>
-         <p>Let <var>newItemList</var> be an empty sequence&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob④">Blob</a></code>>.</p>
+         <p>Let <var>newItemList</var> be an empty sequence&lt;<code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem④">ClipboardItem</a></code>>.</p>
         <li data-md>
-         <p>Let <var>newItem</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑤">Blob</a></code> created with <a data-link-type="dfn" href="https://w3c.github.io/FileAPI/#dfn-blobparts" id="ref-for-dfn-blobparts">blobParts</a> set to a sequence containing the <em>string</em> and <a data-link-type="dfn" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type">type</a> attribute set to <em>text/plain</em>.</p>
+         <p>Let <var>textBlob</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob④">Blob</a></code> created with: <a data-link-type="dfn" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type">type</a> attribute set to <em>text/plain;charset=utf-8</em>, and <a data-link-type="dfn" href="https://w3c.github.io/FileAPI/#dfn-blobparts" id="ref-for-dfn-blobparts">blobParts</a> set to a sequence containing the <em>string</em> <var>data</var>.</p>
         <li data-md>
-         <p>Set <var>newItem</var>’s data to <var>data</var>.</p>
+         <p>Let <var>newItem</var> be a new <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑤">ClipboardItem</a></code> created with a single
+representation: <a data-link-type="dfn" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①">type</a> attribute set to <em>text/plain8</em>, and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-cd-data" id="ref-for-concept-cd-data">data</a> set to <var>textBlob</var>.</p>
         <li data-md>
          <p>Add <var>newItem</var> to <var>newItemList</var>.</p>
         <li data-md>
@@ -2229,11 +2225,7 @@ navigator.clipboard.write(data).then(function() {
        <p>Return <var>p</var>.</p>
      </ol>
      <div></div>
-<pre class="example javascript" id="example-4578dfc9"><a class="self-link" href="#example-4578dfc9"></a>navigator.clipboard.writeText("Howdy, partner!").then(function() {
-  console.log(“Copied to clipboard successfully!”);
-}, function() {
-  console.error(“Unable to write to clipboard. :-(”);
-});
+<pre class="example javascript" id="example-a984ae2d"><a class="self-link" href="#example-a984ae2d"></a>await navigator.clipboard.writeText("Howdy, partner!");
 </pre>
     </div>
    </div>
@@ -3213,6 +3205,12 @@ HTML code.</p>
     <li><a href="#ref-for-dom-event-composed">fire a clipboard event</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-cd-data">
+   <a href="https://dom.spec.whatwg.org/#concept-cd-data">https://dom.spec.whatwg.org/#concept-cd-data</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-cd-data">7.2.4. writeText(data)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-dom-event-istrusted">
    <a href="https://dom.spec.whatwg.org/#dom-event-istrusted">https://dom.spec.whatwg.org/#dom-event-istrusted</a><b>Referenced in:</b>
    <ul>
@@ -3241,7 +3239,7 @@ HTML code.</p>
    <ul>
     <li><a href="#ref-for-dfn-Blob">7.2. Clipboard Interface</a> <a href="#ref-for-dfn-Blob①">(2)</a>
     <li><a href="#ref-for-dfn-Blob②">7.2.3. write(data)</a> <a href="#ref-for-dfn-Blob③">(2)</a>
-    <li><a href="#ref-for-dfn-Blob④">7.2.4. writeText(data)</a> <a href="#ref-for-dfn-Blob⑤">(2)</a>
+    <li><a href="#ref-for-dfn-Blob④">7.2.4. writeText(data)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dfn-file">
@@ -3441,6 +3439,7 @@ HTML code.</p>
      <li><span class="dfn-paneled" id="term-for-dictdef-eventinit" style="color:initial">EventInit</span>
      <li><span class="dfn-paneled" id="term-for-eventtarget" style="color:initial">EventTarget</span>
      <li><span class="dfn-paneled" id="term-for-dom-event-composed" style="color:initial">composed</span>
+     <li><span class="dfn-paneled" id="term-for-concept-cd-data" style="color:initial">data</span>
      <li><span class="dfn-paneled" id="term-for-dom-event-istrusted" style="color:initial">isTrusted</span>
      <li><span class="dfn-paneled" id="term-for-dom-event-preventdefault" style="color:initial">preventDefault()</span>
     </ul>
@@ -3547,7 +3546,7 @@ HTML code.</p>
   <c- b>Promise</c->&lt;<c- b>void</c->> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext②"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②①"><c- b>DOMString</c-></a> <a href="#dom-clipboard-writetext-data-data"><code><c- g>data</c-></code></a>);
 };
 
-<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><c- b>DOMString</c-></a> <c- b>or</c-> <a class="n" data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑥"><c- n>Blob</c-></a>) <a href="#typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></a>;
+<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③①"><c- b>DOMString</c-></a> <c- b>or</c-> <a class="n" data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑤"><c- n>Blob</c-></a>) <a href="#typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></a>;
 <c- b>typedef</c-> <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdatatype" id="ref-for-typedefdef-clipboarditemdatatype①"><c- n>ClipboardItemDataType</c-></a>> <a href="#typedefdef-clipboarditemdata"><code><c- g>ClipboardItemData</c-></code></a>;
 		
 <c- b>callback</c-> <a href="#callbackdef-clipboarditemdelayedcallback"><code><c- g>ClipboardItemDelayedCallback</c-></code></a> = <a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata②"><c- n>ClipboardItemData</c-></a> ();
@@ -3749,6 +3748,8 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <ul>
     <li><a href="#ref-for-clipboarditem">4. Model</a>
     <li><a href="#ref-for-clipboarditem①">7.2. Clipboard Interface</a> <a href="#ref-for-clipboarditem②">(2)</a>
+    <li><a href="#ref-for-clipboarditem③">7.2.1. read()</a>
+    <li><a href="#ref-for-clipboarditem④">7.2.4. writeText(data)</a> <a href="#ref-for-clipboarditem⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="enumdef-presentationstyle">
