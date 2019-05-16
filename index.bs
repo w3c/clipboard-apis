@@ -3,7 +3,7 @@
 <pre class="metadata">
 Shortname: clipboard-apis
 Level:
-Group: webplatform
+Group: webapps
 Status: ED
 TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
