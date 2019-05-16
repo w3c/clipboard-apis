@@ -55,7 +55,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 {
 	"MICROSOFT-CLIP-OP": {
 		"title": "About DHTML Data Transfer. Microsoft Developer Network.",
-		"href": "http://msdn.microsoft.com/en-us/library/ms537658.aspx"
+		"href": "https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)"
 	}
 }
 </pre>
