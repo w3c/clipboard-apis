@@ -5,7 +5,7 @@ Shortname: clipboard-apis
 Level: none
 Group: webapps
 Status: ED
-Previous Version: 2019-05-30
+Previous Version: https://www.w3.org/TR/2019/WD-clipboard-apis-20190530/
 TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
 Repository: w3c/clipboard-apis
