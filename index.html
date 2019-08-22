@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version a8675e8c315faa3f78e47e67c76649fa9a07ee9b" name="generator">
+  <meta content="Bikeshed version 08c4b0e94d147852f66673459784d3429bb3bda1" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="fed535a15053a37aecf570f719bad22a3010ebb3" name="document-revision">
+  <meta content="e385af28eecf719301d5f2086db76f5a2d006156" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -264,7 +264,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-06-05">5 June 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2019-08-22">22 August 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -513,10 +513,10 @@ access to this API is controlled by a permission.</p>
 	called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard-data">system clipboard data</dfn>.</p>
    <ul>
     <li data-md>
-     <p>For the <a href="#clipboard-event-api">§6 Clipboard Event API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data">system clipboard data</a> is
+     <p>For the <a href="#clipboard-event-api">§ 6 Clipboard Event API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data">system clipboard data</a> is
 exposed as a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer">DataTransfer</a></code> object that mirrors the contents of the clipboard.</p>
     <li data-md>
-     <p>For the <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data①">system clipboard data</a> is
+     <p>For the <a href="#async-clipboard-api">§ 7 Asynchronous Clipboard API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data①">system clipboard data</a> is
 exposed as a sequence of <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem">ClipboardItem</a></code> objects that mirrors the contents of
 the clipboard.</p>
    </ul>
@@ -535,7 +535,7 @@ the clipboard.</p>
     </dl>
    </div>
    <div id="clipboardevent-idl">
-<pre class="idl highlight def" data-highlight="webidl">[<dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>Constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn>), <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="idl highlight def" data-highlight="webidl">[<dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|ClipboardEvent(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>Constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn> = {}), <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboardevent"><code><c- g>ClipboardEvent</c-></code></dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①"><c- n>Event</c-></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer③"><c- n>DataTransfer</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export data-readonly data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></dfn>;
 };
@@ -571,7 +571,7 @@ document.dispatchEvent(pasteEvent);
     <li data-md>
      <p>User-initiated cut or copy actions</p>
     <li data-md>
-     <p>Scripts that use the <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a> to write to the clipboard</p>
+     <p>Scripts that use the <a href="#async-clipboard-api">§ 7 Asynchronous Clipboard API</a> to write to the clipboard</p>
     <li data-md>
      <p>Actions that update the clipboard outside the user agent</p>
    </ul>
@@ -584,7 +584,7 @@ document.dispatchEvent(pasteEvent);
 			data will be copied to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard③">system clipboard</a>.
 			The current document selection is not affected.</p>
    <p>The <a data-link-type="dfn" href="#copy" id="ref-for-copy②">copy</a> event bubbles, is cancelable, and is composed.</p>
-   <p>See <a href="#copy-action">§8.1 The copy action</a> for a detailed description of the processing model for
+   <p>See <a href="#copy-action">§ 8.1 The copy action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#copy" id="ref-for-copy③">copy</a> event can be manually constructed and dispatched, but it
 			will not affect the contents of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard④">system clipboard</a>.</p>
@@ -598,7 +598,7 @@ document.dispatchEvent(pasteEvent);
 			be an empty list. Note that the <a data-link-type="dfn" href="#cut" id="ref-for-cut③">cut</a> event will still be fired
 			in this case.</p>
    <p>The <a data-link-type="dfn" href="#cut" id="ref-for-cut④">cut</a> event bubbles, is cancelable, and is composed.</p>
-   <p>See <a href="#cut-action">§8.2 The cut action</a> for a detailed description of the processing model for
+   <p>See <a href="#cut-action">§ 8.2 The cut action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut⑤">cut</a> event can be manually constructed and dispatched, but it
 			will not affect the contents of the document or of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard⑥">system clipboard</a>.</p>
@@ -611,7 +611,7 @@ document.dispatchEvent(pasteEvent);
    <p>The paste action has no effect in a non-<a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context③">editable context</a>,
 			but the <a data-link-type="dfn" href="#paste" id="ref-for-paste①">paste</a> event fires regardless.</p>
    <p>The <a data-link-type="dfn" href="#paste" id="ref-for-paste②">paste</a> event bubbles, is cancelable, and is composed.</p>
-   <p>See <a href="#paste-action">§8.3 The paste action</a> for a detailed description of the processing model for
+   <p>See <a href="#paste-action">§ 8.3 The paste action</a> for a detailed description of the processing model for
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#paste" id="ref-for-paste③">paste</a> event can be manually constructed and dispatched, but it
 			will not affect the contents of the document.</p>
@@ -696,10 +696,10 @@ permissions to read the clipboard.</p>
 	One consequence of this is that these clipboard APIs can only
 	access clipboard data in the context of a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent①">ClipboardEvent</a></code> handler.</p>
    <p class="note" role="note"><span>Note:</span> If you need to access the clipboard outside of a clipboard event
-	handler, see <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a>.</p>
+	handler, see <a href="#async-clipboard-api">§ 7 Asynchronous Clipboard API</a>.</p>
    <p class="note" role="note"><span>Note:</span> The Clipboard Event APIs are synchronous, so they are limited in what they can
 	do. Actions which are potentially blocking (like asking for permission or
-	transcoding a image) are not supported by these APIs. See <a href="#async-clipboard-api">§7 Asynchronous Clipboard API</a> for a more powerful API that can support blocking or other time-consuming
+	transcoding a image) are not supported by these APIs. See <a href="#async-clipboard-api">§ 7 Asynchronous Clipboard API</a> for a more powerful API that can support blocking or other time-consuming
 	actions.</p>
    <h3 class="heading settled" data-level="6.1" id="override-copy"><span class="secno">6.1. </span><span class="content">Overriding the copy event</span><a class="self-link" href="#override-copy"></a></h3>
    <p>To override the default <a data-link-type="dfn" href="#copy" id="ref-for-copy⑤">copy</a> event behavior, a <a data-link-type="dfn" href="#copy" id="ref-for-copy⑥">copy</a> event
@@ -863,11 +863,11 @@ document.addEventListener('paste', function(e) {
 <c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-clipboarditemdelayedcallback"><code><c- g>ClipboardItemDelayedCallback</c-></code></dfn> = <a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata"><c- n>ClipboardItemData</c-></a> ();
 
 [<dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="constructor" data-export data-lt="ClipboardItem(items, options)|ClipboardItem(items)" id="dom-clipboarditem-clipboarditem"><code><c- g>Constructor</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem"></a></dfn>(<c- b>record</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a>, <a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①"><c- n>ClipboardItemData</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-items"></a></dfn>,
-    <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-options"></a></dfn>),
+    <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-options"></a></dfn> = {}),
  <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed②"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboarditem"><code><c- g>ClipboardItem</c-></code></dfn> {
   <c- b>static</c-> <a class="n" data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem②"><c- n>ClipboardItem</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="method" data-export data-lt="createDelayed(items, options)|createDelayed(items)" id="dom-clipboarditem-createdelayed"><code><c- g>createDelayed</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed"></a></dfn>(
       <c- b>record</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤"><c- b>DOMString</c-></a>, <a class="n" data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback" id="ref-for-callbackdef-clipboarditemdelayedcallback"><c- n>ClipboardItemDelayedCallback</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-items"></a></dfn>,
-      <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-options"></a></dfn>);
+      <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-options"></a></dfn> = {});
 
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#enumdef-presentationstyle" id="ref-for-enumdef-presentationstyle"><c- n>PresentationStyle</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="PresentationStyle" id="dom-clipboarditem-presentationstyle"><code><c- g>presentationStyle</c-></code><a class="self-link" href="#dom-clipboarditem-presentationstyle"></a></dfn>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long-long" id="ref-for-idl-long-long"><c- b>long</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="long long" id="dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code><a class="self-link" href="#dom-clipboarditem-lastmodified"></a></dfn>;
@@ -1126,7 +1126,7 @@ and collapse the selection.</p>
           <p><a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event⑥">Fire a clipboard event</a> named <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange④">clipboardchange</a></p>
          <li data-md>
           <p>Queue tasks to fire any events that should fire due to the
-modification, see <a href="#integration-with-other-scripts-and-events">§5.3 Integration with other scripts and events</a> for details.</p>
+modification, see <a href="#integration-with-other-scripts-and-events">§ 5.3 Integration with other scripts and events</a> for details.</p>
         </ol>
        <li data-md>
         <p>Else, if there is no selection or the context is not editable, then</p>
@@ -1184,7 +1184,7 @@ a <em>clear-was-called</em> flag and a <em>types-to-clear</em> list.</p>
 if any, into the context.</p>
          <li data-md>
           <p>Queue tasks to fire any events that should fire due to
-the modification, see <a href="#integration-with-other-scripts-and-events">§5.3 Integration with other scripts and events</a> for details.</p>
+the modification, see <a href="#integration-with-other-scripts-and-events">§ 5.3 Integration with other scripts and events</a> for details.</p>
         </ol>
        <li data-md>
         <p>Else</p>
@@ -2321,7 +2321,7 @@ HTML code.</p>
   <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①④"><c- n>DataTransfer</c-></a>? <a data-default="null" data-type="DataTransfer? " href="#dom-clipboardeventinit-clipboarddata"><code><c- g>clipboardData</c-></code></a> = <c- b>null</c->;
 };
 
-[<a href="#dom-clipboardevent-clipboardevent"><code><c- g>Constructor</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑧"><c- b>DOMString</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code></a>, <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit①"><c- n>ClipboardEventInit</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code></a>), <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed③"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+[<a href="#dom-clipboardevent-clipboardevent"><code><c- g>Constructor</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑧"><c- b>DOMString</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code></a>, <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit①"><c- n>ClipboardEventInit</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code></a> = {}), <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed③"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#clipboardevent"><code><c- g>ClipboardEvent</c-></code></a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①①"><c- n>Event</c-></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer③①"><c- n>DataTransfer</c-></a>? <a data-readonly data-type="DataTransfer?" href="#dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></a>;
 };
@@ -2345,11 +2345,11 @@ HTML code.</p>
 <c- b>callback</c-> <a href="#callbackdef-clipboarditemdelayedcallback"><code><c- g>ClipboardItemDelayedCallback</c-></code></a> = <a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata②"><c- n>ClipboardItemData</c-></a> ();
 
 [<a href="#dom-clipboarditem-clipboarditem"><code><c- g>Constructor</c-></code></a>(<c- b>record</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④①"><c- b>DOMString</c-></a>, <a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①①"><c- n>ClipboardItemData</c-></a>> <a href="#dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code></a>,
-    <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions②"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code></a>),
+    <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions②"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code></a> = {}),
  <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed②①"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboarditem"><code><c- g>ClipboardItem</c-></code></a> {
   <c- b>static</c-> <a class="n" data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem②①"><c- n>ClipboardItem</c-></a> <a href="#dom-clipboarditem-createdelayed"><code><c- g>createDelayed</c-></code></a>(
       <c- b>record</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤①"><c- b>DOMString</c-></a>, <a class="n" data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback" id="ref-for-callbackdef-clipboarditemdelayedcallback①"><c- n>ClipboardItemDelayedCallback</c-></a>> <a href="#dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code></a>,
-      <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①①"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code></a>);
+      <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①①"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code></a> = {});
 
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="n" data-link-type="idl-name" href="#enumdef-presentationstyle" id="ref-for-enumdef-presentationstyle②"><c- n>PresentationStyle</c-></a> <a data-readonly data-type="PresentationStyle" href="#dom-clipboarditem-presentationstyle"><code><c- g>presentationStyle</c-></code></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long-long" id="ref-for-idl-long-long①"><c- b>long</c-> <c- b>long</c-></a> <a data-readonly data-type="long long" href="#dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code></a>;
