@@ -108,7 +108,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			With content such as mathematics, simply copying rendered text and pasting
 			it into another application generally leads to most of the semantics being
 			lost. MathML often needs to be transformed to be copied as plain text, for
-			example to make sure "to the power of" is shown with the caret  "^" sign
+			example to make sure "to the power of" is shown with the caret "^" sign
 			in a formula plain-text input. The XML source could also be placed in the
 			clipboard with the appropriate transformation occurring at paste time.
 			</li>
@@ -1017,8 +1017,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 			permission.
 
-		1. Let |hasGesture| be true if the current script is not running as a result of
-			direct user action, false otherwise.
+		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] does not
+			have [=transient activation=], false otherwise.
 
 		1. If |readWithoutGesture| is <a>granted</a>, then return true.
 
@@ -1053,8 +1053,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 			permission.
 
-		1. Let |hasGesture| be true if the current script is not running as a result of
-			direct user action, false otherwise.
+		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] does not
+			have [=transient activation=], false otherwise.
 
 		1. If |writeWithoutGesture| is <a>granted</a>, then return true.
 
@@ -1146,7 +1146,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		Some implementations mitigate the risks associated with pasting rich
 		text by stripping potentially malicious content such as SCRIPT elements
 		and javascript: links by default when pasting rich text, but allow a
-		paste event handler to retrieve and process  the original, un-sanitized
+		paste event handler to retrieve and process the original, un-sanitized
 		data.
 
 	<h3 id="general-security-policies">General security policies</h3>
