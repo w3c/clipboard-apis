@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version ae6def1cbca03b321b2ad730ac2f51eeba21ed81" name="generator">
+  <meta content="Bikeshed version 5721fde7f6b8111f662b83b678f9e181a9838206" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="897bbffd387e13e4c3bbf4c08b38ed4a01afd700" name="document-revision">
+  <meta content="2bdb881144eb46662951c919e03ada1102dcfc58" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -264,7 +264,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-02-24">24 February 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-02-28">28 February 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -982,11 +982,11 @@ const text = await (new Response(textBlob)).text();
        <p>Return <var>p</var>.</p>
      </ol>
      <div></div>
-<pre class="example javascript" id="example-57aa8a1b"><a class="self-link" href="#example-57aa8a1b"></a>var data = new Blob(["Text data"], {type : "text/plain"});
+<pre class="example javascript" id="example-11d38d55"><a class="self-link" href="#example-11d38d55"></a>var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
 navigator.clipboard.write(data).then(function() {
-  console.log(“Copied to clipboard successfully!”);
+  console.log("Copied to clipboard successfully!");
 }, function() {
-  console.error(“Unable to write to clipboard. :-(”);
+  console.error("Unable to write to clipboard. :-(");
 });
 </pre>
     </div>
