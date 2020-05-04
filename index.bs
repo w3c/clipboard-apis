@@ -313,7 +313,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h3>
 
-		<h4 id="allow-modify-clipboard">Event handlers that are <dfn>allowed to modify the clipboard</dfn></h4>
+		<h4 id="allow-modify-clipboard">Event handlers that are <dfn data-export>allowed to modify the clipboard</dfn></h4>
 
 			Event handlers may write to the clipboard if any of the following is
 			true:
