@@ -10,7 +10,7 @@ TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
 Repository: w3c/clipboard-apis
 !Explainer: <a href="https://github.com/w3c/clipboard-apis/blob/master/explainer.adoc">Async Clipboard API Explainer</a>
-Editor: Gary Kacmarcik, Google, garykac@google.com, w3cid 59482
+Editor: Gary Kacmarcik, Google!!!, garykac@google.com, w3cid 59482
 Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com, w3cid 78883
 Former Editor: Hallvord R. M. Steen, Mozilla
 Abstract:
