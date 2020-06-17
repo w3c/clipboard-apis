@@ -1017,10 +1017,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 			permission.
 
+		1. If |readWithoutGesture| is <a>granted</a>, then return true.
+
 		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] has
 		    [=transient activation=], false otherwise.
-
-		1. If |readWithoutGesture| is <a>granted</a>, then return true.
 
 		1. If |hasGesture| then,
 
