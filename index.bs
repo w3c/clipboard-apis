@@ -1017,8 +1017,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-read", allowWithoutGesture: true }</code>
 			permission.
 
-		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] does not
-			have [=transient activation=], false otherwise.
+		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] has
+		    [=transient activation=], false otherwise.
 
 		1. If |readWithoutGesture| is <a>granted</a>, then return true.
 
@@ -1053,8 +1053,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 			permission.
 
-		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=] does not
-			have [=transient activation=], false otherwise.
+		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=]
+		    has [=transient activation=], false otherwise.
 
 		1. If |writeWithoutGesture| is <a>granted</a>, then return true.
 
