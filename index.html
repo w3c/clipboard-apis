@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 76c0936a, updated Fri Jun 12 19:44:53 2020 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="4d939efbed82637fcdf6602335551737f4b2b1e7" name="document-revision">
+  <meta content="b56441bdb189d85b0b15ede606723369c8767631" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -310,7 +310,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-06-17">17 June 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-06-18">18 June 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1359,9 +1359,9 @@ will implicitly update this permission.</p>
       <li data-md>
        <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state①">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
       <li data-md>
-       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a> of <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this①">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a>, false otherwise.</p>
-      <li data-md>
        <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted②">granted</a>, then return true.</p>
+      <li data-md>
+       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a> of <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this①">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a>, false otherwise.</p>
       <li data-md>
        <p>If <var>hasGesture</var> then,</p>
        <ol>
