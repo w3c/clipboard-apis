@@ -595,7 +595,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		callback ClipboardItemDelayedCallback = ClipboardItemData ();
 
 		[Exposed=Window] interface ClipboardItem {
-		  constructor(record&lt;DOMString, ClipboardItemData> items,
+		  constructor(record&lt;DOMString, ClipboardItemDataType> items,
 		    optional ClipboardItemOptions options = {});
 		  static ClipboardItem createDelayed(
 		      record&lt;DOMString, ClipboardItemDelayedCallback> items,
