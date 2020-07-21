@@ -7,6 +7,7 @@ Group: webapps
 Status: w3c/ED
 TR: https://www.w3.org/TR/clipboard-apis/
 ED: https://w3c.github.io/clipboard-apis/
+Previous Version: from biblio
 Repository: w3c/clipboard-apis
 !Explainer: <a href="https://github.com/w3c/clipboard-apis/blob/master/explainer.adoc">Async Clipboard API Explainer</a>
 Editor: Gary Kacmarcik, Google, garykac@google.com, w3cid 59482
