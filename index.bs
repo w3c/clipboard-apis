@@ -586,8 +586,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		[SecureContext, Exposed=Window] interface Clipboard : EventTarget {
 		  Promise&lt;ClipboardItems> read();
 		  Promise&lt;DOMString> readText();
-		  Promise&lt;void> write(ClipboardItems data);
-		  Promise&lt;void> writeText(DOMString data);
+		  Promise&lt;undefined> write(ClipboardItems data);
+		  Promise&lt;undefined> writeText(DOMString data);
 		};
 
 		typedef (DOMString or Blob) ClipboardItemDataType;
