@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version a1fcaa3b, updated Fri Jul 17 17:22:25 2020 -0700" name="generator">
+  <meta content="Bikeshed version 65c8882a, updated Fri Aug 14 17:43:28 2020 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="e6973bc8ae0f4844228dbf04872cc1f70d80f121" name="document-revision">
+  <meta content="4231c6212513b51961799f16af3bbcfde2024466" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -320,7 +320,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-07-21">21 July 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2020-08-18">18 August 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -328,7 +328,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>Latest published version:
      <dd><a href="https://www.w3.org/TR/clipboard-apis/">https://www.w3.org/TR/clipboard-apis/</a>
      <dt>Previous Versions:
-     <dd><a href="https://www.w3.org/TR/2020/WD-clipboard-apis-20200603/" rel="prev">https://www.w3.org/TR/2020/WD-clipboard-apis-20200603/</a>
+     <dd><a href="https://www.w3.org/TR/2020/WD-clipboard-apis-20200721/" rel="prev">https://www.w3.org/TR/2020/WD-clipboard-apis-20200721/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/clipboard-apis/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
@@ -577,7 +577,8 @@ exposed as a sequence of <code class="idl"><a data-link-type="idl" href="#clipbo
 the clipboard.</p>
    </ul>
    <h2 class="heading settled" data-level="5" id="clipboard-events-and-interfaces"><span class="secno">5. </span><span class="content">Clipboard Events</span><a class="self-link" href="#clipboard-events-and-interfaces"></a></h2>
-   <aside class="mdn-anno wrapped">
+   <h3 class="heading settled" data-level="5.1" id="clipboard-event-interfaces"><span class="secno">5.1. </span><span class="content">Clipboard event interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h3>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent" title="The ClipboardEvent interface represents events providing information related to modification of the clipboard, that is cut, copy, and paste events.">ClipboardEvent</a></p>
@@ -592,8 +593,7 @@ the clipboard.</p>
       <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>Yes</span></span><span class="webview_android yes"><span>Android WebView</span><span>Yes</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>Yes</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>Yes</span></span>
      </div>
     </div>
-   </aside>
-   <h3 class="heading settled" data-level="5.1" id="clipboard-event-interfaces"><span class="secno">5.1. </span><span class="content">Clipboard event interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h3>
+   </div>
    <p>The ClipboardEvent interface extends the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code> interface.</p>
    <div id="clipboardeventinit-idl">
 <pre class="idl highlight def" data-highlight="webidl"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-clipboardeventinit"><code><c- g>ClipboardEventInit</c-></code></dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit" id="ref-for-dictdef-eventinit"><c- n>EventInit</c-></a> {
@@ -607,7 +607,7 @@ the clipboard.</p>
     </dl>
    </div>
    <div id="clipboardevent-idl">
-    <aside class="mdn-anno wrapped">
+    <div class="mdn-anno wrapped">
      <button class="mdn-anno-btn"><span>MDN</span></button>
      <div class="feature">
       <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/ClipboardEvent" title="The ClipboardEvent() constructor returns a newly created ClipboardEvent, representing an event providing information related to modification of the clipboard, that is cut, copy, and paste events.">ClipboardEvent/ClipboardEvent</a></p>
@@ -621,7 +621,7 @@ the clipboard.</p>
        <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
       </div>
      </div>
-    </aside>
+    </div>
 <pre class="idl highlight def" data-highlight="webidl">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboardevent"><code><c- g>ClipboardEvent</c-></code></dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①"><c- n>Event</c-></a> {
   <dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|constructor(type, eventInitDict)|ClipboardEvent(type)|constructor(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a class="n" data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn> = {});
@@ -630,7 +630,7 @@ the clipboard.</p>
 </pre>
     <dl>
      <dt data-md>
-      <aside class="mdn-anno wrapped">
+      <div class="mdn-anno wrapped">
        <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
        <div class="feature">
         <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/clipboardData" title="The ClipboardEvent.clipboardData property holds a DataTransfer object, which can be used:">ClipboardEvent/clipboardData</a></p>
@@ -645,7 +645,7 @@ the clipboard.</p>
          <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>Yes</span></span><span class="webview_android yes"><span>Android WebView</span><span>Yes</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>Yes</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>Yes</span></span>
         </div>
        </div>
-      </aside>
+      </div>
       <p><dfn data-dfn-for="ClipboardEvent" data-dfn-type="dfn" data-export id="clipboardevent-clipboarddata">clipboardData<a class="self-link" href="#clipboardevent-clipboarddata"></a></dfn></p>
      <dd data-md>
       <p>The clipboardData attribute is an instance of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer④">DataTransfer</a></code> interface which lets a script read and manipulate values on the system
@@ -669,7 +669,8 @@ document.dispatchEvent(pasteEvent);
 		the document. In other words, while the script above will fire a paste event,
 		the data will not be pasted into the document.</p>
    <h3 class="heading settled" data-level="5.2" id="clipboard-event-definitions"><span class="secno">5.2. </span><span class="content">Clipboard events</span><a class="self-link" href="#clipboard-event-definitions"></a></h3>
-   <aside class="mdn-anno wrapped">
+   <h4 class="heading settled" data-level="5.2.1" id="clipboard-event-clipboardchange"><span class="secno">5.2.1. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboardchange">clipboardchange</dfn> event</span><a class="self-link" href="#clipboard-event-clipboardchange"></a></h4>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/clipboardchange_event" title="The clipboardchange event fires when the system clipboard content changes.">Window/clipboardchange_event</a></p>
@@ -684,8 +685,7 @@ document.dispatchEvent(pasteEvent);
       <span class="firefox_android no"><span>Firefox for Android</span><span>None</span></span><span class="safari_ios no"><span>iOS Safari</span><span>None</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>None</span></span><span class="webview_android no"><span>Android WebView</span><span>None</span></span><span class="samsunginternet_android no"><span>Samsung Internet</span><span>None</span></span><span class="opera_android no"><span>Opera Mobile</span><span>None</span></span>
      </div>
     </div>
-   </aside>
-   <h4 class="heading settled" data-level="5.2.1" id="clipboard-event-clipboardchange"><span class="secno">5.2.1. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboardchange">clipboardchange</dfn> event</span><a class="self-link" href="#clipboard-event-clipboardchange"></a></h4>
+   </div>
    <p>The <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange①">clipboardchange</a> event fires whenever the contents of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①">system clipboard</a> are changed. These changes could be due to any of the
 			following (non-exhaustive):</p>
    <ul>
@@ -699,7 +699,8 @@ document.dispatchEvent(pasteEvent);
    <p>If the clipboard contents are changed outside the user agent, then the <a data-link-type="dfn" href="#clipboardchange" id="ref-for-clipboardchange②">clipboardchange</a> event MUST fire when the user agent regains focus.</p>
    <p>Since synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut">cut</a> and <a data-link-type="dfn" href="#copy" id="ref-for-copy">copy</a> events do not update the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②">system clipboard</a>,
 			they will not trigger a "clipboardchange" event.</p>
-   <aside class="mdn-anno wrapped">
+   <h4 class="heading settled" data-level="5.2.2" id="clipboard-event-copy"><span class="secno">5.2.2. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="copy">copy</dfn> event</span><a class="self-link" href="#clipboard-event-copy"></a></h4>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/copy_event" title="The copy event fires when the user initiates a copy action through the browser&apos;s user interface.">Document/copy_event</a></p>
@@ -740,8 +741,7 @@ document.dispatchEvent(pasteEvent);
       <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
      </div>
     </div>
-   </aside>
-   <h4 class="heading settled" data-level="5.2.2" id="clipboard-event-copy"><span class="secno">5.2.2. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="copy">copy</dfn> event</span><a class="self-link" href="#clipboard-event-copy"></a></h4>
+   </div>
    <p>When the user initiates a copy action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event">fires a clipboard event</a> named <a data-link-type="dfn" href="#copy" id="ref-for-copy①">copy</a>.</p>
    <p>If the event is not canceled, the currently selected
 			data will be copied to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard③">system clipboard</a>.
@@ -751,7 +751,8 @@ document.dispatchEvent(pasteEvent);
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#copy" id="ref-for-copy③">copy</a> event can be manually constructed and dispatched, but it
 			will not affect the contents of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard④">system clipboard</a>.</p>
-   <aside class="mdn-anno wrapped">
+   <h4 class="heading settled" data-level="5.2.3" id="clipboard-event-cut"><span class="secno">5.2.3. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="cut">cut</dfn> event</span><a class="self-link" href="#clipboard-event-cut"></a></h4>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/cut_event" title="The cut event is fired when the user has initiated a &quot;cut&quot; action through the browser&apos;s user interface.">Document/cut_event</a></p>
@@ -792,8 +793,7 @@ document.dispatchEvent(pasteEvent);
       <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
      </div>
     </div>
-   </aside>
-   <h4 class="heading settled" data-level="5.2.3" id="clipboard-event-cut"><span class="secno">5.2.3. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="cut">cut</dfn> event</span><a class="self-link" href="#clipboard-event-cut"></a></h4>
+   </div>
    <p>When the user initiates a cut action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event①">fires a clipboard event</a> named <a data-link-type="dfn" href="#cut" id="ref-for-cut①">cut</a>.</p>
    <p>In an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context">editable context</a>, if the event is not
 			canceled the action will place the currently selected data on the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard⑤">system clipboard</a> and remove the selection from the document.
@@ -807,7 +807,8 @@ document.dispatchEvent(pasteEvent);
 			this event.</p>
    <p>A synthetic <a data-link-type="dfn" href="#cut" id="ref-for-cut⑤">cut</a> event can be manually constructed and dispatched, but it
 			will not affect the contents of the document or of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard⑥">system clipboard</a>.</p>
-   <aside class="mdn-anno wrapped">
+   <h4 class="heading settled" data-level="5.2.4" id="clipboard-event-paste"><span class="secno">5.2.4. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="paste">paste</dfn> event</span><a class="self-link" href="#clipboard-event-paste"></a></h4>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/paste_event" title="The paste event is fired when the user has initiated a &quot;paste&quot; action through the browser&apos;s user interface.">Document/paste_event</a></p>
@@ -848,8 +849,7 @@ document.dispatchEvent(pasteEvent);
       <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
      </div>
     </div>
-   </aside>
-   <h4 class="heading settled" data-level="5.2.4" id="clipboard-event-paste"><span class="secno">5.2.4. </span><span class="content">The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="paste">paste</dfn> event</span><a class="self-link" href="#clipboard-event-paste"></a></h4>
+   </div>
    <p>When a user initiates a paste action, the user agent <a data-link-type="dfn" href="#fire-a-clipboard-event" id="ref-for-fire-a-clipboard-event②">fires a clipboard event</a> named <a data-link-type="dfn" href="#paste" id="ref-for-paste">paste</a>. The event fires before any clipboard data is inserted
 			into the document.</p>
    <p>If the cursor is in an <a data-link-type="dfn" href="#editable-context" id="ref-for-editable-context②">editable context</a>, the paste action will
@@ -1090,7 +1090,9 @@ document.addEventListener('paste', function(e) {
 </pre>
    <div id="navigator-idl">
     <div class="algorithm" data-algorithm="navigator-clipboard">
-     <aside class="mdn-anno wrapped">
+     <h4 class="heading settled" data-level="7.1.1" id="h-navigator-clipboard"><span class="secno">7.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Navigator" data-dfn-type="dfn" data-noexport id="navigator-clipboard">clipboard</dfn></span><a class="self-link" href="#h-navigator-clipboard"></a></h4>
+      The 
+     <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/clipboard" title="The Clipboard API adds to the Navigator interface the read-only clipboard property, which returns the Clipboard object used to read and write the clipboard&apos;s contents.">Navigator/clipboard</a></p>
@@ -1105,12 +1107,12 @@ document.addEventListener('paste', function(e) {
         <span class="firefox_android yes"><span>Firefox for Android</span><span>63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>66+</span></span><span class="webview_android yes"><span>Android WebView</span><span>66+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>Yes</span></span>
        </div>
       </div>
-     </aside>
-     <h4 class="heading settled" data-level="7.1.1" id="h-navigator-clipboard"><span class="secno">7.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Navigator" data-dfn-type="dfn" data-noexport id="navigator-clipboard">clipboard</dfn></span><a class="self-link" href="#h-navigator-clipboard"></a></h4>
-      The <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard">clipboard</a> attribute must return the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/system-state.html#navigator" id="ref-for-navigator①">Navigator</a></code>'s <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard①">clipboard</a> object. 
+     </div>
+     <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard">clipboard</a> attribute must return the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/system-state.html#navigator" id="ref-for-navigator①">Navigator</a></code>'s <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard①">clipboard</a> object. 
     </div>
    </div>
-   <aside class="mdn-anno wrapped">
+   <h3 class="heading settled" data-level="7.2" id="clipboard-interface"><span class="secno">7.2. </span><span class="content">Clipboard Interface</span><a class="self-link" href="#clipboard-interface"></a></h3>
+   <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard" title="The Clipboard interface implements the Clipboard API, providing—if the user grants permission—both read and write access to the contents of the system clipboard.">Clipboard</a></p>
@@ -1125,15 +1127,14 @@ document.addEventListener('paste', function(e) {
       <span class="firefox_android yes"><span>Firefox for Android</span><span>63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>66+</span></span><span class="webview_android yes"><span>Android WebView</span><span>66+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>47+</span></span>
      </div>
     </div>
-   </aside>
-   <h3 class="heading settled" data-level="7.2" id="clipboard-interface"><span class="secno">7.2. </span><span class="content">Clipboard Interface</span><a class="self-link" href="#clipboard-interface"></a></h3>
+   </div>
 <pre class="idl highlight def" data-highlight="webidl"><c- b>typedef</c-> <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem①"><c- n>ClipboardItem</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditems"><code><c- g>ClipboardItems</c-></code></dfn>;
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboard"><code><c- g>Clipboard</c-></code></dfn> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget"><c- n>EventTarget</c-></a> {
   <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read①"><c- g>read</c-></a>();
   <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext"><c- g>readText</c-></a>();
-  <c- b>Promise</c->&lt;<c- b>void</c->> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①"><c- g>write</c-></a>(<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems①"><c- n>ClipboardItems</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export id="dom-clipboard-write-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
-  <c- b>Promise</c->&lt;<c- b>void</c->> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export id="dom-clipboard-writetext-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
+  <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①"><c- g>write</c-></a>(<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems①"><c- n>ClipboardItems</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export id="dom-clipboard-write-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
+  <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export id="dom-clipboard-writetext-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
 };
 
 <c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <c- b>or</c-> <a class="n" data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob"><c- n>Blob</c-></a>) <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></dfn>;
@@ -1165,7 +1166,9 @@ document.addEventListener('paste', function(e) {
 </pre>
    <div id="clipboard-idl">
     <div class="algorithm" data-algorithm="clipboard-read">
-     <aside class="mdn-anno wrapped">
+     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.1" data-lt="read()" id="dom-clipboard-read"><span class="secno">7.2.1. </span><span class="content">read()</span><a class="self-link" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read③"></a></h4>
+      The 
+     <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><span>MDN</span></button>
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/read" title="The read() method of the Clipboard interface requests a copy of the clipboard&apos;s contents, delivering the data to the returned Promise when the promise is resolved. Unlike readText(), the read() method can return arbitrary data, such as images. This method can also return text.">Clipboard/read</a></p>
@@ -1179,9 +1182,8 @@ document.addEventListener('paste', function(e) {
         <span class="firefox_android yes"><span>Firefox for Android</span><span title="Requires setting a user preference or runtime flag.">🔰 63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>12.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>54+</span></span>
        </div>
       </div>
-     </aside>
-     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.1" data-lt="read()" id="dom-clipboard-read"><span class="secno">7.2.1. </span><span class="content">read()</span></h4>
-      The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read②">read()</a></code> method must run these steps: 
+     </div>
+     <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read②">read()</a></code> method must run these steps: 
      <ol>
       <li data-md>
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects">Promise</a>.</p>
@@ -1208,7 +1210,9 @@ const text = await (new Response(textBlob)).text();
 </pre>
     </div>
     <div class="algorithm" data-algorithm="clipboard-readtext">
-     <aside class="mdn-anno wrapped">
+     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.2" data-lt="readText()" id="dom-clipboard-readtext"><span class="secno">7.2.2. </span><span class="content">readText()</span><a class="self-link" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext②"></a></h4>
+      The 
+     <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/readText" title="The Clipboard interface&apos;s readText() method returns a Promise which resolves with a copy of the textual contents of the system clipboard.">Clipboard/readText</a></p>
@@ -1223,9 +1227,8 @@ const text = await (new Response(textBlob)).text();
         <span class="firefox_android yes"><span>Firefox for Android</span><span>63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>66+</span></span><span class="webview_android yes"><span>Android WebView</span><span>66+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>47+</span></span>
        </div>
       </div>
-     </aside>
-     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.2" data-lt="readText()" id="dom-clipboard-readtext"><span class="secno">7.2.2. </span><span class="content">readText()</span></h4>
-      The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext①">readText()</a></code> method must run these steps: 
+     </div>
+     <code class="idl"><a data-link-type="idl" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext①">readText()</a></code> method must run these steps: 
      <ol>
       <li data-md>
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a>.</p>
@@ -1259,7 +1262,9 @@ const text = await (new Response(textBlob)).text();
 </pre>
     </div>
     <div class="algorithm" data-algorithm="clipboard-write">
-     <aside class="mdn-anno wrapped">
+     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.3" data-lt="write(data)" id="dom-clipboard-write"><span class="secno">7.2.3. </span><span class="content">write(<var>data</var>)</span><a class="self-link" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write③"></a></h4>
+      The 
+     <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/write" title="The Clipboard method write() writes arbitrary data, such as images, to the clipboard.">Clipboard/write</a></p>
@@ -1274,9 +1279,8 @@ const text = await (new Response(textBlob)).text();
         <span class="firefox_android yes"><span>Firefox for Android</span><span title="Requires setting a user preference or runtime flag.">🔰 63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>66+</span></span><span class="webview_android yes"><span>Android WebView</span><span>66+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>12.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>54+</span></span>
        </div>
       </div>
-     </aside>
-     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.3" data-lt="write(data)" id="dom-clipboard-write"><span class="secno">7.2.3. </span><span class="content">write(<var>data</var>)</span></h4>
-      The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write②">write(data)</a></code> method must run these steps: 
+     </div>
+     <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write②">write(data)</a></code> method must run these steps: 
      <ol>
       <li data-md>
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects②">Promise</a>.</p>
@@ -1317,7 +1321,9 @@ navigator.clipboard.write(data).then(function() {
 </pre>
     </div>
     <div class="algorithm" data-algorithm="clipboard-writetext">
-     <aside class="mdn-anno wrapped">
+     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.4" data-lt="writeText(data)" id="dom-clipboard-writetext"><span class="secno">7.2.4. </span><span class="content">writeText(<var>data</var>)</span><a class="self-link" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext②"></a></h4>
+      The 
+     <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText" title="The Clipboard interface&apos;s writeText() property writes the specified text string to the system clipboard. Text may be read back using either read() or readText().">Clipboard/writeText</a></p>
@@ -1332,9 +1338,8 @@ navigator.clipboard.write(data).then(function() {
         <span class="firefox_android yes"><span>Firefox for Android</span><span>63+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>66+</span></span><span class="webview_android yes"><span>Android WebView</span><span>66+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>9.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>47+</span></span>
        </div>
       </div>
-     </aside>
-     <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.2.4" data-lt="writeText(data)" id="dom-clipboard-writetext"><span class="secno">7.2.4. </span><span class="content">writeText(<var>data</var>)</span></h4>
-      The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext①">writeText(data)</a></code> method must run these steps: 
+     </div>
+     <code class="idl"><a data-link-type="idl" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext①">writeText(data)</a></code> method must run these steps: 
      <ol>
       <li data-md>
        <p>Let <var>p</var> be a new <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects③">Promise</a>.</p>
@@ -2592,6 +2597,12 @@ HTML code.</p>
     <li><a href="#ref-for-this①">9.2.1. check clipboard write permission</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-undefined">
+   <a href="https://heycam.github.io/webidl/#idl-undefined">https://heycam.github.io/webidl/#idl-undefined</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-undefined">7.2. Clipboard Interface</a> <a href="#ref-for-idl-undefined①">(2)</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
@@ -2655,6 +2666,7 @@ HTML code.</p>
      <li><span class="dfn-paneled" id="term-for-idl-boolean" style="color:initial">boolean</span>
      <li><span class="dfn-paneled" id="term-for-idl-long-long" style="color:initial">long long</span>
      <li><span class="dfn-paneled" id="term-for-this" style="color:initial">this</span>
+     <li><span class="dfn-paneled" id="term-for-idl-undefined" style="color:initial">undefined</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2669,7 +2681,7 @@ HTML code.</p>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 25 September 2017. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 20 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
@@ -2706,8 +2718,8 @@ HTML code.</p>
 [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboard"><code><c- g>Clipboard</c-></code></a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget"><c- n>EventTarget</c-></a> {
   <c- b>Promise</c->&lt;<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read"><c- g>read</c-></a>();
   <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext"><c- g>readText</c-></a>();
-  <c- b>Promise</c->&lt;<c- b>void</c->> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write"><c- g>write</c-></a>(<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a> <a href="#dom-clipboard-write-data-data"><code><c- g>data</c-></code></a>);
-  <c- b>Promise</c->&lt;<c- b>void</c->> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboard-writetext-data-data"><code><c- g>data</c-></code></a>);
+  <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write"><c- g>write</c-></a>(<a class="n" data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a> <a href="#dom-clipboard-write-data-data"><code><c- g>data</c-></code></a>);
+  <c- b>Promise</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboard-writetext-data-data"><code><c- g>data</c-></code></a>);
 };
 
 <c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <c- b>or</c-> <a class="n" data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob"><c- n>Blob</c-></a>) <a href="#typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></a>;
@@ -2933,14 +2945,14 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <ul>
     <li><a href="#ref-for-dom-clipboard-read">2.2. Remote Clipboard Synchronization</a>
     <li><a href="#ref-for-dom-clipboard-read①">7.2. Clipboard Interface</a>
-    <li><a href="#ref-for-dom-clipboard-read②">7.2.1. read()</a>
+    <li><a href="#ref-for-dom-clipboard-read">7.2.1. read()</a> <a href="#ref-for-dom-clipboard-read②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-clipboard-readtext">
    <b><a href="#dom-clipboard-readtext">#dom-clipboard-readtext</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-clipboard-readtext">7.2. Clipboard Interface</a>
-    <li><a href="#ref-for-dom-clipboard-readtext①">7.2.2. readText()</a>
+    <li><a href="#ref-for-dom-clipboard-readtext">7.2.2. readText()</a> <a href="#ref-for-dom-clipboard-readtext①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-clipboard-write">
@@ -2948,14 +2960,14 @@ required, and because it’s hard to test in a cross-platform way.<a href="#issu
    <ul>
     <li><a href="#ref-for-dom-clipboard-write">2.2. Remote Clipboard Synchronization</a>
     <li><a href="#ref-for-dom-clipboard-write①">7.2. Clipboard Interface</a>
-    <li><a href="#ref-for-dom-clipboard-write②">7.2.3. write(data)</a>
+    <li><a href="#ref-for-dom-clipboard-write">7.2.3. write(data)</a> <a href="#ref-for-dom-clipboard-write②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-clipboard-writetext">
    <b><a href="#dom-clipboard-writetext">#dom-clipboard-writetext</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-clipboard-writetext">7.2. Clipboard Interface</a>
-    <li><a href="#ref-for-dom-clipboard-writetext①">7.2.4. writeText(data)</a>
+    <li><a href="#ref-for-dom-clipboard-writetext">7.2.4. writeText(data)</a> <a href="#ref-for-dom-clipboard-writetext①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="script-triggered">
