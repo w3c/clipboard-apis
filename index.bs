@@ -1172,8 +1172,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		To help prevent abuse, this API <em>must not</em> be available unless the script
 		is executing in the context of a document whose [=Document/browsing context|browsing
-                context's=] [=top-level browsing context=] has [=top-level browsing context/system
-                focus=].
+		context's=] [=top-level browsing context=] has [=top-level browsing context/system
+		focus=].
 
 		<h4 id="privacy-permission">Privacy and Clipboard Permission</h4>
 
