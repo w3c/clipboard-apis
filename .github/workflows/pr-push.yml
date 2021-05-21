@@ -1,4 +1,3 @@
-# .github/workflows/pr.yml
 name: CI
 on:
   pull_request: {}
