@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 5c7bc9381, updated Wed May 12 18:18:08 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="90ddec01b7731f7a3857b2788f6c150d2898c24d" name="document-revision">
+  <meta content="f53cc065a03b3b13e9d82e79588fd35f21cf875c" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2122,7 +2122,7 @@ has configured it to do so).</p>
 		to the clipboard data from any script (access is not restricted to Clipboard Event
 		handlers) and data can be accessed in the absence of a user provided gesture.</p>
     <p>To help prevent abuse, this API <em>must not</em> be available unless the script
-		is executing in the context of the currently focused document.</p>
+		is executing in the context of a document that <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps" id="ref-for-has-focus-steps">has focus</a>.</p>
     <h4 class="heading settled" data-level="11.2.1" id="privacy-permission"><span class="secno">11.2.1. </span><span class="content">Privacy and Clipboard Permission</span><a class="self-link" href="#privacy-permission"></a></h4>
     <p>The Clipboard Permission gates access to this API, but user agents get to choose
 			the permission defaults and which of these permission settings can be set by the
@@ -2790,6 +2790,12 @@ HTML code.</p>
     <li><a href="#ref-for-dom-datatransfer-getdata">fire a clipboard event</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-has-focus-steps">
+   <a href="https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps">https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-has-focus-steps">11.2. Privacy and the Asychronous Clipboard API</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-in-parallel">
    <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel">https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel</a><b>Referenced in:</b>
    <ul>
@@ -2981,6 +2987,7 @@ HTML code.</p>
      <li><span class="dfn-paneled" id="term-for-dom-datatransfer-cleardata">clearData()</span>
      <li><span class="dfn-paneled" id="term-for-dom-datatransfer-files">files</span>
      <li><span class="dfn-paneled" id="term-for-dom-datatransfer-getdata">getData(format)</span>
+     <li><span class="dfn-paneled" id="term-for-has-focus-steps">has focus steps</span>
      <li><span class="dfn-paneled" id="term-for-in-parallel">in parallel</span>
      <li><span class="dfn-paneled" id="term-for-dom-datatransfer-items">items</span>
      <li><span class="dfn-paneled" id="term-for-concept-relevant-global">relevant global object</span>
