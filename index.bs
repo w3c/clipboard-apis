@@ -1173,7 +1173,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		handlers) and data can be accessed in the absence of a user provided gesture.
 
 		To help prevent abuse, this API <em>must not</em> be available unless the script
-		is executing in the context of the currently focused document.
+		is executing in the context of a document that [=has focus steps|has focus=].
 
 		<h4 id="privacy-permission">Privacy and Clipboard Permission</h4>
 
