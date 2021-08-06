@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 800b43329, updated Tue May 25 14:13:32 2021 -0700" name="generator">
+  <meta content="Bikeshed version 59d067506, updated Fri Jul 23 15:43:29 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="8877940f3d6b632ae2c480b70d859213b67ba94f" name="document-revision">
+  <meta content="ee2d998e661ff23937193e00d3b7681acd3f23cf" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -634,7 +634,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-06-04">4 June 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-08-06">6 August 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -642,7 +642,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>Latest published version:
      <dd><a href="https://www.w3.org/TR/clipboard-apis/">https://www.w3.org/TR/clipboard-apis/</a>
      <dt>Previous Versions:
-     <dd><a href="https://www.w3.org/TR/2021/WD-clipboard-apis-20210525/" rel="prev">https://www.w3.org/TR/2021/WD-clipboard-apis-20210525/</a>
+     <dd><a href="https://www.w3.org/TR/2021/WD-clipboard-apis-20210604/" rel="prev">https://www.w3.org/TR/2021/WD-clipboard-apis-20210604/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/clipboard-apis/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
@@ -898,13 +898,13 @@ the clipboard.</p>
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent" title="The ClipboardEvent interface represents events providing information related to modification of the clipboard, that is cut, copy, and paste events.">ClipboardEvent</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>Yes</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>10.1+</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
       <hr>
-      <span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="edge_blink yes"><span>Edge</span><span>Yes</span></span>
+      <span class="opera yes"><span>Opera</span><span>45+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>4+</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>Yes</span></span><span class="webview_android yes"><span>Android WebView</span><span>Yes</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>Yes</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>Yes</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>10.3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
      </div>
     </div>
    </div>
@@ -927,13 +927,13 @@ the clipboard.</p>
       <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/ClipboardEvent" title="The ClipboardEvent() constructor returns a newly created ClipboardEvent, representing an event providing information related to modification of the clipboard, that is cut, copy, and paste events.">ClipboardEvent/ClipboardEvent</a></p>
       <p class="all-engines-text">In all current engines.</p>
       <div class="support">
-       <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
+       <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>10.1+</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
        <hr>
        <span class="opera yes"><span>Opera</span><span>45+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
        <hr>
        <span class="edge no"><span>Edge (Legacy)</span><span>None</span></span><span class="ie no"><span>IE</span><span>None</span></span>
        <hr>
-       <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
+       <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>10.3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
       </div>
      </div>
     </div>
@@ -951,13 +951,13 @@ the clipboard.</p>
         <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/clipboardData" title="The ClipboardEvent.clipboardData property holds a DataTransfer object, which can be used:">ClipboardEvent/clipboardData</a></p>
         <p class="all-engines-text">In all current engines.</p>
         <div class="support">
-         <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>Yes</span></span>
+         <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>10.1+</span></span><span class="chrome yes"><span>Chrome</span><span>58+</span></span>
          <hr>
-         <span class="opera yes"><span>Opera</span><span>Yes</span></span><span class="edge_blink yes"><span>Edge</span><span>Yes</span></span>
+         <span class="opera yes"><span>Opera</span><span>45+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
          <hr>
          <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>5+</span></span>
          <hr>
-         <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>Yes</span></span><span class="webview_android yes"><span>Android WebView</span><span>Yes</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>Yes</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>Yes</span></span>
+         <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>10.3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>58+</span></span><span class="webview_android yes"><span>Android WebView</span><span>58+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>7.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>43+</span></span>
         </div>
        </div>
       </div>
@@ -1005,39 +1005,39 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/copy_event" title="The copy event fires when the user initiates a copy action through the browser&apos;s user interface.">Document/copy_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/copy_event" title="The copy event fires when the user initiates a copy action through the browser&apos;s user interface.">Element/copy_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie yes"><span>IE</span><span>Yes</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/copy_event" title="The copy event fires when the user initiates a copy action through the browser&apos;s user interface.">Window/copy_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
    </div>
@@ -1057,39 +1057,39 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/cut_event" title="The cut event is fired when the user has initiated a &quot;cut&quot; action through the browser&apos;s user interface.">Document/cut_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/cut_event" title="The cut event is fired when the user has initiated a &quot;cut&quot; action through the browser&apos;s user interface.">Element/cut_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie yes"><span>IE</span><span>Yes</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>Yes</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/cut_event" title="The cut event is fired when the user has initiated a &quot;cut&quot; action through the browser&apos;s user interface.">Window/cut_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
    </div>
@@ -1113,39 +1113,39 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/paste_event" title="The paste event is fired when the user has initiated a &quot;paste&quot; action through the browser&apos;s user interface.">Document/paste_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>11</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/paste_event" title="The paste event is fired when the user has initiated a &quot;paste&quot; action through the browser&apos;s user interface.">Element/paste_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>5+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>22+</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>8+</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>4.2+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>37+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>22+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>37+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/paste_event" title="The paste event is fired when the user has initiated a &quot;paste&quot; action through the browser&apos;s user interface.">Window/paste_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>Yes</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>11</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios no"><span>iOS Safari</span><span>?</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
    </div>
@@ -1538,13 +1538,13 @@ document.addEventListener('paste', function(e) {
       <div class="feature">
        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/read" title="The read() method of the Clipboard interface requests a copy of the clipboard&apos;s contents, delivering the data to the returned Promise when the promise is resolved. Unlike readText(), the read() method can return arbitrary data, such as images. This method can also return text.">Clipboard/read</a></p>
        <div class="support">
-        <span class="firefox yes"><span>Firefox</span><span>87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome no"><span>Chrome</span><span>?</span></span>
+        <span class="firefox yes"><span>Firefox</span><span>90+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome no"><span>Chrome</span><span>?</span></span>
         <hr>
         <span class="opera yes"><span>Opera</span><span>63+</span></span><span class="edge_blink no"><span>Edge</span><span>?</span></span>
         <hr>
         <span class="edge no"><span>Edge (Legacy)</span><span>None</span></span><span class="ie no"><span>IE</span><span>None</span></span>
         <hr>
-        <span class="firefox_android yes"><span>Firefox for Android</span><span>87+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>12.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>54+</span></span>
+        <span class="firefox_android yes"><span>Firefox for Android</span><span>90+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>13.4+</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android no"><span>Android WebView</span><span>?</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>12.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>54+</span></span>
        </div>
       </div>
      </div>
@@ -3029,15 +3029,15 @@ HTML code.</p>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
    <dd><a href="https://tc39.es/ecma262/multipage/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-fileapi">[FileAPI]
-   <dd>Marijn Kruisselbrink; Arun Ranganathan. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. 27 April 2021. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
+   <dd>Marijn Kruisselbrink; Arun Ranganathan. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. 4 June 2021. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 20 July 2020. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 20 July 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
-   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
-   <dd>E. Levinson. <a href="https://datatracker.ietf.org/doc/html/rfc2392">Content-ID and Message-ID Uniform Resource Locators</a>. August 1998. Proposed Standard. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2392">https://datatracker.ietf.org/doc/html/rfc2392</a>
+   <dd>E. Levinson. <a href="https://www.rfc-editor.org/rfc/rfc2392">Content-ID and Message-ID Uniform Resource Locators</a>. August 1998. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc2392">https://www.rfc-editor.org/rfc/rfc2392</a>
    <dt id="biblio-webidl">[WebIDL]
    <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
