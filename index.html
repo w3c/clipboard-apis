@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 59d067506, updated Fri Jul 23 15:43:29 2021 -0700" name="generator">
+  <meta content="Bikeshed version 4f053d00e, updated Tue Aug 10 14:13:32 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="ee2d998e661ff23937193e00d3b7681acd3f23cf" name="document-revision">
+  <meta content="5419881cef519209fd742f96f8bec6a09b21738f" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -634,7 +634,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-08-06">6 August 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-08-12">12 August 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -642,7 +642,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>Latest published version:
      <dd><a href="https://www.w3.org/TR/clipboard-apis/">https://www.w3.org/TR/clipboard-apis/</a>
      <dt>Previous Versions:
-     <dd><a href="https://www.w3.org/TR/2021/WD-clipboard-apis-20210604/" rel="prev">https://www.w3.org/TR/2021/WD-clipboard-apis-20210604/</a>
+     <dd><a href="https://www.w3.org/TR/2021/WD-clipboard-apis-20210806/" rel="prev">https://www.w3.org/TR/2021/WD-clipboard-apis-20210806/</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/clipboard-apis/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
@@ -669,13 +669,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p> <em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
-   <p> This document was published by the <a href="https://www.w3.org/2019/webapps/">Web Applications Working Group</a> as an Editors Draft. This document is intended to become a W3C Recommendation. </p>
+   <p> This document was published by the <a href="https://w3c.github.io/editing/">Web Editing Working Group</a> as an Editors Draft. This document is intended to become a W3C Recommendation. </p>
    <p></p>
    <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/clipboard-apis">https://github.com/w3c/clipboard-apis</a>.</strong> </p>
    <p></p>
-   <p> This document was published by the <a href="https://www.w3.org/2019/webapps/">Web Applications Working Group</a> as a Working Draft.
+   <p> This document was published by the <a href="https://w3c.github.io/editing/">Web Editing Working Group</a> as a Working Draft.
 
-    Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/clipboard-apis/issues">GitHub issues</a> Historical discussions can be found in the <a href="https://lists.w3.org/Archives/Public/public-webapps/">public-webapps@w3.org archives</a>. </p>
+    Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/clipboard-apis/issues">GitHub issues</a> Historical discussions can be found in the <a href="https://lists.w3.org/Archives/Public/public-editing-tf/">public-editing-tf@w3.org archives</a>. </p>
    <p> Publication as an Editors Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may
     be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
     this document as other than work in progress. </p>
@@ -2574,77 +2574,77 @@ HTML code.</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in §5.3.1</span>
-   <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in §5.3.2</span>
-   <li><a href="#dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture</a><span>, in §9</span>
-   <li><a href="#dom-presentationstyle-attachment">"attachment"</a><span>, in §7.2</span>
-   <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in §9.1.1</span>
-   <li><a href="#check-clipboard-write-permission">check clipboard write permission</a><span>, in §9.2.1</span>
-   <li><a href="#clipboard">Clipboard</a><span>, in §7.2</span>
+   <li><a href="#allowed-to-modify-the-clipboard">allowed to modify the clipboard</a><span>, in § 5.3.1</span>
+   <li><a href="#allowed-to-read-from-clipboard">allowed to read from clipboard</a><span>, in § 5.3.2</span>
+   <li><a href="#dom-clipboardpermissiondescriptor-allowwithoutgesture">allowWithoutGesture</a><span>, in § 9</span>
+   <li><a href="#dom-presentationstyle-attachment">"attachment"</a><span>, in § 7.2</span>
+   <li><a href="#check-clipboard-read-permission">check clipboard read permission</a><span>, in § 9.1.1</span>
+   <li><a href="#check-clipboard-write-permission">check clipboard write permission</a><span>, in § 9.2.1</span>
+   <li><a href="#clipboard">Clipboard</a><span>, in § 7.2</span>
    <li>
     clipboard
     <ul>
-     <li><a href="#dom-navigator-clipboard">attribute for Navigator</a><span>, in §7.1</span>
-     <li><a href="#navigator-clipboard">dfn for Navigator</a><span>, in §7.1.1</span>
+     <li><a href="#dom-navigator-clipboard">attribute for Navigator</a><span>, in § 7.1</span>
+     <li><a href="#navigator-clipboard">dfn for Navigator</a><span>, in § 7.1.1</span>
     </ul>
-   <li><a href="#clipboardchange">clipboardchange</a><span>, in §5.2.1</span>
+   <li><a href="#clipboardchange">clipboardchange</a><span>, in § 5.2.1</span>
    <li>
     clipboardData
     <ul>
-     <li><a href="#dom-clipboardevent-clipboarddata">attribute for ClipboardEvent</a><span>, in §5.1</span>
-     <li><a href="#clipboardevent-clipboarddata">dfn for ClipboardEvent</a><span>, in §5.1</span>
-     <li><a href="#clipboardeventinit-clipboarddata">dfn for ClipboardEventInit</a><span>, in §5.1</span>
-     <li><a href="#dom-clipboardeventinit-clipboarddata">dict-member for ClipboardEventInit</a><span>, in §5.1</span>
+     <li><a href="#dom-clipboardevent-clipboarddata">attribute for ClipboardEvent</a><span>, in § 5.1</span>
+     <li><a href="#clipboardevent-clipboarddata">dfn for ClipboardEvent</a><span>, in § 5.1</span>
+     <li><a href="#clipboardeventinit-clipboarddata">dfn for ClipboardEventInit</a><span>, in § 5.1</span>
+     <li><a href="#dom-clipboardeventinit-clipboarddata">dict-member for ClipboardEventInit</a><span>, in § 5.1</span>
     </ul>
-   <li><a href="#clipboardevent">ClipboardEvent</a><span>, in §5.1</span>
-   <li><a href="#dictdef-clipboardeventinit">ClipboardEventInit</a><span>, in §5.1</span>
-   <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type)</a><span>, in §5.1</span>
-   <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type, eventInitDict)</a><span>, in §5.1</span>
-   <li><a href="#clipboarditem">ClipboardItem</a><span>, in §7.2</span>
-   <li><a href="#typedefdef-clipboarditemdata">ClipboardItemData</a><span>, in §7.2</span>
-   <li><a href="#typedefdef-clipboarditemdatatype">ClipboardItemDataType</a><span>, in §7.2</span>
-   <li><a href="#callbackdef-clipboarditemdelayedcallback">ClipboardItemDelayedCallback</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboarditem-clipboarditem">ClipboardItem(items)</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboarditem-clipboarditem">ClipboardItem(items, options)</a><span>, in §7.2</span>
-   <li><a href="#dictdef-clipboarditemoptions">ClipboardItemOptions</a><span>, in §7.2</span>
-   <li><a href="#typedefdef-clipboarditems">ClipboardItems</a><span>, in §7.2</span>
-   <li><a href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a><span>, in §9</span>
-   <li><a href="#dom-permissionname-clipboard-write">"clipboard-write"</a><span>, in §9</span>
-   <li><a href="#dom-clipboarditem-clipboarditem">constructor(items)</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboarditem-clipboarditem">constructor(items, options)</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboardevent-clipboardevent">constructor(type)</a><span>, in §5.1</span>
-   <li><a href="#dom-clipboardevent-clipboardevent">constructor(type, eventInitDict)</a><span>, in §5.1</span>
-   <li><a href="#copy">copy</a><span>, in §5.2.2</span>
-   <li><a href="#dom-clipboarditem-createdelayed">createDelayed(items)</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboarditem-createdelayed">createDelayed(items, options)</a><span>, in §7.2</span>
-   <li><a href="#cut">cut</a><span>, in §5.2.3</span>
-   <li><a href="#dom-clipboarditem-delayed">delayed</a><span>, in §7.2</span>
-   <li><a href="#editable-context">editable context</a><span>, in §3</span>
-   <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in §Unnumbered section</span>
-   <li><a href="#dom-clipboarditem-gettype">getType(type)</a><span>, in §7.2</span>
-   <li><a href="#dom-presentationstyle-inline">"inline"</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboarditem-lastmodified">lastModified</a><span>, in §7.2</span>
-   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in §6.4</span>
-   <li><a href="#paste">paste</a><span>, in §5.2.4</span>
-   <li><a href="#enumdef-presentationstyle">PresentationStyle</a><span>, in §7.2</span>
+   <li><a href="#clipboardevent">ClipboardEvent</a><span>, in § 5.1</span>
+   <li><a href="#dictdef-clipboardeventinit">ClipboardEventInit</a><span>, in § 5.1</span>
+   <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type)</a><span>, in § 5.1</span>
+   <li><a href="#dom-clipboardevent-clipboardevent">ClipboardEvent(type, eventInitDict)</a><span>, in § 5.1</span>
+   <li><a href="#clipboarditem">ClipboardItem</a><span>, in § 7.2</span>
+   <li><a href="#typedefdef-clipboarditemdata">ClipboardItemData</a><span>, in § 7.2</span>
+   <li><a href="#typedefdef-clipboarditemdatatype">ClipboardItemDataType</a><span>, in § 7.2</span>
+   <li><a href="#callbackdef-clipboarditemdelayedcallback">ClipboardItemDelayedCallback</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboarditem-clipboarditem">ClipboardItem(items)</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboarditem-clipboarditem">ClipboardItem(items, options)</a><span>, in § 7.2</span>
+   <li><a href="#dictdef-clipboarditemoptions">ClipboardItemOptions</a><span>, in § 7.2</span>
+   <li><a href="#typedefdef-clipboarditems">ClipboardItems</a><span>, in § 7.2</span>
+   <li><a href="#dictdef-clipboardpermissiondescriptor">ClipboardPermissionDescriptor</a><span>, in § 9</span>
+   <li><a href="#dom-permissionname-clipboard-write">"clipboard-write"</a><span>, in § 9</span>
+   <li><a href="#dom-clipboarditem-clipboarditem">constructor(items)</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboarditem-clipboarditem">constructor(items, options)</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboardevent-clipboardevent">constructor(type)</a><span>, in § 5.1</span>
+   <li><a href="#dom-clipboardevent-clipboardevent">constructor(type, eventInitDict)</a><span>, in § 5.1</span>
+   <li><a href="#copy">copy</a><span>, in § 5.2.2</span>
+   <li><a href="#dom-clipboarditem-createdelayed">createDelayed(items)</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboarditem-createdelayed">createDelayed(items, options)</a><span>, in § 7.2</span>
+   <li><a href="#cut">cut</a><span>, in § 5.2.3</span>
+   <li><a href="#dom-clipboarditem-delayed">delayed</a><span>, in § 7.2</span>
+   <li><a href="#editable-context">editable context</a><span>, in § 3</span>
+   <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in § Unnumbered section</span>
+   <li><a href="#dom-clipboarditem-gettype">getType(type)</a><span>, in § 7.2</span>
+   <li><a href="#dom-presentationstyle-inline">"inline"</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboarditem-lastmodified">lastModified</a><span>, in § 7.2</span>
+   <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in § 6.4</span>
+   <li><a href="#paste">paste</a><span>, in § 5.2.4</span>
+   <li><a href="#enumdef-presentationstyle">PresentationStyle</a><span>, in § 7.2</span>
    <li>
     presentationStyle
     <ul>
-     <li><a href="#dom-clipboarditem-presentationstyle">attribute for ClipboardItem</a><span>, in §7.2</span>
-     <li><a href="#dom-clipboarditemoptions-presentationstyle">dict-member for ClipboardItemOptions</a><span>, in §7.2</span>
+     <li><a href="#dom-clipboarditem-presentationstyle">attribute for ClipboardItem</a><span>, in § 7.2</span>
+     <li><a href="#dom-clipboarditemoptions-presentationstyle">dict-member for ClipboardItemOptions</a><span>, in § 7.2</span>
     </ul>
-   <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in §Unnumbered section</span>
-   <li><a href="#dom-clipboard-read">read()</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboard-readtext">readText()</a><span>, in §7.2</span>
-   <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in §8</span>
-   <li><a href="#script-triggered">script-triggered</a><span>, in §8</span>
-   <li><a href="#system-clipboard">system clipboard</a><span>, in §4</span>
-   <li><a href="#system-clipboard-data">system clipboard data</a><span>, in §4</span>
-   <li><a href="#dom-clipboarditem-types">types</a><span>, in §7.2</span>
-   <li><a href="#dom-presentationstyle-unspecified">"unspecified"</a><span>, in §7.2</span>
-   <li><a href="#write-content-to-the-clipboard">write content to the clipboard</a><span>, in §Unnumbered section</span>
-   <li><a href="#dom-clipboard-write">write(data)</a><span>, in §7.2</span>
-   <li><a href="#dom-clipboard-writetext">writeText(data)</a><span>, in §7.2</span>
+   <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in § Unnumbered section</span>
+   <li><a href="#dom-clipboard-read">read()</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboard-readtext">readText()</a><span>, in § 7.2</span>
+   <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in § 8</span>
+   <li><a href="#script-triggered">script-triggered</a><span>, in § 8</span>
+   <li><a href="#system-clipboard">system clipboard</a><span>, in § 4</span>
+   <li><a href="#system-clipboard-data">system clipboard data</a><span>, in § 4</span>
+   <li><a href="#dom-clipboarditem-types">types</a><span>, in § 7.2</span>
+   <li><a href="#dom-presentationstyle-unspecified">"unspecified"</a><span>, in § 7.2</span>
+   <li><a href="#write-content-to-the-clipboard">write content to the clipboard</a><span>, in § Unnumbered section</span>
+   <li><a href="#dom-clipboard-write">write(data)</a><span>, in § 7.2</span>
+   <li><a href="#dom-clipboard-writetext">writeText(data)</a><span>, in § 7.2</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-event">
    <a href="https://dom.spec.whatwg.org/#event">https://dom.spec.whatwg.org/#event</a><b>Referenced in:</b>
@@ -3025,30 +3025,30 @@ HTML code.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-dom">[DOM]
-   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
-   <dd><a href="https://tc39.es/ecma262/multipage/">ECMAScript Language Specification</a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
+   <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-fileapi">[FileAPI]
-   <dd>Marijn Kruisselbrink; Arun Ranganathan. <a href="https://www.w3.org/TR/FileAPI/">File API</a>. 4 June 2021. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
+   <dd>Marijn Kruisselbrink; Arun Ranganathan. <a href="https://www.w3.org/TR/FileAPI/"><cite>File API</cite></a>. 4 June 2021. WD. URL: <a href="https://www.w3.org/TR/FileAPI/">https://www.w3.org/TR/FileAPI/</a>
    <dt id="biblio-html">[HTML]
-   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/">Permissions</a>. 20 July 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 20 July 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
-   <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
-   <dd>E. Levinson. <a href="https://www.rfc-editor.org/rfc/rfc2392">Content-ID and Message-ID Uniform Resource Locators</a>. August 1998. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc2392">https://www.rfc-editor.org/rfc/rfc2392</a>
+   <dd>E. Levinson. <a href="https://www.rfc-editor.org/rfc/rfc2392"><cite>Content-ID and Message-ID Uniform Resource Locators</cite></a>. August 1998. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc2392">https://www.rfc-editor.org/rfc/rfc2392</a>
    <dt id="biblio-webidl">[WebIDL]
-   <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
+   <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/"><cite>Web IDL</cite></a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-html5">[HTML5]
-   <dd>Ian Hickson; et al. <a href="https://www.w3.org/TR/html5/">HTML5</a>. 27 March 2018. REC. URL: <a href="https://www.w3.org/TR/html5/">https://www.w3.org/TR/html5/</a>
+   <dd>Ian Hickson; et al. <a href="https://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 27 March 2018. REC. URL: <a href="https://www.w3.org/TR/html5/">https://www.w3.org/TR/html5/</a>
    <dt id="biblio-microsoft-clip-op">[MICROSOFT-CLIP-OP]
-   <dd><a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)">About DHTML Data Transfer. Microsoft Developer Network.</a>. URL: <a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)">https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)</a>
+   <dd><a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)"><cite>About DHTML Data Transfer. Microsoft Developer Network.</cite></a>. URL: <a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)">https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)</a>
    <dt id="biblio-svg11">[SVG11]
-   <dd>Erik Dahlström; et al. <a href="https://www.w3.org/TR/SVG11/">Scalable Vector Graphics (SVG) 1.1 (Second Edition)</a>. 16 August 2011. REC. URL: <a href="https://www.w3.org/TR/SVG11/">https://www.w3.org/TR/SVG11/</a>
+   <dd>Erik Dahlström; et al. <a href="https://www.w3.org/TR/SVG11/"><cite>Scalable Vector Graphics (SVG) 1.1 (Second Edition)</cite></a>. 16 August 2011. REC. URL: <a href="https://www.w3.org/TR/SVG11/">https://www.w3.org/TR/SVG11/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>dictionary</c-> <a href="#dictdef-clipboardeventinit"><code><c- g>ClipboardEventInit</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit"><c- n>EventInit</c-></a> {
