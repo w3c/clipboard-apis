@@ -11,8 +11,9 @@ Previous Version: from biblio
 Repository: w3c/clipboard-apis
 !Explainer: <a href="https://github.com/w3c/clipboard-apis/blob/master/explainer.adoc">Async Clipboard API Explainer</a>
 Editor: Gary Kacmarcik, Google, garykac@google.com, w3cid 59482
-Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com, w3cid 78883
+Editor: Anupam Snigdha, Microsoft, snianu@microsoft.com, w3cid 126950
 Former Editor: Hallvord R. M. Steen, Mozilla
+Former Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com, w3cid 78883
 Abstract:
 	This document describes APIs for accessing data on the system clipboard. It provides
 	operations for overriding the default clipboard actions (cut, copy and paste), and
