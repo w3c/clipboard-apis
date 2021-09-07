@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 4f053d00e, updated Tue Aug 10 14:13:32 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="71c94055db603fd04c67ec4af8ef1496cd2c5a0b" name="document-revision">
+  <meta content="0f67e6a75214283a781aa915e42fb3bef7f1d184" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -634,7 +634,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-08-14">14 August 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-09-07">7 September 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -831,7 +831,7 @@ operations of cutting, copying and pasting so that web application can
 adjust the clipboard data as required.</p>
     <li data-md>
      <p>Async Clipboard API - This API provides direct access to read and write the
-clipboard data. Since this is considered to be a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature">powerful feature</a>,
+clipboard data. Since this is considered to be a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature">powerful feature</a>,
 access to this API is controlled by a permission.</p>
    </ul>
    <h2 class="heading settled" data-level="2" id="Cases"><span class="secno">2. </span><span class="content">Use Cases</span><a class="self-link" href="#Cases"></a></h2>
@@ -1415,7 +1415,7 @@ document.addEventListener('paste', function(e) {
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard" title="The Clipboard interface implements the Clipboard API, providing—if the user grants permission—both read and write access to the contents of the system clipboard.">Clipboard</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard" title="The Clipboard interface implements the Clipboard API, providing—if the user grants permission—both read and write access to the contents of the system clipboard. The Clipboard API can be used to implement cut, copy, and paste features within a web application.">Clipboard</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span>63+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome yes"><span>Chrome</span><span>66+</span></span>
@@ -1431,7 +1431,7 @@ document.addEventListener('paste', function(e) {
    <div class="mdn-anno wrapped">
     <button class="mdn-anno-btn"><span>MDN</span></button>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/ClipboardItem" title="The ClipboardItem() constructor of the Clipboard API creates a new ClipboardItem object which represents data to be stored or retrieved via the Clipboard API, that is clipboard.write() and clipboard.read() respectively.The ClipboardItem() constructor of the Clipboard API creates a new ClipboardItem object which represents data to be stored or retrieved via the Clipboard API, that is clipboard.write() and clipboard.read() respectively.">ClipboardItem/ClipboardItem</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/ClipboardItem" title="The ClipboardItem() constructor of the Clipboard API creates a new ClipboardItem object which represents data to be stored or retrieved via the Clipboard API, that is clipboard.write() and clipboard.read() respectively.">ClipboardItem/ClipboardItem</a></p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span title="Requires setting a user preference or runtime flag.">🔰 87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
       <hr>
@@ -1443,7 +1443,7 @@ document.addEventListener('paste', function(e) {
      </div>
     </div>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/getType" title="The getType() method of the ClipboardItem interface returns a Promise that resolves with a Blob of the requested MIME type or an error if the MIME type is not found.The getType() method of the ClipboardItem interface returns a Promise that resolves with a Blob of the requested MIME type or an error if the MIME type is not found.">ClipboardItem/getType</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/getType" title="The getType() method of the ClipboardItem interface returns a Promise that resolves with a Blob of the requested MIME type or an error if the MIME type is not found.">ClipboardItem/getType</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span title="Requires setting a user preference or runtime flag.">🔰 87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome yes"><span>Chrome</span><span>66+</span></span>
@@ -1456,7 +1456,7 @@ document.addEventListener('paste', function(e) {
      </div>
     </div>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/presentationStyle" title="The read-only presentationStyle property of the ClipboardItem interface returns a String indicating how an item should be presented.The read-only presentationStyle property of the ClipboardItem interface returns a String indicating how an item should be presented.">ClipboardItem/presentationStyle</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/presentationStyle" title="The read-only presentationStyle property of the ClipboardItem interface returns a String indicating how an item should be presented.">ClipboardItem/presentationStyle</a></p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span title="Requires setting a user preference or runtime flag.">🔰 87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
       <hr>
@@ -1468,7 +1468,7 @@ document.addEventListener('paste', function(e) {
      </div>
     </div>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/types" title="The read-only types property of the ClipboardItem interface returns an Array of MIME types available within the ClipboardItemThe read-only types property of the ClipboardItem interface returns an Array of MIME types available within the ClipboardItem">ClipboardItem/types</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem/types" title="The read-only types property of the ClipboardItem interface returns an Array of MIME types available within the ClipboardItem">ClipboardItem/types</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span title="Requires setting a user preference or runtime flag.">🔰 87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome yes"><span>Chrome</span><span>66+</span></span>
@@ -1481,7 +1481,7 @@ document.addEventListener('paste', function(e) {
      </div>
     </div>
     <div class="feature">
-     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem" title="The ClipboardItem interface of the Clipboard API represents a single item format, used when reading or writing data via the Clipboard API. That is clipboard.read() and clipboard.write() respectively.The ClipboardItem interface of the Clipboard API represents a single item format, used when reading or writing data via the Clipboard API. That is clipboard.read() and clipboard.write() respectively.">ClipboardItem</a></p>
+     <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem" title="The ClipboardItem interface of the Clipboard API represents a single item format, used when reading or writing data via the Clipboard API. That is clipboard.read() and clipboard.write() respectively.">ClipboardItem</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
       <span class="firefox yes"><span>Firefox</span><span title="Requires setting a user preference or runtime flag.">🔰 87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome yes"><span>Chrome</span><span>66+</span></span>
@@ -1563,6 +1563,8 @@ document.addEventListener('paste', function(e) {
         <li data-md>
          <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a> represented as
 a sequence of <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem③">ClipboardItem</a></code>s.</p>
+         <p class="note" role="note"><span>Note:</span> As further described in <a href="#image-transcode">§ 10.3 Transcoding images</a> this explicitly does not transcode images.
+Rather the original unmodified image data should be exposed to the website.</p>
         <li data-md>
          <p>Resolve <var>p</var> with <var>data</var>.</p>
        </ol>
@@ -1633,7 +1635,7 @@ const text = await (new Response(textBlob)).text();
      <div class="mdn-anno wrapped after">
       <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
       <div class="feature">
-       <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/write" title="The Clipboard method write() writes arbitrary data, such as images, to the clipboard.">Clipboard/write</a></p>
+       <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/write" title="The Clipboard method write() writes arbitrary data, such as images, to the clipboard. This can be used to implement cut and copy functionality.">Clipboard/write</a></p>
        <p class="all-engines-text">In all current engines.</p>
        <div class="support">
         <span class="firefox yes"><span>Firefox</span><span>87+</span></span><span class="safari yes"><span>Safari</span><span>13.1+</span></span><span class="chrome yes"><span>Chrome</span><span>66+</span></span>
@@ -1917,18 +1919,18 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§ 
     </ol>
    </div>
    <h2 class="heading settled" data-level="9" id="clipboard-permissions"><span class="secno">9. </span><span class="content">Permissions API Integration</span><a class="self-link" href="#clipboard-permissions"></a></h2>
-   <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to access <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature①">powerful feature</a>s like the clipboard. It allows websites to request permissions
+   <p>The <a data-link-type="biblio" href="#biblio-permissions">[permissions]</a> API provides a uniform way for websites to access <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①">powerful feature</a>s like the clipboard. It allows websites to request permissions
 	from users and query which permissions they have.</p>
    <p>For the clipboard, one permission is defined: <dfn class="idl-code" data-dfn-for="PermissionName" data-dfn-type="enum-value" data-export id="dom-permissionname-clipboard-write"><code>"clipboard-write"</code><a class="self-link" href="#dom-permissionname-clipboard-write"></a></dfn></p>
    <p class="note" role="note"><span>Note:</span> Clipboard permissions currently only apply to the Async Clipboard API.
 	Future versions of this specification may be updated to apply this permission
 	to other Clipboard interactions.</p>
-   <p>These clipboard permissions are <a data-link-type="dfn" href="https://w3c.github.io/permissions/#powerful-feature" id="ref-for-powerful-feature②">powerful feature</a>s
+   <p>These clipboard permissions are <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②">powerful feature</a>s
 	permission-related algorithms and types are defined as follows:</p>
    <dl>
-    <dt> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-descriptor-type" id="ref-for-permission-descriptor-type">permission descriptor type</a> 
+    <dt> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-descriptor-type" id="ref-for-dfn-permission-descriptor-type">permission descriptor type</a> 
     <dd>
-<pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor" id="ref-for-dictdef-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
+<pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissiondescriptor" id="ref-for-dom-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="idl-code" data-default="false" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code><a class="self-link" href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"></a></dfn> = <c- b>false</c->;
 };
 </pre>
@@ -1980,7 +1982,7 @@ system.</p>
      <h4 class="heading settled" data-level="9.2.1" id="h-clipboard-write-permission"><span class="secno">9.2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="check-clipboard-write-permission">check clipboard write permission</dfn></span><a class="self-link" href="#h-clipboard-write-permission"></a></h4>
      <ol>
       <li data-md>
-       <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#permission-state" id="ref-for-permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
+       <p>Let <var>writeWithoutGesture</var> be the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-state" id="ref-for-dfn-permission-state">permission state</a> of the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
       <li data-md>
        <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted">granted</a>, then return true.</p>
       <li data-md>
@@ -1995,12 +1997,12 @@ system.</p>
         <li data-md>
          <p>If <var>systemCopy</var> is true, then return true.</p>
         <li data-md>
-         <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use" id="ref-for-request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
+         <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: false }</code> permission.</p>
          <p class="note" role="note"><span>Note:</span> User agents may choose to request a stronger permission that
 will implicitly update this permission.</p>
        </ol>
       <li data-md>
-       <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#request-permission-to-use" id="ref-for-request-permission-to-use①">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
+       <p>Return the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use①">request permission to use</a> the <code>{ name: "clipboard-write", allowWithoutGesture: true }</code> permission.</p>
      </ol>
     </div>
     <h2 class="heading settled" data-level="10" id="security"><span class="secno">10. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
@@ -2081,7 +2083,13 @@ did not intend to expose.</p>
 		add an entry for example.jpg to the clipboardData.items list.</p>
     <h3 class="heading settled" data-level="10.3" id="image-transcode"><span class="secno">10.3. </span><span class="content">Transcoding images</span><a class="self-link" href="#image-transcode"></a></h3>
     <p>To prevent malicious image data from being placed on the clipboard, the image
-		data may be transcoded to produce a safe version of the image.</p>
+		data may be transcoded to produce a safe version of the image. This prevents websites
+		from trying to exploit security vulnerabilities in other applications.</p>
+    <p>Implementations should not transcode images being read from the clipboard.
+		Transcoding images can lose important metadata (such as the physical resolution
+		of an image).
+		This is also consistent with other methods in which images can be shared
+		with a website (such as `&lt;input type=file>`).</p>
     <h3 class="heading settled" data-level="10.4" id="nuisances"><span class="secno">10.4. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
     <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑦">DataTransfer</a></code> API to annoy and confuse users by
 		altering the data on the system clipboard from copy and cut events. This
@@ -2843,35 +2851,35 @@ HTML code.</p>
     <li><a href="#ref-for-dom-datatransfer-types">fire a clipboard event</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-dictdef-permissiondescriptor">
-   <a href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor">https://w3c.github.io/permissions/#dictdef-permissiondescriptor</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dom-permissiondescriptor">
+   <a href="https://w3c.github.io/permissions/#dom-permissiondescriptor">https://w3c.github.io/permissions/#dom-permissiondescriptor</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dictdef-permissiondescriptor">9. Permissions API Integration</a>
+    <li><a href="#ref-for-dom-permissiondescriptor">9. Permissions API Integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-permission-descriptor-type">
-   <a href="https://w3c.github.io/permissions/#permission-descriptor-type">https://w3c.github.io/permissions/#permission-descriptor-type</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-permission-descriptor-type">
+   <a href="https://w3c.github.io/permissions/#dfn-permission-descriptor-type">https://w3c.github.io/permissions/#dfn-permission-descriptor-type</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-permission-descriptor-type">9. Permissions API Integration</a>
+    <li><a href="#ref-for-dfn-permission-descriptor-type">9. Permissions API Integration</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-permission-state">
-   <a href="https://w3c.github.io/permissions/#permission-state">https://w3c.github.io/permissions/#permission-state</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-permission-state">
+   <a href="https://w3c.github.io/permissions/#dfn-permission-state">https://w3c.github.io/permissions/#dfn-permission-state</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-permission-state">9.2.1. check clipboard write permission</a>
+    <li><a href="#ref-for-dfn-permission-state">9.2.1. check clipboard write permission</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-powerful-feature">
-   <a href="https://w3c.github.io/permissions/#powerful-feature">https://w3c.github.io/permissions/#powerful-feature</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-powerful-feature">
+   <a href="https://w3c.github.io/permissions/#dfn-powerful-feature">https://w3c.github.io/permissions/#dfn-powerful-feature</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-powerful-feature">1. Introduction</a>
-    <li><a href="#ref-for-powerful-feature①">9. Permissions API Integration</a> <a href="#ref-for-powerful-feature②">(2)</a>
+    <li><a href="#ref-for-dfn-powerful-feature">1. Introduction</a>
+    <li><a href="#ref-for-dfn-powerful-feature①">9. Permissions API Integration</a> <a href="#ref-for-dfn-powerful-feature②">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-request-permission-to-use">
-   <a href="https://w3c.github.io/permissions/#request-permission-to-use">https://w3c.github.io/permissions/#request-permission-to-use</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-dfn-request-permission-to-use">
+   <a href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">https://w3c.github.io/permissions/#dfn-request-permission-to-use</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-request-permission-to-use">9.2.1. check clipboard write permission</a> <a href="#ref-for-request-permission-to-use①">(2)</a>
+    <li><a href="#ref-for-dfn-request-permission-to-use">9.2.1. check clipboard write permission</a> <a href="#ref-for-dfn-request-permission-to-use①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
@@ -2999,11 +3007,11 @@ HTML code.</p>
    <li>
     <a data-link-type="biblio">[permissions]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-dictdef-permissiondescriptor">PermissionDescriptor</span>
-     <li><span class="dfn-paneled" id="term-for-permission-descriptor-type">permission descriptor type</span>
-     <li><span class="dfn-paneled" id="term-for-permission-state">permission state</span>
-     <li><span class="dfn-paneled" id="term-for-powerful-feature">powerful feature</span>
-     <li><span class="dfn-paneled" id="term-for-request-permission-to-use">request permission to use</span>
+     <li><span class="dfn-paneled" id="term-for-dom-permissiondescriptor">PermissionDescriptor</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-permission-descriptor-type">permission descriptor type</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-permission-state">permission state</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-powerful-feature">powerful feature</span>
+     <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">request permission to use</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
@@ -3034,7 +3042,7 @@ HTML code.</p>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Mounir Lamouri; Marcos Caceres; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 20 July 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Micheal Taylor; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 7 September 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
@@ -3102,7 +3110,7 @@ HTML code.</p>
   <a data-link-type="idl-name" href="#enumdef-presentationstyle"><c- n>PresentationStyle</c-></a> <a data-default="&quot;unspecified&quot;" data-type="PresentationStyle " href="#dom-clipboarditemoptions-presentationstyle"><code><c- g>presentationStyle</c-></code></a> = "unspecified";
 };
 
-<c- b>dictionary</c-> <a href="#dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></a> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dictdef-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
+<c- b>dictionary</c-> <a href="#dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></a> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
   <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code></a> = <c- b>false</c->;
 };
 
