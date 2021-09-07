@@ -258,9 +258,9 @@ Clipboard API will not affect the operation of the existing clipboard APIs.
 There are a few avenues for abuse that are not specific to the Async API,
 but are applicable to any API that provides clipboard access.
 
-It is one of these abuse vectors in particular, pasting images, that motivated
+It is one of these abuse vectors in particular, copying images, that motivated
 the creation of the Async Clipboard API. In order to clean up malicious images,
-they would need to be decoded and it is not appropriate to do this on
+they would need to be transcoded and it is not appropriate to do this on
 the main thread (large images could lock the browser while the image is
 being processed).
 
@@ -291,10 +291,9 @@ script (link:https://en.wikipedia.org/wiki/Self-XSS[Self-XSS]).
 
 ==== Pasting Images
 
-Images can be crafted to exploit bugs in the image-handling code, so they
-need to be scrubbed as well. Transcoding large images can be computationally
-expensive, so care must be taken to avoid processing them on the main thread.
-
+Images can be crafted to exploit bugs in the image-handling code. However many
+other ways exist to get untrusted images in web content, so little would be gained
+from transcoding images when they are pasted into a website.
 
 === Mitigating Abuse
 
