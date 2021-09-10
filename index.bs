@@ -641,6 +641,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as
 					a sequence of {{ClipboardItem}}s.
+					
+					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
+					Rather the original unmodified image data should be exposed to the website.
 
 				1. Resolve |p| with |data|.
 
@@ -1125,7 +1128,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	<h3 id="image-transcode">Transcoding images</h3>
 
 		To prevent malicious image data from being placed on the clipboard, the image
-		data may be transcoded to produce a safe version of the image.
+		data may be transcoded to produce a safe version of the image. This prevents websites
+		from trying to exploit security vulnerabilities in other applications.
+
+		Implementations should not transcode images being read from the clipboard.
+		Transcoding images can lose important metadata (such as the physical resolution
+		of an image).
+		This is also consistent with other methods in which images can be shared
+		with a website (such as `&lt;input type=file&gt;`).
 
 	<h3 id="nuisances">Nuisance considerations</h3>
 
