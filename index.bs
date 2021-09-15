@@ -531,15 +531,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			* text/html
 			* image/png
 
-			These data types may be exposed by <em>paste</em> events if a
-			corresponding native type exists on the clipboard:
-
-			* text/uri-list
-			* image/jpg, image/jpeg
-			* image/gif
-			* image/svg+xml
-			* text/rtf
-
 		<h4 id="writing-to-clipboard">Writing to the clipboard</h4>
 
 			These data types must be placed on the clipboard with a corresponding
@@ -550,15 +541,35 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			* text/html
 			* image/png
 
+			Advisement: Warning! The data types that untrusted scripts are allowed to write to the
+			clipboard are limited as a security precaution. Untrusted scripts can
+			attempt to exploit security vulnerabilities in local software by placing
+			data known to trigger those vulnerabilities on the clipboard.
+
+	<h3 id="optional-data-types">Optional data types</h3>
+
+		The implementation must recognize the native OS clipboard format description
+		for the following data types, to be able to populate the
+		{{DataTransferItemList}} with the correct description for paste events, and
+		set the correct data format on the OS clipboard in response to copy and cut
+		events.
+
+		<h4 id="reading-from-clipboard-x">Reading from the clipboard</h4>
+
+			These data types may be exposed by <em>paste</em> events if a
+			corresponding native type exists on the clipboard:
+
+			* text/uri-list
+			* image/svg+xml
+
+		<h4 id="writing-to-clipboard-x">Writing to the clipboard</h4>
+
 			These data types may be placed on the clipboard with a corresponding
 			native type description if added to a {{DataTransfer}} object during
 			<em>copy</em> and <em>cut</em> events.
 
 			* text/uri-list
-			* image/jpg, image/jpeg
-			* image/gif
 			* image/svg+xml
-			* text/rtf
 
 			Advisement: Warning! The data types that untrusted scripts are allowed to write to the
 			clipboard are limited as a security precaution. Untrusted scripts can
