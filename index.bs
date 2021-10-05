@@ -655,7 +655,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<p> Returns {{ClipboardItem/types}} listed in the [=mandatory data types=] list that are present on the [=system clipboard=].
 
 		<dfn>getType({{DOMString}} type)</dfn>
-		<p> The {{ClipboardItem/getType}} must run the below steps:</p>
+		<p> The {{ClipboardItem/getType()}} must run the below steps:</p>
 
 			1. Let |p| be a new [=Promise=].
 
