@@ -633,7 +633,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			</div>
 
 			<dt><code><var>clipboardItem</var> . <a method for=ClipboardItem lt=getType()>getType</a>(<var>type</var>)</code>
-			<dd><p>Returns a  [=Promise=] to the [=Blob=] corresponding to the <var>type</var>.
+			<dd><p>Returns a  [=Promise=] to the [=Blob=] corresponding to the <var>type</var>.</p>
 
 			<dt><code><var>types</var> of <var>clipboardItem</var></code>
 			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
