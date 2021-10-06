@@ -562,6 +562,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<div class="algorithm" data-algorithm="navigator-clipboard">
 		<h4 id="h-navigator-clipboard"><dfn>clipboard</dfn></h4>
 		The [=clipboard=] attribute must return the {{Navigator}}'s [=clipboard=] object.
+		It is used to execute read/write operation from/to the [=system clipboard=].
 		</div>
 
 		</div><!-- dfn-for Navigator -->
@@ -642,12 +643,12 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<dfn>ClipboardItemDataType</dfn>
 		<p>
-			Returns a {{DOMString}} or [=Blob=] type.
+			A {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a {{ClipboardItem}} object.
 		</p>
 
 		<dfn>ClipboardItemData</dfn>
 		<p>
-			Returns a [=Promise=] to the [=ClipboardItemDataType=].
+			A [=Promise=] to the [=ClipboardItemDataType=].
 		</p>
 
 		{{ClipboardItem}}
@@ -661,8 +662,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		See https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard-operations#delayed-rendering
 
 		<dfn>presentationStyle</dfn>
-		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.
-		The IDL attribute must [=reflect=] the respective content attributes of the same name.</p>
+		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.</p>
 
 		<p>{{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s {{ClipboardItem/presentationStyle}}</p>
 
@@ -701,7 +701,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as
-					a sequence of {{ClipboardItem}}s.
+					a sequence of {{ClipboardItem}}s. For the MIME types defined in the [=mandatory data types=] list,
+					|data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
+
+					Note: Currently in Chromium, only a single {{ClipboardItem}} object is supported for reading and writing via [=clipboard=] object.
 					
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
@@ -766,11 +769,20 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
 
-				1. Let |cleanItemList| be an empty sequence&lt;{{Blob}}>.
+				1. Let |itemList| and |cleanItemList| be an empty sequence&lt;{{Blob}}>.
 
-				1. For each {{Blob}} |item| in |data|:
+				1. For each |item| in |data|:
+					1. If [=Promise=] to {{Blob}} in |item| is rejected, then throw "Promises to Blobs were rejected." DOMException.
 
-					1. Let |cleanItem| be a sanitized copy of |item|.
+					1. Add the {{Blob}} in |item| to |itemList| after the promise has been resolved.
+
+				1. For each {{Blob}} |itemBlob| in |itemList|:
+
+					1. If {{Blob/type}} is not in the [=mandatory data types=] list, then reject |p| with a "Type {{Blob/type}} not supported on write." DOMException.
+
+					1. Let |cleanItem| be a sanitized copy of |itemBlob|.
+
+						Issue: Add definition of sanitized copy.
 
 					1. If unable to create a sanitized copy, then reject |p|.
 
@@ -785,7 +797,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<div></div>
 
 			<pre class="example javascript">
-				var data = [new ClipboardItem({ "text/plain": new Blob(["Text data"], { type: "text/plain" }) })];
+				var data = [new ClipboardItem({ "text/plain": Promise.resolve(new Blob(["Text data"], { type: "text/plain" }) }))];
 				navigator.clipboard.write(data).then(function() {
 					console.log("Copied to clipboard successfully!");
 				}, function() {
