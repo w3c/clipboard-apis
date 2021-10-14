@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 4f053d00e, updated Tue Aug 10 14:13:32 2021 -0700" name="generator">
+  <meta content="Bikeshed version d7036035b, updated Fri Oct 8 17:07:11 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="0f67e6a75214283a781aa915e42fb3bef7f1d184" name="document-revision">
+  <meta content="fa5ed323d233f29a5bc32bab8222d0e25873c323" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -247,6 +247,16 @@ figcaption:not(.no-marker)::before {
 }
 
 .dfn-paneled { cursor: pointer; }
+</style>
+<style>/* style-issues */
+
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
 </style>
 <style>/* style-md-lists */
 
@@ -634,7 +644,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-09-07">7 September 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-10-14">14 October 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -938,9 +948,9 @@ the clipboard.</p>
       </div>
      </div>
     </div>
-<pre class="idl highlight def" data-highlight="webidl">[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="idl highlight def" data-highlight="webidl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboardevent"><code><c- g>ClipboardEvent</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①"><c- n>Event</c-></a> {
-  <dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|constructor(type, eventInitDict)|ClipboardEvent(type)|constructor(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn> = {});
+  <dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|constructor(type, eventInitDict)|ClipboardEvent(type)|constructor(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer③"><c- n>DataTransfer</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export data-readonly data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></dfn>;
 };
 </pre>
@@ -1006,13 +1016,13 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/copy_event" title="The copy event fires when the user initiates a copy action through the browser&apos;s user interface.">Document/copy_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>6+</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>6+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
@@ -1058,13 +1068,13 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/cut_event" title="The cut event is fired when the user has initiated a &quot;cut&quot; action through the browser&apos;s user interface.">Document/cut_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>6+</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>18</span></span><span class="ie no"><span>IE</span><span>None</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>6+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
@@ -1114,13 +1124,13 @@ document.dispatchEvent(pasteEvent);
      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/paste_event" title="The paste event is fired when the user has initiated a &quot;paste&quot; action through the browser&apos;s user interface.">Document/paste_event</a></p>
      <p class="all-engines-text">In all current engines.</p>
      <div class="support">
-      <span class="firefox yes"><span>Firefox</span><span>Yes</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
+      <span class="firefox yes"><span>Firefox</span><span>6+</span></span><span class="safari yes"><span>Safari</span><span>3+</span></span><span class="chrome yes"><span>Chrome</span><span>1+</span></span>
       <hr>
       <span class="opera yes"><span>Opera</span><span>15+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
       <hr>
       <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>11</span></span>
       <hr>
-      <span class="firefox_android yes"><span>Firefox for Android</span><span>Yes</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
+      <span class="firefox_android yes"><span>Firefox for Android</span><span>6+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>3+</span></span><span class="chrome_android yes"><span>Chrome for Android</span><span>18+</span></span><span class="webview_android yes"><span>Android WebView</span><span>1+</span></span><span class="samsunginternet_android yes"><span>Samsung Internet</span><span>1.0+</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>14+</span></span>
      </div>
     </div>
     <div class="feature">
@@ -1333,31 +1343,9 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>text/plain</p>
     <li data-md>
-     <p>text/uri-list</p>
-    <li data-md>
-     <p>text/csv</p>
-    <li data-md>
-     <p>text/css</p>
-    <li data-md>
      <p>text/html</p>
     <li data-md>
-     <p>application/xhtml+xml</p>
-    <li data-md>
      <p>image/png</p>
-    <li data-md>
-     <p>image/jpg, image/jpeg</p>
-    <li data-md>
-     <p>image/gif</p>
-    <li data-md>
-     <p>image/svg+xml</p>
-    <li data-md>
-     <p>application/xml, text/xml</p>
-    <li data-md>
-     <p>application/javascript</p>
-    <li data-md>
-     <p>application/json</p>
-    <li data-md>
-     <p>application/octet-stream</p>
    </ul>
    <h4 class="heading settled" data-level="6.4.2" id="writing-to-clipboard"><span class="secno">6.4.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h4>
    <p>These data types must be placed on the clipboard with a corresponding
@@ -1366,17 +1354,9 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>text/plain</p>
     <li data-md>
-     <p>text/uri-list</p>
-    <li data-md>
-     <p>text/csv</p>
-    <li data-md>
      <p>text/html</p>
     <li data-md>
-     <p>image/svg+xml</p>
-    <li data-md>
-     <p>application/xml, text/xml</p>
-    <li data-md>
-     <p>application/json</p>
+     <p>image/png</p>
    </ul>
    <p><strong class="advisement"> Warning! The data types that untrusted scripts are allowed to write to the
 			clipboard are limited as a security precaution. Untrusted scripts can
@@ -1385,7 +1365,7 @@ document.addEventListener('paste', function(e) {
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="navigator-interface"><span class="secno">7.1. </span><span class="content">Navigator Interface</span><a class="self-link" href="#navigator-interface"></a></h3>
 <pre class="idl highlight def" data-highlight="webidl"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/system-state.html#navigator" id="ref-for-navigator"><c- g>Navigator</c-></a> {
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard"><c- n>Clipboard</c-></a> <dfn class="idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export data-readonly data-type="Clipboard" id="dom-navigator-clipboard"><code><c- g>clipboard</c-></code><a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#clipboard" id="ref-for-clipboard"><c- n>Clipboard</c-></a> <dfn class="idl-code" data-dfn-for="Navigator" data-dfn-type="attribute" data-export data-readonly data-type="Clipboard" id="dom-navigator-clipboard"><code><c- g>clipboard</c-></code><a class="self-link" href="#dom-navigator-clipboard"></a></dfn>;
 };
 </pre>
    <div id="navigator-idl">
@@ -1494,34 +1474,34 @@ document.addEventListener('paste', function(e) {
      </div>
     </div>
    </div>
-<pre class="idl highlight def" data-highlight="webidl"><c- b>typedef</c-> <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-sequence" id="ref-for-idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem①"><c- n>ClipboardItem</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditems"><code><c- g>ClipboardItems</c-></code></dfn>;
+<pre class="idl highlight def" data-highlight="webidl"><c- b>typedef</c-> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem①"><c- n>ClipboardItem</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditems"><code><c- g>ClipboardItems</c-></code></dfn>;
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboard"><code><c- g>Clipboard</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget"><c- n>EventTarget</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read①"><c- g>read</c-></a>();
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext"><c- g>readText</c-></a>();
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise②"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①"><c- g>write</c-></a>(<a data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems①"><c- n>ClipboardItems</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export id="dom-clipboard-write-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise③"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export id="dom-clipboard-writetext-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext" id="ref-for-SecureContext①"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboard"><code><c- g>Clipboard</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget" id="ref-for-eventtarget"><c- n>EventTarget</c-></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read①"><c- g>read</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext"><c- g>readText</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①"><c- g>write</c-></a>(<a data-link-type="idl-name" href="#typedefdef-clipboarditems" id="ref-for-typedefdef-clipboarditems①"><c- n>ClipboardItems</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/write(data)" data-dfn-type="argument" data-export id="dom-clipboard-write-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-write-data-data"></a></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export id="dom-clipboard-writetext-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
 };
 
-<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <c- b>or</c-> <a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob"><c- n>Blob</c-></a>) <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></dfn>;
-<c- b>typedef</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise④"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditemdatatype" id="ref-for-typedefdef-clipboarditemdatatype"><c- n>ClipboardItemDataType</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditemdata"><code><c- g>ClipboardItemData</c-></code></dfn>;
+<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <c- b>or</c-> <a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob"><c- n>Blob</c-></a>) <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></dfn>;
+<c- b>typedef</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditemdatatype" id="ref-for-typedefdef-clipboarditemdatatype"><c- n>ClipboardItemDataType</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-type="typedef" data-export id="typedefdef-clipboarditemdata"><code><c- g>ClipboardItemData</c-></code></dfn>;
 
 <c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-clipboarditemdelayedcallback"><code><c- g>ClipboardItemDelayedCallback</c-></code></dfn> = <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata"><c- n>ClipboardItemData</c-></a> ();
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed" id="ref-for-Exposed②"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboarditem"><code><c- g>ClipboardItem</c-></code></dfn> {
-  <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="constructor" data-export data-lt="ClipboardItem(items, options)|constructor(items, options)|ClipboardItem(items)|constructor(items)" id="dom-clipboarditem-clipboarditem"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem"></a></dfn>(<a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-record" id="ref-for-idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①"><c- n>ClipboardItemData</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options), ClipboardItem/constructor(items, options), ClipboardItem/ClipboardItem(items), ClipboardItem/constructor(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-items"></a></dfn>,
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed②"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboarditem"><code><c- g>ClipboardItem</c-></code></dfn> {
+  <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="constructor" data-export data-lt="ClipboardItem(items, options)|constructor(items, options)|ClipboardItem(items)|constructor(items)" id="dom-clipboarditem-clipboarditem"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem"></a></dfn>(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-record" id="ref-for-idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString④"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①"><c- n>ClipboardItemData</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options), ClipboardItem/constructor(items, options), ClipboardItem/ClipboardItem(items), ClipboardItem/constructor(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-items"></a></dfn>,
     <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/ClipboardItem(items, options), ClipboardItem/constructor(items, options), ClipboardItem/ClipboardItem(items), ClipboardItem/constructor(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-clipboarditem-items-options-options"></a></dfn> = {});
   <c- b>static</c-> <a data-link-type="idl-name" href="#clipboarditem" id="ref-for-clipboarditem②"><c- n>ClipboardItem</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="method" data-export data-lt="createDelayed(items, options)|createDelayed(items)" id="dom-clipboarditem-createdelayed"><code><c- g>createDelayed</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed"></a></dfn>(
-      <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-record" id="ref-for-idl-record①"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑤"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback" id="ref-for-callbackdef-clipboarditemdelayedcallback"><c- n>ClipboardItemDelayedCallback</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-items"></a></dfn>,
+      <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-record" id="ref-for-idl-record①"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑤"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback" id="ref-for-callbackdef-clipboarditemdelayedcallback"><c- n>ClipboardItemDelayedCallback</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-items"></a></dfn>,
       <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①"><c- n>ClipboardItemOptions</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/createDelayed(items, options), ClipboardItem/createDelayed(items)" data-dfn-type="argument" data-export id="dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-clipboarditem-createdelayed-items-options-options"></a></dfn> = {});
 
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-presentationstyle" id="ref-for-enumdef-presentationstyle"><c- n>PresentationStyle</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="PresentationStyle" id="dom-clipboarditem-presentationstyle"><code><c- g>presentationStyle</c-></code><a class="self-link" href="#dom-clipboarditem-presentationstyle"></a></dfn>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long-long" id="ref-for-idl-long-long"><c- b>long</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="long long" id="dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code><a class="self-link" href="#dom-clipboarditem-lastmodified"></a></dfn>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="boolean" id="dom-clipboarditem-delayed"><code><c- g>delayed</c-></code><a class="self-link" href="#dom-clipboarditem-delayed"></a></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-long-long" id="ref-for-idl-long-long"><c- b>long</c-> <c- b>long</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="long long" id="dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code><a class="self-link" href="#dom-clipboarditem-lastmodified"></a></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="boolean" id="dom-clipboarditem-delayed"><code><c- g>delayed</c-></code><a class="self-link" href="#dom-clipboarditem-delayed"></a></dfn>;
 
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑥"><c- b>DOMString</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="FrozenArray<DOMString>" id="dom-clipboarditem-types"><code><c- g>types</c-></code><a class="self-link" href="#dom-clipboarditem-types"></a></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑥"><c- b>DOMString</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-readonly data-type="FrozenArray<DOMString>" id="dom-clipboarditem-types"><code><c- g>types</c-></code><a class="self-link" href="#dom-clipboarditem-types"></a></dfn>;
 
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise" id="ref-for-idl-promise⑤"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①"><c- n>Blob</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="method" data-export data-lt="getType(type)" id="dom-clipboarditem-gettype"><code><c- g>getType</c-></code><a class="self-link" href="#dom-clipboarditem-gettype"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString⑦"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/getType(type)" data-dfn-type="argument" data-export id="dom-clipboarditem-gettype-type-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboarditem-gettype-type-type"></a></dfn>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①"><c- n>Blob</c-></a>> <dfn class="idl-code" data-dfn-for="ClipboardItem" data-dfn-type="method" data-export data-lt="getType(type)" id="dom-clipboarditem-gettype"><code><c- g>getType</c-></code><a class="self-link" href="#dom-clipboarditem-gettype"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑦"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardItem/getType(type)" data-dfn-type="argument" data-export id="dom-clipboarditem-gettype-type-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboarditem-gettype-type-type"></a></dfn>);
 };
 
 <c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-presentationstyle"><code><c- g>PresentationStyle</c-></code></dfn> { <dfn class="idl-code" data-dfn-for="PresentationStyle" data-dfn-type="enum-value" data-export id="dom-presentationstyle-unspecified"><code><c- s>"unspecified"</c-></code><a class="self-link" href="#dom-presentationstyle-unspecified"></a></dfn>, <dfn class="idl-code" data-dfn-for="PresentationStyle" data-dfn-type="enum-value" data-export id="dom-presentationstyle-inline"><code><c- s>"inline"</c-></code><a class="self-link" href="#dom-presentationstyle-inline"></a></dfn>, <dfn class="idl-code" data-dfn-for="PresentationStyle" data-dfn-type="enum-value" data-export id="dom-presentationstyle-attachment"><code><c- s>"attachment"</c-></code><a class="self-link" href="#dom-presentationstyle-attachment"></a></dfn> };
@@ -1931,7 +1911,7 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§ 
     <dt> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-descriptor-type" id="ref-for-dfn-permission-descriptor-type">permission descriptor type</a> 
     <dd>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissiondescriptor" id="ref-for-dom-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="idl-code" data-default="false" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code><a class="self-link" href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"></a></dfn> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="idl-code" data-default="false" data-dfn-for="ClipboardPermissionDescriptor" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code><a class="self-link" href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"></a></dfn> = <c- b>false</c->;
 };
 </pre>
     <p>There are 4 clipboard permissions:</p>
@@ -1964,7 +1944,7 @@ the modification, see <a href="#integration-with-other-scripts-and-events">§ 
      <h4 class="heading settled" data-level="9.1.1" id="h-clipboard-read-permission"><span class="secno">9.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="check-clipboard-read-permission">check clipboard read permission</dfn></span><a class="self-link" href="#h-clipboard-read-permission"></a></h4>
      <ol>
       <li data-md>
-       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a> of <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation">transient activation</a>, false otherwise.</p>
+       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a> of <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation">transient activation</a>, false otherwise.</p>
       <li data-md>
        <p>If <var>hasGesture</var> then,</p>
        <ol>
@@ -1986,7 +1966,7 @@ system.</p>
       <li data-md>
        <p>If <var>writeWithoutGesture</var> is <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted">granted</a>, then return true.</p>
       <li data-md>
-       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a> of <a data-link-type="dfn" href="https://heycam.github.io/webidl/#this" id="ref-for-this①">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a>, false otherwise.</p>
+       <p>Let <var>hasGesture</var> be true if the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a> of <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a> has <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#transient-activation" id="ref-for-transient-activation①">transient activation</a>, false otherwise.</p>
       <li data-md>
        <p>If <var>hasGesture</var> then,</p>
        <ol>
@@ -2883,78 +2863,78 @@ HTML code.</p>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-DOMString">
-   <a href="https://heycam.github.io/webidl/#idl-DOMString">https://heycam.github.io/webidl/#idl-DOMString</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-DOMString">5.1. Clipboard event interfaces</a>
     <li><a href="#ref-for-idl-DOMString①">7.2. Clipboard Interface</a> <a href="#ref-for-idl-DOMString②">(2)</a> <a href="#ref-for-idl-DOMString③">(3)</a> <a href="#ref-for-idl-DOMString④">(4)</a> <a href="#ref-for-idl-DOMString⑤">(5)</a> <a href="#ref-for-idl-DOMString⑥">(6)</a> <a href="#ref-for-idl-DOMString⑦">(7)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-Exposed">
-   <a href="https://heycam.github.io/webidl/#Exposed">https://heycam.github.io/webidl/#Exposed</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-Exposed">5.1. Clipboard event interfaces</a>
     <li><a href="#ref-for-Exposed①">7.2. Clipboard Interface</a> <a href="#ref-for-Exposed②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-frozen-array">
-   <a href="https://heycam.github.io/webidl/#idl-frozen-array">https://heycam.github.io/webidl/#idl-frozen-array</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-frozen-array">https://webidl.spec.whatwg.org/#idl-frozen-array</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-frozen-array">7.2. Clipboard Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-promise">
-   <a href="https://heycam.github.io/webidl/#idl-promise">https://heycam.github.io/webidl/#idl-promise</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-promise">https://webidl.spec.whatwg.org/#idl-promise</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-promise">7.2. Clipboard Interface</a> <a href="#ref-for-idl-promise①">(2)</a> <a href="#ref-for-idl-promise②">(3)</a> <a href="#ref-for-idl-promise③">(4)</a> <a href="#ref-for-idl-promise④">(5)</a> <a href="#ref-for-idl-promise⑤">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-SameObject">
-   <a href="https://heycam.github.io/webidl/#SameObject">https://heycam.github.io/webidl/#SameObject</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#SameObject">https://webidl.spec.whatwg.org/#SameObject</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-SameObject">7.1. Navigator Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-SecureContext">
-   <a href="https://heycam.github.io/webidl/#SecureContext">https://heycam.github.io/webidl/#SecureContext</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#SecureContext">https://webidl.spec.whatwg.org/#SecureContext</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-SecureContext">7.1. Navigator Interface</a>
     <li><a href="#ref-for-SecureContext①">7.2. Clipboard Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-boolean">
-   <a href="https://heycam.github.io/webidl/#idl-boolean">https://heycam.github.io/webidl/#idl-boolean</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-boolean">https://webidl.spec.whatwg.org/#idl-boolean</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-boolean">7.2. Clipboard Interface</a>
     <li><a href="#ref-for-idl-boolean①">9. Permissions API Integration</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-long-long">
-   <a href="https://heycam.github.io/webidl/#idl-long-long">https://heycam.github.io/webidl/#idl-long-long</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-long-long">https://webidl.spec.whatwg.org/#idl-long-long</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-long-long">7.2. Clipboard Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-record">
-   <a href="https://heycam.github.io/webidl/#idl-record">https://heycam.github.io/webidl/#idl-record</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-record">https://webidl.spec.whatwg.org/#idl-record</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-record">7.2. Clipboard Interface</a> <a href="#ref-for-idl-record①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-sequence">
-   <a href="https://heycam.github.io/webidl/#idl-sequence">https://heycam.github.io/webidl/#idl-sequence</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-sequence">https://webidl.spec.whatwg.org/#idl-sequence</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-sequence">7.2. Clipboard Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-this">
-   <a href="https://heycam.github.io/webidl/#this">https://heycam.github.io/webidl/#this</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#this">https://webidl.spec.whatwg.org/#this</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-this">9.1.1. check clipboard read permission</a>
     <li><a href="#ref-for-this①">9.2.1. check clipboard write permission</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-idl-undefined">
-   <a href="https://heycam.github.io/webidl/#idl-undefined">https://heycam.github.io/webidl/#idl-undefined</a><b>Referenced in:</b>
+   <a href="https://webidl.spec.whatwg.org/#idl-undefined">https://webidl.spec.whatwg.org/#idl-undefined</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-undefined">7.2. Clipboard Interface</a> <a href="#ref-for-idl-undefined①">(2)</a>
    </ul>
@@ -3014,7 +2994,7 @@ HTML code.</p>
      <li><span class="dfn-paneled" id="term-for-dfn-request-permission-to-use">request permission to use</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
      <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
@@ -3042,13 +3022,13 @@ HTML code.</p>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
-   <dd>Marcos Caceres; Micheal Taylor; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 7 September 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
+   <dd>Marcos Caceres; Mike Taylor; Jeffrey Yasskin. <a href="https://www.w3.org/TR/permissions/"><cite>Permissions</cite></a>. 14 October 2021. WD. URL: <a href="https://www.w3.org/TR/permissions/">https://www.w3.org/TR/permissions/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-rfc2392">[RFC2392]
    <dd>E. Levinson. <a href="https://www.rfc-editor.org/rfc/rfc2392"><cite>Content-ID and Message-ID Uniform Resource Locators</cite></a>. August 1998. Proposed Standard. URL: <a href="https://www.rfc-editor.org/rfc/rfc2392">https://www.rfc-editor.org/rfc/rfc2392</a>
-   <dt id="biblio-webidl">[WebIDL]
-   <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/"><cite>Web IDL</cite></a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -3064,44 +3044,44 @@ HTML code.</p>
   <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer"><c- n>DataTransfer</c-></a>? <a data-default="null" data-type="DataTransfer? " href="#dom-clipboardeventinit-clipboarddata"><code><c- g>clipboardData</c-></code></a> = <c- b>null</c->;
 };
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#clipboardevent"><code><c- g>ClipboardEvent</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event"><c- n>Event</c-></a> {
-  <a href="#dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code></a>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code></a> = {});
+  <a href="#dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code></a>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <a href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code></a> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer"><c- n>DataTransfer</c-></a>? <a data-readonly data-type="DataTransfer?" href="#dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></a>;
 };
 
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/system-state.html#navigator"><c- g>Navigator</c-></a> {
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#clipboard"><c- n>Clipboard</c-></a> <a data-readonly data-type="Clipboard" href="#dom-navigator-clipboard"><code><c- g>clipboard</c-></code></a>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject"><c- g>SameObject</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#clipboard"><c- n>Clipboard</c-></a> <a data-readonly data-type="Clipboard" href="#dom-navigator-clipboard"><code><c- g>clipboard</c-></code></a>;
 };
 
-<c- b>typedef</c-> <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#clipboarditem"><c- n>ClipboardItem</c-></a>> <a href="#typedefdef-clipboarditems"><code><c- g>ClipboardItems</c-></code></a>;
+<c- b>typedef</c-> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#clipboarditem"><c- n>ClipboardItem</c-></a>> <a href="#typedefdef-clipboarditems"><code><c- g>ClipboardItems</c-></code></a>;
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboard"><code><c- g>Clipboard</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget"><c- n>EventTarget</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read"><c- g>read</c-></a>();
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext"><c- g>readText</c-></a>();
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write"><c- g>write</c-></a>(<a data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a> <a href="#dom-clipboard-write-data-data"><code><c- g>data</c-></code></a>);
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboard-writetext-data-data"><code><c- g>data</c-></code></a>);
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext"><c- g>SecureContext</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboard"><code><c- g>Clipboard</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#eventtarget"><c- n>EventTarget</c-></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-read"><c- g>read</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-readtext"><c- g>readText</c-></a>();
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-write"><c- g>write</c-></a>(<a data-link-type="idl-name" href="#typedefdef-clipboarditems"><c- n>ClipboardItems</c-></a> <a href="#dom-clipboard-write-data-data"><code><c- g>data</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboard-writetext-data-data"><code><c- g>data</c-></code></a>);
 };
 
-<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <c- b>or</c-> <a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob"><c- n>Blob</c-></a>) <a href="#typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></a>;
-<c- b>typedef</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditemdatatype"><c- n>ClipboardItemDataType</c-></a>> <a href="#typedefdef-clipboarditemdata"><code><c- g>ClipboardItemData</c-></code></a>;
+<c- b>typedef</c-> (<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <c- b>or</c-> <a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob"><c- n>Blob</c-></a>) <a href="#typedefdef-clipboarditemdatatype"><code><c- g>ClipboardItemDataType</c-></code></a>;
+<c- b>typedef</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="#typedefdef-clipboarditemdatatype"><c- n>ClipboardItemDataType</c-></a>> <a href="#typedefdef-clipboarditemdata"><code><c- g>ClipboardItemData</c-></code></a>;
 
 <c- b>callback</c-> <a href="#callbackdef-clipboarditemdelayedcallback"><code><c- g>ClipboardItemDelayedCallback</c-></code></a> = <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata"><c- n>ClipboardItemData</c-></a> ();
 
-[<a class="idl-code" data-link-type="extended-attribute" href="https://heycam.github.io/webidl/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboarditem"><code><c- g>ClipboardItem</c-></code></a> {
-  <a href="#dom-clipboarditem-clipboarditem"><code><c- g>constructor</c-></code></a>(<a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata"><c- n>ClipboardItemData</c-></a>> <a href="#dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code></a>,
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->] <c- b>interface</c-> <a href="#clipboarditem"><code><c- g>ClipboardItem</c-></code></a> {
+  <a href="#dom-clipboarditem-clipboarditem"><code><c- g>constructor</c-></code></a>(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#typedefdef-clipboarditemdata"><c- n>ClipboardItemData</c-></a>> <a href="#dom-clipboarditem-clipboarditem-items-options-items"><code><c- g>items</c-></code></a>,
     <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboarditemoptions"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-clipboarditem-items-options-options"><code><c- g>options</c-></code></a> = {});
   <c- b>static</c-> <a data-link-type="idl-name" href="#clipboarditem"><c- n>ClipboardItem</c-></a> <a href="#dom-clipboarditem-createdelayed"><code><c- g>createDelayed</c-></code></a>(
-      <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback"><c- n>ClipboardItemDelayedCallback</c-></a>> <a href="#dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code></a>,
+      <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-record"><c- b>record</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#callbackdef-clipboarditemdelayedcallback"><c- n>ClipboardItemDelayedCallback</c-></a>> <a href="#dom-clipboarditem-createdelayed-items-options-items"><code><c- g>items</c-></code></a>,
       <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboarditemoptions"><c- n>ClipboardItemOptions</c-></a> <a href="#dom-clipboarditem-createdelayed-items-options-options"><code><c- g>options</c-></code></a> = {});
 
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-presentationstyle"><c- n>PresentationStyle</c-></a> <a data-readonly data-type="PresentationStyle" href="#dom-clipboarditem-presentationstyle"><code><c- g>presentationStyle</c-></code></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-long-long"><c- b>long</c-> <c- b>long</c-></a> <a data-readonly data-type="long long" href="#dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-readonly data-type="boolean" href="#dom-clipboarditem-delayed"><code><c- g>delayed</c-></code></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-long-long"><c- b>long</c-> <c- b>long</c-></a> <a data-readonly data-type="long long" href="#dom-clipboarditem-lastmodified"><code><c- g>lastModified</c-></code></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-readonly data-type="boolean" href="#dom-clipboarditem-delayed"><code><c- g>delayed</c-></code></a>;
 
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a data-readonly data-type="FrozenArray<DOMString>" href="#dom-clipboarditem-types"><code><c- g>types</c-></code></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>> <a data-readonly data-type="FrozenArray<DOMString>" href="#dom-clipboarditem-types"><code><c- g>types</c-></code></a>;
 
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob"><c- n>Blob</c-></a>> <a href="#dom-clipboarditem-gettype"><code><c- g>getType</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboarditem-gettype-type-type"><code><c- g>type</c-></code></a>);
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="idl-name" href="https://w3c.github.io/FileAPI/#dfn-Blob"><c- n>Blob</c-></a>> <a href="#dom-clipboarditem-gettype"><code><c- g>getType</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-clipboarditem-gettype-type-type"><code><c- g>type</c-></code></a>);
 };
 
 <c- b>enum</c-> <a href="#enumdef-presentationstyle"><code><c- g>PresentationStyle</c-></code></a> { <a href="#dom-presentationstyle-unspecified"><code><c- s>"unspecified"</c-></code></a>, <a href="#dom-presentationstyle-inline"><code><c- s>"inline"</c-></code></a>, <a href="#dom-presentationstyle-attachment"><code><c- s>"attachment"</c-></code></a> };
@@ -3111,24 +3091,24 @@ HTML code.</p>
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-clipboardpermissiondescriptor"><code><c- g>ClipboardPermissionDescriptor</c-></code></a> : <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissiondescriptor"><c- n>PermissionDescriptor</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-boolean"><c- b>boolean</c-></a> <a data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code></a> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-default="false" data-type="boolean " href="#dom-clipboardpermissiondescriptor-allowwithoutgesture"><code><c- g>allowWithoutGesture</c-></code></a> = <c- b>false</c->;
 };
 
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> It’s not good to leave things up to the
-implementation. What should happen here?<a href="#issue-77e1973e"> ↵ </a></div>
+implementation. What should happen here? <a class="issue-return" href="#issue-77e1973e" title="Jump to section">↵</a></div>
    <div class="issue"> The "remove specific types from clipboard" feature is
 at risk. It doesn’t seem all that important, and it’s
 unclear if it can be implemented easily across relevant
-platforms.<a href="#issue-0a3703dc"> ↵ </a></div>
-   <div class="issue"> Why here? Why not in the HTML spec?<a href="#issue-7d2ab940"> ↵ </a></div>
+platforms. <a class="issue-return" href="#issue-0a3703dc" title="Jump to section">↵</a></div>
+   <div class="issue"> Why here? Why not in the HTML spec? <a class="issue-return" href="#issue-7d2ab940" title="Jump to section">↵</a></div>
    <div class="issue"> Are these steps necessary? Do we know about native (platform)
 clipboard implementations that support multiple parts with internal
-references?<a href="#issue-096a5049"> ↵ </a></div>
+references? <a class="issue-return" href="#issue-096a5049" title="Jump to section">↵</a></div>
    <div class="issue"> This feature is at risk because it’s unclear whether it is
-required, and because it’s hard to test in a cross-platform way.<a href="#issue-6be1122f"> ↵ </a></div>
+required, and because it’s hard to test in a cross-platform way. <a class="issue-return" href="#issue-6be1122f" title="Jump to section">↵</a></div>
   </div>
   <aside class="dfn-panel" data-for="editable-context">
    <b><a href="#editable-context">#editable-context</a></b><b>Referenced in:</b>
