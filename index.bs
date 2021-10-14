@@ -168,7 +168,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		exposed as a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 	* For the [[#async-clipboard-api]], the [=system clipboard data=] is
-		exposed as a sequence of {{ClipboardItem}} objects that mirrors the contents of
+		exposed as a sequence of [=ClipboardItem=] objects that mirrors the contents of
 		the clipboard.
 
 <h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
@@ -577,10 +577,113 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<div class="algorithm" data-algorithm="navigator-clipboard">
 		<h4 id="h-navigator-clipboard"><dfn>clipboard</dfn></h4>
 		The [=clipboard=] attribute must return the {{Navigator}}'s [=clipboard=] object.
-		It is used to execute read/write operation from/to the [=system clipboard=].
+		It is used to execute read/write operations from/to the [=system clipboard=].
 		</div>
 
 		</div><!-- dfn-for Navigator -->
+
+	<h3 id="clipboard-item-interface">ClipboardItem Interface</h3>
+		<pre class="idl" data-highlight="webidl">
+			typedef (DOMString or Blob) ClipboardItemDataType;
+			typedef Promise&lt;ClipboardItemDataType> ClipboardItemData;
+
+			callback ClipboardItemDelayedCallback = ClipboardItemData ();
+
+			[SecureContext, Exposed=Window] interface ClipboardItem {
+			constructor(record&lt;DOMString, ClipboardItemData> items,
+				optional ClipboardItemOptions options = {});
+			static ClipboardItem createDelayed(
+				record&lt;DOMString, ClipboardItemDelayedCallback> items,
+				optional ClipboardItemOptions options = {});
+
+			readonly attribute PresentationStyle presentationStyle;
+			readonly attribute long long lastModified;
+			readonly attribute boolean delayed;
+
+			readonly attribute FrozenArray&lt;DOMString> types;
+
+			Promise&lt;Blob> getType(DOMString type);
+			};
+
+			enum PresentationStyle { "unspecified", "inline", "attachment" };
+
+			dictionary ClipboardItemOptions {
+			PresentationStyle presentationStyle = "unspecified";
+			};
+		</pre>
+		<p><dfn export for=ClipboardItem id=concept-clipboard-item>ClipboardItem</dfn></p>
+		The [=ClipboardItem=] object has MIME types that are in the {{ClipboardItem/types}} list, and [=Blob=]s corresponding to the {{ClipboardItem/types}}.
+		It has a mapping of the MIME types in {{DOMString}} format and a [=Blob=] corresponding to the MIME types that contains the actual payload.
+		There can be multiple [=ClipboardItem=]s as each [=ClipboardItem=] represents contents of a clipboard, and there can be multiple clipboards supported on a platform such as iOS/iPadOS.
+		A web author needs to create a |data| which is a [=ClipboardItems=] object in order to write content to multiple clipboards using the {{Clipboard/write(data)}} method. {{Clipboard/read()}} returns a [=Promise=] to [=ClipboardItems=] object
+		that represents contents of multiple clipboards. A [=ClipboardItem=] can be read from [=ClipboardItems=], which then can be used to read a specific |type| using {{ClipboardItem/getType(type)}}.
+		<dl class=note>
+			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
+			<dd>
+			Creates a new [=ClipboardItem=] object. <var>items</var> are used to fill its MIME types and [=Promise=]s to [=Blob=]s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
+			as per the example below.
+
+			<pre class="example javascript">
+			const format1 = 'text/plain';
+			const promise_text_blob = Promise.resolve(new Blob(['hello'], {type: format1}));
+			const clipboardItemInput = new ClipboardItem(
+				{[format1]: promise_text_blob},
+				{options: "unspecified"});
+			</pre>
+
+			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
+			<dd><p>Returns a  [=Promise=] to the [=Blob=] corresponding to the <var>type</var>.</p>
+
+			<dt><code><var>clipboardItem</var>.<var>types</var></code>
+			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
+
+		</dl>
+		<p>
+			The <a constructor lt="ClipboardItem()">ClipboardItem</a> step for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> is to set [=this=]'s items to <var>items</var> and options to <var>options</var>
+		</p>
+
+		Issue: Add definition to clarify what {{ClipboardItem/createDelayed()}} method does. From the discussions it looks like a Windows/Mac only feature where the
+		platform supports writing of the data to the system clipboard in a delayed fashion so the system clipboard can request data on-demand.
+		See https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard-operations#delayed-rendering
+
+		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
+		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.
+		
+		Note: {{ClipboardItem/presentationStyle}} helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
+				  This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
+				  copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
+		</p>
+
+		<p>{{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s {{ClipboardItem/presentationStyle}}</p>
+
+		Issue: Currently {{ClipboardItem/lastModified}} is not supported in Chromium and Safari, Should we remove it?
+
+		Issue: Delay rendering support has not been added to Chromium and Safari so {{ClipboardItem/delayed}} is unused.
+
+		<h4 attribute for=ClipboardItem lt=types>types</h4>
+		<p> Returns the MIME types used to create the [=ClipboardItem=] object.</p>
+		<p>{{ClipboardItem/types}} getter steps are to return [=this=]'s {{ClipboardItem/types}}</p>
+
+		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
+
+			1. Let |p| be a new [=Promise=].
+
+			1. If |type| is not listed in the [=mandatory data types=] list, then reject |p| with a "The type was not found" DOMException.
+
+			1. Let |data| be the result of reading the |type| from the [=system clipboard=].
+
+			1. Let |blobData| be the |data| represented as a [=Blob=].
+
+			1. Resolve |p| with |blobData|.
+
+		<h4 typedef>ClipboardItemDataType</h4>
+		<p>
+		 	It is a {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a [=ClipboardItem=] object.
+		</p>
+		<h4 typedef>ClipboardItemData</h4>
+		<p>
+			It is a [=Promise=] to the {{ClipboardItemDataType}}.
+		</p>
 
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
@@ -593,111 +696,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		  Promise&lt;undefined> write(ClipboardItems data);
 		  Promise&lt;undefined> writeText(DOMString data);
 		};
-
-		typedef (DOMString or Blob) ClipboardItemDataType;
-		typedef Promise&lt;ClipboardItemDataType> ClipboardItemData;
-
-		callback ClipboardItemDelayedCallback = ClipboardItemData ();
-
-		[Exposed=Window] interface ClipboardItem {
-		  constructor(record&lt;DOMString, ClipboardItemData> items,
-		    optional ClipboardItemOptions options = {});
-		  static ClipboardItem createDelayed(
-		      record&lt;DOMString, ClipboardItemDelayedCallback> items,
-		      optional ClipboardItemOptions options = {});
-
-		  readonly attribute PresentationStyle presentationStyle;
-		  readonly attribute long long lastModified;
-		  readonly attribute boolean delayed;
-
-		  readonly attribute FrozenArray&lt;DOMString> types;
-
-		  Promise&lt;Blob> getType(DOMString type);
-		};
-
-		enum PresentationStyle { "unspecified", "inline", "attachment" };
-
-		dictionary ClipboardItemOptions {
-		  PresentationStyle presentationStyle = "unspecified";
-		};
 		</pre>
 
-		<div class="algorithm" data-algorithm="clipboard-item">
-		<h4 id="h-clipboard-item"><dfn>ClipboardItem</dfn></h4>
-		The [=ClipboardItem=] object represents the content of the MIME types that are in the [=mandatory data types=] list, and are currently on the [=system clipboard=].
-		It has a mapping of the MIME types in {{DOMString}} format and a [=Blob=] corresponding to the MIME types that contains the actual payload. A web author needs to
-		create a [=ClipboardItem=] object in order to write content to the clipboard using the {{Clipboard/write()}} method. {{Clipboard/read()}} returns a [=ClipboardItem=] object
-		that can be used to read a specific |type| using {{ClipboardItem/getType()}}.
-		</div>
-		<dl class=note>
-			<dt><code><var>clipboardItem</var> = new <a constructor lt="ClipboardItem()">ClipboardItem</a>([<var>items</var>, <var>options</var>])</code>
-			<dd>
-			Creates a new {{ClipboardItem}} object. <var>items</var> are used to fill its MIME types and [=Promise=]s to [=Blob=]s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
-			as per the example below.
-
-			<div class=example id=example-clipboard-item-class>
-			<pre><code class=lang-javascript>
-			const format1 = 'text/plain';
-			const promise_text_blob = Promise.resolve(new Blob(['hello'], {type: format1}));
-			const clipboardItemInput = new ClipboardItem(
-				{[format1]: promise_text_blob},
-				{options: "unspecified"});
-			</code></pre>
-			</div>
-
-			<dt><code><var>clipboardItem</var> . <a method for=ClipboardItem lt=getType()>getType</a>(<var>type</var>)</code>
-			<dd><p>Returns a  [=Promise=] to the [=Blob=] corresponding to the <var>type</var>.</p>
-
-			<dt><code><var>types</var> of <var>clipboardItem</var></code>
-			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
-
-		</dl>
-		<p>
-			The {{ClipboardItem/constructor()}} step for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> is to set [=this=]'s items to <var>items</var> and options to <var>options</var>
-		</p>
-
-		<dfn>ClipboardItemDataType</dfn>
-		<p>
-			A {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a {{ClipboardItem}} object.
-		</p>
-
-		<dfn>ClipboardItemData</dfn>
-		<p>
-			A [=Promise=] to the [=ClipboardItemDataType=].
-		</p>
-
-		{{ClipboardItem}}
-		<p> A {{ClipboardItem}} object contains the {{ClipboardItem/types}} listed in the [=mandatory data types=] list that are present on the [=system clipboard=].
-		<p> The {{ClipboardItem/constructor()}} step for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code>
-		is to set [=this=]'s items to <var>items</var> and options to <var>options</var>
-		</p>
-
-		Issue: Add definition to clarify what {{ClipboardItem/createDelayed()}} method does. From the discussions it looks like a Windows/Mac only feature where the
-		platform supports writing of the data to the system clipboard in a delayed fashion so the system clipboard can request data on-demand.
-		See https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard-operations#delayed-rendering
-
-		<dfn>presentationStyle</dfn>
-		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.</p>
-
-		<p>{{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s {{ClipboardItem/presentationStyle}}</p>
-
-		Issue: Currently {{ClipboardItem/lastModified}} is not supported in Chromium and Safari, Should we remove it?
-
-		Issue: Delay rendering support has not been added to Chromium and Safari so {{ClipboardItem/delayed}} is unused.
-
-		<dfn>types</dfn>
-		<p> Returns {{ClipboardItem/types}} listed in the [=mandatory data types=] list that are present on the [=system clipboard=].
-
-		<dfn>getType({{DOMString}} type)</dfn>
-		<p> The {{ClipboardItem/getType()}} must run the below steps:</p>
-
-			1. Let |p| be a new [=Promise=].
-
-			1. If |type| is not listed in the [=mandatory data types=] list, then reject |p| with a "The type was not found" DOMException.
-
-			1. Let |data| be the result of reading the |type| from the [=system clipboard=].
-
-			1. Resolve |p| with |data|.
+		<h4 typedef>ClipboardItems</h4>
+		<p>A sequence of [=ClipboardItem=] objects</p>
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
@@ -715,11 +717,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as
-					a sequence of {{ClipboardItem}}s. For the MIME types defined in the [=mandatory data types=] list,
-					|data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
-					Note: Currently in Chromium, only a single {{ClipboardItem}} object is supported for reading and writing via [=clipboard=] object.
+					Note: Currently in Chromium, only one [=ClipboardItem=] object is supported for reading and writing via [=clipboard=] object.
 					
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
@@ -786,24 +786,26 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |itemList| and |cleanItemList| be an empty sequence&lt;{{Blob}}>.
 
-				1. For each |item| in |data|:
-					1. If [=Promise=] to {{Blob}} in |item| is rejected, then throw "Promises to Blobs were rejected." DOMException.
+				1. For each |itemData| in |data|:
 
-					1. Add the {{Blob}} in |item| to |itemList| after the promise has been resolved.
+					1. For each |item| in |itemData|:
+						1. If [=Promise=] to {{Blob}} in |item| is rejected, then throw "Promises to Blobs were rejected." DOMException.
 
-				1. For each {{Blob}} |itemBlob| in |itemList|:
+						1. Add the {{Blob}} in |item| to |itemList| after the promise has been resolved.
 
-					1. If {{Blob/type}} is not in the [=mandatory data types=] list, then reject |p| with a "Type {{Blob/type}} not supported on write." DOMException.
+					1. For each {{Blob}} |itemBlob| in |itemList|:
 
-					1. Let |cleanItem| be a sanitized copy of |itemBlob|.
+						1. If {{Blob/type}} is not in the [=mandatory data types=] list, then reject |p| with a "Type {{Blob/type}} not supported on write." DOMException.
 
-						Issue: Add definition of sanitized copy.
+						1. Let |cleanItem| be a sanitized copy of |itemBlob|.
 
-					1. If unable to create a sanitized copy, then reject |p|.
+							Issue: Add definition of sanitized copy.
 
-					1. Add |cleanItem| to |cleanItemList|.
+						1. If unable to create a sanitized copy, then reject |p|.
 
-				1. Replace the [=system clipboard data=] with |cleanItemList|.
+						1. Add |cleanItem| to |cleanItemList|.
+
+					1. Replace the [=system clipboard data=] with |cleanItemList|.
 
 				1. Resolve |p|.
 
@@ -834,13 +836,13 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
 
-				1. Let |newItemList| be an empty sequence&lt;{{ClipboardItem}}>.
+				1. Let |newItemList| be empty [=ClipboardItems=].
 
 				1. Let |textBlob| be a new {{Blob}} created with:
 					[=type=] attribute set to <em>text/plain;charset=utf-8</em>, and
 					[=blobParts=] set to a sequence containing the <em>string</em> |data|.
 
-				1. Let |newItem| be a new {{ClipboardItem}} created with a single
+				1. Let |newItem| be a new [=ClipboardItem=] created with a single
 					representation:
 					[=type=] attribute set to <em>text/plain8</em>, and
 					[=data=] set to |textBlob|.
