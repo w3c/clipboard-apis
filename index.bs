@@ -578,16 +578,16 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		  Promise&lt;undefined> writeText(DOMString data);
 		};
 
-		typedef (DOMString or Blob) ClipboardItemDataType;
-		typedef Promise&lt;ClipboardItemDataType> ClipboardItemData;
+		typedef (DOMString or Blob) ClipboardItemValue;
+		typedef Promise&lt;ClipboardItemValue> ClipboardEntryValuePromise;
 
-		callback ClipboardItemDelayedCallback = ClipboardItemData ();
+		callback ClipboardItemDelayedCallback = ClipboardEntryValuePromise ();
 
 		[Exposed=Window] interface ClipboardItem {
-		  constructor(record&lt;DOMString, ClipboardItemData> items,
+		  constructor(record&lt;DOMString, ClipboardEntryValue> entries,
 		    optional ClipboardItemOptions options = {});
 		  static ClipboardItem createDelayed(
-		      record&lt;DOMString, ClipboardItemDelayedCallback> items,
+		      record&lt;DOMString, ClipboardEntryDelayedCallback> entries,
 		      optional ClipboardItemOptions options = {});
 
 		  readonly attribute PresentationStyle presentationStyle;
@@ -812,7 +812,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		1. Else, if the event was canceled, then
 
 			1. Call the [=write content to the clipboard=] algorithm,
-				passing on the {{DataTransferItemList}} list <em>items</em>,
+				passing on the {{DataTransferItemList}} list <em>entries</em>,
 				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 				list.
 
@@ -1254,14 +1254,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	<h3 id="to-write-content-to-clipboard"><dfn>write content to the clipboard</dfn></h3>
 
 		: Input
-		:: |items|, a {{DataTransferItemList}} list of items to write
+		:: |entries|, a {{DataTransferItemList}} list of entries to write
 		:: |clear-was-called|, a boolean
 		:: |types-to-clear|, a list
 
 		: Output
 		:: None
 
-		1. If the |items| list is not empty, then
+		1. If the |entries| list is not empty, then
 
 			1. Clear the clipboard
 
@@ -1298,10 +1298,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 						<a>setData()</a>'s type argument, sticking to the
 						[=mandatory data types=] is strongly recommended.
 
-		1. Else, the |items| list is empty. Follow these steps to determine
+		1. Else, the |entries| list is empty. Follow these steps to determine
 			whether to clear the clipboard:
 
-			1. If the list of items is empty and the |clear-was-called|
+			1. If the list of entries is empty and the |clear-was-called|
 				flag is <i>true</i>, then
 
 				1. If the |types-to-clear| list is empty, then
@@ -1460,7 +1460,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					argument is given, add the argument to the
 					|types-to-clear| list.
 
-			1. If a script calls <a>setData()</a> or modifies items and the
+			1. If a script calls <a>setData()</a> or modifies entries and the
 				|clear-was-called| flag is true, then
 
 				1. If the |types-to-clear| list is empty, then
@@ -1474,7 +1474,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					1. Remove it from the list. If the list is now empty,
 						set the |clear-was-called| flag to false.
 
-			1. If a script calls <a>getData()</a> or accesses items in the
+			1. If a script calls <a>getData()</a> or accesses entries in the
 				{{DataTransferItemList}} and |clipboard-entry| is
 				set, then
 
