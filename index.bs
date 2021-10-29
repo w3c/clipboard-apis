@@ -614,11 +614,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
+			1. If the [=current settings object's=] responsible document is not
+				[=allowed to use=] the "clipboard-write" feature, then reject |p|
+				with a "NotAllowedError" DOMException.
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard read permission=] [=in parallel=]
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException.
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as
 					a sequence of {{ClipboardItem}}s.
@@ -646,11 +650,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
+			1. If the [=current settings object's=] responsible document is not
+				[=allowed to use=] the "clipboard-write" feature, then reject |p|
+				with a "NotAllowedError" DOMException.
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard read permission=] [=in parallel=]
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException.
 
 				1. Let |data| be a copy of the [=system clipboard data=].
 
@@ -680,11 +688,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
+			1. If the [=current settings object's=] responsible document is not
+				[=allowed to use=] the "clipboard-write" feature, then reject |p|
+				with a "NotAllowedError" DOMException.
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard write permission=] [=in parallel=]
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException.
 
 				1. Let |cleanItemList| be an empty sequence&lt;{{Blob}}>.
 
@@ -721,11 +733,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |p| be a new [=Promise=].
 
+			1. If the [=current settings object's=] responsible document is not
+				[=allowed to use=] the "clipboard-write" feature, then reject |p|
+				with a "NotAllowedError" DOMException.
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard write permission=] [=in parallel=]
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException.
 
 				1. Let |newItemList| be an empty sequence&lt;{{ClipboardItem}}>.
 
@@ -1024,6 +1040,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		</div><!-- algorithm -->
 
+<h2 id="feature-policy-integration">Feature Policy Integration</h2>
+
+This specification defines two [=policy-controlled features=] identified by the
+strings <code>"clipboard-read"</code> and <code>"clipboard-write"</code>, which
+correspond to the permissions of the same name. <code>"clipboard-read"</code>
+restricts {{Clipboard/read()}} and {{Clipboard/readText()}}, and
+<code>"clipboard-write"</code>  restricts {{Clipboard/write()}} and
+{{Clipboard/writeText()}}. Both have a [=default allowlist=] of
+<code>["self"]</code>.
 
 <h2 id="security">Security Considerations</h2>
 
