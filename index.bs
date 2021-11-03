@@ -799,7 +799,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 						1. If |p1| is [=reject=]d, then throw "Promises to Blobs were rejected." DOMException in |realm|.
 
-						1. Add the {{Blob}} in |item| to |itemList| after |p1| has been resolved.
+						1. If |item| is a {{DOMString}}, then convert it into {{Blob}} and add it to |itemList|.
+
+						1. If |item| is a {{Blob}}, then add the {{Blob}} in |item| to |itemList| after |p1| has been resolved.
 
 					1. For each {{Blob}} |blob| in |itemList|:
 
