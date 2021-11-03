@@ -647,13 +647,17 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
 
-			1. Let |p| be a new [=Promise=].
+			1. Let |realm| be [=this=]'s [=relevant realm=].
 
-			1. If |type| is not listed in the [=mandatory data types=] list, then reject |p| with a "The type was not found" DOMException.
+			1. If |type| is not listed in the [=mandatory data types=] list, then [=a promise rejected with=] "The type was not found" DOMException in |realm|.
+
+			1. Let |p| be [=a new promise=] in |realm|.
 
 			1. Let |blobData| be a [=Blob=] corresponding to the |type|.
 
 			1. Resolve |p| with |blobData|.
+
+			1. Return |p|.
 
 		<h4 typedef>ClipboardItemDataType</h4>
 		<p>
@@ -690,7 +694,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<h4 method for="Clipboard">read()</h4>
 		The {{Clipboard/read()}} method must run these steps:
 
-			1. Let |p| be a new [=Promise=].
+			1. Let |realm| be [=this=]'s [=relevant realm=].
+
+			1. Let |p| be [=a new promise=] in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -700,7 +706,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					a user gesture event and the user must select the paste option from the native context menu that pops up
 					when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
@@ -727,7 +733,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<h4 method for="Clipboard">readText()</h4>
 		The {{Clipboard/readText()}} method must run these steps:
 
-			1. Let |p| be a new [=Promise=].
+			1. Let |realm| be [=this=]'s [=relevant realm=].
+
+			1. Let |p| be [=a new promise=] in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -737,7 +745,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
 				1. Let |data| be a copy of the [=system clipboard data=].
 
@@ -765,7 +773,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<h4 method for="Clipboard">write(|data|)</h4>
 		The {{Clipboard/write(data)}} method must run these steps:
 
-			1. Let |p| be a new [=Promise=].
+			1. Let |realm| be [=this=]'s [=relevant realm=].
+
+			1. Let |p| be [=a new promise=] in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -775,7 +785,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
 				1. Let |itemList| and |cleanItemList| be an empty sequence&lt;{{Blob}}&gt;.
 
@@ -784,21 +794,24 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				1. For each |clipboardItem| in |data|:
 
 					1. For each |item| in |clipboardItem|:
-						1. If [=Promise=] to {{Blob}} in |item| is rejected, then throw "Promises to Blobs were rejected." DOMException.
 
-						1. Add the {{Blob}} in |item| to |itemList| after the promise has been resolved.
+						1. Let |p1| be [=a new promise=] to {{Blob}} in |realm|.
+
+						1. If |p1| is [=reject=]d, then throw "Promises to Blobs were rejected." DOMException in |realm|.
+
+						1. Add the {{Blob}} in |item| to |itemList| after |p1| has been resolved.
 
 					1. For each {{Blob}} |blob| in |itemList|:
 
 						1. Let |type| be the |blob|'s {{Blob/type}}.
 
-						1. If |type| is not in the [=mandatory data types=] list, then reject |p| with a "Type |type| not supported on write." DOMException.
+						1. If |type| is not in the [=mandatory data types=] list, then [=a promise rejected with=] "Type |type| not supported on write." DOMException in |realm|.
 
 						1. Let |cleanItem| be a sanitized copy of |blob|.
 
 							Issue: Add definition of sanitized copy.
 
-						1. If unable to create a sanitized copy, then reject |p|.
+						1. If unable to create a sanitized copy, then [=reject=] |p|.
 
 						1. Add |cleanItem| to |cleanItemList|.
 					
@@ -830,7 +843,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<h4 method for="Clipboard">writeText(|data|)</h4>
 		The {{Clipboard/writeText(data)}} method must run these steps:
 
-			1. Let |p| be a new [=Promise=].
+			1. Let |realm| be [=this=]'s [=relevant realm=].
+
+			1. Let |p| be [=a new promise=] in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -840,7 +855,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then reject |p| with a "NotAllowedError" DOMException
+				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
 				1. Let |newItemList| be empty [=ClipboardItems=].
 
