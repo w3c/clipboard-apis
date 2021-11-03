@@ -603,6 +603,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			dictionary ClipboardItemOptions {
 			PresentationStyle presentationStyle = "unspecified";
+			sequence&lt;DOMString&gt; unsanitized;
 			};
 		</pre>
 		<p><dfn export for=ClipboardItem id=concept-clipboard-item>ClipboardItem</dfn></p>
@@ -646,14 +647,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			The <a constructor lt="ClipboardItem()">ClipboardItem</a> step for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> is to set [=this=]'s items to <var>items</var> and options to <var>options</var>
 		</p>
 
-		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
-		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.
-		
-		Note: {{ClipboardItem/presentationStyle}} helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
-				  This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
-				  copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
-		</p>
-
 		<p>{{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s {{ClipboardItem/presentationStyle}}</p>
 
 		<h4 attribute for=ClipboardItem lt=types>types</h4>
@@ -683,6 +676,19 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			A [=Promise=] to a {{ClipboardItemDataType}}.
 		</p>
 
+		<h4 attribute for=ClipboardItemOptions lt=presentationStyle>presentationStyle</h4>
+		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.
+		
+		Note: {{ClipboardItemOptions/presentationStyle}} helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
+				  This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
+				  copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
+		</p>
+
+		<h4 attribute for=ClipboardItemOptions lt=unsanitized>unsanitized</h4>
+		<p>
+			 [=sequence=] of {{DOMString}} that contains the MIME types that don't go through the sanitization process during clipboard read/write operation.
+		</p>
+
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
 		<pre class="idl" data-highlight="webidl">
@@ -702,7 +708,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		A [=ClipboardItem=] can be read from [=ClipboardItems=], which then can be used to read a specific |type| using {{ClipboardItem/getType(type)}}.
 
 		<h4 typedef>ClipboardItems</h4>
-		<p>A sequence of [=ClipboardItem=] objects</p>
+		<p>A [=sequence=] of [=ClipboardItem=] objects</p>
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
@@ -723,12 +729,18 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=].
+				
+				1. For the MIME types defined in the [=mandatory data types=] list, |data| contains sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
-					Note: Currently in Chromium, only one [=ClipboardItem=] object is supported for reading and writing via the [=clipboard=] object.
+				Note: Currently in Chromium, only one [=ClipboardItem=] object is supported for reading and writing via the [=clipboard=] object.
 					
-					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
+				Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
+				
+				1. For the MIME types defined in the {{ClipboardItemOptions/unsanitized}}, |data| contains copy of the unsanitized payload of the MIME types.
+
+				Note: See [=read unsanitized format=] for more details.
 
 				1. Resolve |p| with |data|.
 
@@ -740,6 +752,20 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				const items = await navigator.clipboard.read();
 				const textBlob = await items[0].getType("text/plain");
 				const text = await (new Response(textBlob)).text();
+			</pre>
+
+			<pre class="example javascript">
+				// Pickling read example. ClipboardItems returned by clipboard.read() may 
+				// contain pickled formats.
+				const clipboardItems = await navigator.clipboard.read(
+					{unsanitized: ['text/custom']} /* This new list specifies the pickled format
+											'text/custom' for all read ClipboardItems. */
+				);
+				const clipboardItem = clipboardItems[0];
+				const textBlob = await clipboardItem.getType('text/plain');
+				// This format reads as a pickled format, only if it is included in the unsanitized
+				// format list.
+				const customTextBlob = await clipboardItem.getType('text/custom');
 			</pre>
 
 		</div><!-- read() -->
@@ -802,7 +828,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
 
-				1. Let |itemList| and |cleanItemList| be an empty sequence&lt;{{Blob}}&gt;.
+				1. Let |itemList|, |cleanItemList| and |unsanitizedItemList| be empty sequence&lt;{{Blob}}&gt;.
+
+				1. Let |u| be the [=sequence=] of string in the {{ClipboardItemOptions/unsanitized}} list.
 
 				1. Let |clipboardItemList| be an empty [=ClipboardItems=].
 
@@ -820,19 +848,31 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 						1. Let |type| be the |blob|'s {{Blob/type}}.
 
-						1. If |type| is not in the [=mandatory data types=] list, then [=a promise rejected with=] "Type |type| not supported on write." DOMException in |realm|.
+						1. If |type| is not in the [=mandatory data types=] list:
+							
+							1. If |type| is not in |u| then throw [=a promise rejected with=] "Type |type| not supported on write." DOMException in |realm|.
 
-						1. Let |cleanItem| be a sanitized copy of |blob|.
+						1. Let |unsanitizedItem| be an unsanitized copy of |blob|.
+						
+						1. If |type| is in the [=mandatory data types=] list: 
+						
+							1. Let |cleanItem| be a sanitized copy of |blob|.
 
 							Issue: Add definition of sanitized copy.
 
-						1. If unable to create a sanitized copy, then [=reject=] |p|.
+							1. Add |cleanItem| to |cleanItemList|.
 
-						1. Add |cleanItem| to |cleanItemList|.
+							1. If unable to create a sanitized copy, then [=reject=] |p|.
+
+						1. Add |unsanitizedItem| to |unsanitizedItemList|.
 					
+					1. Add |unsanitizedItemList| to |clipboardItemList|.
+
 					1. Add |cleanItemList| to |clipboardItemList|.
 
 				1. Replace the [=system clipboard data=] with |clipboardItemList|.
+
+				Note: For writing |type| to the [=system clipboard=] that are in the {{ClipboardItemOptions/unsanitized}} list, please see [=write unsanitized format=].
 
 				Note: Writing multiple [=ClipboardItem=]s to the clipboard is only supported on MacOS.
 				For other platforms, only the first [=ClipboardItem=] should be written to the clipboard.
@@ -850,6 +890,32 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				}, function() {
 					console.error("Unable to write to clipboard. :-(");
 				});
+			</pre>
+
+			<pre class="example javascript">
+				// Pickling write example.
+				// This format 'text/plain' is recognized by the Clipboard API, so will be
+				// written as usual.
+				const text = new Blob(['text'], {type: 'text/plain'});
+				// This format 'text/custom' is not sanitized by the Clipboard API. It will be
+				// pickled if the format is specified in the {unsanitized: []} formats list.
+				const customText = new Blob(
+				['<custom_markup>pickled_text</custom_markup>'], {type: 'text/custom'});
+
+				// Clipboard format ordering: Pickled formats will be written before sanitized
+				// formats by the browser, since they're more "custom" and likely more targeted
+				// towards this use case.
+				const clipboardItem = new ClipboardItem({
+				  'text/plain': text,       /* Sanitized format. */
+				  'text/custom': customText /* Pickled format. This new format will be accepted
+											and written without rejection, as long as the new
+											unsanitized list contains this format. */
+				}, 
+				{unsanitized: ['text/custom']} /* This new list specifies the pickled format
+										'text/custom'. */
+				);
+				navigator.clipboard.write([clipboard_item]);
+
 			</pre>
 
 		</div><!-- write() -->
@@ -1713,3 +1779,115 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 
 	</div><!-- algorithm -->
+
+	<div class="algorithm" data-algorithm="read-unsanitized-format">
+	<i>This section is non-normative.</i>
+	<h3 id="to-read-unsanitized-format"><dfn>read unsanitized format</dfn></h3>
+
+		: Input
+		:: |mimeType|, a string
+
+		: Output
+		:: |item|, a {{Blob}}
+
+		1. Let |webCustomFormatMap| be the [=os specific custom map name=].
+
+		1. Read |webCustomFormatMap| from the [=system clipboard=].
+
+		1. Let |webCustomFormatMapString| be the JSON string deserialized from |webCustomFormatMap|.
+
+			Note: Need a JSON reader to deserialize the content from the |webCustomFormatMap|.
+
+		1. Let |webCustomFormat| be the value corresponding to the |mimeType| key in |webCustomFormatMapString|.
+
+		1. Let |item| be a {{Blob}}.
+
+		1. Read |webCustomFormat| from the [=system clipboard=] and store the resulting data into |item|.
+
+		1. Return |item|.
+
+	</div><!-- algorithm -->
+
+	<h3 id="to-write-unsanitized-format"><dfn>write unsanitized format</dfn></h3>
+
+		: Input
+		:: |items|, {{Blob}}s
+		:: |mimeType|, a string
+
+		1. Let |idx| be a number initialized to 0.
+
+		1. Let |webCustomFormatMap| be the [=os specific custom map name=].
+
+		1. For each |item| in |items|:
+
+			1. Let |webCustomFormat| be the [=os specific custom name=].
+
+			1. Let |webCustomFormatIdx| be the result of appending |idx| to |webCustomFormat|.
+
+			1. Insert |mimeType| as key and |webCustomFormatIdx| as value into the |webCustomFormatMap|.
+
+				Note: Need a JSON writer to serialize the content into the |webCustomFormatMap|.
+
+			1. Insert the |item| into the [=system clipboard=] using |webCustomFormatIdx| as the format.
+
+			1. Increment |idx|.
+
+		1. Insert the |webCustomFormatMap| into the [=system clipboard=].
+
+
+	</div><!-- algorithm -->
+
+	<div class="algorithm" data-algorithm="os-specific-custom-map-name">
+	<i>This section is non-normative.</i>
+	<h3 id="to-os-specific-custom-map-name"><dfn>os specific custom map name</dfn></h3>
+
+		: Output
+		:: |webCustomFormatMap|, a string
+
+		On Windows, follow the convention described below:
+
+		1. Assign "Web Custom Format Map" to |webCustomFormatMap|.
+
+		1. Return |webCustomFormatMap|.
+
+		On MacOS, follow the convention described below:
+
+		1. Assign "com.web.custom.format.map" to |webCustomFormatMap|.
+
+		1. Return |webCustomFormatMap|.
+
+		On Linux, ChromeOS, and Android, follow the convention described below:
+
+		1. Assign "application/web;type=\"custom/formatmap\"" to |webCustomFormatMap|.
+
+		1. Return |webCustomFormatMap|.
+
+	</div><!-- algorithm -->
+
+	<div class="algorithm" data-algorithm="os-specific-custom-name">
+	<i>This section is non-normative.</i>
+	<h3 id="to-os-specific-custom-name"><dfn>os specific custom name</dfn></h3>
+
+		: Output
+		:: |webCustomFormat|, a string
+
+		On Windows, follow the convention described below:
+
+		1. Assign "Web Custom Format" to |webCustomFormat|.
+
+		1. Return |webCustomFormat|.
+
+		On MacOS, follow the convention described below:
+
+		1. Assign "com.web.custom.format" to |webCustomFormat|.
+
+		1. Return |webCustomFormat|.
+
+		On Linux, ChromeOS, and Android, follow the convention described below:
+
+		1. Assign "application/web;type="custom/format" to |webCustomFormat|.
+
+		1. Return |webCustomFormat|.
+
+	</div><!-- algorithm -->
+
