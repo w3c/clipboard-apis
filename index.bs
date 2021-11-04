@@ -900,7 +900,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				// This format 'text/custom' is not sanitized by the Clipboard API. It will be
 				// pickled if the format is specified in the {unsanitized: []} formats list.
 				const customText = new Blob(
-				['<custom_markup>pickled_text</custom_markup>'], {type: 'text/custom'});
+				['&lt;custom_markup&gt; pickled_text&lt;/custom_markup&gt;'], {type: 'text/custom'});
 
 				// Clipboard format ordering: Pickled formats will be written before sanitized
 				// formats by the browser, since they're more "custom" and likely more targeted
