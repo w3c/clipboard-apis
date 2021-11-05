@@ -168,7 +168,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		exposed as a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 	* For the [[#async-clipboard-api]], the [=system clipboard data=] is
-		exposed as a sequence of [=ClipboardItem=] objects that mirrors the contents of
+		exposed as a sequence of [=clipboard item=] objects that mirrors the contents of
 		the clipboard.
 
 <h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
@@ -574,51 +574,60 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			callback ClipboardItemDelayedCallback = ClipboardItemData ();
 
-			[SecureContext, Exposed=Window] interface ClipboardItem {
-			constructor(record&lt;DOMString, ClipboardItemData> items,
-				optional ClipboardItemOptions options = {});
+			[SecureContext, Exposed=Window]
+			interface ClipboardItem {
+				constructor(record&lt;DOMString, ClipboardItemData> items,
+							optional ClipboardItemOptions options = {});
 
-			readonly attribute PresentationStyle presentationStyle;
-			readonly attribute FrozenArray&lt;DOMString> types;
+				readonly attribute PresentationStyle presentationStyle;
+				readonly attribute FrozenArray&lt;DOMString> types;
 
-			Promise&lt;Blob&gt; getType(DOMString type);
+				Promise&lt;Blob&gt; getType(DOMString type);
 			};
 
 			enum PresentationStyle { "unspecified", "inline", "attachment" };
 
 			dictionary ClipboardItemOptions {
-			PresentationStyle presentationStyle = "unspecified";
+				PresentationStyle presentationStyle = "unspecified";
 			};
 		</pre>
-		<p><dfn export for=ClipboardItem id=concept-clipboard-item>ClipboardItem</dfn></p>
-		A [=ClipboardItem=] is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
-		For example, if a user copies a range of cells from a spreadsheet, it will result in one [=ClipboardItem=]. If a user copies a set of files from their desktop, that list of files will be a different single [=ClipboardItem=].
-		Some platforms may support having more than one [=ClipboardItem=] at a time on the [=Clipboard=], while other platforms replace the previous [=ClipboardItem=] with the new one. 
+		<p><dfn>Clipboard Item</dfn></p>
+		A [=clipboard item=] is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
+		For example, if a user copies a range of cells from a spreadsheet, it will result in one [=clipboard item=]. If a user copies a set of files from their desktop, that list of files will be a different single [=clipboard item=].
+		Some platforms may support having more than one [=clipboard item=] at a time on the [=Clipboard=], while other platforms replace the previous [=clipboard item=] with the new one. 
 
-		Each [=ClipboardItem=] can be represented as multiple mime-types. In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
-		Each of these mime-types describe the same [=ClipboardItem=] at different levels of fidelity and make the [=ClipboardItem=] more consumable by target applications during paste.
+		Each [=clipboard item=] can be represented as multiple mime-types. In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
+		Each of these mime-types describe the same [=clipboard item=] at different levels of fidelity and make the [=clipboard item=] more consumable by target applications during paste.
 		Making the range of cells available as an image will allow the user to paste the cells into Photoshop, while the text/plain format can be used by applications like Windows Notepad.
 
-		Apps that support pasting only a single [=ClipboardItem=] should use the first [=ClipboardItem=].
-		Apps that support pasting more than one [=ClipboardItem=] could, for example, provide a user interface that previews the contents of each [=ClipboardItem=] and allow the user to choose which one to paste.
-		Further, apps are expected to enumerate the mime-types of the [=ClipboardItem=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
-		Alternatively, an app can present the user with options on how to paste a [=ClipboardItem=], e.g. “paste as image” or “paste formatted text”, etc.
+		Apps that support pasting only a single [=clipboard item=] should use the first [=clipboard item=].
+		Apps that support pasting more than one [=clipboard item=] could, for example, provide a user interface that previews the contents of each [=clipboard item=] and allow the user to choose which one to paste.
+		Further, apps are expected to enumerate the mime-types of the [=clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
+		Alternatively, an app can present the user with options on how to paste a [=clipboard item=], e.g. “paste as image” or “paste formatted text”, etc.
 
-		A [=ClipboardItem=] contains multiple representations. Each representation consists of a MIME type and a corresponding {{DOMString}} or [=Blob=].
+		A [=clipboard item=] contains multiple representations. Each representation consists of a MIME type and a corresponding {{DOMString}} or [=Blob=].
+
+		<p>A [=clipboard item=] has an associated <dfn>presentation style</dfn> which is <code>"unspecified"</code> or <code>"inline"</code> or <code>"attachment"</code>.
+		[=presentation style=] helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
+		This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
+		copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
+		</p>
+
+		<p>A [=clipboard item=] has an associated <dfn>types</dfn> which contains the MIME types.</p>
 
 		<dl class=note>
 			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
 			<dd>
-			Creates a new [=ClipboardItem=] object. <var>items</var> are used to fill its MIME types and [=Promise=]s to [=Blob=]s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
+			Creates a new {{ClipboardItem}} object. <var>items</var> are used to fill its MIME types and [=Promise=]s to [=Blob=]s or {{DOMString}}s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
 			as per the example below.
 
-			<pre class="example javascript">
-			const format1 = 'text/plain';
-			const promise_text_blob = Promise.resolve(new Blob(['hello'], {type: format1}));
-			const clipboardItemInput = new ClipboardItem(
-				{[format1]: promise_text_blob},
-				{options: "unspecified"});
-			</pre>
+				<pre class="example javascript" highlight=js>
+					const format1 = 'text/plain';
+					const promise_text_blob = Promise.resolve(new Blob(['hello'], {type: format1}));
+					const clipboardItemInput = new ClipboardItem(
+						{[format1]: promise_text_blob},
+						{options: "unspecified"});
+				</pre>
 
 			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
 			<dd><p>Returns a [=Promise=] to the [=Blob=] corresponding to <var>type</var>.</p>
@@ -628,22 +637,27 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		</dl>
 		<p>
-			The <a constructor lt="ClipboardItem()">ClipboardItem</a> step for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> is to set [=this=]'s items to <var>items</var> and options to <var>options</var>
+			A {{ClipboardItem}} object has an associated [=clipboard item=].
+		</p>
+		<p>
+			A {{ClipboardItem}} object's {{ClipboardItem/presentationStyle}} is its [=clipboard item=]'s [=presentation style=].
+		</p>
+		<p>
+			A {{ClipboardItem}} object's {{ClipboardItem/types}} is its [=clipboard item=]'s [=types=].
+		</p>
+		<p>
+			The <a constructor lt="ClipboardItem()">constructor</a> steps for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> are to set [=this=]'s items to <var>items</var> and options to <var>options</var>.
 		</p>
 
 		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
-		<p>It is an <a href=https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute>enumerated attribute</a> whose keywords are the <code>string</code>, <code>unspecified</code>, <code>inline</code> and <code>attachment</code>.
-		
-		Note: {{ClipboardItem/presentationStyle}} helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
-				  This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
-				  copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
+		<p>
+			Each {{ClipboardItem}} has a {{ClipboardItem/presentationStyle}}, which is a {{PresentationStyle}}.
+			The {{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s [=clipboard item=]'s [=presentation style=].
 		</p>
 
-		<p>{{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s {{ClipboardItem/presentationStyle}}</p>
-
 		<h4 attribute for=ClipboardItem lt=types>types</h4>
-		<p> Returns the MIME types used to create the [=ClipboardItem=] object.</p>
-		<p>{{ClipboardItem/types}} getter steps are to return [=this=]'s {{ClipboardItem/types}}</p>
+		<p> Each {{ClipboardItem}} has a {{ClipboardItem/types}}, which contains the MIME types.
+		    {{ClipboardItem/types}} getter steps are to return [=this=]'s [=clipboard item=]'s [=types=].</p>
 
 		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
 
@@ -661,7 +675,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<h4 typedef>ClipboardItemDataType</h4>
 		<p>
-		 	It is a {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a [=ClipboardItem=] object.
+		 	It is a {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a [=clipboard item=] object.
 		</p>
 		<h4 typedef>ClipboardItemData</h4>
 		<p>
@@ -673,21 +687,22 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<pre class="idl" data-highlight="webidl">
 		typedef sequence&lt;ClipboardItem&gt; ClipboardItems;
 
-		[SecureContext, Exposed=Window] interface Clipboard : EventTarget {
-		  Promise&lt;ClipboardItems&gt; read();
-		  Promise&lt;DOMString&gt; readText();
-		  Promise&lt;undefined&gt; write(ClipboardItems data);
-		  Promise&lt;undefined&gt; writeText(DOMString data);
+		[SecureContext, Exposed=Window]
+		interface Clipboard : EventTarget {
+			Promise&lt;ClipboardItems&gt; read();
+			Promise&lt;DOMString&gt; readText();
+			Promise&lt;undefined&gt; write(ClipboardItems data);
+			Promise&lt;undefined&gt; writeText(DOMString data);
 		};
 		</pre>
 
-		A [=Clipboard=] may contain one or more [=ClipboardItem=]s. Multiple [=ClipboardItem=]s are only supported on platforms such as iOS/iPadOS.
+		A [=Clipboard=] may contain one or more [=clipboard item=]s. Multiple [=clipboard item=]s are only supported on platforms such as iOS/iPadOS.
 		A web author needs to create a |data| which is a [=ClipboardItems=] object in order to write content to clipboard using the {{Clipboard/write(data)}} method.
 		{{Clipboard/read()}} returns a [=Promise=] to [=ClipboardItems=] object that represents contents of clipboard.
-		A [=ClipboardItem=] can be read from [=ClipboardItems=], which then can be used to read a specific |type| using {{ClipboardItem/getType(type)}}.
+		A [=clipboard item=] can be read from [=ClipboardItems=], which then can be used to read a specific |type| using {{ClipboardItem/getType(type)}}.
 
-		<h4 typedef>ClipboardItems</h4>
-		<p>A sequence of [=ClipboardItem=] objects</p>
+		<h4><dfn>ClipboardItems</dfn></h4>
+		<p>A sequence of [=clipboard item=] objects</p>
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
@@ -710,7 +725,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
-					Note: Currently in Chromium, only one [=ClipboardItem=] object is supported for reading and writing via the [=clipboard=] object.
+					Note: Currently in Chromium, only one [=clipboard item=] object is supported for reading and writing via the [=clipboard=] object.
 					
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
@@ -721,7 +736,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<div></div>
 
-			<pre class="example javascript">
+			<pre class="example javascript" highlight=js>
 				const items = await navigator.clipboard.read();
 				const textBlob = await items[0].getType("text/plain");
 				const text = await (new Response(textBlob)).text();
@@ -761,7 +776,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<div></div>
 
-			<pre class="example javascript">
+			<pre class="example javascript" highlight=js>
 				navigator.clipboard.readText().then(function(data) {
 					console.log(“Your string: ”, data);
 				});
@@ -821,8 +836,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Replace the [=system clipboard data=] with |clipboardItemList|.
 
-				Note: Writing multiple [=ClipboardItem=]s to the clipboard is only supported on MacOS.
-				For other platforms, only the first [=ClipboardItem=] should be written to the clipboard.
+				Note: Writing multiple [=clipboard item=]s to the clipboard is only supported on MacOS.
+				For other platforms, only the first [=clipboard item=] should be written to the clipboard.
 
 				1. Resolve |p|.
 
@@ -830,7 +845,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<div></div>
 
-			<pre class="example javascript">
+			<pre class="example javascript" highlight=js>
 				var data = [new ClipboardItem({ "text/plain": Promise.resolve(new Blob(["Text data"], { type: "text/plain" }) }))];
 				navigator.clipboard.write(data).then(function() {
 					console.log("Copied to clipboard successfully!");
@@ -865,7 +880,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					[=type=] attribute set to <em>text/plain;charset=utf-8</em>, and
 					[=blobParts=] set to a sequence containing the <em>string</em> |data|.
 
-				1. Let |newItem| be a new [=ClipboardItem=] created with a single
+				1. Let |newItem| be a new [=clipboard item=] created with a single
 					representation:
 					[=type=] attribute set to <em>text/plain8</em>, and
 					[=data=] set to |textBlob|.
@@ -880,7 +895,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<div></div>
 
-			<pre class="example javascript">
+			<pre class="example javascript" highlight=js>
 				await navigator.clipboard.writeText("Howdy, partner!");
 			</pre>
 
