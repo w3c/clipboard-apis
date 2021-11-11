@@ -560,9 +560,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<div id="navigator-idl" dfn-for="Navigator">
 
 		<div class="algorithm" data-algorithm="navigator-clipboard">
-		<h4 id="h-navigator-clipboard"><dfn>clipboard</dfn></h4>
-		The [=clipboard=] attribute must return the {{Navigator}}'s [=clipboard=] object.
+		<h4 id="h-navigator-clipboard">clipboard</h4>
 		It is used to execute read/write operations from/to the [=system clipboard=].
+		The {{Navigator/clipboard}} getter steps are to return [=this=]'s [=clipboard=] object.
 		</div>
 
 		</div><!-- dfn-for Navigator -->
@@ -572,12 +572,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			typedef (DOMString or Blob) ClipboardItemDataType;
 			typedef Promise&lt;ClipboardItemDataType&gt; ClipboardItemData;
 
-			callback ClipboardItemDelayedCallback = ClipboardItemData ();
-
 			[SecureContext, Exposed=Window]
 			interface ClipboardItem {
 				constructor(record&lt;DOMString, ClipboardItemData> items,
-							optional ClipboardItemOptions options = {});
+				            optional ClipboardItemOptions options = {});
 
 				readonly attribute PresentationStyle presentationStyle;
 				readonly attribute FrozenArray&lt;DOMString> types;
@@ -591,29 +589,89 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				PresentationStyle presentationStyle = "unspecified";
 			};
 		</pre>
-		<p><dfn>Clipboard Item</dfn></p>
+
+		<p><dfn for="ClipboardItem">Clipboard Item</dfn></p>
+
 		A [=clipboard item=] is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
-		For example, if a user copies a range of cells from a spreadsheet, it will result in one [=clipboard item=]. If a user copies a set of files from their desktop, that list of files will be a different single [=clipboard item=].
+		For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one [=clipboard item=]. If a user copies a set of files from their desktop, that list of files will be represented by multiple [=clipboard item=]s.
 		Some platforms may support having more than one [=clipboard item=] at a time on the [=Clipboard=], while other platforms replace the previous [=clipboard item=] with the new one. 
 
-		Each [=clipboard item=] can be represented as multiple mime-types. In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
-		Each of these mime-types describe the same [=clipboard item=] at different levels of fidelity and make the [=clipboard item=] more consumable by target applications during paste.
-		Making the range of cells available as an image will allow the user to paste the cells into Photoshop, while the text/plain format can be used by applications like Windows Notepad.
+		A [=clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn>mime type</dfn> and <dfn>data</dfn>. In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
+		Each of these [=mime type=]s describe a different [=representation=] of the same [=clipboard item=] at different levels of fidelity and make the [=clipboard item=] more consumable by target applications during paste.
+		Making the range of cells available as an image will allow the user to paste the cells into a photo editing app, while the text/plain format can be used by text editor apps.
+
+		A [=clipboard item=] can also optionally have a <dfn>presentation style</dfn> that helps distinguish whether apps "pasting" a [=clipboard item=] should insert the contents of an appropriate [=representation=] inline at the point of paste or if it should be treated as an attachment.
 
 		Apps that support pasting only a single [=clipboard item=] should use the first [=clipboard item=].
 		Apps that support pasting more than one [=clipboard item=] could, for example, provide a user interface that previews the contents of each [=clipboard item=] and allow the user to choose which one to paste.
-		Further, apps are expected to enumerate the mime-types of the [=clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
-		Alternatively, an app can present the user with options on how to paste a [=clipboard item=], e.g. “paste as image” or “paste formatted text”, etc.
+		Further, apps are expected to enumerate the [=mime type=]s of the [=clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
+		Alternatively, an app can present the user with options on how to paste a [=clipboard item=], e.g. "paste as image" or "paste formatted text", etc.
 
-		A [=clipboard item=] contains multiple representations. Each representation consists of a MIME type and a corresponding {{DOMString}} or [=Blob=].
+		A {{ClipboardItem}} object has an associated [=ClipboardItem/clipboard item=], which is a [=clipboard item=].
 
-		<p>A [=clipboard item=] has an associated <dfn>presentation style</dfn> which is <code>"unspecified"</code> or <code>"inline"</code> or <code>"attachment"</code>.
-		[=presentation style=] helps distinguish between "inline" data(e.g. selecting text on a web page and copying), vs. file-like data (e.g. copying a plain text file).
-		This difference is used to provide a hint when writing to the system pasteboard on iOS/iPadOS. This allows apps like Notes to insert a file attachment when copying a plain text file from the Files app, but insert text inline when
-		copying a selected piece of plain text from another app. In both cases, the MIME type in the pasteboard would be text/plain. This is used for both reading and writing.
+		To create a {{ClipboardItem}} object, given a [=clipboard item=] |clipboardItem|'s [=relevant realm=] |realm|, run these steps:
+			1. Let |clipboardItemObject| be a new {{ClipboardItem}} with |realm|.
+
+			1. Set |clipboardItemObject|'s [=clipboard item=] to |clipboardItem|.
+
+		<a constructor lt="ClipboardItem()">constructor</a> steps for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> are:
+			1. Set [=this=]'s [=ClipboardItem/clipboard item=] to a new [=clipboard item=].
+
+			1. If |options| is empty, then set [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=] to "unspecified", else, set [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=] to |options|["presentationStyle"].
+
+			1. For each (|key|, |value|) in |items|:
+
+				1. Let |mimeType| be the result of [=parse a mime type=] given |key|.
+
+				1. If |mimeType| is failure, then throw a {{TypeError}}.
+
+				1. Let |representation| be a new [=representation=].
+
+				1. Set |representation|'s [=mime type=] to |key|.
+
+				1. Set |representation|'s [=data=] to |value|.
+
+				1. Append |representation| to [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
+
+		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
+		<p>
+			The {{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=].
 		</p>
 
-		<p>A [=clipboard item=] has an associated <dfn>types</dfn> which contains the MIME types.</p>
+		<h4 attribute for=ClipboardItem lt=types>types</h4>
+		<p>
+			{{ClipboardItem/types}} getter steps are:
+
+			1. Let |types| be the result of running [=create a frozen array=].
+			
+			1. Let |itemTypeList| be [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
+			
+			1. For each |itemType| in |itemTypeList|:
+				
+				1. Add |itemType|'s [=mime type=] to |types|.
+
+			1. Return |types|.
+		</p>
+
+		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
+
+			1. Let |realm| be [=this=]'s [=relevant realm=].
+
+			1. Let |mimeType| be the result of [=parse a mime type=] given |type|.
+
+			1. If |mimeType| is failure, then throw a {{TypeError}}.
+
+			1. Let |itemTypeList| be [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
+
+			1. If |mimeType| is not present in |itemTypeList|'s [=representation=]'s [=mime type=], then [=a promise rejected with=] {{"NotFoundError"}} DOMException in |realm|.
+
+			1. Let |p| be [=a new promise=] in |realm|.
+
+			1. Let |blobData| be a [=Blob=] created using [=representation=]'s [=data=] corresponding to the |mimeType|.
+
+			1. Resolve |p| with |blobData|.
+
+			1. Return |p|.
 
 		<dl class=note>
 			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
@@ -626,7 +684,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					const promise_text_blob = Promise.resolve(new Blob(['hello'], {type: format1}));
 					const clipboardItemInput = new ClipboardItem(
 						{[format1]: promise_text_blob},
-						{options: "unspecified"});
+						{presentationStyle: "unspecified"});
 				</pre>
 
 			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
@@ -636,51 +694,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
 
 		</dl>
-		<p>
-			A {{ClipboardItem}} object has an associated [=clipboard item=].
-		</p>
-		<p>
-			A {{ClipboardItem}} object's {{ClipboardItem/presentationStyle}} is its [=clipboard item=]'s [=presentation style=].
-		</p>
-		<p>
-			A {{ClipboardItem}} object's {{ClipboardItem/types}} is its [=clipboard item=]'s [=types=].
-		</p>
-		<p>
-			The <a constructor lt="ClipboardItem()">constructor</a> steps for <code>new ClipboardItem(<var>items</var>, <var>options</var>)</code> are to set [=this=]'s items to <var>items</var> and options to <var>options</var>.
-		</p>
-
-		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
-		<p>
-			Each {{ClipboardItem}} has a {{ClipboardItem/presentationStyle}}, which is a {{PresentationStyle}}.
-			The {{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s [=clipboard item=]'s [=presentation style=].
-		</p>
-
-		<h4 attribute for=ClipboardItem lt=types>types</h4>
-		<p> Each {{ClipboardItem}} has a {{ClipboardItem/types}}, which contains the MIME types.
-		    {{ClipboardItem/types}} getter steps are to return [=this=]'s [=clipboard item=]'s [=types=].</p>
-
-		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
-
-			1. Let |realm| be [=this=]'s [=relevant realm=].
-
-			1. If |type| is not listed in the [=mandatory data types=] list, then [=a promise rejected with=] "The type was not found" DOMException in |realm|.
-
-			1. Let |p| be [=a new promise=] in |realm|.
-
-			1. Let |blobData| be a [=Blob=] corresponding to the |type|.
-
-			1. Resolve |p| with |blobData|.
-
-			1. Return |p|.
-
-		<h4 typedef>ClipboardItemDataType</h4>
-		<p>
-		 	It is a {{DOMString}} or [=Blob=] type. This contains the payload corresponding to the MIME type while creating a [=clipboard item=] object.
-		</p>
-		<h4 typedef>ClipboardItemData</h4>
-		<p>
-			A [=Promise=] to a {{ClipboardItemDataType}}.
-		</p>
 
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
@@ -696,13 +709,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		};
 		</pre>
 
-		A [=Clipboard=] may contain one or more [=clipboard item=]s. Multiple [=clipboard item=]s are only supported on platforms such as iOS/iPadOS.
+		A <dfn>Clipboard</dfn> may contain <dfn>ClipboardItems</dfn> which has one or more [=clipboard item=]s. Multiple [=clipboard item=]s are only supported on platforms such as iOS/iPadOS.
 		A web author needs to create a |data| which is a [=ClipboardItems=] object in order to write content to clipboard using the {{Clipboard/write(data)}} method.
 		{{Clipboard/read()}} returns a [=Promise=] to [=ClipboardItems=] object that represents contents of clipboard.
-		A [=clipboard item=] can be read from [=ClipboardItems=], which then can be used to read a specific |type| using {{ClipboardItem/getType(type)}}.
-
-		<h4><dfn>ClipboardItems</dfn></h4>
-		<p>A sequence of [=clipboard item=] objects</p>
+		A [=clipboard item=] can be read from [=ClipboardItems=].
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
@@ -721,7 +731,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					a user gesture event and the user must select the paste option from the native context menu that pops up
 					when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
+				1. If |r| is not "granted", then [=a promise rejected with=] {{"NotAllowedError"}} DOMException in |realm|.
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as [=ClipboardItems=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
@@ -760,7 +770,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
+				1. If |r| is not "granted", then [=a promise rejected with=] {{"NotAllowedError"}} DOMException in |realm|.
 
 				1. Let |data| be a copy of the [=system clipboard data=].
 
@@ -778,7 +788,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<pre class="example javascript" highlight=js>
 				navigator.clipboard.readText().then(function(data) {
-					console.log(“Your string: ”, data);
+					console.log("Your string: ", data);
 				});
 			</pre>
 
@@ -800,7 +810,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
+				1. If |r| is not "granted", then [=a promise rejected with=] {{"NotAllowedError"}} DOMException in |realm|.
 
 				1. Let |itemList| and |cleanItemList| be an empty sequence&lt;{{Blob}}&gt;.
 
@@ -812,7 +822,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 						1. Let |p1| be [=a new promise=] to {{Blob}} in |realm|.
 
-						1. If |p1| is [=reject=]d, then throw "Promises to Blobs were rejected." DOMException in |realm|.
+						1. If |p1| is [=reject=]ed, then throw "Promises to Blobs were rejected." DOMException in |realm|.
 
 						1. If |item| is a {{DOMString}}, then convert it into {{Blob}} and add it to |itemList|.
 
@@ -872,7 +882,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a user gesture event and the user must select the paste option from the native context menu that pops up
 				when read() is called from JS, otherwise, the promise will be rejected.
 
-				1. If |r| is not "granted", then [=a promise rejected with=] "NotAllowedError" DOMException in |realm|.
+				1. If |r| is not "granted", then [=a promise rejected with=] {{"NotAllowedError"}} DOMException in |realm|.
 
 				1. Let |newItemList| be empty [=ClipboardItems=].
 
