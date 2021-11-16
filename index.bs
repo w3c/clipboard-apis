@@ -612,7 +612,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		</dl>
 
-		<h4>Clipboard Item</h4>
+		<h4 id="clipboard-item">Clipboard Item</h4>
 
 		A [=clipboard item=] is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
 
@@ -860,7 +860,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 						1. For each |item| in |clipboardItem|:
 
-							1. Let |p1| be {{Promise}} in |item|.
+							1. Let |p1| be [=Promise=] in |item|.
 
 							1. If |p1| is [=reject=]ed, then throw {{"NotAllowedError"}} DOMException in |realm|.
 
