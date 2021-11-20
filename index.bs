@@ -864,21 +864,33 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 						1. For each |item| in |clipboardItem|'s [=ClipboardItem/clipboard item=]'s [=list of representations=]:
 
-							1. If |item| is a {{DOMString}}, then convert it into {{Blob}} and add it to |itemList|.
+							1. Let |p1| be the |item|'s [=data=].
 
-							1. If |item| is a {{Blob}}, then add the {{Blob}} in |item| to |itemList|.
+							1. [=promise/React=] to |p1|:
 
-						1. For each {{Blob}} |blob| in |itemList|:
+								1. If |p1| was fulfilled with value |v|, then:
+
+									1. If |v| is a {{DOMString}}, then convert it into {{Blob}} and add it to |itemList|.
+
+									1. If |v| is a {{Blob}}, then add it to |itemList|.
+
+								1. If |p1| was rejected, then:
+
+									1. Reject |p| with {{"NotAllowedError"}} DOMException in |realm|.
+
+									1. Abort all steps.
+
+						1. For each |blob| in |itemList|:
 
 							1. Let |type| be the |blob|'s {{Blob/type}}.
 
-							1. If |type| is not in the [=mandatory data types=] list, then [=a promise rejected with=] {{"NotAllowedError"}} DOMException in |realm|.
+							1. If |type| is not in the [=mandatory data types=] list, then reject |p| with {{"NotAllowedError"}} DOMException in |realm|.
 
 							1. Let |cleanItem| be a sanitized copy of |blob|.
 
 								Issue: Add definition of sanitized copy.
 
-							1. If unable to create a sanitized copy, then [=reject=] |p|.
+							1. If unable to create a sanitized copy, then reject |p| with {{"NotAllowedError"}} DOMException in |realm|.
 
 							1. Add |cleanItem| to |cleanItemList|.
 						
