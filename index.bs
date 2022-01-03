@@ -168,7 +168,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		exposed as a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 	* For the [[#async-clipboard-api]], the [=system clipboard data=] is
-		exposed as a sequence of [=clipboard item=] objects that mirrors the contents of
+		exposed as a sequence of [=/clipboard item=] objects that mirrors the contents of
 		the clipboard.
 
 <h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
@@ -616,43 +616,43 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
 
 		<p class=note>
-			For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one [=clipboard item=]. If a user copies a set of files from their desktop, that list of files will be represented by multiple [=clipboard item=]s.
+			For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one [=/clipboard item=]. If a user copies a set of files from their desktop, that list of files will be represented by multiple [=/clipboard item=]s.
 		</p>
 
-		Some platforms may support having more than one [=clipboard item=] at a time on the [=Clipboard=], while other platforms replace the previous [=clipboard item=] with the new one.
+		Some platforms may support having more than one [=/clipboard item=] at a time on the [=Clipboard=], while other platforms replace the previous [=/clipboard item=] with the new one.
 
-		A [=clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]) and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
+		A [=/clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]) and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
 
 		<p class=note>
 			In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
 		</p>
 
-		Each of these [=/MIME type=]s describe a different [=representation=] of the same [=clipboard item=] at different levels of fidelity and make the [=clipboard item=] more consumable by target applications during paste.
+		Each of these [=/MIME type=]s describe a different [=representation=] of the same [=/clipboard item=] at different levels of fidelity and make the [=/clipboard item=] more consumable by target applications during paste.
 
 		<p class=note>
 			Making the range of cells available as an image will allow the user to paste the cells into a photo editing app, while the text/plain format can be used by text editor apps.
 		</p>
 
-		A [=clipboard item=] can also optionally have a <dfn>presentation style</dfn> that helps distinguish whether apps "pasting" a [=clipboard item=] should insert the contents of an appropriate [=representation=] inline at the point of paste or if it should be treated as an attachment.
+		A [=/clipboard item=] can also optionally have a <dfn>presentation style</dfn> that helps distinguish whether apps "pasting" a [=/clipboard item=] should insert the contents of an appropriate [=representation=] inline at the point of paste or if it should be treated as an attachment.
 
-		Apps that support pasting only a single [=clipboard item=] should use the first [=clipboard item=].
-		Apps that support pasting more than one [=clipboard item=] could, for example, provide a user interface that previews the contents of each [=clipboard item=] and allow the user to choose which one to paste.
-		Further, apps are expected to enumerate the [=/MIME type=]s of the [=clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
-		Alternatively, an app can present the user with options on how to paste a [=clipboard item=], e.g. "paste as image" or "paste formatted text", etc.
+		Apps that support pasting only a single [=/clipboard item=] should use the first [=/clipboard item=].
+		Apps that support pasting more than one [=/clipboard item=] could, for example, provide a user interface that previews the contents of each [=/clipboard item=] and allow the user to choose which one to paste.
+		Further, apps are expected to enumerate the [=/MIME type=]s of the [=/clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
+		Alternatively, an app can present the user with options on how to paste a [=/clipboard item=], e.g. "paste as image" or "paste formatted text", etc.
 
-		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">clipboardItem</dfn>, which is a [=clipboard item=].
+		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">clipboard item</dfn>, which is a [=/clipboard item=].
 
 		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">types array</dfn>, which is a {{FrozenArray}}.
 
-		To <dfn>create a {{ClipboardItem}} object</dfn>, given a [=clipboard item=] |clipboardItem| and a [=global object/Realm=] |realm|, run these steps:
+		To <dfn>create a {{ClipboardItem}} object</dfn>, given a [=/clipboard item=] |clipboardItem| and a Realm |realm|, run these steps:
 			1. Let |clipboardItemObject| be a [=new=] {{ClipboardItem}} with |realm|.
 
-			1. Set |clipboardItemObject|'s [=clipboard item=] to |clipboardItem|.
+			1. Set |clipboardItemObject|'s [=/clipboard item=] to |clipboardItem|.
 
 		The <dfn constructor for="ClipboardItem" lt="ClipboardItem(items, options)"><code>new ClipboardItem(<var>items</var>, <var>options</var>)</code></dfn> constructor steps are:
-			1. Set [=this=]'s [=ClipboardItem/clipboardItem=] to a new [=clipboard item=].
+			1. Set [=this=]'s [=ClipboardItem/clipboard item=] to a new [=/clipboard item=].
 
-			1. Set [=this=]'s [=ClipboardItem/clipboardItem=]'s [=presentation style=] to |options|["{{ClipboardItemOptions/presentationStyle}}"].
+			1. Set [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=] to |options|["{{ClipboardItemOptions/presentationStyle}}"].
 
 			1. Let |types| be a list of {{DOMString}}.
 
@@ -662,13 +662,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |mimeType| is failure, then throw a {{TypeError}}.
 
+				1. If [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=] [=list/contains=] a [=representation=] whose [=representation/MIME type=] is |mimeType|, then throw a {{TypeError}}. 
+
 				1. Let |representation| be a new [=representation=].
 
-				1. Set |representation|'s [=representation/MIME type=] to |key|.
+				1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
 
 				1. Set |representation|'s [=representation/data=] to |value|.
 
-				1. Append |representation| to [=this=]'s [=ClipboardItem/clipboardItem=]'s [=list of representations=].
+				1. Append |representation| to [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
 
 				1. Let |mimeTypeString| be the result of [=serializing a MIME type=] with |mimeType|.
 				
@@ -678,7 +680,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<h4 attribute for=ClipboardItem lt=presentationStyle>presentationStyle</h4>
 		<p>
-			The {{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s [=ClipboardItem/clipboardItem=]'s [=presentation style=].
+			The {{ClipboardItem/presentationStyle}} getter steps are to return [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=].
 		</p>
 
 		<h4 attribute for=ClipboardItem lt=types>types</h4>
@@ -686,7 +688,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			The {{ClipboardItem/types}} getter steps are to return [=this=]'s [=ClipboardItem/types array=].
 		</p>
 
-		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</a> must run the below steps:</h4>
+		<h4 method for=ClipboardItem lt=getType(type)>getType(type)</h4>
+		
+			This method must run the below steps:
 
 			1. Let |realm| be [=this=]'s [=relevant realm=].
 
@@ -694,7 +698,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. If |mimeType| is failure, then throw a {{TypeError}}.
 
-			1. Let |itemTypeList| be [=this=]'s [=ClipboardItem/clipboardItem=]'s [=list of representations=].
+			1. Let |itemTypeList| be [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
 
 			1. Let |p| be [=a new promise=] in |realm|.
 
@@ -704,33 +708,27 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Let |p1| be the |representation|'s [=representation/data=].
 
-						1. [=promise/React=] to |p1|:
+					1. [=promise/React=] to |p1|:
 
-							1. If |p1| was fulfilled with value |v|, then:
+						1. If |p1| was fulfilled with value |v|, then:
 
-								1. If |v| is a {{DOMString}}, then follow the below steps:
+							1. If |v| is a {{DOMString}}, then follow the below steps:
 
-									1. Let |v1| be the result of [=/encoding=] |v|.
+								1. Let |v1| be the result of [=/encoding=] |v|.
 
-									1. Let |blobData| be a [=Blob=] created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
+								1. Let |blobData| be a [=Blob=] created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
 
-									1. Resolve |p| with |blobData|.
+								1. Resolve |p| with |blobData|.
 
-									1. Return |p|.
+							1. If |v| is a [=Blob=], then follow the below steps:
 
-								1. If |v| is a [=Blob=], then follow the below steps:
+								1. Resolve |p| with |v|.
 
-									1. Resolve |p| with |v|.
+						1. If |p1| was rejected, then:
 
-									1. Return |p|.
+							1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
 
-							1. If |p1| was rejected, then:
-
-								1. [=Reject=] |p| with {{"NotFoundError"}} DOMException in |realm|.
-
-								1. Return |p|.
-
-			1. [=Reject=] |p| with {{"NotFoundError"}} DOMException in |realm|.
+			1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
 
 			1. Return |p|.
 
@@ -748,10 +746,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		};
 		</pre>
 
-		A <dfn>Clipboard</dfn> may contain <dfn>Clipboard Items</dfn> which has one or more [=clipboard item=]s. Multiple [=clipboard item=]s are only supported on platforms such as iOS/iPadOS.
+		A <dfn>Clipboard</dfn> may contain <dfn>Clipboard Items</dfn> which has one or more [=/clipboard item=]s. Multiple [=/clipboard item=]s are only supported on platforms such as iOS/iPadOS.
 		A web author needs to create a |data| which is a [=Clipboard items=] object in order to write content to [=system clipboard=] using the {{Clipboard/write(data)}} method.
 		{{Clipboard/read()}} returns a [=Promise=] to [=Clipboard items=] object that represents contents of [=system clipboard=].
-		A [=clipboard item=] can be read from [=clipboard items=].
+		A [=/clipboard item=] can be read from [=clipboard items=].
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
@@ -774,7 +772,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -787,7 +785,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Let |items| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
-					1. For each [=clipboard item=] |underlyingItem| of |data|:
+					1. For each [=/clipboard item=] |underlyingItem| of |data|:
 
 						1. Let |item| be the result of running the steps of [=create a ClipboardItem object=] given |underlyingItem|.
 
@@ -825,11 +823,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard item=]. |data| contains the sanitized copy of text/plain format.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=/clipboard item=]. |data| contains the sanitized copy of text/plain format.
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
@@ -871,7 +869,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -883,7 +881,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. For each |clipboardItem| in |data|:
 
-						1. For each |item| in |clipboardItem|'s [=ClipboardItem/clipboardItem=]'s [=list of representations=]:
+						1. For each |item| in |clipboardItem|'s [=ClipboardItem/clipboard item=]'s [=list of representations=]:
 
 							1. Let |p1| be the |item|'s [=representation/data=].
 
@@ -903,7 +901,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 								1. If |p1| was rejected, then:
 
-									1. [=Reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+									1. [=Reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 									1. Return |p|.
 
@@ -911,7 +909,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. Let |type| be the |blob|'s {{Blob/type}}.
 
-							1. If |type| is not in the [=mandatory data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+							1. If |type| is not in the [=mandatory data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
 							1. Let |cleanItem| be a sanitized copy of |blob|.
 
@@ -929,8 +927,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Replace the [=system clipboard data=] with |clipboardItemList|.
 
-						Note: Writing multiple [=clipboard item=]s to the clipboard is only supported on MacOS.
-						For other platforms, only the first [=clipboard item=] should be written to the clipboard.
+						Note: Writing multiple [=/clipboard item=]s to the clipboard is only supported on MacOS.
+						For other platforms, only the first [=/clipboard item=] should be written to the clipboard.
 
 					1. Resolve |p|.
 
@@ -979,7 +977,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 						[=type=] attribute set to <em>text/plain;charset=utf-8</em>, and
 						[=blobParts=] set to a sequence containing the <em>string</em> |data|.
 
-					1. Let |newItem| be a new [=clipboard item=] created with a single
+					1. Let |newItem| be a new [=/clipboard item=] created with a single
 						[=representation=]:
 						[=representation/MIME type=] attribute set to <em>text/plain8</em>, and
 						[=representation/data=] set to |textBlob|.
