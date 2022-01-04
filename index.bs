@@ -592,7 +592,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<dl class=note>
 			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
 			<dd>
-			Creates a new {{ClipboardItem}} object. <var>items</var> are used to fill its MIME types and [=Promise=]s to [=Blob=]s or {{DOMString}}s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
+			Creates a new {{ClipboardItem}} object. <var>items</var> are used to fill its MIME types and [=Promise=]s to {{Blob}}s or {{DOMString}}s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
 			as per the example below.
 
 				<pre class="example javascript" highlight=js>
@@ -604,7 +604,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				</pre>
 
 			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
-			<dd><p>Returns a [=Promise=] to the [=Blob=] corresponding to <var>type</var>.</p>
+			<dd><p>Returns a [=Promise=] to the {{Blob}} corresponding to <var>type</var>.</p>
 
 			<dt><code><var>clipboardItem</var>.<var>types</var></code>
 			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
@@ -716,11 +716,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 								1. Let |v1| be the result of [=/encoding=] |v|.
 
-								1. Let |blobData| be a [=Blob=] created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
+								1. Let |blobData| be a {{Blob}} created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
 
 								1. Resolve |p| with |blobData|.
 
-							1. If |v| is a [=Blob=], then follow the below steps:
+							1. If |v| is a {{Blob}}, then follow the below steps:
 
 								1. Resolve |p| with |v|.
 
@@ -875,7 +875,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
-					1. Let |itemList| and |cleanItemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
+					1. Let |itemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
+
+					1. Let |cleanItemList| be an empty [=/record=]&lt;{{DOMString}}, [=Promise=]&lt;{{Blob}}&gt;&gt;.
 
 					1. Let |clipboardItemList| be an empty [=clipboard items=].
 
@@ -893,11 +895,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 										1. Let |v1| be the result of [=/encoding=] |v|.
 
-										1. Let |blobData| be a [=Blob=] created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
+										1. Let |blobData| be a {{Blob}} created using |v1| with its {{Blob/type}} set to |mimeType|, [=serialize a MIME type|serialized=].
 
 										1. Add |blobData| to |itemList|.
 
-									1. If |v| is a [=Blob=], then add |v| to |itemList|.
+									1. If |v| is a {{Blob}}, then add |v| to |itemList|.
 
 								1. If |p1| was rejected, then:
 
@@ -921,9 +923,17 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 								1. Return |p|.
 
-							1. Add |cleanItem| to |cleanItemList|.
-						
-						1. Add |cleanItemList| to |clipboardItemList|.
+							1. Let |p2| be [=a new promise=] in |realm|.
+
+							1. Resolve |p2| with |cleanItem|.
+
+							1. Append |cleanItem|'s {{Blob/type}} as the key and |p2| as value to |cleanItemList|.
+
+						1. Let |option| be |clipboardItem|'s [=ClipboardItem/clipboard item=]'s [=presentation style=].
+
+						1. Let |cleanClipboarditem| be the result of running the steps of {{ClipboardItem/ClipboardItem()}} given |cleanItemList| and |option|.
+
+						1. Add |cleanClipboarditem| to |clipboardItemList|.
 
 					1. Replace the [=system clipboard data=] with |clipboardItemList|.
 
