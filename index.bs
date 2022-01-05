@@ -528,19 +528,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			corresponding native type exists on the clipboard:
 
 			* text/plain
-			* text/uri-list
-			* text/csv
-			* text/css
 			* text/html
-			* application/xhtml+xml
 			* image/png
-			* image/jpg, image/jpeg
-			* image/gif
-			* image/svg+xml
-			* application/xml, text/xml
-			* application/javascript
-			* application/json
-			* application/octet-stream
 
 		<h4 id="writing-to-clipboard">Writing to the clipboard</h4>
 
@@ -549,12 +538,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<em>copy</em> and <em>cut</em> events.
 
 			* text/plain
-			* text/uri-list
-			* text/csv
 			* text/html
-			* image/svg+xml
-			* application/xml, text/xml
-			* application/json
+			* image/png
 
 			Advisement: Warning! The data types that untrusted scripts are allowed to write to the
 			clipboard are limited as a security precaution. Untrusted scripts can
