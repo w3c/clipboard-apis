@@ -592,7 +592,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<dl class=note>
 			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
 			<dd>
-			Creates a new {{ClipboardItem}} object. <var>items</var> are used to fill its MIME types and [=Promise=]s to {{Blob}}s or {{DOMString}}s corresponding to the MIME types, <var>options</var> can be used to fill its {{ClipboardItemOptions}},
+			Creates a new {{ClipboardItem}} object. <var>items</var> denote [=list of representations=], each [=representation=] has a [=representation/mime type=] and a [=Promise=] to {{Blob}} or {{DOMString}} corresponding to the [=representation/mime type=], <var>options</var> can be used to fill its {{ClipboardItemOptions}},
 			as per the example below.
 
 				<pre class="example javascript" highlight=js>
@@ -604,16 +604,16 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				</pre>
 
 			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
-			<dd><p>Returns a [=Promise=] to the {{Blob}} corresponding to <var>type</var>.</p>
+			<dd><p>Returns a [=Promise=] to the {{Blob}} corresponding to the [=representation/mime type=] <var>type</var>.</p>
 
 			<dt><code><var>clipboardItem</var>.<var>types</var></code>
-			<dd><p>Returns the list of <var>types</var> contained in the <var>clipboardItem</var> object.
+			<dd><p>Returns the list of [=representation/mime type=]s contained in the [=/clipboard item=] object.
 
 		</dl>
 
 		<h4 id="clipboard-item">Clipboard Item</h4>
 
-		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command.
+		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A [=/clipboard item=] serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.
 
 		<p class=note>
 			For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one [=/clipboard item=]. If a user copies a set of files from their desktop, that list of files will be represented by multiple [=/clipboard item=]s.
@@ -633,16 +633,21 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			Making the range of cells available as an image will allow the user to paste the cells into a photo editing app, while the text/plain format can be used by text editor apps.
 		</p>
 
-		A [=/clipboard item=] can also optionally have a <dfn>presentation style</dfn> that helps distinguish whether apps "pasting" a [=/clipboard item=] should insert the contents of an appropriate [=representation=] inline at the point of paste or if it should be treated as an attachment.
+		A [=/clipboard item=] has a <dfn>presentation style</dfn> (a {{PresentationStyle}}). It helps distinguish whether apps "pasting" a [=/clipboard item=] should insert the contents of an appropriate [=representation=] inline at the point of paste or if it should be treated as an attachment.
 
-		Apps that support pasting only a single [=/clipboard item=] should use the first [=/clipboard item=].
-		Apps that support pasting more than one [=/clipboard item=] could, for example, provide a user interface that previews the contents of each [=/clipboard item=] and allow the user to choose which one to paste.
+		Web apps that support pasting only a single [=/clipboard item=] should use the first [=/clipboard item=].
+
+		<p class=note>
+			{{Clipboard/write()}} chooses the last [=/clipboard item=].
+		</p>
+
+		Web apps that support pasting more than one [=/clipboard item=] could, for example, provide a user interface that previews the contents of each [=/clipboard item=] and allow the user to choose which one to paste.
 		Further, apps are expected to enumerate the [=/MIME type=]s of the [=/clipboard item=] they are pasting and select the one best-suited for the app according to some app-specific algorithm.
 		Alternatively, an app can present the user with options on how to paste a [=/clipboard item=], e.g. "paste as image" or "paste formatted text", etc.
 
 		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">clipboard item</dfn>, which is a [=/clipboard item=].
 
-		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">types array</dfn>, which is a {{FrozenArray}}.
+		A {{ClipboardItem}} object has an associated <dfn for="ClipboardItem">types array</dfn>, which is a {{FrozenArray}}&lt;{{DOMString}}&gt;.
 
 		To <dfn>create a {{ClipboardItem}} object</dfn>, given a [=/clipboard item=] |clipboardItem| and a Realm |realm|, run these steps:
 			1. Let |clipboardItemObject| be a [=new=] {{ClipboardItem}} with |realm|.
@@ -728,6 +733,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
 
+								Issue: Web developers might be interested in the underlying rejection reason.
+
 					1. Return |p|.
 
 			1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
@@ -748,9 +755,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		};
 		</pre>
 
-		The methods of the {{Clipboard}} interface take or return multiple {{ClipboardItem}} objects, and their specification is written to deal with the generic case. However, not all platforms support more than one [=/clipboard item=]; on such platforms, the algorithms below will ignore any {{ClipboardItem}} objects beyond the first one that are passed to {{Clipboard/write()}}, and {{Clipboard/read()}} and {{Clipboard/readText()}} will only ever return a single-item array.
+		Some methods of the {{Clipboard}} interface take or return multiple {{ClipboardItem}} objects. However, not all platforms support more than one [=/clipboard item=]; on such platforms, the algorithms below will ignore any {{ClipboardItem}} objects beyond the first one that are passed to {{Clipboard/write()}}, and {{Clipboard/read()}} and {{Clipboard/readText()}} will only ever return a single-item array.
 
-		A {{Clipboard}} object has an associated <dfn>clipboard</dfn>, which is a [=clipboard=].
+		A {{Clipboard}} object has an associated <dfn>clipboard</dfn>.
 		A <dfn>clipboard items</dfn> object is a [=sequence=] of [=/clipboard item=]s.
 
 		<p class="note">
@@ -837,6 +844,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/plain format.
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+
+					1. If |data|'s [=list/size=] is greater than 1, and the current operating system does not support multiple [=/clipboard item=]s on the [=system clipboard data=], then set |data| to |data|[0].
 
 					1. Let |itemTypeList| be |data|'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
 
