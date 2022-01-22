@@ -611,8 +611,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		</dl>
 
-		<h4 id="clipboard-item">Clipboard Item</h4>
-
 		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A [=/clipboard item=] serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.
 
 		<p class=note>
@@ -1604,7 +1602,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	<h3 id="to-write-blobs-to-clipboard"><dfn>write blobs and option to the clipboard</dfn></h3>
 
 		: Input
-		:: |items|, a [=sequence=]&lt;{{Blob}}&gt; list of {{Blob}}s to write
+		:: |items|, a [=sequence=]&lt;{{Blob}}&gt;
 		:: |presentationStyle|, a [=ClipboardItem/clipboard item=]'s [=presentation style=]
 
 		: Output
@@ -1632,7 +1630,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		:: |wellKnownFormat|, a platform specific string type. On Mac it's NSString, on Windows and Linux it is fetched from the atom table.
 
 		<p class=note>
-		For Windows see https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats
+		For Windows see https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats and
+		https://docs.microsoft.com/en-us/windows/win32/dataxchg/about-atom-tables?redirectedfrom=MSDN
 		For Mac see https://developer.apple.com/documentation/appkit/nspasteboardtype
 		</p>
 
