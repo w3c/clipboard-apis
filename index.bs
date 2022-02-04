@@ -778,10 +778,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |r| be the result of running [=check clipboard read permission=].
 
-					Note: Clipboard permission is not supported on Safari. However, the read() method must be called inside
-					a user gesture event and the user must select the paste option from the native context menu that pops up
-					when read() is called from JS, otherwise, the promise will be rejected.
-
 				1. If |r| is false, then:
 				
 					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
@@ -828,10 +824,6 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard read permission=].
-
-					Note: Clipboard permission is not supported on Safari. However, the readText() method must be called inside
-					a user gesture event and the user must select the paste option from the native context menu that pops up
-					when readText() is called from JS, otherwise, the promise will be rejected.
 
 				1. If |r| is false, then:
 				
@@ -919,7 +911,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. If |data|'s [=list/size=] is greater than 1, and the current operating system does not support multiple native clipboard items on the [=system clipboard=], then add |data|[0] to |dataList|, else, set |dataList| to |data|.
 
-						Issue: when |data| contains multiple items and the operating system supports multiple native clipboard items, the current algorithm writes the items in sequence to the system clipboard instead of writing them collectively. That is, the last item replaces the previous ones.
+						Issue: when |data| contains multiple items and the operating system supports multiple native clipboard items, the current algorithm writes the items in sequence to the system clipboard instead of writing them collectively.
 
 					1. For each |clipboardItem| in |dataList|:
 
@@ -1015,6 +1007,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					1. Let |textBlob| be a new {{Blob}} created with:
 						{{Blob/type}} attribute set to "<code>text/plain;charset=utf-8</code>", and
 						its underlying byte sequence set to the [=UTF-8 encoding=] of |data|.
+					
+						Note: On Windows replace `\n` characters with `\r\n` in |data| before creating |textBlob|.
 
 					1. Add |textBlob| to |itemList|.
 
