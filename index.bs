@@ -653,6 +653,10 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			1. Set |clipboardItemObject|'s [=/clipboard item=] to |clipboardItem|.
 
 		The <dfn constructor for="ClipboardItem" lt="ClipboardItem(items, options)"><code>new ClipboardItem(<var>items</var>, <var>options</var>)</code></dfn> constructor steps are:
+			1. If |items| is empty, then throw a {{TypeError}}.
+
+			1. If |options| is empty, then set |options| to "unspecified".
+
 			1. Set [=this=]'s [=ClipboardItem/clipboard item=] to a new [=/clipboard item=].
 
 			1. Set [=this=]'s [=ClipboardItem/clipboard item=]'s [=presentation style=] to |options|["{{ClipboardItemOptions/presentationStyle}}"].
@@ -789,6 +793,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
 
+					Issue: Add definition of sanitized copy.
+
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
 					1. Let |items| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
@@ -833,13 +839,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/plain format.
 
+					Issue: Add definition of sanitized copy.
+
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
 					1. Let |dataList| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
 					1. If |data|'s [=list/size=] is greater than 1, then add |data|[0] to |dataList|.
 
-						Issue: when |data| contains multiple items and the operating system supports multiple native clipboard items, the current algorithm writes the items in sequence to the system clipboard instead of writing them collectively. That is, the last item replaces the previous ones.
+						Issue: Reading multiple clipboard items should be fixed in https://github.com/w3c/clipboard-apis/issues/166.
 
 					1. Let |itemTypeList| be |dataList|'s [=ClipboardItem/clipboard item=]'s [=list of representations=].
 
@@ -893,9 +901,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
 
-					Note: Clipboard permission is not supported on Safari. However, the write() method must be called inside
-					a user gesture event and the user must select the paste option from the native context menu that pops up
-					when write() is called from JS, otherwise, the promise will be rejected.
+					Issue: clipboard-write was removed in https://github.com/w3c/clipboard-apis/pull/164.
 
 				1. If |r| is false, then:
 				
@@ -990,9 +996,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
 
-					Note: Clipboard permission is not supported on Safari. However, the writeText() method must be called inside
-					a user gesture event and the user must select the paste option from the native context menu that pops up
-					when writeText() is called from JS, otherwise, the promise will be rejected.
+					Issue: clipboard-write was removed in https://github.com/w3c/clipboard-apis/pull/164.
 
 				1. If |r| is false, then:
 				
