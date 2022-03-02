@@ -802,7 +802,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. For each [=/clipboard item=] |underlyingItem| of |data|:
 
-						1. Let |item| be the result of running the steps of [=create a ClipboardItem object=] given |underlyingItem|.
+						1. Let |item| be the result of running the steps of [=create a ClipboardItem object=] given |underlyingItem| and |realm|.
 
 						1. Append |item| to |items|.
 
@@ -1624,7 +1624,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Insert |payload| and |presentationStyle| into the [=system clipboard=] using |formatString| as the native clipboard format.
 
-			Issue: some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is written.
+			Issue: some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define to which of those data is written.
 
 	</div><!-- algorithm -->
 
