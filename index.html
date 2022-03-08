@@ -8,7 +8,7 @@
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="f0551c6f6c77750c13e2f8101a7010127893cc64" name="document-revision">
+  <meta content="ec795231ff7f3f4b7cdf6da8b4627e72d0fbc84e" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1443,7 +1443,7 @@ document.addEventListener('paste', function(e) {
 };
 </pre>
    <dl class="note">
-    <dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code> 
+    <dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code>
     <dd>
       Creates a new <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem">ClipboardItem</a></code> object. <var>items</var> denote <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations">list of representations</a>, each <a data-link-type="dfn" href="#representation" id="ref-for-representation">representation</a> has a <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type">mime type</a> and a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects">Promise</a> to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob②">Blob</a></code> or <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑤">DOMString</a></code> corresponding to the <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①">mime type</a>, <var>options</var> can be used to fill its <code class="idl"><a data-link-type="idl" href="#dictdef-clipboarditemoptions" id="ref-for-dictdef-clipboarditemoptions①">ClipboardItemOptions</a></code>,
 			as per the example below. 
@@ -1453,12 +1453,10 @@ document.addEventListener('paste', function(e) {
   <c- p>{[</c->format1<c- p>]</c-><c- o>:</c-> promise_text_blob<c- p>},</c->
   <c- p>{</c->presentationStyle<c- o>:</c-> <c- u>"unspecified"</c-><c- p>});</c->
 </pre>
-    <dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code> 
-    <dd>
-     <p>Returns a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a> to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob③">Blob</a></code> corresponding to the <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type②">mime type</a> <var>type</var>.</p>
-    <dt><code><var>clipboardItem</var>.<var>types</var></code> 
-    <dd>
-     <p>Returns the list of <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type③">mime type</a>s contained in the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①">clipboard item</a> object. </p>
+    <dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
+    <dd>Returns a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a> to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob③">Blob</a></code> corresponding to the <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type②">mime type</a> <var>type</var>.
+    <dt><code><var>clipboardItem</var>.<var>types</var></code>
+    <dd>Returns the list of <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type③">mime type</a>s contained in the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①">clipboard item</a> object.
    </dl>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-item">clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②">clipboard item</a> serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.</p>
    <p class="note" role="note"> For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item③">clipboard item</a>. If a user copies a set of files from their desktop, that list of files will be represented by multiple <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item④">clipboard item</a>s. </p>
