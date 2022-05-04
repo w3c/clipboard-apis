@@ -786,14 +786,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the content of text/html format, but image/png format has unsanitized payload to preserve meta data.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
+					Issue: Currently Safari does some sanitization for [=mandatory data types=]. See https://github.com/w3c/clipboard-apis/issues/150.
+
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
-
-					Issue: Add definition of sanitized copy.
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
@@ -837,11 +837,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/plain format.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the content of text/plain format.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
-					Issue: Add definition of sanitized copy.
+					Issue: Currently Safari does some sanitization. See https://github.com/w3c/clipboard-apis/issues/150.
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
@@ -953,17 +953,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. If |type| is not in the [=mandatory data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
-							1. Let |cleanItem| be a sanitized copy of |blob|.
+							1. Append |blob| to |cleanItemList|.
 
-								Issue: Add definition of sanitized copy.
-
-							1. If unable to create a sanitized copy, then follow the below steps:
-							
-								1. [=Reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
-
-								1. Abort these steps.
-
-							1. Append |cleanItem| to |cleanItemList|.
+							Issue: Currently Safari does some sanitization. See https://github.com/w3c/clipboard-apis/issues/150.
 
 						1. Let |option| be |clipboardItem|'s [=ClipboardItem/clipboard item=]'s [=presentation style=].
 
@@ -1632,11 +1624,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		: Output
 		:: |wellKnownFormat|, a platform specific string type. On Mac it's NSPasteboardType, on Windows it's LPCWSTR and Linux it's a const char*.
 
-		<p class=note>
+		<div class=note>
 		For Windows see https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats and
 		https://docs.microsoft.com/en-us/windows/win32/dataxchg/about-atom-tables?redirectedfrom=MSDN
 		For Mac see https://developer.apple.com/documentation/appkit/nspasteboardtype
-		</p>
+		</div>
 
 		1. Let |wellKnownFormat| be a string.
 
@@ -1702,19 +1694,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		1. Else
 
-			1. This is left to the implementation...
+			1. Assign "" to |wellKnownFormat|.
 
-				Issue: It's not good to leave things up to the
-				implementation. What should happen here?
-
-				Note: Due to limitations in the implementation of operating
-				system clipboards, scripts should not assume that custom
-				formats will be available to other applications on the
-				system. For example, there is a limit to how many custom
-				clipboard formats can be registered in Microsoft Windows.
-				While it is possible to use any string for
-				<a>setData()</a>'s type argument, sticking to the
-				[=mandatory data types=] is strongly recommended.
+			1. Return |wellKnownFormat|.
 
 	</div><!-- algorithm -->
 
