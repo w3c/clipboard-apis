@@ -819,7 +819,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data. For the [=/MIME type=]s that have a "web " prefix, [=read unsanitized format=] from the [=system clipboard=] and append the content of the format to |data|.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
@@ -984,7 +984,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. Let |type| be the |blob|'s {{Blob/type}}.
 
-							1. If |type| is not in the [=mandatory data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
+							1. If |type| is not in either the [=mandatory data types=] list or has "web " prefix, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
 							1. Let |cleanItem| be an optionally sanitized copy of |blob|.
 
@@ -1642,17 +1642,25 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		: Output
 		:: None
 
+		1. Let |webCustomFormats| be a [=sequence=]&lt;{{Blob}}&gt;.
+
 		1. For each |item| in |items|:
 
 			1. Let |formatString| be the result of running [=os specific well-known format=] given |item|'s {{Blob/type}}.
 
-			1. If |formatString| is empty then abort these steps.
+			1. If |formatString| is empty then follow the below steps:
+
+				1. If |formatString| has "web " prefix, then add |item| to |webCustomFormats|, else abort all steps.
 
 			1. Let |payload| be the result of [=UTF-8 decoding=] |item|'s underlying byte sequence.
 
 			1. Insert |payload| and |presentationStyle| into the [=system clipboard=] using |formatString| as the native clipboard format.
 
 			Issue: some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define to which of those data is written.
+
+		1. For each |customItem| in |webCustomFormats|:
+
+			1. [=Write unsanitized format=] with |customItem| and |customItem|'s {{Blob/type}}'s [=MIME type/essence=].
 
 	</div><!-- algorithm -->
 
@@ -1671,7 +1679,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		For Mac see https://developer.apple.com/documentation/appkit/nspasteboardtype
 		</p>
 
-		1. Let |wellKnownFormat| be a string.
+		1. Let |wellKnownFormat| be an empty string.
 
 		1. If |mimeType|'s [=MIME type/essence=] is "text/plain", then
 
@@ -1679,19 +1687,13 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Assign CF_UNICODETEXT to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
-
 				On MacOS, follow the convention described below:
 
 				1. Assign NSPasteboardTypeString to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
-
 				On Linux, ChromeOS, and Android, follow the convention described below:
 
 				1. Assign "text/plain" to |wellKnownFormat|.
-
-				1. Return |wellKnownFormat|.
 
 		1. Else, if |mimeType|'s [=MIME type/essence=] is "text/html", then
 
@@ -1699,19 +1701,13 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Assign CF_HTML to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
-
 				On MacOS, follow the convention described below:
 
 				1. Assign NSHTMLPboardType to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
-
 				On Linux, ChromeOS, and Android, follow the convention described below:
 
 				1. Assign "text/html" to |wellKnownFormat|.
-
-				1. Return |wellKnownFormat|.
 
 		1. Else, if |mimeType|'s [=MIME type/essence=] is "image/png", then
 
@@ -1719,19 +1715,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Assign "PNG" to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
-
 				On MacOS, follow the convention described below:
 
 				1. Assign NSPasteboardTypePNG to |wellKnownFormat|.
-
-				1. Return |wellKnownFormat|.
 
 				On Linux, ChromeOS, and Android, follow the convention described below:
 
 				1. Assign "image/png" to |wellKnownFormat|.
 
-				1. Return |wellKnownFormat|.
+		1. Return |wellKnownFormat|.
 
 	</div><!-- algorithm -->
 
@@ -1765,7 +1757,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	<h3 id="to-write-unsanitized-format"><dfn>write unsanitized format</dfn></h3>
 
 		: Input
-		:: |items|, {{Blob}}s
+		:: |items|,  a [=sequence=]&lt;{{Blob}}&gt;
 		:: |mimeType|, a string
 
 		1. Let |idx| be a number initialized to 0.
