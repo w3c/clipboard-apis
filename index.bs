@@ -819,7 +819,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data. For the [=/MIME type=]s that have a "web " prefix, [=read unsanitized format=] from the [=system clipboard=] and append the content of the format to |data|.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data. For the [=/MIME type=]s that have a "web "("web" followed by U+0020 SPACE) prefix, [=read unsanitized format=] from the [=system clipboard=] and append the content of the format to |data|.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
@@ -984,7 +984,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. Let |type| be the |blob|'s {{Blob/type}}.
 
-							1. If |type| is not in either the [=mandatory data types=] list or has "web " prefix, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
+							1. If |type| is not in either the [=mandatory data types=] list or has "web "("web" followed by U+0020 SPACE) prefix, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
 							1. Let |cleanItem| be an optionally sanitized copy of |blob|.
 
@@ -1650,7 +1650,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. If |formatString| is empty then follow the below steps:
 
-				1. If |formatString| has "web " prefix, then add |item| to |webCustomFormats|, else abort all steps.
+				1. If |formatString| has "web "("web" followed by U+0020 SPACE) prefix, then add |item| to |webCustomFormats|, else abort all steps.
 
 			1. Let |payload| be the result of [=UTF-8 decoding=] |item|'s underlying byte sequence.
 
