@@ -786,14 +786,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/html format, but image/png format has unsanitized payload to preserve meta data.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
+					Issue: Add definition of sanitized.
+
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
-
-					Issue: Add definition of sanitized copy.
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
 
@@ -837,7 +837,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| contains the sanitized copy of text/plain format.
+				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY contain the sanitized copy of text/plain format.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
@@ -953,14 +953,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. If |type| is not in the [=mandatory data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
-							1. Let |cleanItem| be a sanitized copy of |blob|.
+							1. Let |cleanItem| be an optionally sanitized copy of |blob|.
 
 								Issue: Add definition of sanitized copy.
 
-							1. If unable to create a sanitized copy, then follow the below steps:
-							
-								1. [=Reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+							1. If sanitization was attempted and was not successfully completed, then follow the below steps:
 
+								1. [=Reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+								
 								1. Abort these steps.
 
 							1. Append |cleanItem| to |cleanItemList|.
