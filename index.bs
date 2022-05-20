@@ -1720,7 +1720,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				<a>setData()</a>'s type argument, sticking to the
 				[=mandatory data types=] is strongly recommended.
 
-			1. Return |wellKnownFormat|.
+		1. Return |wellKnownFormat|.
 
 	</div><!-- algorithm -->
 
