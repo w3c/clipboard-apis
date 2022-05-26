@@ -172,7 +172,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		exposed as a {{DataTransfer}} object that mirrors the contents of the clipboard.
 
 	* For the [[#async-clipboard-api]], the [=system clipboard data=] is
-		exposed as a sequence of [=/clipboard item=] objects that mirrors the contents of
+		exposed as a [=list of representations=] that mirrors the contents of
 		the clipboard.
 
 <h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
@@ -688,7 +688,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. For each (|key|, |value|) in |items|:
 
-				1. Let |mimeType| be the result of [=parsing a MIME type=] given |key|.
+				1. Let |webCustomFormatKey| be an empty string.
+
+				1. If |key| has "web "("web" followed by U+0020 SPACE) prefix, then remove "web " prefix and set the remaining string to |webCustomFormatKey|.
+
+				1. If |webCustomFormatKey| is not empty, then let |mimeType| be the result of [=parsing a MIME type=] given |webCustomFormatKey|, else let |mimeType| be the result of [=parsing a MIME type=] given |key|.
 
 				1. If |mimeType| is failure, then throw a {{TypeError}}.
 
@@ -724,7 +728,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |realm| be [=this=]'s [=relevant realm=].
 
-			1. Let |mimeType| be the result of [=parsing a MIME type=] given |type|.
+			1. Let |webCustomFormatKey| be an empty string.
+
+			1. If |type| has "web "("web" followed by U+0020 SPACE) prefix, then remove "web " prefix and set the remaining string to |webCustomFormatKey|.
+
+			1. If |webCustomFormatKey| is not empty, then let |mimeType| be the result of [=parsing a MIME type=] given |webCustomFormatKey|, else let |mimeType| be the result of [=parsing a MIME type=] given |type|.
 
 			1. If |mimeType| is failure, then throw a {{TypeError}}.
 
@@ -819,7 +827,31 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Abort these steps.
 
-				1. Let |data| be a copy of the [=system clipboard data=] represented as [=clipboard items=]. For the MIME types defined in the [=mandatory data types=] list, |data| MAY be sanitized, but image/png format has unsanitized payload to preserve meta data. For the [=/MIME type=]s that have a "web "("web" followed by U+0020 SPACE) prefix, [=read unsanitized format=] from the [=system clipboard=] and append the content of the format to |data|.
+				1. Let |itemType| be a new [=/clipboard item=].
+
+				1. Let |data| be a copy of the [=system clipboard data=].
+
+				1. If |data|'s [=list/size=] is greater than 1, then add |data|[0] to |dataList|.
+
+					Issue: Reading multiple clipboard items should be fixed in https://github.com/w3c/clipboard-apis/issues/166.
+				
+				1. For each |representation| in |data|:
+				
+					1. Let |mimeType| be the result of [=parsing a MIME type=] given |representation|'s [=representation/MIME type=].
+
+					1. If |mimeType| is failure, then continue the loop.
+
+					1. If |mimeType| is defined in the [=mandatory data types=] list, then perform the below steps:
+
+						1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
+
+						1. |representation|'s [=representation/data=] MAY be sanitized, but image/png format has unsanitized payload to preserve meta data.
+
+						1. Append |representation| to |itemType|'s [=list of representations=].
+
+				1. Let |webCustomData| be the result of running [=read web custom format=] from the [=system clipboard=].
+
+				1. If |webCustomData| is not empty, then append |webCustomData| to |itemType|.
 
 					Issue: Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.
 
@@ -832,7 +864,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Let |items| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
-					1. For each [=/clipboard item=] |underlyingItem| of |data|:
+					1. For each [=/clipboard item=] |underlyingItem| of |itemType|:
 
 						1. Let |item| be the result of running the steps of [=create a ClipboardItem object=] given |underlyingItem| and |realm|.
 
@@ -1650,7 +1682,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. If |formatString| is empty then follow the below steps:
 
-				1. If |formatString| has "web "("web" followed by U+0020 SPACE) prefix, then add |item| to |webCustomFormats|, else abort all steps.
+				1. Let |webCustomFormatString| be the |item|'s {{Blob/type}}.
+
+				1. Let |webCustomFormat| be an empty {{Blob/type}}.
+
+				1. If |webCustomFormatString| has "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in |webCustomFormat|'s {{Blob/type}}'s [=MIME type/essence=], else abort all steps.
+				
+				1. Set |item|'s {{Blob/type}} to |webCustomFormat|.
+
+				1. Append |webCustomFormat| to |webCustomFormats|.
 
 			1. Let |payload| be the result of [=UTF-8 decoding=] |item|'s underlying byte sequence.
 
@@ -1658,9 +1698,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			Issue: some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define to which of those data is written.
 
-		1. For each |customItem| in |webCustomFormats|:
-
-			1. [=Write unsanitized format=] with |customItem| and |customItem|'s {{Blob/type}}'s [=MIME type/essence=].
+		1. [=Write web custom formats=] given |webCustomFormats|.
 
 	</div><!-- algorithm -->
 
@@ -1727,42 +1765,56 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	</div><!-- algorithm -->
 
-	<div class="algorithm" data-algorithm="read-unsanitized-format">
-	<h3 id="to-read-unsanitized-format"><dfn>read unsanitized format</dfn></h3>
-
-		: Input
-		:: |mimeType|, a string
+	<div class="algorithm" data-algorithm="read-web-custom-format">
+	<h3 id="to-read-web-custom-format"><dfn>read web custom format</dfn></h3>
 
 		: Output
-		:: |item|, a {{Blob}}
+		:: |itemType|, a [=/clipboard item=]
+
+		1. Let |itemType| be a new [=/clipboard item=].
 
 		1. Let |webCustomFormatMap| be the [=os specific custom map name=].
 
 		1. Read |webCustomFormatMap| from the [=system clipboard=].
 
+		1. If |webCustomFormatMap| is empty, then return |itemType|.
+
 		1. Let |webCustomFormatMapString| be the JSON string deserialized from |webCustomFormatMap|.
 
 			Note: Need a JSON reader to deserialize the content from the |webCustomFormatMap|.
 
-		1. Let |webCustomFormat| be the value corresponding to the |mimeType| key in |webCustomFormatMapString|.
+		1. For each (|key|, |value|) in |webCustomFormatMapString|:
 
-		1. Let |item| be a {{Blob}}.
+			1. Let |mimeType| be the result of [=parsing a MIME type=] given |key|.
 
-		1. Read |webCustomFormat| from the [=system clipboard=] and store the resulting data into |item|.
+			1. If |mimeType| is failure, then continue the loop.
 
-		1. Return |item|.
+			1. Prepend "web " ("web" followed by U+0020 SPACE) prefix to |mimeType|.
+
+			1. Let |representation| be a new [=representation=].
+
+			1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
+
+			1. Read |webCustomFormat| from the [=system clipboard=] given |value|.
+			
+			1. If the read is successful, then set |representation|'s [=representation/data=] to the resulting data from the [=system clipboard=], else continue the loop.
+
+			1. Append |representation| to |itemType|'s [=list of representations=].
+
+		1. Return |itemType|.
 
 	</div><!-- algorithm -->
 
-	<h3 id="to-write-unsanitized-format"><dfn>write unsanitized format</dfn></h3>
+	<h3 id="to-write-web-custom-formats"><dfn>write web custom formats</dfn></h3>
 
 		: Input
 		:: |items|,  a [=sequence=]&lt;{{Blob}}&gt;
-		:: |mimeType|, a string
 
 		1. Let |idx| be a number initialized to 0.
 
 		1. Let |webCustomFormatMap| be the [=os specific custom map name=].
+
+		1. Let |webCustomFormatMapString| be an empty JSON string.
 
 		1. For each |item| in |items|:
 
@@ -1770,9 +1822,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Let |webCustomFormatIdx| be the result of appending |idx| to |webCustomFormat|.
 
-			1. Insert |mimeType| as key and |webCustomFormatIdx| as value into the |webCustomFormatMap|.
+			1. Insert |item|'s {{Blob/type}} as key and |webCustomFormatIdx| as value into the |webCustomFormatMapString| using a JSON serializer.
 
-				Note: Need a JSON writer to serialize the content into the |webCustomFormatMap|.
+				Note: Need a JSON writer to serialize the content into the |webCustomFormatMapString|.
 
 			1. Insert the |item| into the [=system clipboard=] using |webCustomFormatIdx| as the format.
 
@@ -1780,7 +1832,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. If |idx| is greater than 100, then break from this loop.
 
-		1. Insert the |webCustomFormatMap| into the [=system clipboard=].
+		1. Insert the |webCustomFormatMapString| into the [=system clipboard=] using |webCustomFormatMap| as the format.
 
 
 	</div><!-- algorithm -->
