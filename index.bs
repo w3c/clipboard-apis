@@ -167,9 +167,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	The [=system clipboard=] has a list of [=system clipboard item=]s that are collectively	called the <dfn>system clipboard data</dfn>.
 
-	Each <dfn>system clipboard item</dfn> has a list of [=system representations=].
+	Each <dfn>system clipboard item</dfn> has a list of [=system clipboard representation=]s.
 
-	Each <dfn>system representation</dfn> has a <dfn for="system representation">name</dfn>, which is a string, and <dfn for="system representation">data</dfn>, which is a sequence of bytes.
+	Each <dfn>system clipboard representation</dfn> has a <dfn for="system clipboard representation">name</dfn>, which is a string, and <dfn for="system clipboard representation">data</dfn>, which is a sequence of bytes.
 
 <h2 id="clipboard-events-and-interfaces">Clipboard Events</h2>
 
@@ -639,6 +639,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		Some platforms may support having more than one [=/clipboard item=] at a time on the [=clipboard=], while other platforms replace the previous [=/clipboard item=] with the new one.
 
 		A [=/clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]), an <dfn for="representation">is custom</dfn> flag, initially |false|, that indicates if this [=representation=] should be treated as a [=web custom format=] (as opposed to a well-known format of the [=system clipboard=]), and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
+		A <dfn>web custom format</dfn> has [=representation/is custom=] set to |true|.
 
 		<p class=note>
 			In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
@@ -847,11 +848,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. For each |systemClipboardRepresentation| in |systemClipboardItem|:
 
-						1. Let |mimeType| be the result of running the [=well-known-mime-type-from-os-specific-format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
+						1. Let |mimeType| be the result of running the [=well-known mime type from os specific format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
 						
 						1. If |mimeType| is null, continue this loop.
 
-						1. Let |representation| be a new [=clipboard item/representation=].
+						1. Let |representation| be a new [=representation=].
 						
 						1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
 
@@ -873,7 +874,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				
 				Else:
 
-					1. Let |customItem| be a new [=clipboard item=].
+					1. Let |customItem| be a new [=/clipboard item=].
 
 					1. Run the [=read web custom format=] algorithm given |customItem|.
 
@@ -1794,7 +1795,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		:: |osFormatName|, a platform specific string type. On Mac it's NSPasteboardType, on Windows it's LPCWSTR and Linux it's a const char*.
 
 		: Output
-		:: |mimeType|, a [=MIME type=]
+		:: |mimeType|, a [=/MIME type=]
 
 		<p class=note>
 		For Windows see https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats and
