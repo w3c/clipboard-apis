@@ -134,7 +134,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<div class="example">
 		To copy the local clipboard data to a remote device, a web application would
-		listen for [=clipboardchange=] events, {{Clipboard/read()}} from the clipboard
+		listen for {{DocumentAndElementEventHandlers/clipboardchange}} events, {{Clipboard/read()}} from the clipboard
 		whenever it is updated, and then send the new clipboard data to the remote device.
 		</div>
 
@@ -234,9 +234,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="clipboard-event-definitions">Clipboard events</h3>
 
-		<h4 id="clipboard-event-clipboardchange">The <dfn>clipboardchange</dfn> event</h4>
+		<h4 id="clipboard-event-clipboardchange">The <dfn event for=DocumentAndElementEventHandlers>clipboardchange</dfn> event</h4>
 
-			The [=clipboardchange=] event fires whenever the contents of the
+			The {{DocumentAndElementEventHandlers/clipboardchange}} event fires whenever the contents of the
 			[=system clipboard=] are changed. These changes could be due to any of the
 			following (non-exhaustive):
 
@@ -245,58 +245,58 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			* Actions that update the clipboard outside the user agent
 
 			If the clipboard contents are changed outside the user agent, then the
-			[=clipboardchange=] event MUST fire when the user agent regains focus.
+			{{DocumentAndElementEventHandlers/clipboardchange}} event MUST fire when the user agent regains focus.
 
-			Since synthetic [=cut=] and [=copy=] events do not update the [=system clipboard=],
+			Since synthetic {{DocumentAndElementEventHandlers/cut}} and {{DocumentAndElementEventHandlers/copy}} events do not update the [=system clipboard=],
 			they will not trigger a "clipboardchange" event.
 
-		<h4 id="clipboard-event-copy">The <dfn>copy</dfn> event</h4>
+		<h4 id="clipboard-event-copy">The <dfn event for=DocumentAndElementEventHandlers>copy</dfn> event</h4>
 
 			When the user initiates a copy action, the user agent
 			[=fire a clipboard event|fires a clipboard event=] named
-			[=copy=].
+			{{DocumentAndElementEventHandlers/copy}}.
 
 			If the event is not canceled, the currently selected
 			data will be copied to the [=system clipboard=].
 			The current document selection is not affected.
 
-			The [=copy=] event bubbles, is cancelable, and is composed.
+			The {{DocumentAndElementEventHandlers/copy}} event bubbles, is cancelable, and is composed.
 
 			See [[#copy-action]] for a detailed description of the processing model for
 			this event.
 
-			A synthetic [=copy=] event can be manually constructed and dispatched, but it
+			A synthetic {{DocumentAndElementEventHandlers/copy}} event can be manually constructed and dispatched, but it
 			will not affect the contents of the [=system clipboard=].
 
-		<h4 id="clipboard-event-cut">The <dfn>cut</dfn> event</h4>
+		<h4 id="clipboard-event-cut">The <dfn event for=DocumentAndElementEventHandlers>cut</dfn> event</h4>
 
 			When the user initiates a cut action, the user agent
 			[=fire a clipboard event|fires a clipboard event=] named
-			[=cut=].
+			{{DocumentAndElementEventHandlers/cut}}.
 
 			In an [=editable context=], if the event is not
 			canceled the action will place the currently selected data on the
 			[=system clipboard=] and remove the selection from the document.
-			The [=cut=] event fires before the selected data is removed. When
+			The {{DocumentAndElementEventHandlers/cut}} event fires before the selected data is removed. When
 			the cut operation is completed, the selection is collapsed.
 
 			In a non-[=editable context=], the {{ClipboardEvent/clipboardData}} will
-			be an empty list. Note that the [=cut=] event will still be fired
+			be an empty list. Note that the {{DocumentAndElementEventHandlers/cut}} event will still be fired
 			in this case.
 
-			The [=cut=] event bubbles, is cancelable, and is composed.
+			The {{DocumentAndElementEventHandlers/cut}} event bubbles, is cancelable, and is composed.
 
 			See [[#cut-action]] for a detailed description of the processing model for
 			this event.
 
-			A synthetic [=cut=] event can be manually constructed and dispatched, but it
+			A synthetic {{DocumentAndElementEventHandlers/cut}} event can be manually constructed and dispatched, but it
 			will not affect the contents of the document or of the [=system clipboard=].
 
-		<h4 id="clipboard-event-paste">The <dfn>paste</dfn> event</h4>
+		<h4 id="clipboard-event-paste">The <dfn event for=DocumentAndElementEventHandlers>paste</dfn> event</h4>
 
 			When a user initiates a paste action, the user agent
 			[=fire a clipboard event|fires a clipboard event=] named
-			[=paste=]. The event fires before any clipboard data is inserted
+			{{DocumentAndElementEventHandlers/paste}}. The event fires before any clipboard data is inserted
 			into the document.
 
 			If the cursor is in an [=editable context=], the paste action will
@@ -304,14 +304,14 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			for the given context.
 
 			The paste action has no effect in a non-[=editable context=],
-			but the [=paste=] event fires regardless.
+			but the {{DocumentAndElementEventHandlers/paste}} event fires regardless.
 
-			The [=paste=] event bubbles, is cancelable, and is composed.
+			The {{DocumentAndElementEventHandlers/paste}} event bubbles, is cancelable, and is composed.
 
 			See [[#paste-action]] for a detailed description of the processing model for
 			this event.
 
-			A synthetic [=paste=] event can be manually constructed and dispatched, but it
+			A synthetic {{DocumentAndElementEventHandlers/paste}} event can be manually constructed and dispatched, but it
 			will not affect the contents of the document.
 
 	<h3 id="integration-with-other-scripts-and-events">Integration with other scripts and events</h3>
@@ -333,7 +333,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			apps to modify the clipboard regardless of the origin of the scripting
 			thread.
 
-			Synthetic [=cut=] and [=copy=] events <em>must not</em> modify data on the
+			Synthetic {{DocumentAndElementEventHandlers/cut}} and {{DocumentAndElementEventHandlers/copy}} events <em>must not</em> modify data on the
 			system clipboard.
 
 		<h4 id="allow-read-clipboard">Event handlers that are <dfn>allowed to read from clipboard</dfn></h4>
@@ -349,7 +349,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			* The action that triggers the event is triggered in an app with
 				permissions to read the clipboard.
 
-			Synthetic [=paste=] events <em>must not</em> give a script access to data on
+			Synthetic {{DocumentAndElementEventHandlers/paste}} events <em>must not</em> give a script access to data on
 			the real system clipboard.
 
 		<h4 id="integration-with-rich-text-editing">Integration with rich text editing APIs</h4>
@@ -420,7 +420,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="override-copy">Overriding the copy event</h3>
 
-		To override the default [=copy=] event behavior, a [=copy=] event
+		To override the default {{DocumentAndElementEventHandlers/copy}} event behavior, a {{DocumentAndElementEventHandlers/copy}} event
 		handler must be added and this event handler must call
 		{{Event/preventDefault()}} to cancel the event.
 
@@ -445,7 +445,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="override-cut">Overriding the cut event</h3>
 
-		To override the default [=cut=] event behavior, a [=cut=] event
+		To override the default {{DocumentAndElementEventHandlers/cut}} event behavior, a {{DocumentAndElementEventHandlers/cut}} event
 		handler must be added and this event handler must call
 		{{Event/preventDefault()}} to cancel the event.
 
@@ -454,7 +454,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		If the {{ClipboardEvent}} is not canceled, then the data from the
 		current document selection will be copied instead.
 
-		Note that canceling the [=cut=] event will also prevent the document from
+		Note that canceling the {{DocumentAndElementEventHandlers/cut}} event will also prevent the document from
 		being updated (i.e., the current selection will not be removed). The event
 		handler will need to manually update the document to remove the currently
 		selected text.
@@ -480,20 +480,20 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="override-paste">Overriding the paste event</h3>
 
-		To override the default [=paste=] event behavior, a [=paste=] event
+		To override the default {{DocumentAndElementEventHandlers/paste}} event behavior, a {{DocumentAndElementEventHandlers/paste}} event
 		handler must be added and this event handler must call
 		{{Event/preventDefault()}} to cancel the event.
 
 		Canceling the event is required so that the user agent does not update the
 		document with data from the [=system clipboard=].
 
-		Note that canceling the [=paste=] event will also prevent the document from
+		Note that canceling the {{DocumentAndElementEventHandlers/paste}} event will also prevent the document from
 		being updated (i.e., nothing will be pasted into the document). The event
 		handler will need to manually paste the data into the document.
 
 		Also note that, when pasting, the [=drag data store mode=] flag is
 		<a lt="concept dnd ro">read-only</a>, hence calling {{DataTransfer/setData()}} from a
-		[=paste=] event handler will not modify the data that is
+		{{DocumentAndElementEventHandlers/paste}} event handler will not modify the data that is
 		inserted, and not modify the data on the clipboard.
 
 		<pre class="example javascript">
@@ -1079,7 +1079,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Return false from the copy action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named [=copy=]
+		1. [=Fire a clipboard event=] named {{DocumentAndElementEventHandlers/copy}}
 
 		1. If the event was not canceled, then
 
@@ -1087,7 +1087,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				Implementations <em>should</em> create alternate text/html and
 				text/plain clipboard formats when content in a web page is selected.
 
-			1. [=Fire a clipboard event=] named [=clipboardchange=]
+			1. [=Fire a clipboard event=] named {{DocumentAndElementEventHandlers/clipboardchange}}
 
 		1. Else, if the event was canceled, then
 
@@ -1112,7 +1112,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. Return false from the cut action, terminate this algorithm
 
-		1. [=Fire a clipboard event=] named [=cut=]
+		1. [=Fire a clipboard event=] named {{DocumentAndElementEventHandlers/cut}}
 
 		1. If the event was not canceled, then
 
@@ -1127,7 +1127,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				1. Remove the contents of the selection from the document
 					and collapse the selection.
 
-				1. [=Fire a clipboard event=] named [=clipboardchange=]
+				1. [=Fire a clipboard event=] named {{DocumentAndElementEventHandlers/clipboardchange}}
 
 				1. Queue tasks to fire any events that should fire due to the
 					modification, see
@@ -1145,7 +1145,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				a <em>clear-was-called</em> flag and a <em>types-to-clear</em>
 				list.
 
-			1. [=Fire a clipboard event=] named [=clipboardchange=]
+			1. [=Fire a clipboard event=] named {{DocumentAndElementEventHandlers/clipboardchange}}
 
 		1. Return true from the cut action
 
@@ -1173,7 +1173,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				1. Return false from the paste action, terminate this algorithm
 
 		1. <a href="#fire-a-clipboard-event">Fire a clipboard event</a>
-			named [=paste=]
+			named {{DocumentAndElementEventHandlers/paste}}
 
 		1. If the event was not canceled, then
 
