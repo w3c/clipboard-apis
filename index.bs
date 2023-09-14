@@ -580,6 +580,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				readonly attribute FrozenArray&lt;DOMString> types;
 
 				Promise&lt;Blob&gt; getType(DOMString type);
+
+				static boolean supports(DOMString type);
 			};
 
 			enum PresentationStyle { "unspecified", "inline", "attachment" };
@@ -608,6 +610,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<dt><code><var>clipboardItem</var>.<var>types</var></code></dt>
 			<dd>Returns the list of [=representation/mime type=]s contained in the [=/clipboard item=] object.</dd>
+
+			<dt><code>{{ClipboardItem}}.supports(<var>type</var>)</code></dt>
+			<dd>Returns true if <var>type</var> is in [=mandatory data types=], else, returns false.</dd>
 		</dl>
 
 		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A [=/clipboard item=] serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.
@@ -741,6 +746,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
 
 			1. Return |p|.
+
+		<h4 method for=ClipboardItem lt=supports(type)>supports(type)</h4>
+
+			This method must run the below steps:
+
+			1. If |type| is in [=mandatory data types=], then return true.
+
+			1. If |type| is not in [=mandatory data types=], then return false.
+
 
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
