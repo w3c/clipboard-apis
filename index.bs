@@ -42,9 +42,9 @@ urlPrefix: https://dom.spec.whatwg.org/#; type: dfn;
 urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	text: editing host
 spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
-    type: dfn
-        text: Assert; url: sec-algorithm-conventions
-        text: promise; url: sec-promise-objects
+	type: dfn
+		text: Assert; url: sec-algorithm-conventions
+		text: promise; url: sec-promise-objects
 urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 	text: denied
 	text: granted
