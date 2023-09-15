@@ -49,6 +49,10 @@ urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 	text: denied
 	text: granted
 	text: prompt
+url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
+	text: permission task source
+url: https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global; type: dfn;
+	text: global object
 urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	text: Blob
 	text: type
@@ -796,7 +800,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -809,7 +813,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |items| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
@@ -847,7 +851,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -857,7 +861,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					Issue: Add definition of sanitized copy.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |dataList| be a [=sequence=] of [=/clipboard item=]s.
 
@@ -921,11 +925,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |itemList| and |cleanItemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
@@ -1016,11 +1020,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |itemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
