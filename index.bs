@@ -1009,7 +1009,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<div></div>
 
 			<pre class="example javascript" highlight=js>
-				var data = [new ClipboardItem({ "text/plain": Promise.resolve(new Blob(["Text data"], { type: "text/plain" }) }))];
+				var data = [new ClipboardItem({ "text/plain": Promise.resolve(new Blob(["Text data"], { type: "text/plain" })) })];
 				navigator.clipboard.write(data).then(function() {
 					console.log("Copied to clipboard successfully!");
 				}, function() {
