@@ -638,11 +638,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		Some platforms may support having more than one [=/clipboard item=] at a time on the [=clipboard=], while other platforms replace the previous [=/clipboard item=] with the new one.
 
-		A [=/clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]), an <dfn for="representation">is custom</dfn> flag, initially |false|, that indicates if this [=representation=] should be treated as a [=web custom format=] (as opposed to a well-known format of the [=system clipboard=]), and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
-		A <dfn>web custom format</dfn> has [=representation/is custom=] set to |true|.
+		A [=/clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]), an <dfn for="representation">isCustom</dfn> flag, initially |false|, that indicates if this [=representation=] should be treated as a [=web custom format=] (as opposed to a well-known format of the [=system clipboard=]), and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
+		A <dfn>web custom format</dfn> has [=representation/isCustom=] set to |true|.
 
 		<p class=note>
-			In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain).
+			In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain), or a web custom format (web text/csv).
 		</p>
 
 		Each of these [=/MIME type=]s describe a different [=representation=] of the same [=/clipboard item=] at different levels of fidelity and make the [=/clipboard item=] more consumable by target applications during paste.
@@ -695,13 +695,13 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					1. Set |isCustom| |true|
 					
-				1. Set |representation|'s [=representation/is custom=] flag to |isCustom|.
+				1. Set |representation|'s [=representation/isCustom=] flag to |isCustom|.
 
 				1. Let |mimeType| be the result of [=parsing a MIME type=] given |key|.
 
 				1. If |mimeType| is failure, then throw a {{TypeError}}.
 
-				1. If [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=] [=list/contains=] a [=representation=] whose [=representation/MIME type=] is |mimeType| and whose [representation/is custom] is |isCustom|, then throw a {{TypeError}}.
+				1. If [=this=]'s [=ClipboardItem/clipboard item=]'s [=list of representations=] [=list/contains=] a [=representation=] whose [=representation/MIME type=] is |mimeType| and whose [representation/isCustom] is |isCustom|, then throw a {{TypeError}}.
 
 				<p class=note>The step above prevents collision between mime-types well-known by the user agent and those that are intended by the author to be treated as a custom type.  For example, it would be possible for the author's list of items to contain representations for "text/html" as well as "web text/html".</p>
 
@@ -753,7 +753,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. For each |representation| in |itemTypeList|:
 
-				1. If |representation|'s [=representation/MIME type=] is |mimeType| and |representation|'s [=representation/is custom=] is |isCustom|, then:
+				1. If |representation|'s [=representation/MIME type=] is |mimeType| and |representation|'s [=representation/isCustom=] is |isCustom|, then:
 
 					1. Let |representationDataPromise| be the |representation|'s [=representation/data=].
 
@@ -1045,7 +1045,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 							1. Let |type| be the |blob|'s {{Blob/type}}.
 
-							1. If |type| is not in the [=mandatory data types=] list and has "web "("web" followed by U+0020 SPACE) prefix, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
+							1. If |type| is not in the [=mandatory data types=] or [=optional data types=] list, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm| and abort these steps.
 
 							1. Let |cleanItem| be an optionally sanitized copy of |blob|.
 
@@ -1870,7 +1870,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
 
-			1. Set |representation|'s [=representation/is custom=] flag to |true|.
+			1. Set |representation|'s [=representation/isCustom=] flag to |true|.
 
 			1. Read |webCustomFormat| from the [=system clipboard=] given |value|.
 			
