@@ -42,13 +42,17 @@ urlPrefix: https://dom.spec.whatwg.org/#; type: dfn;
 urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
 	text: editing host
 spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
-    type: dfn
-        text: Assert; url: sec-algorithm-conventions
-        text: promise; url: sec-promise-objects
+	type: dfn
+		text: Assert; url: sec-algorithm-conventions
+		text: promise; url: sec-promise-objects
 urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
 	text: denied
 	text: granted
 	text: prompt
+url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
+	text: permission task source
+url: https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global; type: dfn;
+	text: global object
 urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 	text: Blob
 	text: type
@@ -516,11 +520,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 	<h3 id="mandatory-data-types-x"><dfn>Mandatory data types</dfn></h3>
 
-		The implementation must recognise the native OS clipboard format description
+		The implementation must recognize the native OS clipboard format description
 		for the following data types, to be able to populate the
-		{{DataTransferItemList}} with the correct description for paste events, and
-		set the correct data format on the OS clipboard in response to copy and cut
-		events.
+		{{DataTransferItemList}} and {{ClipboardItem}} with the correct description for
+		paste events, and set the correct data format on the OS clipboard in response to
+		copy and cut events.
 
 		<h4 id="reading-from-clipboard">Reading from the clipboard</h4>
 
@@ -545,6 +549,21 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			clipboard are limited as a security precaution. Untrusted scripts can
 			attempt to exploit security vulnerabilities in local software by placing
 			data known to trigger those vulnerabilities on the clipboard.
+
+	<h3 id="optional-data-types-x"><dfn>Optional data types</dfn></h3>
+
+		The implementation MAY recognize the native OS clipboard format description
+		for the following data types, to be able to populate the
+		{{ClipboardItem}} with the correct description for paste events, and
+		set the correct data format on the OS clipboard in response to copy and cut
+		events.
+
+			These data types MAY be exposed by UAs if a corresponding native
+			type exists on the clipboard:
+
+			* text/uri-list
+			* image/svg+xml
+			* Custom format with "web "("web" followed by U+0020 SPACE) prefix.
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -580,6 +599,8 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				readonly attribute FrozenArray&lt;DOMString> types;
 
 				Promise&lt;Blob&gt; getType(DOMString type);
+
+				static boolean supports(DOMString type);
 			};
 
 			enum PresentationStyle { "unspecified", "inline", "attachment" };
@@ -608,6 +629,9 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			<dt><code><var>clipboardItem</var>.<var>types</var></code></dt>
 			<dd>Returns the list of [=representation/mime type=]s contained in the [=/clipboard item=] object.</dd>
+
+			<dt><code>{{ClipboardItem}}.supports(<var>type</var>)</code></dt>
+			<dd>Returns true if <var>type</var> is in [=mandatory data types=] or [=optional data types=], else, returns false.</dd>
 		</dl>
 
 		A <dfn>clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A [=/clipboard item=] serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.
@@ -742,6 +766,15 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 			1. Return |p|.
 
+		<h4 method for=ClipboardItem lt=supports(type)>supports(type)</h4>
+
+			This method must run the below steps:
+
+			1. If |type| is in [=mandatory data types=] or [=optional data types=], then return true.
+
+			1. If not, then return false.
+
+
 	<h3 id="clipboard-interface">Clipboard Interface</h3>
 
 		<pre class="idl" data-highlight="webidl">
@@ -782,7 +815,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -795,7 +828,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					Note: As further described in [[#image-transcode]] this explicitly does not transcode images.
 					Rather the original unmodified image data should be exposed to the website.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |items| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
@@ -833,7 +866,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -843,7 +876,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					Issue: Add definition of sanitized copy.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |dataList| be a [=sequence=] of [=/clipboard item=]s.
 
@@ -907,11 +940,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |itemList| and |cleanItemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
@@ -1002,11 +1035,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=Realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=Realm/global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
 
 					1. Let |itemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
