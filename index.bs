@@ -1926,7 +1926,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		On MacOS, follow the convention described below:
 
-		1. Assign "com.web.custom.format.map" to |webCustomFormatMap|.
+		1. Assign "org.w3.web-custom-format.map" to |webCustomFormatMap|.
 
 		1. Return |webCustomFormatMap|.
 
@@ -1952,7 +1952,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		On MacOS, follow the convention described below:
 
-		1. Assign "com.web.custom.format" to |webCustomFormat|.
+		1. Assign "org.w3.web-custom-format.type-" to |webCustomFormat|.
 
 		1. Return |webCustomFormat|.
 
