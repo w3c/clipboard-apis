@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="4db562ea6986a1dacdb373643c1bda36488e0916" name="document-revision">
+  <meta content="eb4e99a40e2b82ec4a8265dab81b0cc442706a58" name="document-revision">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -1063,6 +1063,11 @@ var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
       <li><a href="#to-write-content-to-clipboard"><span class="secno"></span> <span class="content"><span>write content to the clipboard</span></span></a>
       <li><a href="#to-write-blobs-to-clipboard"><span class="secno"></span> <span class="content"><span>write blobs and option to the clipboard</span></span></a>
       <li><a href="#to-os-specific-well-known-format"><span class="secno"></span> <span class="content"><span>os specific well-known format</span></span></a>
+      <li><a href="#to-well-known-mime-type-from-os-specific-format"><span class="secno"></span> <span class="content"><span>well-known mime type from os specific format</span></span></a>
+      <li><a href="#to-read-web-custom-format"><span class="secno"></span> <span class="content"><span>read web custom format</span></span></a>
+      <li><a href="#to-write-web-custom-formats"><span class="secno"></span> <span class="content"><span>write web custom formats</span></span></a>
+      <li><a href="#to-os-specific-custom-map-name"><span class="secno"></span> <span class="content"><span>os specific custom map name</span></span></a>
+      <li><a href="#to-os-specific-custom-name"><span class="secno"></span> <span class="content"><span>os specific custom name</span></span></a>
       <li><a href="#to-fire-a-clipboard-event"><span class="secno"></span> <span class="content"><span>fire a clipboard event</span></span></a>
       <li><a href="#to-process-html-paste-event"><span class="secno"></span> <span class="content"><span>process an HTML paste event</span></span></a>
      </ol>
@@ -1149,42 +1154,34 @@ access to this API is controlled by a permission.</p>
 	"url", "email", "password" or "number".</p>
    <h2 class="heading settled" data-level="4" id="model"><span class="secno">4. </span><span class="content">Model</span><a class="self-link" href="#model"></a></h2>
    <p>The platform provides a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard">system clipboard</dfn>.</p>
-   <p>The <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard">system clipboard</a> has a list of clipboard items that are collectively
-	called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard-data">system clipboard data</dfn>.</p>
-   <ul>
-    <li data-md>
-     <p>For the <a href="#clipboard-event-api">§ 6 Clipboard Event API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data">system clipboard data</a> is
-exposed as a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer">DataTransfer</a></code> object that mirrors the contents of the clipboard.</p>
-    <li data-md>
-     <p>For the <a href="#async-clipboard-api">§ 7 Asynchronous Clipboard API</a>, the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data①">system clipboard data</a> is
-exposed as a sequence of <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item">clipboard item</a> objects that mirrors the contents of
-the clipboard.</p>
-   </ul>
+   <p>The <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard">system clipboard</a> has a list of <a data-link-type="dfn" href="#system-clipboard-item" id="ref-for-system-clipboard-item">system clipboard item</a>s that are collectively	called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard-data">system clipboard data</dfn>.</p>
+   <p>Each <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard-item">system clipboard item</dfn> has a list of <a data-link-type="dfn" href="#system-clipboard-representation" id="ref-for-system-clipboard-representation">system clipboard representation</a>s.</p>
+   <p>Each <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="system-clipboard-representation">system clipboard representation</dfn> has a <dfn class="dfn-paneled" data-dfn-for="system clipboard representation" data-dfn-type="dfn" data-noexport id="system-clipboard-representation-name">name</dfn>, which is a string, and <dfn class="dfn-paneled" data-dfn-for="system clipboard representation" data-dfn-type="dfn" data-noexport id="system-clipboard-representation-data">data</dfn>, which is a sequence of bytes.</p>
    <h2 class="heading settled" data-level="5" id="clipboard-events-and-interfaces"><span class="secno">5. </span><span class="content">Clipboard Events</span><a class="self-link" href="#clipboard-events-and-interfaces"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="clipboard-event-interfaces"><span class="secno">5.1. </span><span class="content">Clipboard event interfaces</span><a class="self-link" href="#clipboard-event-interfaces"></a></h3>
    <p>The ClipboardEvent interface extends the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code> interface.</p>
    <div id="clipboardeventinit-idl">
 <pre class="idl highlight def" data-highlight="webidl"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-clipboardeventinit"><code><c- g>ClipboardEventInit</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit" id="ref-for-dictdef-eventinit"><c- n>EventInit</c-></a> {
-  <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①"><c- n>DataTransfer</c-></a>? <dfn class="idl-code" data-default="null" data-dfn-for="ClipboardEventInit" data-dfn-type="dict-member" data-export data-type="DataTransfer? " id="dom-clipboardeventinit-clipboarddata"><code><c- g>clipboardData</c-></code><a class="self-link" href="#dom-clipboardeventinit-clipboarddata"></a></dfn> = <c- b>null</c->;
+  <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer"><c- n>DataTransfer</c-></a>? <dfn class="idl-code" data-default="null" data-dfn-for="ClipboardEventInit" data-dfn-type="dict-member" data-export data-type="DataTransfer? " id="dom-clipboardeventinit-clipboarddata"><code><c- g>clipboardData</c-></code><a class="self-link" href="#dom-clipboardeventinit-clipboarddata"></a></dfn> = <c- b>null</c->;
 };
 </pre>
     <dl>
      <dt data-md><dfn data-dfn-for="ClipboardEventInit" data-dfn-type="dfn" data-export id="clipboardeventinit-clipboarddata">clipboardData<a class="self-link" href="#clipboardeventinit-clipboarddata"></a></dfn>
      <dd data-md>
-      <p>A <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer②">DataTransfer</a></code> object to hold data and meta data related to the event.</p>
+      <p>A <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①">DataTransfer</a></code> object to hold data and meta data related to the event.</p>
     </dl>
    </div>
    <div id="clipboardevent-idl">
 <pre class="idl highlight def" data-highlight="webidl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="clipboardevent"><code><c- g>ClipboardEvent</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①"><c- n>Event</c-></a> {
   <dfn class="idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="constructor" data-export data-lt="ClipboardEvent(type, eventInitDict)|constructor(type, eventInitDict)|ClipboardEvent(type)|constructor(type)" id="dom-clipboardevent-clipboardevent"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-clipboardeventinit" id="ref-for-dictdef-clipboardeventinit"><c- n>ClipboardEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ClipboardEvent/ClipboardEvent(type, eventInitDict), ClipboardEvent/constructor(type, eventInitDict), ClipboardEvent/ClipboardEvent(type), ClipboardEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-clipboardevent-clipboardevent-type-eventinitdict-eventinitdict"></a></dfn> = {});
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer③"><c- n>DataTransfer</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export data-readonly data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer②"><c- n>DataTransfer</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="ClipboardEvent" data-dfn-type="attribute" data-export data-readonly data-type="DataTransfer?" id="dom-clipboardevent-clipboarddata"><code><c- g>clipboardData</c-></code></dfn>;
 };
 </pre>
     <dl>
      <dt data-md><dfn data-dfn-for="ClipboardEvent" data-dfn-type="dfn" data-export id="clipboardevent-clipboarddata">clipboardData<a class="self-link" href="#clipboardevent-clipboarddata"></a></dfn>
      <dd data-md>
-      <p>The clipboardData attribute is an instance of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer④">DataTransfer</a></code> interface which lets a script read and manipulate values on the system
+      <p>The clipboardData attribute is an instance of the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer③">DataTransfer</a></code> interface which lets a script read and manipulate values on the system
 clipboard during user-initiated copy, cut and paste operations. The
 associated drag data store is a live but filtered view of the system
 clipboard, exposing <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types">mandatory data types</a> the implementation knows
@@ -1333,7 +1330,7 @@ permissions to read the clipboard.</p>
    <h2 class="heading settled" data-level="6" id="clipboard-event-api"><span class="secno">6. </span><span class="content">Clipboard Event API</span><a class="self-link" href="#clipboard-event-api"></a></h2>
    <p>The Clipboard Event API allows you to override the default cut, copy
 	and paste behavior of the user agent.</p>
-   <p>Access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑤">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata①">clipboardData</a></code> attribute.
+   <p>Access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer④">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata①">clipboardData</a></code> attribute.
 	One consequence of this is that these clipboard APIs can only
 	access clipboard data in the context of a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent①">ClipboardEvent</a></code> handler.</p>
    <p class="note" role="note"><span class="marker">Note:</span> If you need to access the clipboard outside of a clipboard event
@@ -1433,7 +1430,7 @@ document.addEventListener('paste', function(e) {
    </ul>
    <h4 class="heading settled" data-level="6.4.2" id="writing-to-clipboard"><span class="secno">6.4.2. </span><span class="content">Writing to the clipboard</span><a class="self-link" href="#writing-to-clipboard"></a></h4>
    <p>These data types must be placed on the clipboard with a corresponding
-			native type description if added to a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑥">DataTransfer</a></code> object during <em>copy</em> and <em>cut</em> events.</p>
+			native type description if added to a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑤">DataTransfer</a></code> object during <em>copy</em> and <em>cut</em> events.</p>
    <ul>
     <li data-md>
      <p>text/plain</p>
@@ -1510,31 +1507,32 @@ document.addEventListener('paste', function(e) {
     <dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code>
     <dd>Returns a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects①">Promise</a> to the <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob③">Blob</a></code> corresponding to the <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type②">mime type</a> <var>type</var>.
     <dt><code><var>clipboardItem</var>.<var>types</var></code>
-    <dd>Returns the list of <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type③">mime type</a>s contained in the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①">clipboard item</a> object.
+    <dd>Returns the list of <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type③">mime type</a>s contained in the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item">clipboard item</a> object.
     <dt><code><code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem③">ClipboardItem</a></code>.supports(<var>type</var>)</code>
     <dd>Returns true if <var>type</var> is in <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types①">mandatory data types</a> or <a data-link-type="dfn" href="#optional-data-types" id="ref-for-optional-data-types">optional data types</a>, else, returns false.
    </dl>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-item">clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②">clipboard item</a> serves two purposes. First, it allows a website to read data copied by a user to the system clipboard. Second, it allows a website to write data to the system clipboard.</p>
-   <p class="note" role="note"> For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item③">clipboard item</a>. If a user copies a set of files from their desktop, that list of files will be represented by multiple <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item④">clipboard item</a>s. </p>
-   <p>Some platforms may support having more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑤">clipboard item</a> at a time on the <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard①">clipboard</a>, while other platforms replace the previous <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑥">clipboard item</a> with the new one.</p>
-   <p>A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑦">clipboard item</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="list-of-representations">list of representations</dfn>, each <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="representation">representation</dfn> with an associated <dfn class="dfn-paneled" data-dfn-for="representation" data-dfn-type="dfn" data-noexport id="representation-mime-type">mime type</dfn> (a <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type">MIME type</a>) and <dfn class="dfn-paneled" data-dfn-for="representation" data-dfn-type="dfn" data-noexport id="representation-data">data</dfn> (a <code class="idl"><a data-link-type="idl" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①">ClipboardItemData</a></code>).</p>
-   <p class="note" role="note"> In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain). </p>
-   <p>Each of these <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type①">MIME type</a>s describe a different <a data-link-type="dfn" href="#representation" id="ref-for-representation①">representation</a> of the same <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑧">clipboard item</a> at different levels of fidelity and make the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑨">clipboard item</a> more consumable by target applications during paste.</p>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-item">clipboard item</dfn> is conceptually data that the user has expressed a desire to make shareable by invoking a "cut" or "copy" command. A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①">clipboard item</a> serves two purposes. First, it allows a website to read data copied by a user to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①①">system clipboard</a>. Second, it allows a website to write data to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①②">system clipboard</a>.</p>
+   <p class="note" role="note"> For example, if a user copies a range of cells from a spreadsheet of a native application, it will result in one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②">clipboard item</a>. If a user copies a set of files from their desktop, that list of files will be represented by multiple <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item③">clipboard item</a>s. </p>
+   <p>Some platforms may support having more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item④">clipboard item</a> at a time on the <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard①">clipboard</a>, while other platforms replace the previous <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑤">clipboard item</a> with the new one.</p>
+   <p>A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑥">clipboard item</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="list-of-representations">list of representations</dfn>, each <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="representation">representation</dfn> with an associated <dfn class="dfn-paneled" data-dfn-for="representation" data-dfn-type="dfn" data-noexport id="representation-mime-type">mime type</dfn> (a <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type">MIME type</a>), an <dfn class="dfn-paneled" data-dfn-for="representation" data-dfn-type="dfn" data-noexport id="representation-iscustom">isCustom</dfn> flag, initially <var>false</var>, that indicates if this <a data-link-type="dfn" href="#representation" id="ref-for-representation①">representation</a> should be treated as a <a data-link-type="dfn" href="#web-custom-format" id="ref-for-web-custom-format">web custom format</a> (as opposed to a well-known format of the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①③">system clipboard</a>), and <dfn class="dfn-paneled" data-dfn-for="representation" data-dfn-type="dfn" data-noexport id="representation-data">data</dfn> (a <code class="idl"><a data-link-type="idl" href="#typedefdef-clipboarditemdata" id="ref-for-typedefdef-clipboarditemdata①">ClipboardItemData</a></code>).
+		A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="web-custom-format">web custom format</dfn> has <a data-link-type="dfn" href="#representation-iscustom" id="ref-for-representation-iscustom">isCustom</a> set to <var>true</var>.</p>
+   <p class="note" role="note"> In the example where the user copies a range of cells from a spreadsheet, it may be represented as an image (image/png), an HTML table (text/html), or plain text (text/plain), or a web custom format (web text/csv). </p>
+   <p>Each of these <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type①">MIME type</a>s describe a different <a data-link-type="dfn" href="#representation" id="ref-for-representation②">representation</a> of the same <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑦">clipboard item</a> at different levels of fidelity and make the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑧">clipboard item</a> more consumable by target applications during paste.</p>
    <p class="note" role="note"> Making the range of cells available as an image will allow the user to paste the cells into a photo editing app, while the text/plain format can be used by text editor apps. </p>
-   <p>A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⓪">clipboard item</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-style">presentation style</dfn> (a <code class="idl"><a data-link-type="idl" href="#enumdef-presentationstyle" id="ref-for-enumdef-presentationstyle②">PresentationStyle</a></code>). It helps distinguish whether apps "pasting" a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①①">clipboard item</a> should insert the contents of an appropriate <a data-link-type="dfn" href="#representation" id="ref-for-representation②">representation</a> inline at the point of paste or if it should be treated as an attachment.</p>
-   <p>Web apps that support pasting only a single <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①②">clipboard item</a> should use the first <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①③">clipboard item</a>.</p>
-   <p class="note" role="note"> <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①">write()</a></code> chooses the last <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①④">clipboard item</a>. </p>
-   <p>Web apps that support pasting more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑤">clipboard item</a> could, for example, provide a user interface that previews the contents of each <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑥">clipboard item</a> and allow the user to choose which one to paste.
-		Further, apps are expected to enumerate the <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type②">MIME type</a>s of the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑦">clipboard item</a> they are pasting and select the one best-suited for the app according to some app-specific algorithm.
-		Alternatively, an app can present the user with options on how to paste a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑧">clipboard item</a>, e.g. "paste as image" or "paste formatted text", etc.</p>
-   <p>A <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem④">ClipboardItem</a></code> object has an associated <dfn class="dfn-paneled" data-dfn-for="ClipboardItem" data-dfn-type="dfn" data-noexport id="clipboarditem-clipboard-item">clipboard item</dfn>, which is a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑨">clipboard item</a>.</p>
+   <p>A <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item⑨">clipboard item</a> has a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="presentation-style">presentation style</dfn> (a <code class="idl"><a data-link-type="idl" href="#enumdef-presentationstyle" id="ref-for-enumdef-presentationstyle②">PresentationStyle</a></code>). It helps distinguish whether apps "pasting" a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⓪">clipboard item</a> should insert the contents of an appropriate <a data-link-type="dfn" href="#representation" id="ref-for-representation③">representation</a> inline at the point of paste or if it should be treated as an attachment.</p>
+   <p>Web apps that support pasting only a single <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①①">clipboard item</a> should use the first <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①②">clipboard item</a>.</p>
+   <p class="note" role="note"> <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write①">write()</a></code> chooses the last <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①③">clipboard item</a>. </p>
+   <p>Web apps that support pasting more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①④">clipboard item</a> could, for example, provide a user interface that previews the contents of each <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑤">clipboard item</a> and allow the user to choose which one to paste.
+		Further, apps are expected to enumerate the <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type②">MIME type</a>s of the <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑥">clipboard item</a> they are pasting and select the one best-suited for the app according to some app-specific algorithm.
+		Alternatively, an app can present the user with options on how to paste a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑦">clipboard item</a>, e.g. "paste as image" or "paste formatted text", etc.</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem④">ClipboardItem</a></code> object has an associated <dfn class="dfn-paneled" data-dfn-for="ClipboardItem" data-dfn-type="dfn" data-noexport id="clipboarditem-clipboard-item">clipboard item</dfn>, which is a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑧">clipboard item</a>.</p>
    <p>A <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑤">ClipboardItem</a></code> object has an associated <dfn class="dfn-paneled" data-dfn-for="ClipboardItem" data-dfn-type="dfn" data-noexport id="clipboarditem-types-array">types array</dfn>, which is a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array①">FrozenArray</a></code>&lt;<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑦">DOMString</a></code>>.</p>
-   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-a-clipboarditem-object">create a <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑥">ClipboardItem</a></code> object</dfn>, given a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⓪">clipboard item</a> <var>clipboardItem</var> and a Realm <var>realm</var>, run these steps:</p>
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-a-clipboarditem-object">create a <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑥">ClipboardItem</a></code> object</dfn>, given a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item①⑨">clipboard item</a> <var>clipboardItem</var> and a Realm <var>realm</var>, run these steps:</p>
    <ol>
     <li data-md>
      <p>Let <var>clipboardItemObject</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#new" id="ref-for-new">new</a> <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑦">ClipboardItem</a></code> with <var>realm</var>.</p>
     <li data-md>
-     <p>Set <var>clipboardItemObject</var>’s <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②①">clipboard item</a> to <var>clipboardItem</var>.</p>
+     <p>Set <var>clipboardItemObject</var>’s <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⓪">clipboard item</a> to <var>clipboardItem</var>.</p>
    </ol>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ClipboardItem" data-dfn-type="constructor" data-export data-lt="ClipboardItem(items, options)|constructor(items, options)|ClipboardItem(items)|constructor(items)" id="dom-clipboarditem-clipboarditem"><code>new ClipboardItem(<var>items</var>, <var>options</var>)</code></dfn> constructor steps are:</p>
    <ol>
@@ -1543,7 +1541,7 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>If <var>options</var> is empty, then set options["presentationStyle"] = "unspecified".</p>
     <li data-md>
-     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item">clipboard item</a> to a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②②">clipboard item</a>.</p>
+     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item">clipboard item</a> to a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②①">clipboard item</a>.</p>
     <li data-md>
      <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item①">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style">presentation style</a> to <var>options</var>["<code class="idl"><a data-link-type="idl" href="#dom-clipboarditemoptions-presentationstyle" id="ref-for-dom-clipboarditemoptions-presentationstyle">presentationStyle</a></code>"].</p>
     <li data-md>
@@ -1552,13 +1550,28 @@ document.addEventListener('paste', function(e) {
      <p>For each (<var>key</var>, <var>value</var>) in <var>items</var>:</p>
      <ol>
       <li data-md>
+       <p>Let <var>representation</var> be a new <a data-link-type="dfn" href="#representation" id="ref-for-representation④">representation</a>.</p>
+      <li data-md>
+       <p>Let <var>isCustom</var> be <var>false</var>.</p>
+      <li data-md>
+       <p>If <var>key</var> has "web " ("web" followed by U+0020 SPACE) prefix, then</p>
+       <ol>
+        <li data-md>
+         <p>Remove "web " prefix and set the remaining string to <var>key</var>.</p>
+        <li data-md>
+         <p>Set <var>isCustom</var> <var>true</var></p>
+       </ol>
+      <li data-md>
+       <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-iscustom" id="ref-for-representation-iscustom①">isCustom</a> flag to <var>isCustom</var>.</p>
+      <li data-md>
        <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type">parsing a MIME type</a> given <var>key</var>.</p>
       <li data-md>
        <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror①">TypeError</a></code>.</p>
       <li data-md>
-       <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item②">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations①">list of representations</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> a <a data-link-type="dfn" href="#representation" id="ref-for-representation③">representation</a> whose <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type④">MIME type</a> is <var>mimeType</var>, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror②">TypeError</a></code>.</p>
-      <li data-md>
-       <p>Let <var>representation</var> be a new <a data-link-type="dfn" href="#representation" id="ref-for-representation④">representation</a>.</p>
+       <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item②">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations①">list of representations</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> a <a data-link-type="dfn" href="#representation" id="ref-for-representation⑤">representation</a> whose <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type④">MIME type</a> is <var>mimeType</var> and whose [representation/isCustom] is <var>isCustom</var>, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror②">TypeError</a></code>.</p>
+     </ol>
+     <p class="note" role="note">The step above prevents collision between mime-types well-known by the user agent and those that are intended by the author to be treated as a custom type.  For example, it would be possible for the author’s list of items to contain representations for "text/html" as well as "web text/html".</p>
+     <ol>
       <li data-md>
        <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑤">MIME type</a> to <var>mimeType</var>.</p>
       <li data-md>
@@ -1567,6 +1580,8 @@ document.addEventListener('paste', function(e) {
        <p>Append <var>representation</var> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item③">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations②">list of representations</a>.</p>
       <li data-md>
        <p>Let <var>mimeTypeString</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#serialize-a-mime-type" id="ref-for-serialize-a-mime-type">serializing a MIME type</a> with <var>mimeType</var>.</p>
+      <li data-md>
+       <p>If <var>isCustom</var> is <var>true</var>, prefix <var>mimeTypeString</var> with "web " ("web" followed by U+0020 SPACE).</p>
       <li data-md>
        <p>Add <var>mimeTypeString</var> to <var>types</var>.</p>
      </ol>
@@ -1583,6 +1598,16 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant realm</a>.</p>
     <li data-md>
+     <p>Let <var>isCustom</var> be <var>false</var>.</p>
+    <li data-md>
+     <p>If <var>type</var> has "web "("web" followed by U+0020 SPACE) prefix, then:</p>
+     <ol>
+      <li data-md>
+       <p>Remove "web " prefix and set the remaining string to <var>type</var>.</p>
+      <li data-md>
+       <p>Set <var>isCustom</var> to <var>true</var>.</p>
+     </ol>
+    <li data-md>
      <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type①">parsing a MIME type</a> given <var>type</var>.</p>
     <li data-md>
      <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror③">TypeError</a></code>.</p>
@@ -1594,7 +1619,7 @@ document.addEventListener('paste', function(e) {
      <p>For each <var>representation</var> in <var>itemTypeList</var>:</p>
      <ol>
       <li data-md>
-       <p>If <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑥">MIME type</a> is <var>mimeType</var>, then:</p>
+       <p>If <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑥">MIME type</a> is <var>mimeType</var> and <var>representation</var>’s <a data-link-type="dfn" href="#representation-iscustom" id="ref-for-representation-iscustom②">isCustom</a> is <var>isCustom</var>, then:</p>
        <ol>
         <li data-md>
          <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data①">data</a>.</p>
@@ -1657,10 +1682,10 @@ document.addEventListener('paste', function(e) {
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined①"><c- b>undefined</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext"><c- g>writeText</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①①"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="Clipboard/writeText(data)" data-dfn-type="argument" data-export id="dom-clipboard-writetext-data-data"><code><c- g>data</c-></code><a class="self-link" href="#dom-clipboard-writetext-data-data"></a></dfn>);
 };
 </pre>
-   <p>Some methods of the <code class="idl"><a data-link-type="idl" href="#clipboard" id="ref-for-clipboard①">Clipboard</a></code> interface take or return multiple <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑨">ClipboardItem</a></code> objects. However, not all platforms support more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②③">clipboard item</a>; on such platforms, the algorithms below will ignore any <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①⓪">ClipboardItem</a></code> objects beyond the first one that are passed to <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write③">write()</a></code>, and <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read②">read()</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext①">readText()</a></code> only get one clipboard item from the OS.</p>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-items">clipboard items</dfn> object is a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence①">sequence</a> of <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②④">clipboard item</a>s.</p>
-   <p class="note" role="note"> A web author needs to create a <var>data</var> which is an array of <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①①">ClipboardItem</a></code>s in order to write content to <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①①">system clipboard</a> using the <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write④">write(data)</a></code> method. <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read③">read()</a></code> returns a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects②">Promise</a> to <a data-link-type="dfn" href="#clipboard-items" id="ref-for-clipboard-items">clipboard items</a> object that represents contents of <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①②">system clipboard</a>. </p>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-task-source">clipboard task source</dfn> is triggered in response to reading or writing of <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
+   <p>Some methods of the <code class="idl"><a data-link-type="idl" href="#clipboard" id="ref-for-clipboard①">Clipboard</a></code> interface take or return multiple <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem⑨">ClipboardItem</a></code> objects. However, not all platforms support more than one <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②②">clipboard item</a>; on such platforms, the algorithms below will ignore any <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①⓪">ClipboardItem</a></code> objects beyond the first one that are passed to <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write③">write()</a></code>, and <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read②">read()</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext①">readText()</a></code> only get one clipboard item from the OS.</p>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-items">clipboard items</dfn> object is a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence①">sequence</a> of <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②③">clipboard item</a>s.</p>
+   <p class="note" role="note"> A web author needs to create a <var>data</var> which is an array of <code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①①">ClipboardItem</a></code>s in order to write content to <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①④">system clipboard</a> using the <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write④">write(data)</a></code> method. <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read③">read()</a></code> returns a <a data-link-type="dfn" href="http://tc39.github.io/ecma262/#sec-promise-objects" id="ref-for-sec-promise-objects②">Promise</a> to <a data-link-type="dfn" href="#clipboard-items" id="ref-for-clipboard-items">clipboard items</a> object that represents contents of <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data">system clipboard data</a>. </p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="clipboard-task-source">clipboard task source</dfn> is triggered in response to reading or writing of <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data①">system clipboard data</a>.</p>
    <div id="clipboard-idl">
     <div class="algorithm" data-algorithm="clipboard-read">
      <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="Clipboard" data-dfn-type="method" data-export data-level="7.3.1" data-lt="read()" id="dom-clipboard-read"><span class="secno">7.3.1. </span><span class="content">read()</span><a class="self-link" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read⑤"></a></h4>
@@ -1684,26 +1709,69 @@ document.addEventListener('paste', function(e) {
            <p>Abort these steps.</p>
          </ol>
         <li data-md>
-         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data③">system clipboard data</a> represented as <a data-link-type="dfn" href="#clipboard-items" id="ref-for-clipboard-items①">clipboard items</a>. For the MIME types defined in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types③">mandatory data types</a> list, <var>data</var> MAY be sanitized, but image/png format has unsanitized payload to preserve meta data.</p>
-         <p class="issue" id="issue-c148910f"><a class="self-link" href="#issue-c148910f"></a> Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.</p>
-         <p class="issue" id="issue-2147149e"><a class="self-link" href="#issue-2147149e"></a> Add definition of sanitized.</p>
-         <p class="note" role="note"><span class="marker">Note:</span> As further described in <a href="#image-transcode">§ 10.3 Transcoding images</a> this explicitly does not transcode images.
-Rather the original unmodified image data should be exposed to the website.</p>
+         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data②">system clipboard data</a>.</p>
+        <li data-md>
+         <p>Let <var>items</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence②">sequence</a>&lt;<a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②④">clipboard item</a>>.</p>
+        <li data-md>
+         <p>For each <var>systemClipboardItem</var> in <var>data</var>:</p>
+         <ol>
+          <li data-md>
+           <p>Let <var>item</var> be a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑤">clipboard item</a>.</p>
+          <li data-md>
+           <p>For each <var>systemClipboardRepresentation</var> in <var>systemClipboardItem</var>:</p>
+           <ol>
+            <li data-md>
+             <p>Let <var>mimeType</var> be the result of running the <a data-link-type="dfn" href="#well-known-mime-type-from-os-specific-format" id="ref-for-well-known-mime-type-from-os-specific-format">well-known mime type from os specific format</a> algorithm given <var>systemClipboardRepresentation</var>’s <a data-link-type="dfn" href="#system-clipboard-representation-name" id="ref-for-system-clipboard-representation-name">name</a>.</p>
+            <li data-md>
+             <p>If <var>mimeType</var> is null, continue this loop.</p>
+            <li data-md>
+             <p>Let <var>representation</var> be a new <a data-link-type="dfn" href="#representation" id="ref-for-representation⑥">representation</a>.</p>
+            <li data-md>
+             <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑦">MIME type</a> to <var>mimeType</var>.</p>
+            <li data-md>
+             <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data②">data</a> to <var>systemClipboardRepresentation</var>’s <a data-link-type="dfn" href="#system-clipboard-representation-data" id="ref-for-system-clipboard-representation-data">data</a>.</p>
+             <p class="issue" id="issue-0a41fcd5"><a class="self-link" href="#issue-0a41fcd5"></a> It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.</p>
+            <li data-md>
+             <p>The user agent, MAY sanitize <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data③">data</a>, unless <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑧">MIME type</a>'s essence is "image/png", which should remain unsanitized to preserve meta data.</p>
+            <li data-md>
+             <p>Append <var>representation</var> to <var>item</var>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations④">list of representations</a>.</p>
+           </ol>
+          <li data-md>
+           <p>If <var>item</var>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑤">list of representations</a> size is greater than 0, append <var>item</var> to <var>items</var>.</p>
+         </ol>
+       </ol>
+       <p>If <var>items</var> has a size > 0, then:</p>
+       <ol>
+        <li data-md>
+         <p>Let <var>firstItem</var> be <var>items</var>[0]</p>
+        <li data-md>
+         <p>Run the <a data-link-type="dfn" href="#read-web-custom-format" id="ref-for-read-web-custom-format">read web custom format</a> algorithm given <var>firstItem</var>.</p>
+       </ol>
+       <p>Else:</p>
+       <ol>
+        <li data-md>
+         <p>Let <var>customItem</var> be a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑥">clipboard item</a>.</p>
+        <li data-md>
+         <p>Run the <a data-link-type="dfn" href="#read-web-custom-format" id="ref-for-read-web-custom-format①">read web custom format</a> algorithm given <var>customItem</var>.</p>
+        <li data-md>
+         <p>If <var>customItem</var>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑥">list of representations</a> size is greater than 0, append <var>item</var> to <var>items</var>.</p>
+       </ol>
+       <ol>
         <li data-md>
          <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task①">Queue a global task</a> on the <a data-link-type="dfn" href="#clipboard-task-source" id="ref-for-clipboard-task-source">clipboard task source</a>, given <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global①">global object</a>, to perform the below steps:</p>
          <ol>
           <li data-md>
-           <p>Let <var>items</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence②">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①②">ClipboardItem</a></code>>.</p>
+           <p>Let <var>clipboardItems</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence③">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①②">ClipboardItem</a></code>>.</p>
           <li data-md>
-           <p>For each <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑤">clipboard item</a> <var>underlyingItem</var> of <var>data</var>:</p>
+           <p>For each <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑦">clipboard item</a> <var>underlyingItem</var> of <var>items</var>:</p>
            <ol>
             <li data-md>
-             <p>Let <var>item</var> be the result of running the steps of <a data-link-type="dfn" href="#create-a-clipboarditem-object" id="ref-for-create-a-clipboarditem-object">create a ClipboardItem object</a> given <var>underlyingItem</var> and <var>realm</var>.</p>
+             <p>Let <var>clipboardItem</var> be the result of running the steps of <a data-link-type="dfn" href="#create-a-clipboarditem-object" id="ref-for-create-a-clipboarditem-object">create a ClipboardItem object</a> given <var>underlyingItem</var> and <var>realm</var>.</p>
             <li data-md>
-             <p>Append <var>item</var> to <var>items</var>.</p>
+             <p>Append <var>clipboardItem</var> to <var>clipboardItems</var>.</p>
            </ol>
           <li data-md>
-           <p>Resolve <var>p</var> with <var>items</var>.</p>
+           <p>Resolve <var>p</var> with <var>clipboardItems</var>.</p>
          </ol>
        </ol>
       <li data-md>
@@ -1737,53 +1805,64 @@ Rather the original unmodified image data should be exposed to the website.</p>
            <p>Abort these steps.</p>
          </ol>
         <li data-md>
-         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data④">system clipboard data</a> represented as <a data-link-type="dfn" href="#clipboard-items" id="ref-for-clipboard-items②">clipboard items</a>. For the MIME types defined in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types④">mandatory data types</a> list, <var>data</var> MAY contain the sanitized copy of text/plain format.</p>
-         <p class="issue" id="issue-c148910f①"><a class="self-link" href="#issue-c148910f①"></a> Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.</p>
+         <p>Let <var>data</var> be a copy of the <a data-link-type="dfn" href="#system-clipboard-data" id="ref-for-system-clipboard-data③">system clipboard data</a>.</p>
+         <p class="issue" id="issue-c148910f"><a class="self-link" href="#issue-c148910f"></a> Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read.</p>
          <p class="issue" id="issue-1755f975"><a class="self-link" href="#issue-1755f975"></a> Add definition of sanitized copy.</p>
         <li data-md>
          <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task" id="ref-for-queue-a-global-task③">Queue a global task</a> on the <a data-link-type="dfn" href="#clipboard-task-source" id="ref-for-clipboard-task-source①">clipboard task source</a>, given <var>realm</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global" id="ref-for-concept-realm-global③">global object</a>, to perform the below steps:</p>
          <ol>
           <li data-md>
-           <p>Let <var>dataList</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence③">sequence</a> of <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑥">clipboard item</a>s.</p>
-          <li data-md>
-           <p>If <var>data</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size">size</a> is greater than 1, then add <var>data</var>[0] to <var>dataList</var>.</p>
-           <p class="issue" id="issue-52b202fd"><a class="self-link" href="#issue-52b202fd"></a> Reading multiple clipboard items should be fixed in https://github.com/w3c/clipboard-apis/issues/166.</p>
-          <li data-md>
-           <p>Let <var>itemTypeList</var> be <var>dataList</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑥">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations④">list of representations</a>.</p>
-          <li data-md>
-           <p>For each <var>representation</var> in <var>itemTypeList</var>:</p>
+           <p>For each <var>systemClipboardItem</var> in <var>data</var>:</p>
            <ol>
             <li data-md>
-             <p>If <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑦">MIME type</a> <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence">essence</a> is "text/plain", then:</p>
+             <p>For each <var>systemClipboardRepresentation</var> in <var>systemClipboardItem</var>:</p>
              <ol>
               <li data-md>
-               <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data②">data</a>.</p>
+               <p>Let <var>mimeType</var> be the result of running the <a data-link-type="dfn" href="#well-known-mime-type-from-os-specific-format" id="ref-for-well-known-mime-type-from-os-specific-format①">well-known mime type from os specific format</a> algorithm given <var>systemClipboardRepresentation</var>’s <a data-link-type="dfn" href="#system-clipboard-representation-name" id="ref-for-system-clipboard-representation-name①">name</a>.</p>
               <li data-md>
-               <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled" id="ref-for-dfn-perform-steps-once-promise-is-settled①">React</a> to <var>representationDataPromise</var>:</p>
+               <p>If <var>mimeType</var> is null, continue this loop.</p>
+              <li data-md>
+               <p>Let <var>representation</var> be a new <a data-link-type="dfn" href="#representation" id="ref-for-representation⑦">representation</a>.</p>
+              <li data-md>
+               <p>If <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑨">MIME type</a> <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence">essence</a> is "text/plain", then:</p>
                <ol>
                 <li data-md>
-                 <p>If <var>representationDataPromise</var> was fulfilled with value <var>v</var>, then:</p>
-                 <ol>
-                  <li data-md>
-                   <p>If <var>v</var> is a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①②">DOMString</a></code>, then follow the below steps:</p>
-                   <ol>
-                    <li data-md>
-                     <p>Resolve <var>p</var> with <var>v</var>.</p>
-                   </ol>
-                  <li data-md>
-                   <p>If <var>v</var> is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑥">Blob</a></code>, then follow the below steps:</p>
-                   <ol>
-                    <li data-md>
-                     <p>Let <var>string</var> be the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode">UTF-8 decoding</a> <var>v</var>’s underlying byte sequence.</p>
-                    <li data-md>
-                     <p>Resolve <var>p</var> with <var>string</var>.</p>
-                   </ol>
-                 </ol>
+                 <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①⓪">MIME type</a> to <var>mimeType</var>.</p>
                 <li data-md>
-                 <p>If <var>representationDataPromise</var> was rejected, then:</p>
+                 <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data④">data</a>.</p>
+                <li data-md>
+                 <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled" id="ref-for-dfn-perform-steps-once-promise-is-settled①">React</a> to <var>representationDataPromise</var>:</p>
                  <ol>
                   <li data-md>
-                   <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject④">Reject</a> <var>p</var> with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notfounderror" id="ref-for-notfounderror②">"NotFoundError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException④">DOMException</a></code> in <var>realm</var>.</p>
+                   <p>If <var>representationDataPromise</var> was fulfilled with value <var>v</var>, then:</p>
+                   <ol>
+                    <li data-md>
+                     <p>If <var>v</var> is a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①②">DOMString</a></code>, then follow the below steps:</p>
+                     <ol>
+                      <li data-md>
+                       <p>Resolve <var>p</var> with <var>v</var>.</p>
+                      <li data-md>
+                       <p>Return <var>p</var>.</p>
+                     </ol>
+                    <li data-md>
+                     <p>If <var>v</var> is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑥">Blob</a></code>, then follow the below steps:</p>
+                     <ol>
+                      <li data-md>
+                       <p>Let <var>string</var> be the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode">UTF-8 decoding</a> <var>v</var>’s underlying byte sequence.</p>
+                      <li data-md>
+                       <p>Resolve <var>p</var> with <var>string</var>.</p>
+                      <li data-md>
+                       <p>Return <var>p</var>.</p>
+                     </ol>
+                   </ol>
+                  <li data-md>
+                   <p>If <var>representationDataPromise</var> was rejected, then:</p>
+                   <ol>
+                    <li data-md>
+                     <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject④">Reject</a> <var>p</var> with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notfounderror" id="ref-for-notfounderror②">"NotFoundError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException④">DOMException</a></code> in <var>realm</var>.</p>
+                    <li data-md>
+                     <p>Return <var>p</var>.</p>
+                   </ol>
                  </ol>
                </ol>
              </ol>
@@ -1831,16 +1910,16 @@ Rather the original unmodified image data should be exposed to the website.</p>
           <li data-md>
            <p>Let <var>dataList</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑤">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="#clipboarditem" id="ref-for-clipboarditem①③">ClipboardItem</a></code>>.</p>
           <li data-md>
-           <p>If <var>data</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a> is greater than 1, and the current operating system does not support multiple native clipboard items on the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①③">system clipboard</a>, then add <var>data</var>[0] to <var>dataList</var>, else, set <var>dataList</var> to <var>data</var>.</p>
+           <p>If <var>data</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size">size</a> is greater than 1, and the current operating system does not support multiple native clipboard items on the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⑤">system clipboard</a>, then add <var>data</var>[0] to <var>dataList</var>, else, set <var>dataList</var> to <var>data</var>.</p>
            <p class="issue" id="issue-f23cf1e2"><a class="self-link" href="#issue-f23cf1e2"></a> when <var>data</var> contains multiple items and the operating system supports multiple native clipboard items, the current algorithm writes the items in sequence to the system clipboard instead of writing them collectively.</p>
           <li data-md>
            <p>For each <var>clipboardItem</var> in <var>dataList</var>:</p>
            <ol>
             <li data-md>
-             <p>For each <var>representation</var> in <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑦">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑤">list of representations</a>:</p>
+             <p>For each <var>representation</var> in <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑥">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑦">list of representations</a>:</p>
              <ol>
               <li data-md>
-               <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data③">data</a>.</p>
+               <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data⑤">data</a>.</p>
               <li data-md>
                <p><a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled" id="ref-for-dfn-perform-steps-once-promise-is-settled②">React</a> to <var>representationDataPromise</var>:</p>
                <ol>
@@ -1853,7 +1932,7 @@ Rather the original unmodified image data should be exposed to the website.</p>
                     <li data-md>
                      <p>Let <var>dataAsBytes</var> be the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-encode" id="ref-for-utf-8-encode①">UTF-8 encoding</a> <var>v</var>.</p>
                     <li data-md>
-                     <p>Let <var>blobData</var> be a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑧">Blob</a></code> created using <var>dataAsBytes</var> with its <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①">type</a></code> set to <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑧">MIME type</a>.</p>
+                     <p>Let <var>blobData</var> be a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob⑧">Blob</a></code> created using <var>dataAsBytes</var> with its <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①">type</a></code> set to <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①①">MIME type</a>.</p>
                     <li data-md>
                      <p>Add <var>blobData</var> to <var>itemList</var>.</p>
                    </ol>
@@ -1876,7 +1955,7 @@ Rather the original unmodified image data should be exposed to the website.</p>
               <li data-md>
                <p>Let <var>type</var> be the <var>blob</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type②">type</a></code>.</p>
               <li data-md>
-               <p>If <var>type</var> is not in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑤">mandatory data types</a> list, then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject⑧">reject</a> <var>p</var> with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror④">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑧">DOMException</a></code> in <var>realm</var> and abort these steps.</p>
+               <p>If <var>type</var> is not in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types③">mandatory data types</a> or <a data-link-type="dfn" href="#optional-data-types" id="ref-for-optional-data-types②">optional data types</a> list, then <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#reject" id="ref-for-reject⑧">reject</a> <var>p</var> with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror④">"NotAllowedError"</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException⑧">DOMException</a></code> in <var>realm</var> and abort these steps.</p>
               <li data-md>
                <p>Let <var>cleanItem</var> be an optionally sanitized copy of <var>blob</var>.</p>
                <p class="issue" id="issue-1755f975①"><a class="self-link" href="#issue-1755f975①"></a> Add definition of sanitized copy.</p>
@@ -1892,7 +1971,7 @@ Rather the original unmodified image data should be exposed to the website.</p>
                <p>Append <var>cleanItem</var> to <var>cleanItemList</var>.</p>
              </ol>
             <li data-md>
-             <p>Let <var>option</var> be <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑧">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style②">presentation style</a>.</p>
+             <p>Let <var>option</var> be <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑦">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style②">presentation style</a>.</p>
             <li data-md>
              <p><a data-link-type="dfn" href="#write-blobs-and-option-to-the-clipboard" id="ref-for-write-blobs-and-option-to-the-clipboard">Write blobs and option to the clipboard</a> with <var>cleanItemList</var> and <var>option</var>.</p>
            </ol>
@@ -2313,7 +2392,7 @@ did not intend to expose.</p>
 		This is also consistent with other methods in which images can be shared
 		with a website (such as `&lt;input type=file>`).</p>
    <h3 class="heading settled" data-level="10.4" id="nuisances"><span class="secno">10.4. </span><span class="content">Nuisance considerations</span><a class="self-link" href="#nuisances"></a></h3>
-   <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑦">DataTransfer</a></code> API to annoy and confuse users by
+   <p>Scripts may use the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑥">DataTransfer</a></code> API to annoy and confuse users by
 		altering the data on the system clipboard from copy and cut events. This
 		specification does not attempt to prevent such nuisances, though
 		implementations may add additional restrictions.</p>
@@ -2333,11 +2412,11 @@ did not intend to expose.</p>
 		securing the data accessed by the Clipboard Event API:</p>
    <ul>
     <li data-md>
-     <p>Objects implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑧">DataTransfer</a></code> interface to return
+     <p>Objects implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑦">DataTransfer</a></code> interface to return
 clipboard data <em>must not</em> be available outside the
 ClipboardEvent event handler that the data is provided to.</p>
     <li data-md>
-     <p>If a script stores a reference to an object implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑨">DataTransfer</a></code> interface to use from outside the ClipboardEvent
+     <p>If a script stores a reference to an object implementing the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑧">DataTransfer</a></code> interface to use from outside the ClipboardEvent
 event handler, all methods <em>must</em> be no-ops when called
 outside the expected context.</p>
     <li data-md>
@@ -2459,7 +2538,7 @@ has configured it to do so).</p>
 format description</p>
           </ol>
          <li data-md>
-          <p>Else, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑥">mandatory data types</a> list, then</p>
+          <p>Else, if data is of a type listed in the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types④">mandatory data types</a> list, then</p>
           <ol>
            <li data-md>
             <p>Place part on clipboard with the appropriate OS clipboard
@@ -2477,7 +2556,7 @@ system clipboards, scripts should not assume that custom
 formats will be available to other applications on the
 system. For example, there is a limit to how many custom
 clipboard formats can be registered in Microsoft Windows.
-While it is possible to use any string for <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata①">setData()</a>’s type argument, sticking to the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑦">mandatory data types</a> is strongly recommended.</p>
+While it is possible to use any string for <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata①">setData()</a>’s type argument, sticking to the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑤">mandatory data types</a> is strongly recommended.</p>
           </ol>
         </ol>
       </ol>
@@ -2517,25 +2596,41 @@ platforms.</p>
      <dd data-md>
       <p><var>items</var>, a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑦">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①②">Blob</a></code>></p>
      <dd data-md>
-      <p><var>presentationStyle</var>, a <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑨">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style③">presentation style</a></p>
+      <p><var>presentationStyle</var>, a <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑧">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style③">presentation style</a></p>
      <dt data-md>Output
      <dd data-md>
       <p>None</p>
     </dl>
     <ol>
      <li data-md>
+      <p>Let <var>webCustomFormats</var> be a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑧">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①③">Blob</a></code>>.</p>
+     <li data-md>
       <p>For each <var>item</var> in <var>items</var>:</p>
       <ol>
        <li data-md>
         <p>Let <var>formatString</var> be the result of running <a data-link-type="dfn" href="#os-specific-well-known-format" id="ref-for-os-specific-well-known-format">os specific well-known format</a> given <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type④">type</a></code>.</p>
        <li data-md>
-        <p>If <var>formatString</var> is empty then abort these steps.</p>
+        <p>If <var>formatString</var> is empty then follow the below steps:</p>
+        <ol>
+         <li data-md>
+          <p>Let <var>webCustomFormatString</var> be the <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑤">type</a></code>.</p>
+         <li data-md>
+          <p>Let <var>webCustomFormat</var> be an empty <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑥">type</a></code>.</p>
+         <li data-md>
+          <p>If <var>webCustomFormatString</var> has "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in <var>webCustomFormat</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑦">type</a></code>'s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a>, else abort all steps.</p>
+         <li data-md>
+          <p>Set <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑧">type</a></code> to <var>webCustomFormat</var>.</p>
+         <li data-md>
+          <p>Append <var>webCustomFormat</var> to <var>webCustomFormats</var>.</p>
+        </ol>
        <li data-md>
         <p>Let <var>payload</var> be the result of <a data-link-type="dfn" href="https://encoding.spec.whatwg.org/#utf-8-decode" id="ref-for-utf-8-decode①">UTF-8 decoding</a> <var>item</var>’s underlying byte sequence.</p>
        <li data-md>
-        <p>Insert <var>payload</var> and <var>presentationStyle</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①④">system clipboard</a> using <var>formatString</var> as the native clipboard format.</p>
+        <p>Insert <var>payload</var> and <var>presentationStyle</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⑥">system clipboard</a> using <var>formatString</var> as the native clipboard format.</p>
       </ol>
       <p class="issue" id="issue-3887584b"><a class="self-link" href="#issue-3887584b"></a> some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define to which of those data is written.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="#write-web-custom-formats" id="ref-for-write-web-custom-formats">Write web custom formats</a> given <var>webCustomFormats</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="os-specific-well-known-format">
@@ -2543,7 +2638,7 @@ platforms.</p>
     <dl>
      <dt data-md>Input
      <dd data-md>
-      <p><var>mimeType</var>, a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑤">type</a></code></p>
+      <p><var>mimeType</var>, a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑨">type</a></code></p>
      <dt data-md>Output
      <dd data-md>
       <p><var>wellKnownFormat</var>, a platform specific string type. On Mac it’s NSPasteboardType, on Windows it’s LPCWSTR and Linux it’s a const char*.</p>
@@ -2553,90 +2648,238 @@ platforms.</p>
 		For Mac see https://developer.apple.com/documentation/appkit/nspasteboardtype </p>
     <ol>
      <li data-md>
-      <p>Let <var>wellKnownFormat</var> be a string.</p>
+      <p>Let <var>wellKnownFormat</var> be an empty string.</p>
      <li data-md>
-      <p>If <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a> is "text/plain", then</p>
+      <p>If <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence②">essence</a> is "text/plain", then</p>
       <p>On Windows, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign CF_UNICODETEXT to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On MacOS, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign NSPasteboardTypeString to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign "text/plain" to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
      <li data-md>
-      <p>Else, if <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence②">essence</a> is "text/html", then</p>
+      <p>Else, if <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence③">essence</a> is "text/html", then</p>
       <p>On Windows, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign CF_HTML to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On MacOS, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign NSHTMLPboardType to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign "text/html" to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
      <li data-md>
-      <p>Else, if <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence③">essence</a> is "image/png", then</p>
+      <p>Else, if <var>mimeType</var>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence④">essence</a> is "image/png", then</p>
       <p>On Windows, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign "PNG" to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On MacOS, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign NSPasteboardTypePNG to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
       <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
       <ol>
        <li data-md>
         <p>Assign "image/png" to <var>wellKnownFormat</var>.</p>
-       <li data-md>
-        <p>Return <var>wellKnownFormat</var>.</p>
       </ol>
      <li data-md>
-      <p>Else</p>
+      <p>Return <var>wellKnownFormat</var>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="well-known-mime-type-from-os-specific-format">
+    <h3 class="heading settled" id="to-well-known-mime-type-from-os-specific-format"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="well-known-mime-type-from-os-specific-format">well-known mime type from os specific format</dfn></span><a class="self-link" href="#to-well-known-mime-type-from-os-specific-format"></a></h3>
+    <dl>
+     <dt data-md>Input
+     <dd data-md>
+      <p><var>osFormatName</var>, a platform specific string type. On Mac it’s NSPasteboardType, on Windows it’s LPCWSTR and Linux it’s a const char*.</p>
+     <dt data-md>Output
+     <dd data-md>
+      <p><var>mimeType</var>, a <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type" id="ref-for-mime-type③">MIME type</a></p>
+    </dl>
+    <p class="note" role="note"> For Windows see https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats and
+		https://docs.microsoft.com/en-us/windows/win32/dataxchg/about-atom-tables?redirectedfrom=MSDN
+		For Mac see https://developer.apple.com/documentation/appkit/nspasteboardtype </p>
+    <p>On Windows, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>If <var>osFormatName</var> "UnicodeText", then set <var>mimeTypeString</var> to "text/plain".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> "HTML Format", then set <var>mimeTypeString</var> to "text/html".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> "PNG", then set <var>mimeTypeString</var> to "image/png".</p>
+    </ol>
+    <p>On MacOS, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>If <var>osFormatName</var> is NSPasteboardTypeString, then set <var>mimeTypeString</var> to "text/plain".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> is NSHTMLPboardType, then set <var>mimeTypeString</var> to "text/html".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> NSPasteboardTypePNG, then set <var>mimeTypeString</var> to "image/png".</p>
+    </ol>
+    <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>If <var>osFormatName</var> is "text/plain", then set <var>mimeTypeString</var> to "text/plain".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> "text/html", then set <var>mimeTypeString</var> to "text/html".</p>
+     <li data-md>
+      <p>Else, if <var>osFormatName</var> "image/png", then set <var>mimeTypeString</var> to "image/png".</p>
+    </ol>
+    <ol>
+     <li data-md>
+      <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type②">parsing a MIME type</a> given <var>mimeTypeString</var>.</p>
+     <li data-md>
+      <p>Return <var>mimeType</var>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="read-web-custom-format">
+    <h3 class="heading settled" id="to-read-web-custom-format"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="read-web-custom-format">read web custom format</dfn></span><a class="self-link" href="#to-read-web-custom-format"></a></h3>
+    <dl>
+     <dt data-md>Input
+     <dd data-md>
+      <p><var>item</var>, a <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②⑧">clipboard item</a></p>
+    </dl>
+    <ol>
+     <li data-md>
+      <p>Let <var>webCustomFormatMap</var> be the <a data-link-type="dfn" href="#os-specific-custom-map-name" id="ref-for-os-specific-custom-map-name">os specific custom map name</a>.</p>
+     <li data-md>
+      <p>Read <var>webCustomFormatMap</var> from the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⑦">system clipboard</a>.</p>
+      <p class="issue" id="issue-97db4b5a"><a class="self-link" href="#issue-97db4b5a"></a> specify in more detail the process of reading a <var>webCustomFormatMap</var>.</p>
+     <li data-md>
+      <p>If <var>webCustomFormatMap</var> is empty, then return <var>item</var>.</p>
+     <li data-md>
+      <p>Let <var>webCustomFormatMapString</var> be the JSON string deserialized from <var>webCustomFormatMap</var>.</p>
+      <p class="note" role="note"><span class="marker">Note:</span> Need a JSON reader to deserialize the content from the <var>webCustomFormatMap</var>.</p>
+     <li data-md>
+      <p>For each (<var>key</var>, <var>value</var>) in <var>webCustomFormatMapString</var>:</p>
       <ol>
        <li data-md>
-        <p>This is left to the implementation...</p>
-        <p class="issue" id="issue-77e1973e①"><a class="self-link" href="#issue-77e1973e①"></a> It’s not good to leave things up to the
-implementation. What should happen here?</p>
-        <p class="note" role="note"><span class="marker">Note:</span> Due to limitations in the implementation of operating
-system clipboards, scripts should not assume that custom
-formats will be available to other applications on the
-system. For example, there is a limit to how many custom
-clipboard formats can be registered in Microsoft Windows.
-While it is possible to use any string for <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata②">setData()</a>’s type argument, sticking to the <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑧">mandatory data types</a> is strongly recommended.</p>
+        <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type③">parsing a MIME type</a> given <var>key</var>.</p>
+       <li data-md>
+        <p>If <var>mimeType</var> is failure, then continue the loop.</p>
+       <li data-md>
+        <p>Let <var>representation</var> be a new <a data-link-type="dfn" href="#representation" id="ref-for-representation⑧">representation</a>.</p>
+       <li data-md>
+        <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①②">MIME type</a> to <var>mimeType</var>.</p>
+       <li data-md>
+        <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-iscustom" id="ref-for-representation-iscustom③">isCustom</a> flag to <var>true</var>.</p>
+       <li data-md>
+        <p>Read <var>webCustomFormat</var> from the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⑧">system clipboard</a> given <var>value</var>.</p>
+       <li data-md>
+        <p>If the read is successful, then set <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data⑥">data</a> to the resulting data from the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⑨">system clipboard</a>, else continue the loop.</p>
+       <li data-md>
+        <p>Append <var>representation</var> to <var>item</var>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑧">list of representations</a>.</p>
       </ol>
+    </ol>
+   </div>
+   <h3 class="heading settled" id="to-write-web-custom-formats"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="write-web-custom-formats">write web custom formats</dfn></span><a class="self-link" href="#to-write-web-custom-formats"></a></h3>
+   <dl>
+    <dt data-md>Input
+    <dd data-md>
+     <p><var>items</var>,  a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑨">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①④">Blob</a></code>></p>
+   </dl>
+   <ol>
+    <li data-md>
+     <p>Let <var>idx</var> be a number initialized to 0.</p>
+    <li data-md>
+     <p>Let <var>webCustomFormatMap</var> be the <a data-link-type="dfn" href="#os-specific-custom-map-name" id="ref-for-os-specific-custom-map-name①">os specific custom map name</a>.</p>
+    <li data-md>
+     <p>Let <var>webCustomFormatMapString</var> be an empty JSON string.</p>
+    <li data-md>
+     <p>For each <var>item</var> in <var>items</var>:</p>
+     <ol>
+      <li data-md>
+       <p>Let <var>webCustomFormat</var> be the <a data-link-type="dfn" href="#os-specific-custom-name" id="ref-for-os-specific-custom-name">os specific custom name</a>.</p>
+      <li data-md>
+       <p>Let <var>webCustomFormatIdx</var> be the result of appending <var>idx</var> to <var>webCustomFormat</var>.</p>
+      <li data-md>
+       <p>Insert <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①⓪">type</a></code> as key and <var>webCustomFormatIdx</var> as value into the <var>webCustomFormatMapString</var> using a JSON serializer.</p>
+       <p class="note" role="note"><span class="marker">Note:</span> Need a JSON writer to serialize the content into the <var>webCustomFormatMapString</var>.</p>
+      <li data-md>
+       <p>Insert the <var>item</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②⓪">system clipboard</a> using <var>webCustomFormatIdx</var> as the format.</p>
+      <li data-md>
+       <p>Increment <var>idx</var>.</p>
+      <li data-md>
+       <p>If <var>idx</var> is greater than 100, then break from this loop.</p>
+     </ol>
+    <li data-md>
+     <p>Insert the <var>webCustomFormatMapString</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②①">system clipboard</a> using <var>webCustomFormatMap</var> as the format.</p>
+   </ol>
+   <div class="algorithm" data-algorithm="os-specific-custom-map-name">
+    <h3 class="heading settled" id="to-os-specific-custom-map-name"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="os-specific-custom-map-name">os specific custom map name</dfn></span><a class="self-link" href="#to-os-specific-custom-map-name"></a></h3>
+    <dl>
+     <dt data-md>Output
+     <dd data-md>
+      <p><var>webCustomFormatMap</var>, a string</p>
+    </dl>
+    <p>On Windows, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "Web Custom Format Map" to <var>webCustomFormatMap</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormatMap</var>.</p>
+    </ol>
+    <p>On MacOS, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "com.web.custom.format.map" to <var>webCustomFormatMap</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormatMap</var>.</p>
+    </ol>
+    <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "application/web;type=\"custom/formatmap\"" to <var>webCustomFormatMap</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormatMap</var>.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="os-specific-custom-name">
+    <h3 class="heading settled" id="to-os-specific-custom-name"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="os-specific-custom-name">os specific custom name</dfn></span><a class="self-link" href="#to-os-specific-custom-name"></a></h3>
+    <dl>
+     <dt data-md>Output
+     <dd data-md>
+      <p><var>webCustomFormat</var>, a string</p>
+    </dl>
+    <p>On Windows, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "Web Custom Format" to <var>webCustomFormat</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormat</var>.</p>
+    </ol>
+    <p>On MacOS, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "com.web.custom.format" to <var>webCustomFormat</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormat</var>.</p>
+    </ol>
+    <p>On Linux, ChromeOS, and Android, follow the convention described below:</p>
+    <ol>
+     <li data-md>
+      <p>Assign "application/web;type="custom/format" to <var>webCustomFormat</var>.</p>
+     <li data-md>
+      <p>Return <var>webCustomFormat</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="algo-fire-a-clipboard-event">
@@ -2655,7 +2898,7 @@ While it is possible to use any string for <a data-link-type="functionish" href=
      <li data-md>
       <p>Let <var>types-to-clear</var> be an empty list</p>
      <li data-md>
-      <p>Let <var>clipboard-event-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⓪">DataTransfer</a></code> object with an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items②">items</a></code> list.</p>
+      <p>Let <var>clipboard-event-data</var> be a new <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer⑨">DataTransfer</a></code> object with an empty <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items②">items</a></code> list.</p>
      <li data-md>
       <p>Let <var>clipboard-entry</var> be the sequence number of the current
 clipboard content, or null if the OS clipboard does not support
@@ -2740,7 +2983,7 @@ markup by calling <a data-link-type="dfn" href="#process-an-html-paste-event" id
               </ol>
              <li data-md>
               <p>If <var>clipboard-part</var> contains data in
-another supported binary or text-based format (see <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑨">mandatory data types</a>), then</p>
+another supported binary or text-based format (see <a data-link-type="dfn" href="#mandatory-data-types" id="ref-for-mandatory-data-types⑥">mandatory data types</a>), then</p>
               <ol>
                <li data-md>
                 <p>Determine the MIME type of the data</p>
@@ -2764,7 +3007,7 @@ entries in <var>clipboard-event-data</var>’s <code class="idl"><a data-link-ty
         <p>If <var>e</var> is "copy" or "cut", then</p>
         <ol>
          <li data-md>
-          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①①">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode②">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw">read/write</a></p>
+          <p>Set the associated <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①⓪">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode②">drag data store mode</a> flag to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw">read/write</a></p>
         </ol>
       </ol>
      <li data-md>
@@ -2782,14 +3025,14 @@ event-specific processing rules are given below:</p>
       <p class="issue" id="issue-7d2ab940"><a class="self-link" href="#issue-7d2ab940"></a> Why here? Why not in the HTML spec?</p>
       <ol>
        <li data-md>
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata" id="ref-for-dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear" id="ref-for-dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①②">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode③">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw①">read/write</a>, then</p>
+        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata" id="ref-for-dom-datatransfer-cleardata">clearData()</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear" id="ref-for-dom-datatransferitemlist-clear">clear()</a></code> and the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①①">DataTransfer</a></code> object’s internal <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode" id="ref-for-drag-data-store-mode③">drag data store mode</a> flag is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw" id="ref-for-concept-dnd-rw①">read/write</a>, then</p>
         <ol>
          <li data-md>
           <p>Set the <var>clear-was-called</var> flag to true. If an
 argument is given, add the argument to the <var>types-to-clear</var> list.</p>
         </ol>
        <li data-md>
-        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata③">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true, then</p>
+        <p>If a script calls <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata②">setData()</a> or modifies items and the <var>clear-was-called</var> flag is true, then</p>
         <ol>
          <li data-md>
           <p>If the <var>types-to-clear</var> list is empty, then</p>
@@ -2798,7 +3041,7 @@ argument is given, add the argument to the <var>types-to-clear</var> list.</p>
             <p>Set the <var>clear-was-called</var> flag to false, then</p>
           </ol>
          <li data-md>
-          <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata④">setData()</a>’s <code>type</code> argument or
+          <p>Else, if <a data-link-type="functionish" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata" id="ref-for-dom-datatransfer-setdata③">setData()</a>’s <code>type</code> argument or
 the new item’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string" id="ref-for-drag-data-item-type-string③">drag data item type string</a> is
 found in the <var>types-to-clear</var> list, then</p>
           <ol>
@@ -2830,7 +3073,7 @@ implemented.</strong></p>
      <dd data-md>
       <p><var>clipboard-part</var>, the clipboard part to process</p>
      <dd data-md>
-      <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①③">DataTransfer</a></code> object for this event</p>
+      <p><var>clipboard-event-data</var>, the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer①②">DataTransfer</a></code> object for this event</p>
      <dt data-md>Output
      <dd data-md>
       <p>None</p>
@@ -2992,15 +3235,24 @@ HTML code.</p>
    <li><a href="#eventdef-documentandelementeventhandlers-copy">copy</a><span>, in § 5.2.2</span>
    <li><a href="#create-a-clipboarditem-object">create a ClipboardItem object</a><span>, in § 7.2</span>
    <li><a href="#eventdef-documentandelementeventhandlers-cut">cut</a><span>, in § 5.2.3</span>
-   <li><a href="#representation-data">data</a><span>, in § 7.2</span>
+   <li>
+    data
+    <ul>
+     <li><a href="#representation-data">dfn for representation</a><span>, in § 7.2</span>
+     <li><a href="#system-clipboard-representation-data">dfn for system clipboard representation</a><span>, in § 4</span>
+    </ul>
    <li><a href="#editable-context">editable context</a><span>, in § 3</span>
    <li><a href="#fire-a-clipboard-event">fire a clipboard event</a><span>, in § Unnumbered section</span>
    <li><a href="#dom-clipboarditem-gettype">getType(type)</a><span>, in § 7.2.2</span>
    <li><a href="#dom-presentationstyle-inline">"inline"</a><span>, in § 7.2</span>
+   <li><a href="#representation-iscustom">isCustom</a><span>, in § 7.2</span>
    <li><a href="#list-of-representations">list of representations</a><span>, in § 7.2</span>
    <li><a href="#mandatory-data-types">Mandatory data types</a><span>, in § 6.4</span>
    <li><a href="#representation-mime-type">mime type</a><span>, in § 7.2</span>
+   <li><a href="#system-clipboard-representation-name">name</a><span>, in § 4</span>
    <li><a href="#optional-data-types">Optional data types</a><span>, in § 6.5</span>
+   <li><a href="#os-specific-custom-map-name">os specific custom map name</a><span>, in § Unnumbered section</span>
+   <li><a href="#os-specific-custom-name">os specific custom name</a><span>, in § Unnumbered section</span>
    <li><a href="#os-specific-well-known-format">os specific well-known format</a><span>, in § Unnumbered section</span>
    <li><a href="#eventdef-documentandelementeventhandlers-paste">paste</a><span>, in § 5.2.4</span>
    <li><a href="#presentation-style">presentation style</a><span>, in § 7.2</span>
@@ -3014,19 +3266,25 @@ HTML code.</p>
    <li><a href="#process-an-html-paste-event">process an HTML paste event</a><span>, in § Unnumbered section</span>
    <li><a href="#dom-clipboard-read">read()</a><span>, in § 7.3</span>
    <li><a href="#dom-clipboard-readtext">readText()</a><span>, in § 7.3</span>
+   <li><a href="#read-web-custom-format">read web custom format</a><span>, in § Unnumbered section</span>
    <li><a href="#representation">representation</a><span>, in § 7.2</span>
    <li><a href="#script-may-access-clipboard">script-may-access-clipboard</a><span>, in § 8</span>
    <li><a href="#script-triggered">script-triggered</a><span>, in § 8</span>
    <li><a href="#dom-clipboarditem-supports">supports(type)</a><span>, in § 7.2.3</span>
    <li><a href="#system-clipboard">system clipboard</a><span>, in § 4</span>
    <li><a href="#system-clipboard-data">system clipboard data</a><span>, in § 4</span>
+   <li><a href="#system-clipboard-item">system clipboard item</a><span>, in § 4</span>
+   <li><a href="#system-clipboard-representation">system clipboard representation</a><span>, in § 4</span>
    <li><a href="#dom-clipboarditem-types">types</a><span>, in § 7.2.1</span>
    <li><a href="#clipboarditem-types-array">types array</a><span>, in § 7.2</span>
    <li><a href="#dom-presentationstyle-unspecified">"unspecified"</a><span>, in § 7.2</span>
+   <li><a href="#web-custom-format">web custom format</a><span>, in § 7.2</span>
+   <li><a href="#well-known-mime-type-from-os-specific-format">well-known mime type from os specific format</a><span>, in § Unnumbered section</span>
    <li><a href="#write-blobs-and-option-to-the-clipboard">write blobs and option to the clipboard</a><span>, in § Unnumbered section</span>
    <li><a href="#write-content-to-the-clipboard">write content to the clipboard</a><span>, in § Unnumbered section</span>
    <li><a href="#dom-clipboard-write">write(data)</a><span>, in § 7.3</span>
    <li><a href="#dom-clipboard-writetext">writeText(data)</a><span>, in § 7.3</span>
+   <li><a href="#write-web-custom-formats">write web custom formats</a><span>, in § Unnumbered section</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
@@ -3237,11 +3495,9 @@ HTML code.</p>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> Web developers might be interested in the underlying rejection reason. <a class="issue-return" href="#issue-2d83c5ad" title="Jump to section">↵</a></div>
+   <div class="issue"> It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read. <a class="issue-return" href="#issue-0a41fcd5" title="Jump to section">↵</a></div>
    <div class="issue"> Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read. <a class="issue-return" href="#issue-c148910f" title="Jump to section">↵</a></div>
-   <div class="issue"> Add definition of sanitized. <a class="issue-return" href="#issue-2147149e" title="Jump to section">↵</a></div>
-   <div class="issue"> Some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define from which of those data is read. <a class="issue-return" href="#issue-c148910f①" title="Jump to section">↵</a></div>
    <div class="issue"> Add definition of sanitized copy. <a class="issue-return" href="#issue-1755f975" title="Jump to section">↵</a></div>
-   <div class="issue"> Reading multiple clipboard items should be fixed in https://github.com/w3c/clipboard-apis/issues/166. <a class="issue-return" href="#issue-52b202fd" title="Jump to section">↵</a></div>
    <div class="issue"> clipboard-write was removed in https://github.com/w3c/clipboard-apis/pull/164. <a class="issue-return" href="#issue-1b338371" title="Jump to section">↵</a></div>
    <div class="issue"> when <var>data</var> contains multiple items and the operating system supports multiple native clipboard items, the current algorithm writes the items in sequence to the system clipboard instead of writing them collectively. <a class="issue-return" href="#issue-f23cf1e2" title="Jump to section">↵</a></div>
    <div class="issue"> Add definition of sanitized copy. <a class="issue-return" href="#issue-1755f975①" title="Jump to section">↵</a></div>
@@ -3253,8 +3509,7 @@ at risk. It doesn’t seem all that important, and it’s
 unclear if it can be implemented easily across relevant
 platforms. <a class="issue-return" href="#issue-0a3703dc" title="Jump to section">↵</a></div>
    <div class="issue"> some OSs contain multiple clipboard (e.g. Linux, "primary", "secondary", "selection"). Define to which of those data is written. <a class="issue-return" href="#issue-3887584b" title="Jump to section">↵</a></div>
-   <div class="issue"> It’s not good to leave things up to the
-implementation. What should happen here? <a class="issue-return" href="#issue-77e1973e①" title="Jump to section">↵</a></div>
+   <div class="issue"> specify in more detail the process of reading a <var>webCustomFormatMap</var>. <a class="issue-return" href="#issue-97db4b5a" title="Jump to section">↵</a></div>
    <div class="issue"> Why here? Why not in the HTML spec? <a class="issue-return" href="#issue-7d2ab940" title="Jump to section">↵</a></div>
    <div class="issue"> Are these steps necessary? Do we know about native (platform)
 clipboard implementations that support multiple parts with internal
@@ -3863,12 +4118,12 @@ window.dfnpanelData['fefe0433'] = {"dfnID": "fefe0433", "url": "https://dom.spec
 window.dfnpanelData['7c9ab308'] = {"dfnID": "7c9ab308", "url": "http://tc39.github.io/ecma262/#sec-promise-objects", "dfnText": "promise", "refSections": [{"refs": [{"id": "ref-for-sec-promise-objects"}, {"id": "ref-for-sec-promise-objects\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-sec-promise-objects\u2461"}], "title": "7.3. Clipboard Interface"}], "external": true};
 window.dfnpanelData['b0fcb8d7'] = {"dfnID": "b0fcb8d7", "url": "https://encoding.spec.whatwg.org/#utf-8-decode", "dfnText": "utf-8 decode", "refSections": [{"refs": [{"id": "ref-for-utf-8-decode"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-utf-8-decode\u2460"}], "title": "write blobs and option to the clipboard"}], "external": true};
 window.dfnpanelData['0303e8e5'] = {"dfnID": "0303e8e5", "url": "https://encoding.spec.whatwg.org/#utf-8-encode", "dfnText": "utf-8 encode", "refSections": [{"refs": [{"id": "ref-for-utf-8-encode"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-utf-8-encode\u2460"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-utf-8-encode\u2461"}], "title": "7.3.4. writeText(data)"}], "external": true};
-window.dfnpanelData['b7d73f5b'] = {"dfnID": "b7d73f5b", "url": "https://w3c.github.io/FileAPI/#dfn-Blob", "dfnText": "Blob", "refSections": [{"refs": [{"id": "ref-for-dfn-Blob"}, {"id": "ref-for-dfn-Blob\u2460"}, {"id": "ref-for-dfn-Blob\u2461"}, {"id": "ref-for-dfn-Blob\u2462"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-dfn-Blob\u2463"}, {"id": "ref-for-dfn-Blob\u2464"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2465"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-dfn-Blob\u2466"}, {"id": "ref-for-dfn-Blob\u2467"}, {"id": "ref-for-dfn-Blob\u2468"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2460\u24ea"}, {"id": "ref-for-dfn-Blob\u2460\u2460"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2460\u2461"}], "title": "write blobs and option to the clipboard"}], "external": true};
+window.dfnpanelData['b7d73f5b'] = {"dfnID": "b7d73f5b", "url": "https://w3c.github.io/FileAPI/#dfn-Blob", "dfnText": "Blob", "refSections": [{"refs": [{"id": "ref-for-dfn-Blob"}, {"id": "ref-for-dfn-Blob\u2460"}, {"id": "ref-for-dfn-Blob\u2461"}, {"id": "ref-for-dfn-Blob\u2462"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-dfn-Blob\u2463"}, {"id": "ref-for-dfn-Blob\u2464"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2465"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-dfn-Blob\u2466"}, {"id": "ref-for-dfn-Blob\u2467"}, {"id": "ref-for-dfn-Blob\u2468"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2460\u24ea"}, {"id": "ref-for-dfn-Blob\u2460\u2460"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-dfn-Blob\u2460\u2461"}, {"id": "ref-for-dfn-Blob\u2460\u2462"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-dfn-Blob\u2460\u2463"}], "title": "write web custom formats"}], "external": true};
 window.dfnpanelData['cd028611'] = {"dfnID": "cd028611", "url": "https://w3c.github.io/FileAPI/#dfn-file", "dfnText": "File", "refSections": [{"refs": [{"id": "ref-for-dfn-file"}, {"id": "ref-for-dfn-file\u2460"}], "title": "process an HTML paste event"}], "external": true};
 window.dfnpanelData['f9970195'] = {"dfnID": "f9970195", "url": "https://w3c.github.io/FileAPI/#dfn-lastModified", "dfnText": "lastModified", "refSections": [{"refs": [{"id": "ref-for-dfn-lastModified"}], "title": "process an HTML paste event"}], "external": true};
 window.dfnpanelData['1441e3bf'] = {"dfnID": "1441e3bf", "url": "https://w3c.github.io/FileAPI/#dfn-name", "dfnText": "name", "refSections": [{"refs": [{"id": "ref-for-dfn-name"}], "title": "process an HTML paste event"}], "external": true};
-window.dfnpanelData['e303c02d'] = {"dfnID": "e303c02d", "url": "https://w3c.github.io/FileAPI/#dfn-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-dfn-type"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-dfn-type\u2460"}, {"id": "ref-for-dfn-type\u2461"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-dfn-type\u2462"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-dfn-type\u2463"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-dfn-type\u2464"}], "title": "os specific well-known format"}], "external": true};
-window.dfnpanelData['2b83ae0c'] = {"dfnID": "2b83ae0c", "url": "https://html.spec.whatwg.org/multipage/dnd.html#datatransfer", "dfnText": "DataTransfer", "refSections": [{"refs": [{"id": "ref-for-datatransfer"}], "title": "4. Model"}, {"refs": [{"id": "ref-for-datatransfer\u2460"}, {"id": "ref-for-datatransfer\u2461"}, {"id": "ref-for-datatransfer\u2462"}, {"id": "ref-for-datatransfer\u2463"}], "title": "5.1. Clipboard event interfaces"}, {"refs": [{"id": "ref-for-datatransfer\u2464"}], "title": "6. Clipboard Event API"}, {"refs": [{"id": "ref-for-datatransfer\u2465"}], "title": "6.4.2. Writing to the clipboard"}, {"refs": [{"id": "ref-for-datatransfer\u2466"}], "title": "10.4. Nuisance considerations"}, {"refs": [{"id": "ref-for-datatransfer\u2467"}, {"id": "ref-for-datatransfer\u2468"}], "title": "11.1. Privacy and the Clipboard Event API"}, {"refs": [{"id": "ref-for-datatransfer\u2460\u24ea"}, {"id": "ref-for-datatransfer\u2460\u2460"}, {"id": "ref-for-datatransfer\u2460\u2461"}], "title": "fire a clipboard event"}, {"refs": [{"id": "ref-for-datatransfer\u2460\u2462"}], "title": "process an HTML paste event"}], "external": true};
+window.dfnpanelData['e303c02d'] = {"dfnID": "e303c02d", "url": "https://w3c.github.io/FileAPI/#dfn-type", "dfnText": "type", "refSections": [{"refs": [{"id": "ref-for-dfn-type"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-dfn-type\u2460"}, {"id": "ref-for-dfn-type\u2461"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-dfn-type\u2462"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-dfn-type\u2463"}, {"id": "ref-for-dfn-type\u2464"}, {"id": "ref-for-dfn-type\u2465"}, {"id": "ref-for-dfn-type\u2466"}, {"id": "ref-for-dfn-type\u2467"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-dfn-type\u2468"}], "title": "os specific well-known format"}, {"refs": [{"id": "ref-for-dfn-type\u2460\u24ea"}], "title": "write web custom formats"}], "external": true};
+window.dfnpanelData['2b83ae0c'] = {"dfnID": "2b83ae0c", "url": "https://html.spec.whatwg.org/multipage/dnd.html#datatransfer", "dfnText": "DataTransfer", "refSections": [{"refs": [{"id": "ref-for-datatransfer"}, {"id": "ref-for-datatransfer\u2460"}, {"id": "ref-for-datatransfer\u2461"}, {"id": "ref-for-datatransfer\u2462"}], "title": "5.1. Clipboard event interfaces"}, {"refs": [{"id": "ref-for-datatransfer\u2463"}], "title": "6. Clipboard Event API"}, {"refs": [{"id": "ref-for-datatransfer\u2464"}], "title": "6.4.2. Writing to the clipboard"}, {"refs": [{"id": "ref-for-datatransfer\u2465"}], "title": "10.4. Nuisance considerations"}, {"refs": [{"id": "ref-for-datatransfer\u2466"}, {"id": "ref-for-datatransfer\u2467"}], "title": "11.1. Privacy and the Clipboard Event API"}, {"refs": [{"id": "ref-for-datatransfer\u2468"}, {"id": "ref-for-datatransfer\u2460\u24ea"}, {"id": "ref-for-datatransfer\u2460\u2460"}], "title": "fire a clipboard event"}, {"refs": [{"id": "ref-for-datatransfer\u2460\u2461"}], "title": "process an HTML paste event"}], "external": true};
 window.dfnpanelData['4ff66d05'] = {"dfnID": "4ff66d05", "url": "https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem", "dfnText": "DataTransferItem", "refSections": [{"refs": [{"id": "ref-for-datatransferitem"}, {"id": "ref-for-datatransferitem\u2460"}, {"id": "ref-for-datatransferitem\u2461"}], "title": "fire a clipboard event"}, {"refs": [{"id": "ref-for-datatransferitem\u2462"}, {"id": "ref-for-datatransferitem\u2463"}], "title": "process an HTML paste event"}], "external": true};
 window.dfnpanelData['707c843f'] = {"dfnID": "707c843f", "url": "https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist", "dfnText": "DataTransferItemList", "refSections": [{"refs": [{"id": "ref-for-datatransferitemlist"}], "title": "6.4. Mandatory data types"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2460"}], "title": "8.1. The copy action"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2461"}], "title": "8.2. The cut action"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2462"}], "title": "10.2. General security policies"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2463"}], "title": "write content to the clipboard"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2464"}, {"id": "ref-for-datatransferitemlist\u2465"}], "title": "fire a clipboard event"}, {"refs": [{"id": "ref-for-datatransferitemlist\u2466"}], "title": "process an HTML paste event"}], "external": true};
 window.dfnpanelData['be0c27b2'] = {"dfnID": "be0c27b2", "url": "https://html.spec.whatwg.org/multipage/system-state.html#navigator", "dfnText": "Navigator", "refSections": [{"refs": [{"id": "ref-for-navigator"}], "title": "7.1. Navigator Interface"}], "external": true};
@@ -3882,14 +4137,14 @@ window.dfnpanelData['50eecf1d'] = {"dfnID": "50eecf1d", "url": "https://html.spe
 window.dfnpanelData['48438eb3'] = {"dfnID": "48438eb3", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task", "dfnText": "queue a global task", "refSections": [{"refs": [{"id": "ref-for-queue-a-global-task"}, {"id": "ref-for-queue-a-global-task\u2460"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2461"}, {"id": "ref-for-queue-a-global-task\u2462"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2463"}, {"id": "ref-for-queue-a-global-task\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-queue-a-global-task\u2465"}, {"id": "ref-for-queue-a-global-task\u2466"}], "title": "7.3.4. writeText(data)"}], "external": true};
 window.dfnpanelData['e99bd18e'] = {"dfnID": "e99bd18e", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global", "dfnText": "relevant global object", "refSections": [{"refs": [{"id": "ref-for-concept-relevant-global"}], "title": "9.1.1. check clipboard read permission"}, {"refs": [{"id": "ref-for-concept-relevant-global\u2460"}], "title": "9.2.1. check clipboard write permission"}], "external": true};
 window.dfnpanelData['5991ccfb'] = {"dfnID": "5991ccfb", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm", "dfnText": "relevant realm", "refSections": [{"refs": [{"id": "ref-for-concept-relevant-realm"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-concept-relevant-realm\u2460"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-concept-relevant-realm\u2461"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-concept-relevant-realm\u2462"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-concept-relevant-realm\u2463"}], "title": "7.3.4. writeText(data)"}], "external": true};
-window.dfnpanelData['beda2316'] = {"dfnID": "beda2316", "url": "https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata", "dfnText": "setData(format, data)", "refSections": [{"refs": [{"id": "ref-for-dom-datatransfer-setdata"}], "title": "6.3. Overriding the paste event"}, {"refs": [{"id": "ref-for-dom-datatransfer-setdata\u2460"}], "title": "write content to the clipboard"}, {"refs": [{"id": "ref-for-dom-datatransfer-setdata\u2461"}], "title": "os specific well-known format"}, {"refs": [{"id": "ref-for-dom-datatransfer-setdata\u2462"}, {"id": "ref-for-dom-datatransfer-setdata\u2463"}], "title": "fire a clipboard event"}], "external": true};
+window.dfnpanelData['beda2316'] = {"dfnID": "beda2316", "url": "https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata", "dfnText": "setData(format, data)", "refSections": [{"refs": [{"id": "ref-for-dom-datatransfer-setdata"}], "title": "6.3. Overriding the paste event"}, {"refs": [{"id": "ref-for-dom-datatransfer-setdata\u2460"}], "title": "write content to the clipboard"}, {"refs": [{"id": "ref-for-dom-datatransfer-setdata\u2461"}, {"id": "ref-for-dom-datatransfer-setdata\u2462"}], "title": "fire a clipboard event"}], "external": true};
 window.dfnpanelData['47fe679e'] = {"dfnID": "47fe679e", "url": "https://html.spec.whatwg.org/multipage/interaction.html#transient-activation", "dfnText": "transient activation", "refSections": [{"refs": [{"id": "ref-for-transient-activation"}], "title": "9.1.1. check clipboard read permission"}, {"refs": [{"id": "ref-for-transient-activation\u2460"}], "title": "9.2.1. check clipboard write permission"}], "external": true};
 window.dfnpanelData['f3fc35d3'] = {"dfnID": "f3fc35d3", "url": "https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types", "dfnText": "types", "refSections": [{"refs": [{"id": "ref-for-dom-datatransfer-types"}], "title": "fire a clipboard event"}], "external": true};
 window.dfnpanelData['ae8def21'] = {"dfnID": "ae8def21", "url": "https://infra.spec.whatwg.org/#list-contain", "dfnText": "contain", "refSections": [{"refs": [{"id": "ref-for-list-contain"}], "title": "7.2. ClipboardItem Interface"}], "external": true};
-window.dfnpanelData['0204d188'] = {"dfnID": "0204d188", "url": "https://infra.spec.whatwg.org/#list-size", "dfnText": "size", "refSections": [{"refs": [{"id": "ref-for-list-size"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-list-size\u2460"}], "title": "7.3.3. write(data)"}], "external": true};
-window.dfnpanelData['7c195f8b'] = {"dfnID": "7c195f8b", "url": "https://mimesniff.spec.whatwg.org/#mime-type-essence", "dfnText": "essence", "refSections": [{"refs": [{"id": "ref-for-mime-type-essence"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-mime-type-essence\u2460"}, {"id": "ref-for-mime-type-essence\u2461"}, {"id": "ref-for-mime-type-essence\u2462"}], "title": "os specific well-known format"}], "external": true};
-window.dfnpanelData['16785ec4'] = {"dfnID": "16785ec4", "url": "https://mimesniff.spec.whatwg.org/#mime-type", "dfnText": "mime type", "refSections": [{"refs": [{"id": "ref-for-mime-type"}, {"id": "ref-for-mime-type\u2460"}, {"id": "ref-for-mime-type\u2461"}], "title": "7.2. ClipboardItem Interface"}], "external": true};
-window.dfnpanelData['d72dabca'] = {"dfnID": "d72dabca", "url": "https://mimesniff.spec.whatwg.org/#parse-a-mime-type", "dfnText": "parse a mime type", "refSections": [{"refs": [{"id": "ref-for-parse-a-mime-type"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2460"}], "title": "7.2.3. getType(type)"}], "external": true};
+window.dfnpanelData['0204d188'] = {"dfnID": "0204d188", "url": "https://infra.spec.whatwg.org/#list-size", "dfnText": "size", "refSections": [{"refs": [{"id": "ref-for-list-size"}], "title": "7.3.3. write(data)"}], "external": true};
+window.dfnpanelData['7c195f8b'] = {"dfnID": "7c195f8b", "url": "https://mimesniff.spec.whatwg.org/#mime-type-essence", "dfnText": "essence", "refSections": [{"refs": [{"id": "ref-for-mime-type-essence"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-mime-type-essence\u2460"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-mime-type-essence\u2461"}, {"id": "ref-for-mime-type-essence\u2462"}, {"id": "ref-for-mime-type-essence\u2463"}], "title": "os specific well-known format"}], "external": true};
+window.dfnpanelData['16785ec4'] = {"dfnID": "16785ec4", "url": "https://mimesniff.spec.whatwg.org/#mime-type", "dfnText": "mime type", "refSections": [{"refs": [{"id": "ref-for-mime-type"}, {"id": "ref-for-mime-type\u2460"}, {"id": "ref-for-mime-type\u2461"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-mime-type\u2462"}], "title": "well-known mime type from os specific format"}], "external": true};
+window.dfnpanelData['d72dabca'] = {"dfnID": "d72dabca", "url": "https://mimesniff.spec.whatwg.org/#parse-a-mime-type", "dfnText": "parse a mime type", "refSections": [{"refs": [{"id": "ref-for-parse-a-mime-type"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2460"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2461"}], "title": "well-known mime type from os specific format"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2462"}], "title": "read web custom format"}], "external": true};
 window.dfnpanelData['d6e5d5bd'] = {"dfnID": "d6e5d5bd", "url": "https://mimesniff.spec.whatwg.org/#serialize-a-mime-type", "dfnText": "serialize a mime type", "refSections": [{"refs": [{"id": "ref-for-serialize-a-mime-type"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-serialize-a-mime-type\u2460"}], "title": "7.2.3. getType(type)"}], "external": true};
 window.dfnpanelData['ebb01253'] = {"dfnID": "ebb01253", "url": "https://w3c.github.io/permissions/#dom-permissiondescriptor", "dfnText": "PermissionDescriptor", "refSections": [{"refs": [{"id": "ref-for-dom-permissiondescriptor"}], "title": "9. Permissions API Integration"}], "external": true};
 window.dfnpanelData['4b7ca52a'] = {"dfnID": "4b7ca52a", "url": "https://w3c.github.io/permissions/#dfn-permission-descriptor-type", "dfnText": "permission descriptor type", "refSections": [{"refs": [{"id": "ref-for-dfn-permission-descriptor-type"}], "title": "9. Permissions API Integration"}], "external": true};
@@ -3913,12 +4168,16 @@ window.dfnpanelData['56f81a8e'] = {"dfnID": "56f81a8e", "url": "https://webidl.s
 window.dfnpanelData['750a2f08'] = {"dfnID": "750a2f08", "url": "https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled", "dfnText": "react", "refSections": [{"refs": [{"id": "ref-for-dfn-perform-steps-once-promise-is-settled"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-dfn-perform-steps-once-promise-is-settled\u2460"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-dfn-perform-steps-once-promise-is-settled\u2461"}], "title": "7.3.3. write(data)"}], "external": true};
 window.dfnpanelData['7787d359'] = {"dfnID": "7787d359", "url": "https://webidl.spec.whatwg.org/#idl-record", "dfnText": "record", "refSections": [{"refs": [{"id": "ref-for-idl-record"}], "title": "7.2. ClipboardItem Interface"}], "external": true};
 window.dfnpanelData['b262501e'] = {"dfnID": "b262501e", "url": "https://webidl.spec.whatwg.org/#reject", "dfnText": "reject", "refSections": [{"refs": [{"id": "ref-for-reject"}, {"id": "ref-for-reject\u2460"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-reject\u2461"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-reject\u2462"}, {"id": "ref-for-reject\u2463"}, {"id": "ref-for-reject\u2464"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-reject\u2465"}, {"id": "ref-for-reject\u2466"}, {"id": "ref-for-reject\u2467"}, {"id": "ref-for-reject\u2468"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-reject\u2460\u24ea"}], "title": "7.3.4. writeText(data)"}], "external": true};
-window.dfnpanelData['9cce47fd'] = {"dfnID": "9cce47fd", "url": "https://webidl.spec.whatwg.org/#idl-sequence", "dfnText": "sequence", "refSections": [{"refs": [{"id": "ref-for-idl-sequence"}, {"id": "ref-for-idl-sequence\u2460"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-idl-sequence\u2461"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-idl-sequence\u2462"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-idl-sequence\u2463"}, {"id": "ref-for-idl-sequence\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-idl-sequence\u2465"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-idl-sequence\u2466"}], "title": "write blobs and option to the clipboard"}], "external": true};
+window.dfnpanelData['9cce47fd'] = {"dfnID": "9cce47fd", "url": "https://webidl.spec.whatwg.org/#idl-sequence", "dfnText": "sequence", "refSections": [{"refs": [{"id": "ref-for-idl-sequence"}, {"id": "ref-for-idl-sequence\u2460"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-idl-sequence\u2461"}, {"id": "ref-for-idl-sequence\u2462"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-idl-sequence\u2463"}, {"id": "ref-for-idl-sequence\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-idl-sequence\u2465"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-idl-sequence\u2466"}, {"id": "ref-for-idl-sequence\u2467"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-idl-sequence\u2468"}], "title": "write web custom formats"}], "external": true};
 window.dfnpanelData['4013a022'] = {"dfnID": "4013a022", "url": "https://webidl.spec.whatwg.org/#this", "dfnText": "this", "refSections": [{"refs": [{"id": "ref-for-this"}], "title": "7.1.1. clipboard"}, {"refs": [{"id": "ref-for-this\u2460"}, {"id": "ref-for-this\u2461"}, {"id": "ref-for-this\u2462"}, {"id": "ref-for-this\u2463"}, {"id": "ref-for-this\u2464"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-this\u2465"}], "title": "7.2.1. presentationStyle"}, {"refs": [{"id": "ref-for-this\u2466"}], "title": "7.2.2. types"}, {"refs": [{"id": "ref-for-this\u2467"}, {"id": "ref-for-this\u2468"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-this\u2460\u24ea"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-this\u2460\u2460"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-this\u2460\u2461"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-this\u2460\u2462"}], "title": "7.3.4. writeText(data)"}, {"refs": [{"id": "ref-for-this\u2460\u2463"}], "title": "9.1.1. check clipboard read permission"}, {"refs": [{"id": "ref-for-this\u2460\u2464"}], "title": "9.2.1. check clipboard write permission"}], "external": true};
 window.dfnpanelData['5f90bbfb'] = {"dfnID": "5f90bbfb", "url": "https://webidl.spec.whatwg.org/#idl-undefined", "dfnText": "undefined", "refSections": [{"refs": [{"id": "ref-for-idl-undefined"}, {"id": "ref-for-idl-undefined\u2460"}], "title": "7.3. Clipboard Interface"}], "external": true};
 window.dfnpanelData['editable-context'] = {"dfnID": "editable-context", "url": "#editable-context", "dfnText": "editable context", "refSections": [{"refs": [{"id": "ref-for-editable-context"}, {"id": "ref-for-editable-context\u2460"}], "title": "5.2.3. The cut event"}, {"refs": [{"id": "ref-for-editable-context\u2461"}, {"id": "ref-for-editable-context\u2462"}], "title": "5.2.4. The paste event"}, {"refs": [{"id": "ref-for-editable-context\u2463"}], "title": "8.2. The cut action"}, {"refs": [{"id": "ref-for-editable-context\u2464"}], "title": "8.3. The paste action"}], "external": false};
-window.dfnpanelData['system-clipboard'] = {"dfnID": "system-clipboard", "url": "#system-clipboard", "dfnText": "system clipboard", "refSections": [{"refs": [{"id": "ref-for-system-clipboard"}], "title": "4. Model"}, {"refs": [{"id": "ref-for-system-clipboard\u2460"}, {"id": "ref-for-system-clipboard\u2461"}], "title": "5.2.1. The clipboardchange event"}, {"refs": [{"id": "ref-for-system-clipboard\u2462"}, {"id": "ref-for-system-clipboard\u2463"}], "title": "5.2.2. The copy event"}, {"refs": [{"id": "ref-for-system-clipboard\u2464"}, {"id": "ref-for-system-clipboard\u2465"}], "title": "5.2.3. The cut event"}, {"refs": [{"id": "ref-for-system-clipboard\u2466"}], "title": "6.1. Overriding the copy event"}, {"refs": [{"id": "ref-for-system-clipboard\u2467"}], "title": "6.2. Overriding the cut event"}, {"refs": [{"id": "ref-for-system-clipboard\u2468"}], "title": "6.3. Overriding the paste event"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u24ea"}], "title": "7.1.1. clipboard"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2460"}, {"id": "ref-for-system-clipboard\u2460\u2461"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2462"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2463"}], "title": "write blobs and option to the clipboard"}], "external": false};
-window.dfnpanelData['system-clipboard-data'] = {"dfnID": "system-clipboard-data", "url": "#system-clipboard-data", "dfnText": "system clipboard data", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-data"}, {"id": "ref-for-system-clipboard-data\u2460"}], "title": "4. Model"}, {"refs": [{"id": "ref-for-system-clipboard-data\u2461"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-system-clipboard-data\u2462"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-system-clipboard-data\u2463"}], "title": "7.3.2. readText()"}], "external": false};
+window.dfnpanelData['system-clipboard'] = {"dfnID": "system-clipboard", "url": "#system-clipboard", "dfnText": "system clipboard", "refSections": [{"refs": [{"id": "ref-for-system-clipboard"}], "title": "4. Model"}, {"refs": [{"id": "ref-for-system-clipboard\u2460"}, {"id": "ref-for-system-clipboard\u2461"}], "title": "5.2.1. The clipboardchange event"}, {"refs": [{"id": "ref-for-system-clipboard\u2462"}, {"id": "ref-for-system-clipboard\u2463"}], "title": "5.2.2. The copy event"}, {"refs": [{"id": "ref-for-system-clipboard\u2464"}, {"id": "ref-for-system-clipboard\u2465"}], "title": "5.2.3. The cut event"}, {"refs": [{"id": "ref-for-system-clipboard\u2466"}], "title": "6.1. Overriding the copy event"}, {"refs": [{"id": "ref-for-system-clipboard\u2467"}], "title": "6.2. Overriding the cut event"}, {"refs": [{"id": "ref-for-system-clipboard\u2468"}], "title": "6.3. Overriding the paste event"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u24ea"}], "title": "7.1.1. clipboard"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2460"}, {"id": "ref-for-system-clipboard\u2460\u2461"}, {"id": "ref-for-system-clipboard\u2460\u2462"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2463"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2465"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-system-clipboard\u2460\u2466"}, {"id": "ref-for-system-clipboard\u2460\u2467"}, {"id": "ref-for-system-clipboard\u2460\u2468"}], "title": "read web custom format"}, {"refs": [{"id": "ref-for-system-clipboard\u2461\u24ea"}, {"id": "ref-for-system-clipboard\u2461\u2460"}], "title": "write web custom formats"}], "external": false};
+window.dfnpanelData['system-clipboard-data'] = {"dfnID": "system-clipboard-data", "url": "#system-clipboard-data", "dfnText": "system clipboard data", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-data"}, {"id": "ref-for-system-clipboard-data\u2460"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-system-clipboard-data\u2461"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-system-clipboard-data\u2462"}], "title": "7.3.2. readText()"}], "external": false};
+window.dfnpanelData['system-clipboard-item'] = {"dfnID": "system-clipboard-item", "url": "#system-clipboard-item", "dfnText": "system clipboard item", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-item"}], "title": "4. Model"}], "external": false};
+window.dfnpanelData['system-clipboard-representation'] = {"dfnID": "system-clipboard-representation", "url": "#system-clipboard-representation", "dfnText": "system clipboard representation", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-representation"}], "title": "4. Model"}], "external": false};
+window.dfnpanelData['system-clipboard-representation-name'] = {"dfnID": "system-clipboard-representation-name", "url": "#system-clipboard-representation-name", "dfnText": "name", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-representation-name"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-system-clipboard-representation-name\u2460"}], "title": "7.3.2. readText()"}], "external": false};
+window.dfnpanelData['system-clipboard-representation-data'] = {"dfnID": "system-clipboard-representation-data", "url": "#system-clipboard-representation-data", "dfnText": "data", "refSections": [{"refs": [{"id": "ref-for-system-clipboard-representation-data"}], "title": "7.3.1. read()"}], "external": false};
 window.dfnpanelData['dictdef-clipboardeventinit'] = {"dfnID": "dictdef-clipboardeventinit", "url": "#dictdef-clipboardeventinit", "dfnText": "ClipboardEventInit", "refSections": [{"refs": [{"id": "ref-for-dictdef-clipboardeventinit"}], "title": "5.1. Clipboard event interfaces"}], "external": false};
 window.dfnpanelData['clipboardevent'] = {"dfnID": "clipboardevent", "url": "#clipboardevent", "dfnText": "ClipboardEvent", "refSections": [{"refs": [{"id": "ref-for-clipboardevent"}, {"id": "ref-for-clipboardevent\u2460"}], "title": "6. Clipboard Event API"}, {"refs": [{"id": "ref-for-clipboardevent\u2461"}], "title": "6.1. Overriding the copy event"}, {"refs": [{"id": "ref-for-clipboardevent\u2462"}], "title": "6.2. Overriding the cut event"}, {"refs": [{"id": "ref-for-clipboardevent\u2463"}, {"id": "ref-for-clipboardevent\u2464"}], "title": "fire a clipboard event"}], "external": false};
 window.dfnpanelData['dom-clipboardevent-clipboarddata'] = {"dfnID": "dom-clipboardevent-clipboarddata", "url": "#dom-clipboardevent-clipboarddata", "dfnText": "clipboardData", "refSections": [{"refs": [{"id": "ref-for-dom-clipboardevent-clipboarddata"}], "title": "5.2.3. The cut event"}, {"refs": [{"id": "ref-for-dom-clipboardevent-clipboarddata\u2460"}], "title": "6. Clipboard Event API"}, {"refs": [{"id": "ref-for-dom-clipboardevent-clipboarddata\u2461"}], "title": "6.1. Overriding the copy event"}, {"refs": [{"id": "ref-for-dom-clipboardevent-clipboarddata\u2462"}], "title": "6.2. Overriding the cut event"}, {"refs": [{"id": "ref-for-dom-clipboardevent-clipboarddata\u2463"}], "title": "fire a clipboard event"}], "external": false};
@@ -3928,8 +4187,8 @@ window.dfnpanelData['eventdef-documentandelementeventhandlers-cut'] = {"dfnID": 
 window.dfnpanelData['eventdef-documentandelementeventhandlers-paste'] = {"dfnID": "eventdef-documentandelementeventhandlers-paste", "url": "#eventdef-documentandelementeventhandlers-paste", "dfnText": "paste", "refSections": [{"refs": [{"id": "ref-for-eventdef-documentandelementeventhandlers-paste"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2460"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2461"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2462"}], "title": "5.2.4. The paste event"}, {"refs": [{"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2463"}], "title": "5.3.2. Event handlers that are allowed to read from clipboard"}, {"refs": [{"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2464"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2465"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2466"}, {"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2467"}], "title": "6.3. Overriding the paste event"}, {"refs": [{"id": "ref-for-eventdef-documentandelementeventhandlers-paste\u2468"}], "title": "8.3. The paste action"}], "external": false};
 window.dfnpanelData['allowed-to-modify-the-clipboard'] = {"dfnID": "allowed-to-modify-the-clipboard", "url": "#allowed-to-modify-the-clipboard", "dfnText": "allowed to modify the clipboard", "refSections": [{"refs": [{"id": "ref-for-allowed-to-modify-the-clipboard"}], "title": "8. Clipboard Actions"}], "external": false};
 window.dfnpanelData['allowed-to-read-from-clipboard'] = {"dfnID": "allowed-to-read-from-clipboard", "url": "#allowed-to-read-from-clipboard", "dfnText": "allowed to read from clipboard", "refSections": [{"refs": [{"id": "ref-for-allowed-to-read-from-clipboard"}], "title": "8. Clipboard Actions"}], "external": false};
-window.dfnpanelData['mandatory-data-types'] = {"dfnID": "mandatory-data-types", "url": "#mandatory-data-types", "dfnText": "Mandatory data types", "refSections": [{"refs": [{"id": "ref-for-mandatory-data-types"}], "title": "5.1. Clipboard event interfaces"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2461"}], "title": "7.2.4. supports(type)"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2462"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2463"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2465"}, {"id": "ref-for-mandatory-data-types\u2466"}], "title": "write content to the clipboard"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2467"}], "title": "os specific well-known format"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2468"}], "title": "fire a clipboard event"}], "external": false};
-window.dfnpanelData['optional-data-types'] = {"dfnID": "optional-data-types", "url": "#optional-data-types", "dfnText": "Optional data types", "refSections": [{"refs": [{"id": "ref-for-optional-data-types"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-optional-data-types\u2460"}], "title": "7.2.4. supports(type)"}], "external": false};
+window.dfnpanelData['mandatory-data-types'] = {"dfnID": "mandatory-data-types", "url": "#mandatory-data-types", "dfnText": "Mandatory data types", "refSections": [{"refs": [{"id": "ref-for-mandatory-data-types"}], "title": "5.1. Clipboard event interfaces"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2461"}], "title": "7.2.4. supports(type)"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2462"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2463"}, {"id": "ref-for-mandatory-data-types\u2464"}], "title": "write content to the clipboard"}, {"refs": [{"id": "ref-for-mandatory-data-types\u2465"}], "title": "fire a clipboard event"}], "external": false};
+window.dfnpanelData['optional-data-types'] = {"dfnID": "optional-data-types", "url": "#optional-data-types", "dfnText": "Optional data types", "refSections": [{"refs": [{"id": "ref-for-optional-data-types"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-optional-data-types\u2460"}], "title": "7.2.4. supports(type)"}, {"refs": [{"id": "ref-for-optional-data-types\u2461"}], "title": "7.3.3. write(data)"}], "external": false};
 window.dfnpanelData['dom-navigator-clipboard'] = {"dfnID": "dom-navigator-clipboard", "url": "#dom-navigator-clipboard", "dfnText": "clipboard", "refSections": [{"refs": [{"id": "ref-for-dom-navigator-clipboard"}], "title": "7.1.1. clipboard"}], "external": false};
 window.dfnpanelData['navigator-clipboard'] = {"dfnID": "navigator-clipboard", "url": "#navigator-clipboard", "dfnText": "clipboard", "refSections": [{"refs": [{"id": "ref-for-navigator-clipboard"}], "title": "7.1.1. clipboard"}, {"refs": [{"id": "ref-for-navigator-clipboard\u2460"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
 window.dfnpanelData['typedefdef-clipboarditemdata'] = {"dfnID": "typedefdef-clipboarditemdata", "url": "#typedefdef-clipboarditemdata", "dfnText": "ClipboardItemData", "refSections": [{"refs": [{"id": "ref-for-typedefdef-clipboarditemdata"}, {"id": "ref-for-typedefdef-clipboarditemdata\u2460"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
@@ -3937,13 +4196,15 @@ window.dfnpanelData['clipboarditem'] = {"dfnID": "clipboarditem", "url": "#clipb
 window.dfnpanelData['enumdef-presentationstyle'] = {"dfnID": "enumdef-presentationstyle", "url": "#enumdef-presentationstyle", "dfnText": "PresentationStyle", "refSections": [{"refs": [{"id": "ref-for-enumdef-presentationstyle"}, {"id": "ref-for-enumdef-presentationstyle\u2460"}, {"id": "ref-for-enumdef-presentationstyle\u2461"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
 window.dfnpanelData['dictdef-clipboarditemoptions'] = {"dfnID": "dictdef-clipboarditemoptions", "url": "#dictdef-clipboarditemoptions", "dfnText": "ClipboardItemOptions", "refSections": [{"refs": [{"id": "ref-for-dictdef-clipboarditemoptions"}, {"id": "ref-for-dictdef-clipboarditemoptions\u2460"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
 window.dfnpanelData['dom-clipboarditemoptions-presentationstyle'] = {"dfnID": "dom-clipboarditemoptions-presentationstyle", "url": "#dom-clipboarditemoptions-presentationstyle", "dfnText": "presentationStyle", "refSections": [{"refs": [{"id": "ref-for-dom-clipboarditemoptions-presentationstyle"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
-window.dfnpanelData['clipboard-item'] = {"dfnID": "clipboard-item", "url": "#clipboard-item", "dfnText": "clipboard item", "refSections": [{"refs": [{"id": "ref-for-clipboard-item"}], "title": "4. Model"}, {"refs": [{"id": "ref-for-clipboard-item\u2460"}, {"id": "ref-for-clipboard-item\u2461"}, {"id": "ref-for-clipboard-item\u2462"}, {"id": "ref-for-clipboard-item\u2463"}, {"id": "ref-for-clipboard-item\u2464"}, {"id": "ref-for-clipboard-item\u2465"}, {"id": "ref-for-clipboard-item\u2466"}, {"id": "ref-for-clipboard-item\u2467"}, {"id": "ref-for-clipboard-item\u2468"}, {"id": "ref-for-clipboard-item\u2460\u24ea"}, {"id": "ref-for-clipboard-item\u2460\u2460"}, {"id": "ref-for-clipboard-item\u2460\u2461"}, {"id": "ref-for-clipboard-item\u2460\u2462"}, {"id": "ref-for-clipboard-item\u2460\u2463"}, {"id": "ref-for-clipboard-item\u2460\u2464"}, {"id": "ref-for-clipboard-item\u2460\u2465"}, {"id": "ref-for-clipboard-item\u2460\u2466"}, {"id": "ref-for-clipboard-item\u2460\u2467"}, {"id": "ref-for-clipboard-item\u2460\u2468"}, {"id": "ref-for-clipboard-item\u2461\u24ea"}, {"id": "ref-for-clipboard-item\u2461\u2460"}, {"id": "ref-for-clipboard-item\u2461\u2461"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2462"}, {"id": "ref-for-clipboard-item\u2461\u2463"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2464"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2465"}], "title": "7.3.2. readText()"}], "external": false};
-window.dfnpanelData['list-of-representations'] = {"dfnID": "list-of-representations", "url": "#list-of-representations", "dfnText": "list of representations", "refSections": [{"refs": [{"id": "ref-for-list-of-representations"}, {"id": "ref-for-list-of-representations\u2460"}, {"id": "ref-for-list-of-representations\u2461"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-list-of-representations\u2462"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-list-of-representations\u2463"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-list-of-representations\u2464"}], "title": "7.3.3. write(data)"}], "external": false};
-window.dfnpanelData['representation'] = {"dfnID": "representation", "url": "#representation", "dfnText": "representation", "refSections": [{"refs": [{"id": "ref-for-representation"}, {"id": "ref-for-representation\u2460"}, {"id": "ref-for-representation\u2461"}, {"id": "ref-for-representation\u2462"}, {"id": "ref-for-representation\u2463"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
-window.dfnpanelData['representation-mime-type'] = {"dfnID": "representation-mime-type", "url": "#representation-mime-type", "dfnText": "mime type", "refSections": [{"refs": [{"id": "ref-for-representation-mime-type"}, {"id": "ref-for-representation-mime-type\u2460"}, {"id": "ref-for-representation-mime-type\u2461"}, {"id": "ref-for-representation-mime-type\u2462"}, {"id": "ref-for-representation-mime-type\u2463"}, {"id": "ref-for-representation-mime-type\u2464"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation-mime-type\u2465"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-representation-mime-type\u2466"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-representation-mime-type\u2467"}], "title": "7.3.3. write(data)"}], "external": false};
-window.dfnpanelData['representation-data'] = {"dfnID": "representation-data", "url": "#representation-data", "dfnText": "data", "refSections": [{"refs": [{"id": "ref-for-representation-data"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation-data\u2460"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-representation-data\u2461"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-representation-data\u2462"}], "title": "7.3.3. write(data)"}], "external": false};
+window.dfnpanelData['clipboard-item'] = {"dfnID": "clipboard-item", "url": "#clipboard-item", "dfnText": "clipboard item", "refSections": [{"refs": [{"id": "ref-for-clipboard-item"}, {"id": "ref-for-clipboard-item\u2460"}, {"id": "ref-for-clipboard-item\u2461"}, {"id": "ref-for-clipboard-item\u2462"}, {"id": "ref-for-clipboard-item\u2463"}, {"id": "ref-for-clipboard-item\u2464"}, {"id": "ref-for-clipboard-item\u2465"}, {"id": "ref-for-clipboard-item\u2466"}, {"id": "ref-for-clipboard-item\u2467"}, {"id": "ref-for-clipboard-item\u2468"}, {"id": "ref-for-clipboard-item\u2460\u24ea"}, {"id": "ref-for-clipboard-item\u2460\u2460"}, {"id": "ref-for-clipboard-item\u2460\u2461"}, {"id": "ref-for-clipboard-item\u2460\u2462"}, {"id": "ref-for-clipboard-item\u2460\u2463"}, {"id": "ref-for-clipboard-item\u2460\u2464"}, {"id": "ref-for-clipboard-item\u2460\u2465"}, {"id": "ref-for-clipboard-item\u2460\u2466"}, {"id": "ref-for-clipboard-item\u2460\u2467"}, {"id": "ref-for-clipboard-item\u2460\u2468"}, {"id": "ref-for-clipboard-item\u2461\u24ea"}, {"id": "ref-for-clipboard-item\u2461\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2461"}, {"id": "ref-for-clipboard-item\u2461\u2462"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2463"}, {"id": "ref-for-clipboard-item\u2461\u2464"}, {"id": "ref-for-clipboard-item\u2461\u2465"}, {"id": "ref-for-clipboard-item\u2461\u2466"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-clipboard-item\u2461\u2467"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['list-of-representations'] = {"dfnID": "list-of-representations", "url": "#list-of-representations", "dfnText": "list of representations", "refSections": [{"refs": [{"id": "ref-for-list-of-representations"}, {"id": "ref-for-list-of-representations\u2460"}, {"id": "ref-for-list-of-representations\u2461"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-list-of-representations\u2462"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-list-of-representations\u2463"}, {"id": "ref-for-list-of-representations\u2464"}, {"id": "ref-for-list-of-representations\u2465"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-list-of-representations\u2466"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-list-of-representations\u2467"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['representation'] = {"dfnID": "representation", "url": "#representation", "dfnText": "representation", "refSections": [{"refs": [{"id": "ref-for-representation"}, {"id": "ref-for-representation\u2460"}, {"id": "ref-for-representation\u2461"}, {"id": "ref-for-representation\u2462"}, {"id": "ref-for-representation\u2463"}, {"id": "ref-for-representation\u2464"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation\u2465"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-representation\u2466"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-representation\u2467"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['representation-mime-type'] = {"dfnID": "representation-mime-type", "url": "#representation-mime-type", "dfnText": "mime type", "refSections": [{"refs": [{"id": "ref-for-representation-mime-type"}, {"id": "ref-for-representation-mime-type\u2460"}, {"id": "ref-for-representation-mime-type\u2461"}, {"id": "ref-for-representation-mime-type\u2462"}, {"id": "ref-for-representation-mime-type\u2463"}, {"id": "ref-for-representation-mime-type\u2464"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation-mime-type\u2465"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-representation-mime-type\u2466"}, {"id": "ref-for-representation-mime-type\u2467"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-representation-mime-type\u2468"}, {"id": "ref-for-representation-mime-type\u2460\u24ea"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-representation-mime-type\u2460\u2460"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-representation-mime-type\u2460\u2461"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['representation-iscustom'] = {"dfnID": "representation-iscustom", "url": "#representation-iscustom", "dfnText": "isCustom", "refSections": [{"refs": [{"id": "ref-for-representation-iscustom"}, {"id": "ref-for-representation-iscustom\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation-iscustom\u2461"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-representation-iscustom\u2462"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['representation-data'] = {"dfnID": "representation-data", "url": "#representation-data", "dfnText": "data", "refSections": [{"refs": [{"id": "ref-for-representation-data"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-representation-data\u2460"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-representation-data\u2461"}, {"id": "ref-for-representation-data\u2462"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-representation-data\u2463"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-representation-data\u2464"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-representation-data\u2465"}], "title": "read web custom format"}], "external": false};
+window.dfnpanelData['web-custom-format'] = {"dfnID": "web-custom-format", "url": "#web-custom-format", "dfnText": "web custom format", "refSections": [{"refs": [{"id": "ref-for-web-custom-format"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
 window.dfnpanelData['presentation-style'] = {"dfnID": "presentation-style", "url": "#presentation-style", "dfnText": "presentation style", "refSections": [{"refs": [{"id": "ref-for-presentation-style"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-presentation-style\u2460"}], "title": "7.2.1. presentationStyle"}, {"refs": [{"id": "ref-for-presentation-style\u2461"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-presentation-style\u2462"}], "title": "write blobs and option to the clipboard"}], "external": false};
-window.dfnpanelData['clipboarditem-clipboard-item'] = {"dfnID": "clipboarditem-clipboard-item", "url": "#clipboarditem-clipboard-item", "dfnText": "clipboard item", "refSections": [{"refs": [{"id": "ref-for-clipboarditem-clipboard-item"}, {"id": "ref-for-clipboarditem-clipboard-item\u2460"}, {"id": "ref-for-clipboarditem-clipboard-item\u2461"}, {"id": "ref-for-clipboarditem-clipboard-item\u2462"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2463"}], "title": "7.2.1. presentationStyle"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2464"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2465"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2466"}, {"id": "ref-for-clipboarditem-clipboard-item\u2467"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2468"}], "title": "write blobs and option to the clipboard"}], "external": false};
+window.dfnpanelData['clipboarditem-clipboard-item'] = {"dfnID": "clipboarditem-clipboard-item", "url": "#clipboarditem-clipboard-item", "dfnText": "clipboard item", "refSections": [{"refs": [{"id": "ref-for-clipboarditem-clipboard-item"}, {"id": "ref-for-clipboarditem-clipboard-item\u2460"}, {"id": "ref-for-clipboarditem-clipboard-item\u2461"}, {"id": "ref-for-clipboarditem-clipboard-item\u2462"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2463"}], "title": "7.2.1. presentationStyle"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2464"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2465"}, {"id": "ref-for-clipboarditem-clipboard-item\u2466"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-clipboarditem-clipboard-item\u2467"}], "title": "write blobs and option to the clipboard"}], "external": false};
 window.dfnpanelData['clipboarditem-types-array'] = {"dfnID": "clipboarditem-types-array", "url": "#clipboarditem-types-array", "dfnText": "types array", "refSections": [{"refs": [{"id": "ref-for-clipboarditem-types-array"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-clipboarditem-types-array\u2460"}], "title": "7.2.2. types"}], "external": false};
 window.dfnpanelData['create-a-clipboarditem-object'] = {"dfnID": "create-a-clipboarditem-object", "url": "#create-a-clipboarditem-object", "dfnText": "create a ClipboardItem object", "refSections": [{"refs": [{"id": "ref-for-create-a-clipboarditem-object"}], "title": "7.3.1. read()"}], "external": false};
 window.dfnpanelData['dom-clipboarditem-clipboarditem'] = {"dfnID": "dom-clipboarditem-clipboarditem", "url": "#dom-clipboarditem-clipboarditem", "dfnText": "new ClipboardItem(items, options)", "refSections": [{"refs": [{"id": "ref-for-dom-clipboarditem-clipboarditem"}], "title": "7.2. ClipboardItem Interface"}], "external": false};
@@ -3953,7 +4214,7 @@ window.dfnpanelData['dom-clipboarditem-gettype'] = {"dfnID": "dom-clipboarditem-
 window.dfnpanelData['dom-clipboarditem-supports'] = {"dfnID": "dom-clipboarditem-supports", "url": "#dom-clipboarditem-supports", "dfnText": "7.2.4. supports(type)", "refSections": [{"refs": [{"id": "ref-for-dom-clipboarditem-supports"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-dom-clipboarditem-supports"}], "title": "7.2.4. supports(type)"}], "external": false};
 window.dfnpanelData['typedefdef-clipboarditems'] = {"dfnID": "typedefdef-clipboarditems", "url": "#typedefdef-clipboarditems", "dfnText": "ClipboardItems", "refSections": [{"refs": [{"id": "ref-for-typedefdef-clipboarditems"}, {"id": "ref-for-typedefdef-clipboarditems\u2460"}], "title": "7.3. Clipboard Interface"}], "external": false};
 window.dfnpanelData['clipboard'] = {"dfnID": "clipboard", "url": "#clipboard", "dfnText": "Clipboard", "refSections": [{"refs": [{"id": "ref-for-clipboard"}], "title": "7.1. Navigator Interface"}, {"refs": [{"id": "ref-for-clipboard\u2460"}], "title": "7.3. Clipboard Interface"}], "external": false};
-window.dfnpanelData['clipboard-items'] = {"dfnID": "clipboard-items", "url": "#clipboard-items", "dfnText": "clipboard items", "refSections": [{"refs": [{"id": "ref-for-clipboard-items"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-clipboard-items\u2460"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-clipboard-items\u2461"}], "title": "7.3.2. readText()"}], "external": false};
+window.dfnpanelData['clipboard-items'] = {"dfnID": "clipboard-items", "url": "#clipboard-items", "dfnText": "clipboard items", "refSections": [{"refs": [{"id": "ref-for-clipboard-items"}], "title": "7.3. Clipboard Interface"}], "external": false};
 window.dfnpanelData['clipboard-task-source'] = {"dfnID": "clipboard-task-source", "url": "#clipboard-task-source", "dfnText": "clipboard task source", "refSections": [{"refs": [{"id": "ref-for-clipboard-task-source"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-clipboard-task-source\u2460"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-clipboard-task-source\u2461"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-clipboard-task-source\u2462"}], "title": "7.3.4. writeText(data)"}], "external": false};
 window.dfnpanelData['dom-clipboard-read'] = {"dfnID": "dom-clipboard-read", "url": "#dom-clipboard-read", "dfnText": "7.3.1. read()", "refSections": [{"refs": [{"id": "ref-for-dom-clipboard-read"}], "title": "2.2. Remote Clipboard Synchronization"}, {"refs": [{"id": "ref-for-dom-clipboard-read\u2460"}, {"id": "ref-for-dom-clipboard-read\u2461"}, {"id": "ref-for-dom-clipboard-read\u2462"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-dom-clipboard-read"}, {"id": "ref-for-dom-clipboard-read\u2463"}], "title": "7.3.1. read()"}], "external": false};
 window.dfnpanelData['dom-clipboard-readtext'] = {"dfnID": "dom-clipboard-readtext", "url": "#dom-clipboard-readtext", "dfnText": "7.3.2. readText()", "refSections": [{"refs": [{"id": "ref-for-dom-clipboard-readtext"}, {"id": "ref-for-dom-clipboard-readtext\u2460"}], "title": "7.3. Clipboard Interface"}, {"refs": [{"id": "ref-for-dom-clipboard-readtext"}, {"id": "ref-for-dom-clipboard-readtext\u2461"}], "title": "7.3.2. readText()"}], "external": false};
@@ -3967,6 +4228,11 @@ window.dfnpanelData['check-clipboard-write-permission'] = {"dfnID": "check-clipb
 window.dfnpanelData['write-content-to-the-clipboard'] = {"dfnID": "write-content-to-the-clipboard", "url": "#write-content-to-the-clipboard", "dfnText": "write content to the clipboard", "refSections": [{"refs": [{"id": "ref-for-write-content-to-the-clipboard"}], "title": "8.1. The copy action"}, {"refs": [{"id": "ref-for-write-content-to-the-clipboard\u2460"}], "title": "8.2. The cut action"}], "external": false};
 window.dfnpanelData['write-blobs-and-option-to-the-clipboard'] = {"dfnID": "write-blobs-and-option-to-the-clipboard", "url": "#write-blobs-and-option-to-the-clipboard", "dfnText": "write blobs and option to the clipboard", "refSections": [{"refs": [{"id": "ref-for-write-blobs-and-option-to-the-clipboard"}], "title": "7.3.3. write(data)"}, {"refs": [{"id": "ref-for-write-blobs-and-option-to-the-clipboard\u2460"}], "title": "7.3.4. writeText(data)"}], "external": false};
 window.dfnpanelData['os-specific-well-known-format'] = {"dfnID": "os-specific-well-known-format", "url": "#os-specific-well-known-format", "dfnText": "os specific well-known format", "refSections": [{"refs": [{"id": "ref-for-os-specific-well-known-format"}], "title": "write blobs and option to the clipboard"}], "external": false};
+window.dfnpanelData['well-known-mime-type-from-os-specific-format'] = {"dfnID": "well-known-mime-type-from-os-specific-format", "url": "#well-known-mime-type-from-os-specific-format", "dfnText": "well-known mime type from os specific format", "refSections": [{"refs": [{"id": "ref-for-well-known-mime-type-from-os-specific-format"}], "title": "7.3.1. read()"}, {"refs": [{"id": "ref-for-well-known-mime-type-from-os-specific-format\u2460"}], "title": "7.3.2. readText()"}], "external": false};
+window.dfnpanelData['read-web-custom-format'] = {"dfnID": "read-web-custom-format", "url": "#read-web-custom-format", "dfnText": "read web custom format", "refSections": [{"refs": [{"id": "ref-for-read-web-custom-format"}, {"id": "ref-for-read-web-custom-format\u2460"}], "title": "7.3.1. read()"}], "external": false};
+window.dfnpanelData['write-web-custom-formats'] = {"dfnID": "write-web-custom-formats", "url": "#write-web-custom-formats", "dfnText": "write web custom formats", "refSections": [{"refs": [{"id": "ref-for-write-web-custom-formats"}], "title": "write blobs and option to the clipboard"}], "external": false};
+window.dfnpanelData['os-specific-custom-map-name'] = {"dfnID": "os-specific-custom-map-name", "url": "#os-specific-custom-map-name", "dfnText": "os specific custom map name", "refSections": [{"refs": [{"id": "ref-for-os-specific-custom-map-name"}], "title": "read web custom format"}, {"refs": [{"id": "ref-for-os-specific-custom-map-name\u2460"}], "title": "write web custom formats"}], "external": false};
+window.dfnpanelData['os-specific-custom-name'] = {"dfnID": "os-specific-custom-name", "url": "#os-specific-custom-name", "dfnText": "os specific custom name", "refSections": [{"refs": [{"id": "ref-for-os-specific-custom-name"}], "title": "write web custom formats"}], "external": false};
 window.dfnpanelData['fire-a-clipboard-event'] = {"dfnID": "fire-a-clipboard-event", "url": "#fire-a-clipboard-event", "dfnText": "fire a clipboard event", "refSections": [{"refs": [{"id": "ref-for-fire-a-clipboard-event"}], "title": "5.2.2. The copy event"}, {"refs": [{"id": "ref-for-fire-a-clipboard-event\u2460"}], "title": "5.2.3. The cut event"}, {"refs": [{"id": "ref-for-fire-a-clipboard-event\u2461"}], "title": "5.2.4. The paste event"}, {"refs": [{"id": "ref-for-fire-a-clipboard-event\u2462"}, {"id": "ref-for-fire-a-clipboard-event\u2463"}], "title": "8.1. The copy action"}, {"refs": [{"id": "ref-for-fire-a-clipboard-event\u2464"}, {"id": "ref-for-fire-a-clipboard-event\u2465"}, {"id": "ref-for-fire-a-clipboard-event\u2466"}], "title": "8.2. The cut action"}, {"refs": [{"id": "ref-for-fire-a-clipboard-event"}], "title": "8.3. The paste action"}], "external": false};
 window.dfnpanelData['process-an-html-paste-event'] = {"dfnID": "process-an-html-paste-event", "url": "#process-an-html-paste-event", "dfnText": "process an HTML paste event", "refSections": [{"refs": [{"id": "ref-for-process-an-html-paste-event"}], "title": "fire a clipboard event"}], "external": false};
 </script>
