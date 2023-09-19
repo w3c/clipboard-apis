@@ -31,32 +31,12 @@ urlPrefix: https://html.spec.whatwg.org/multipage/interaction.html#; type: dfn;
 	text: concept dnd p
 	text: focusable area
 	text: dom anchor
-url: https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2; type: dfn;
-	text: the body element
-spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/system-state.html; type: interface;
-	text: Navigator
 urlPrefix: http://www.w3.org/TR/html5/browsers.html#; type: dfn;
 	text: allowed to show a popup
 urlPrefix: https://dom.spec.whatwg.org/#; type: dfn;
 	text: constructing events
-urlPrefix: http://w3c.github.io/editing/contentEditable.html#dfn-; type: dfn;
-	text: editing host
-spec: ecma-262; urlPrefix: http://tc39.github.io/ecma262/
-	type: dfn
-		text: Assert; url: sec-algorithm-conventions
-		text: promise; url: sec-promise-objects
-urlPrefix: https://w3c.github.io/permissions/#dom-permissionstate-; type: dfn;
-	text: denied
-	text: granted
-	text: prompt
 url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 	text: permission task source
-url: https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global; type: dfn;
-	text: global object
-urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
-	text: Blob
-	text: type
-	text: blobParts
 </pre>
 
 <pre class="biblio">
@@ -609,7 +589,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		<dl class=note>
 			<dt><code><var>clipboardItem</var> = new ClipboardItem([<var>items</var>, <var>options</var>])</code></dt>
 			<dd>
-			Creates a new {{ClipboardItem}} object. <var>items</var> denote [=list of representations=], each [=representation=] has a [=representation/mime type=] and a [=Promise=] to {{Blob}} or {{DOMString}} corresponding to the [=representation/mime type=], <var>options</var> can be used to fill its {{ClipboardItemOptions}},
+			Creates a new {{ClipboardItem}} object. <var>items</var> denote [=list of representations=], each [=representation=] has a [=representation/mime type=] and a {{Promise}} to {{Blob}} or {{DOMString}} corresponding to the [=representation/mime type=], <var>options</var> can be used to fill its {{ClipboardItemOptions}},
 			as per the example below.
 
 				<pre class="example javascript" highlight=js>
@@ -621,7 +601,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 				</pre>
 			</dd>
 			<dt><code><var>clipboardItem</var>.getType(<var>type</var>)</code></dt>
-			<dd>Returns a [=Promise=] to the {{Blob}} corresponding to the [=representation/mime type=] <var>type</var>.</dd>
+			<dd>Returns a {{Promise}} to the {{Blob}} corresponding to the [=representation/mime type=] <var>type</var>.</dd>
 
 			<dt><code><var>clipboardItem</var>.<var>types</var></code></dt>
 			<dd>Returns the list of [=representation/mime type=]s contained in the [=/clipboard item=] object.</dd>
@@ -814,7 +794,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 		<p class="note">
 		A web author needs to create a |data| which is an array of {{ClipboardItem}}s in order to write content to [=system clipboard=] using the {{Clipboard/write(data)}} method.
-		{{Clipboard/read()}} returns a [=Promise=] to [=clipboard items=] object that represents contents of [=system clipboard data=].
+		{{Clipboard/read()}} returns a {{Promise}} to [=clipboard items=] object that represents contents of [=system clipboard data=].
 		</p>
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
@@ -834,7 +814,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -881,7 +861,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 					1. If |customItem|'s [=list of representations=] size is greater than 0, append |item| to |items|.
 
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
 
 					1. Let |clipboardItems| be a [=sequence=]&lt;{{ClipboardItem}}&gt;.
 
@@ -919,7 +899,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
@@ -929,7 +909,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 					Issue: Add definition of sanitized copy.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
 
 					1. For each |systemClipboardItem| in |data|:
 
@@ -1001,11 +981,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
 
 					1. Let |itemList| and |cleanItemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
@@ -1096,11 +1076,11 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 
 				1. If |r| is false, then:
 				
-					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
+					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} DOMException in |realm|.
 
 					1. Abort these steps.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=global object=], to perform the below steps:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
 
 					1. Let |itemList| be an empty [=sequence=]&lt;{{Blob}}&gt;.
 
@@ -1336,7 +1316,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 		and always require a user gesture would handle each descriptor as follows:
 
 		* <code class="perm">{ "clipboard-write" + false }</code> is exposed for user control
-		* <code class="perm">{ "clipboard-write" + true }</code> is always <a>denied</a>
+		* <code class="perm">{ "clipboard-write" + true }</code> is always {{PermissionState/denied}}
 	</div>
 
 	<h3 id="read-permission">Clipboard read permission</h3>
@@ -1367,7 +1347,7 @@ urlPrefix: https://w3c.github.io/FileAPI/#dfn-; type: dfn;
 			<code>{ name: "clipboard-write", allowWithoutGesture: true }</code>
 			permission.
 
-		1. If |writeWithoutGesture| is <a>granted</a>, then return true.
+		1. If |writeWithoutGesture| is {{PermissionState/granted}}, then return true.
 
 		1. Let |hasGesture| be true if the [=relevant global object=] of [=this=]
 		    has [=transient activation=], false otherwise.
