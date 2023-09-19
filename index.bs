@@ -539,7 +539,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* text/uri-list
 			* image/svg+xml
-			* Custom format with "web "("web" followed by U+0020 SPACE) prefix.
+			* Custom format [=starts with=] "web "("web" followed by U+0020 SPACE) prefix.
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -669,7 +669,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |isCustom| be |false|.
 				
-				1. If |key| has "web " ("web" followed by U+0020 SPACE) prefix, then 
+				1. If |key| [=starts with=] "web " ("web" followed by U+0020 SPACE) prefix, then
 				
 					1. Remove "web " prefix and set the remaining string to |key|.
 
@@ -717,7 +717,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			1. Let |isCustom| be |false|.
 
-			1. If |type| has "web "("web" followed by U+0020 SPACE) prefix, then:
+			1. If |type| [=starts with=] "web "("web" followed by U+0020 SPACE) prefix, then:
 			
 				1. Remove "web " prefix and set the remaining string to |type|.
 
@@ -1695,7 +1695,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |webCustomFormat| be an empty {{Blob/type}}.
 
-				1. If |webCustomFormatString| has "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in |webCustomFormat|'s {{Blob/type}}'s [=MIME type/essence=], else abort all steps.
+				1. If |webCustomFormatString| [=starts with=] "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in |webCustomFormat|'s {{Blob/type}}'s [=MIME type/essence=], else abort all steps.
 				
 				1. Set |item|'s {{Blob/type}} to |webCustomFormat|.
 
