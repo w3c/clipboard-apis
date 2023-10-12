@@ -539,7 +539,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* text/uri-list
 			* image/svg+xml
-			* Custom format [=starts with=] "web "("web" followed by U+0020 SPACE) prefix.
+			* Custom format [=starts with=] "web "("web" followed by U+0020 SPACE) prefix
+				and suffix (after stripping out "web "("web" followed by U+0020 SPACE)) is a valid
+				[=/MIME type=].
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
