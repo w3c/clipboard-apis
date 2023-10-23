@@ -540,7 +540,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			* text/uri-list
 			* image/svg+xml
 			* Custom format [=string/starts with=] `"web "`("web" followed by U+0020 SPACE) prefix
-				and suffix (after stripping out `"web "`) is a valid [=/MIME type=].
+				and suffix (after stripping out `"web "`) passes the [=parsing a MIME type=] check.
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -672,7 +672,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 				
 				1. If |key| [=string/starts with=] `"web "` prefix, then
 				
-					1. Remove `"web "` prefix and set the remaining string to |key|.
+					1. Remove `"web "` prefix and assign the remaining string to |key|.
 
 					1. Set |isCustom| |true|
 					
