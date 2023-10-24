@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="39b067c3d630dd842a8be086dfeb0dddb1d7ab53" name="document-revision">
+  <meta content="ad650715b2832b7c6f21d279f0db0e8e2f22914c" name="document-revision">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -889,7 +889,7 @@ var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-09-21">21 September 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2023-10-24">24 October 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1456,7 +1456,8 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>image/svg+xml</p>
     <li data-md>
-     <p>Custom format with "web "("web" followed by U+0020 SPACE) prefix.</p>
+     <p>Custom format <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-starts-with" id="ref-for-string-starts-with">starts with</a> `"web "`("web" followed by U+0020 SPACE) prefix
+and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type">parsing a MIME type</a> check.</p>
    </ul>
    <h2 class="heading settled" data-level="7" id="async-clipboard-api"><span class="secno">7. </span><span class="content">Asynchronous Clipboard API</span><a class="self-link" href="#async-clipboard-api"></a></h2>
    <h3 class="heading settled" data-level="7.1" id="navigator-interface"><span class="secno">7.1. </span><span class="content">Navigator Interface</span><a class="self-link" href="#navigator-interface"></a></h3>
@@ -1554,17 +1555,17 @@ document.addEventListener('paste', function(e) {
       <li data-md>
        <p>Let <var>isCustom</var> be <var>false</var>.</p>
       <li data-md>
-       <p>If <var>key</var> has "web " ("web" followed by U+0020 SPACE) prefix, then</p>
+       <p>If <var>key</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-starts-with" id="ref-for-string-starts-with①">starts with</a> `"web "` prefix, then</p>
        <ol>
         <li data-md>
-         <p>Remove "web " prefix and set the remaining string to <var>key</var>.</p>
+         <p>Remove `"web "` prefix and assign the remaining string to <var>key</var>.</p>
         <li data-md>
          <p>Set <var>isCustom</var> <var>true</var></p>
        </ol>
       <li data-md>
        <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-iscustom" id="ref-for-representation-iscustom①">isCustom</a> flag to <var>isCustom</var>.</p>
       <li data-md>
-       <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type">parsing a MIME type</a> given <var>key</var>.</p>
+       <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type①">parsing a MIME type</a> given <var>key</var>.</p>
       <li data-md>
        <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror①">TypeError</a></code>.</p>
       <li data-md>
@@ -1581,7 +1582,7 @@ document.addEventListener('paste', function(e) {
       <li data-md>
        <p>Let <var>mimeTypeString</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#serialize-a-mime-type" id="ref-for-serialize-a-mime-type">serializing a MIME type</a> with <var>mimeType</var>.</p>
       <li data-md>
-       <p>If <var>isCustom</var> is <var>true</var>, prefix <var>mimeTypeString</var> with "web " ("web" followed by U+0020 SPACE).</p>
+       <p>If <var>isCustom</var> is <var>true</var>, prefix <var>mimeTypeString</var> with `"web "`.</p>
       <li data-md>
        <p>Add <var>mimeTypeString</var> to <var>types</var>.</p>
      </ol>
@@ -1600,15 +1601,15 @@ document.addEventListener('paste', function(e) {
     <li data-md>
      <p>Let <var>isCustom</var> be <var>false</var>.</p>
     <li data-md>
-     <p>If <var>type</var> has "web "("web" followed by U+0020 SPACE) prefix, then:</p>
+     <p>If <var>type</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-starts-with" id="ref-for-string-starts-with②">starts with</a> `"web "` prefix, then:</p>
      <ol>
       <li data-md>
-       <p>Remove "web " prefix and set the remaining string to <var>type</var>.</p>
+       <p>Remove `"web "` prefix and assign the remaining string to <var>type</var>.</p>
       <li data-md>
        <p>Set <var>isCustom</var> to <var>true</var>.</p>
      </ol>
     <li data-md>
-     <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type①">parsing a MIME type</a> given <var>type</var>.</p>
+     <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type②">parsing a MIME type</a> given <var>type</var>.</p>
     <li data-md>
      <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror③">TypeError</a></code>.</p>
     <li data-md>
@@ -2617,7 +2618,13 @@ platforms.</p>
          <li data-md>
           <p>Let <var>webCustomFormat</var> be an empty <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑥">type</a></code>.</p>
          <li data-md>
-          <p>If <var>webCustomFormatString</var> has "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in <var>webCustomFormat</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑦">type</a></code>'s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a>, else abort all steps.</p>
+          <p>If <var>webCustomFormatString</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-starts-with" id="ref-for-string-starts-with③">starts with</a> `"web "` prefix, then remove the `"web "` prefix and store the remaining string in <var>webMimeTypeString</var>.</p>
+         <li data-md>
+          <p>Let <var>webMimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type③">parsing a MIME type</a> given <var>webMimeTypeString</var>.</p>
+         <li data-md>
+          <p>If <var>webMimeType</var> is failure, then abort all steps.</p>
+         <li data-md>
+          <p>Let <var>webCustomFormat</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑦">type</a></code>'s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a> equal to <var>webMimeType</var>.</p>
          <li data-md>
           <p>Set <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑧">type</a></code> to <var>webCustomFormat</var>.</p>
          <li data-md>
@@ -2746,7 +2753,7 @@ platforms.</p>
     </ol>
     <ol>
      <li data-md>
-      <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type②">parsing a MIME type</a> given <var>mimeTypeString</var>.</p>
+      <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type④">parsing a MIME type</a> given <var>mimeTypeString</var>.</p>
      <li data-md>
       <p>Return <var>mimeType</var>.</p>
     </ol>
@@ -2773,7 +2780,7 @@ platforms.</p>
       <p>For each (<var>key</var>, <var>value</var>) in <var>webCustomFormatMapString</var>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type③">parsing a MIME type</a> given <var>key</var>.</p>
+        <p>Let <var>mimeType</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#parse-a-mime-type" id="ref-for-parse-a-mime-type⑤">parsing a MIME type</a> given <var>key</var>.</p>
        <li data-md>
         <p>If <var>mimeType</var> is failure, then continue the loop.</p>
        <li data-md>
@@ -3356,6 +3363,7 @@ HTML code.</p>
     <ul>
      <li><span class="dfn-paneled" id="ae8def21">contain</span>
      <li><span class="dfn-paneled" id="0204d188">size</span>
+     <li><span class="dfn-paneled" id="54627f47">starts with</span>
     </ul>
    <li>
     <a data-link-type="biblio">[MIMESNIFF]</a> defines the following terms:
@@ -4132,9 +4140,10 @@ window.dfnpanelData['47fe679e'] = {"dfnID": "47fe679e", "url": "https://html.spe
 window.dfnpanelData['f3fc35d3'] = {"dfnID": "f3fc35d3", "url": "https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types", "dfnText": "types", "refSections": [{"refs": [{"id": "ref-for-dom-datatransfer-types"}], "title": "fire a clipboard event"}], "external": true};
 window.dfnpanelData['ae8def21'] = {"dfnID": "ae8def21", "url": "https://infra.spec.whatwg.org/#list-contain", "dfnText": "contain", "refSections": [{"refs": [{"id": "ref-for-list-contain"}], "title": "7.2. ClipboardItem Interface"}], "external": true};
 window.dfnpanelData['0204d188'] = {"dfnID": "0204d188", "url": "https://infra.spec.whatwg.org/#list-size", "dfnText": "size", "refSections": [{"refs": [{"id": "ref-for-list-size"}], "title": "7.3.3. write(data)"}], "external": true};
+window.dfnpanelData['54627f47'] = {"dfnID": "54627f47", "url": "https://infra.spec.whatwg.org/#string-starts-with", "dfnText": "starts with", "refSections": [{"refs": [{"id": "ref-for-string-starts-with"}], "title": "6.5. Optional data types"}, {"refs": [{"id": "ref-for-string-starts-with\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-string-starts-with\u2461"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-string-starts-with\u2462"}], "title": "write blobs and option to the clipboard"}], "external": true};
 window.dfnpanelData['7c195f8b'] = {"dfnID": "7c195f8b", "url": "https://mimesniff.spec.whatwg.org/#mime-type-essence", "dfnText": "essence", "refSections": [{"refs": [{"id": "ref-for-mime-type-essence"}], "title": "7.3.2. readText()"}, {"refs": [{"id": "ref-for-mime-type-essence\u2460"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-mime-type-essence\u2461"}, {"id": "ref-for-mime-type-essence\u2462"}, {"id": "ref-for-mime-type-essence\u2463"}], "title": "os specific well-known format"}], "external": true};
 window.dfnpanelData['16785ec4'] = {"dfnID": "16785ec4", "url": "https://mimesniff.spec.whatwg.org/#mime-type", "dfnText": "mime type", "refSections": [{"refs": [{"id": "ref-for-mime-type"}, {"id": "ref-for-mime-type\u2460"}, {"id": "ref-for-mime-type\u2461"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-mime-type\u2462"}], "title": "well-known mime type from os specific format"}], "external": true};
-window.dfnpanelData['d72dabca'] = {"dfnID": "d72dabca", "url": "https://mimesniff.spec.whatwg.org/#parse-a-mime-type", "dfnText": "parse a mime type", "refSections": [{"refs": [{"id": "ref-for-parse-a-mime-type"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2460"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2461"}], "title": "well-known mime type from os specific format"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2462"}], "title": "read web custom format"}], "external": true};
+window.dfnpanelData['d72dabca'] = {"dfnID": "d72dabca", "url": "https://mimesniff.spec.whatwg.org/#parse-a-mime-type", "dfnText": "parse a mime type", "refSections": [{"refs": [{"id": "ref-for-parse-a-mime-type"}], "title": "6.5. Optional data types"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2460"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2461"}], "title": "7.2.3. getType(type)"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2462"}], "title": "write blobs and option to the clipboard"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2463"}], "title": "well-known mime type from os specific format"}, {"refs": [{"id": "ref-for-parse-a-mime-type\u2464"}], "title": "read web custom format"}], "external": true};
 window.dfnpanelData['d6e5d5bd'] = {"dfnID": "d6e5d5bd", "url": "https://mimesniff.spec.whatwg.org/#serialize-a-mime-type", "dfnText": "serialize a mime type", "refSections": [{"refs": [{"id": "ref-for-serialize-a-mime-type"}], "title": "7.2. ClipboardItem Interface"}, {"refs": [{"id": "ref-for-serialize-a-mime-type\u2460"}], "title": "7.2.3. getType(type)"}], "external": true};
 window.dfnpanelData['ebb01253'] = {"dfnID": "ebb01253", "url": "https://w3c.github.io/permissions/#dom-permissiondescriptor", "dfnText": "PermissionDescriptor", "refSections": [{"refs": [{"id": "ref-for-dom-permissiondescriptor"}], "title": "9. Permissions API Integration"}], "external": true};
 window.dfnpanelData['2cb28cb0'] = {"dfnID": "2cb28cb0", "url": "https://w3c.github.io/permissions/#dom-permissionstate-denied", "dfnText": "denied", "refSections": [{"refs": [{"id": "ref-for-dom-permissionstate-denied"}], "title": "9. Permissions API Integration"}], "external": true};
