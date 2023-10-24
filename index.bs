@@ -720,7 +720,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			1. If |type| [=string/starts with=] `"web "` prefix, then:
 			
-				1. Remove `"web "` prefix and set the remaining string to |type|.
+				1. Remove `"web "` prefix and assign the remaining string to |type|.
 
 				1. Set |isCustom| to |true|.
 
