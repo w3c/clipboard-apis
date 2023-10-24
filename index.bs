@@ -539,7 +539,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* text/uri-list
 			* image/svg+xml
-			* Custom format with "web "("web" followed by U+0020 SPACE) prefix.
+			* Custom format [=string/starts with=] `"web "`("web" followed by U+0020 SPACE) prefix
+				and suffix (after stripping out `"web "`) passes the [=parsing a MIME type=] check.
 
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
@@ -669,9 +670,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |isCustom| be |false|.
 				
-				1. If |key| has "web " ("web" followed by U+0020 SPACE) prefix, then 
+				1. If |key| [=string/starts with=] `"web "` prefix, then
 				
-					1. Remove "web " prefix and set the remaining string to |key|.
+					1. Remove `"web "` prefix and assign the remaining string to |key|.
 
 					1. Set |isCustom| |true|
 					
@@ -693,7 +694,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |mimeTypeString| be the result of [=serializing a MIME type=] with |mimeType|.
 				
-				1. If |isCustom| is |true|, prefix |mimeTypeString| with "web " ("web" followed by U+0020 SPACE).
+				1. If |isCustom| is |true|, prefix |mimeTypeString| with `"web "`.
 				
 				1. Add |mimeTypeString| to |types|.
 
@@ -717,9 +718,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			1. Let |isCustom| be |false|.
 
-			1. If |type| has "web "("web" followed by U+0020 SPACE) prefix, then:
+			1. If |type| [=string/starts with=] `"web "` prefix, then:
 			
-				1. Remove "web " prefix and set the remaining string to |type|.
+				1. Remove `"web "` prefix and assign the remaining string to |type|.
 
 				1. Set |isCustom| to |true|.
 
@@ -1695,7 +1696,13 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |webCustomFormat| be an empty {{Blob/type}}.
 
-				1. If |webCustomFormatString| has "web "("web" followed by U+0020 SPACE) prefix, then remove the "web " prefix and store the remaining string in |webCustomFormat|'s {{Blob/type}}'s [=MIME type/essence=], else abort all steps.
+				1. If |webCustomFormatString| [=string/starts with=] `"web "` prefix, then remove the `"web "` prefix and store the remaining string in |webMimeTypeString|.
+				
+				1. Let |webMimeType| be the result of [=parsing a MIME type=] given |webMimeTypeString|.
+
+				1. If |webMimeType| is failure, then abort all steps.
+				
+				1. Let |webCustomFormat|'s {{Blob/type}}'s [=MIME type/essence=] equal to |webMimeType|.
 				
 				1. Set |item|'s {{Blob/type}} to |webCustomFormat|.
 
