@@ -782,10 +782,14 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 		[SecureContext, Exposed=Window]
 		interface Clipboard : EventTarget {
-			Promise&lt;ClipboardItems&gt; read();
+			Promise&lt;ClipboardItems&gt; read(optional ClipboardUnsanitizedFormats formats = {});
 			Promise&lt;DOMString&gt; readText();
 			Promise&lt;undefined&gt; write(ClipboardItems data);
 			Promise&lt;undefined&gt; writeText(DOMString data);
+		};
+
+		dictionary ClipboardUnsanitizedFormats {
+			sequence&lt;DOMString&gt; unsanitized;
 		};
 		</pre>
 
@@ -798,16 +802,32 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		{{Clipboard/read()}} returns a {{Promise}} to [=clipboard items=] object that represents contents of [=system clipboard data=].
 		</p>
 
+		An <dfn>unsanitized</dfn> object is a [=sequence=] of {{DOMString}} corresponding to the [=representation/mime type=].
+
+		<p class="note">
+		Only "text/html" MIME type is supported for [=unsanitized=] object. In the future, other MIME types may be added.
+		</p>
+
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
 		<h4 method for="Clipboard">read()</h4>
-		The {{Clipboard/read()}} method must run these steps:
+		The {{Clipboard/read(formats)}} method must run these steps:
 
 			1. Let |realm| be [=this=]'s [=relevant realm=].
 
 			1. Let |p| be [=a new promise=] in |realm|.
+
+			1. Let |format| be a {{DOMString}}.
+
+			1. If |formats| is not empty, then:
+
+					1. If |formats|'s size is greater than 1, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+
+					1. Set |format| to |formats|[0].
+
+					1. If |format| is not "text/html", then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -841,7 +861,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 							Issue: It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.
 						
-						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless |representation|'s [=representation/MIME type=]'s essence is "image/png", which should remain unsanitized to preserve meta data.
+						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is "image/png", which should remain unsanitized to preserve meta data, or equal to |format| if |format| is not empty.
 
 						1. Append |representation| to |item|'s [=list of representations=].
 					
