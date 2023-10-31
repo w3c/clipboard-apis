@@ -802,17 +802,17 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		{{Clipboard/read()}} returns a {{Promise}} to [=clipboard items=] object that represents contents of [=system clipboard data=].
 		</p>
 
-		An <dfn>unsanitized</dfn> object is a [=sequence=] of {{DOMString}} corresponding to the [=representation/mime type=].
+		An <dfn>unsanitized</dfn> object is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=]. It contains <dfn>unsanitized mime types</dfn> that is currently limited to "text/html".
 
 		<p class="note">
-		Only "text/html" MIME type is supported for [=unsanitized=] object. In the future, other MIME types may be added.
+		In the future, other MIME types may be added.
 		</p>
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
 		<div id="clipboard-idl" dfn-for="Clipboard">
 		<div class="algorithm" data-algorithm="clipboard-read">
-		<h4 method for="Clipboard">read()</h4>
+		<h4 method for="Clipboard">read(|formats|)</h4>
 		The {{Clipboard/read(formats)}} method must run these steps:
 
 			1. Let |realm| be [=this=]'s [=relevant realm=].
@@ -827,7 +827,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 					1. Set |format| to |formats|[0].
 
-					1. If |format| is not "text/html", then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. If |format| is not [=unsanitized mime types=], then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
