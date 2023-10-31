@@ -827,7 +827,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 					1. Set |format| to |formats|[0].
 
-					1. If |format| is not [=unsanitized mime types=], then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. If |format| is not in [=unsanitized mime types=], then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -861,7 +861,11 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 							Issue: It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.
 						
-						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is "image/png", which should remain unsanitized to preserve meta data, or equal to |format| if |format| is not empty.
+						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless it satisfies the below conditions:
+						
+							1. |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is "image/png", which should remain unsanitized to preserve meta data.
+							
+							1. If |format| is not empty and |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is equal to |format|.
 
 						1. Append |representation| to |item|'s [=list of representations=].
 					
