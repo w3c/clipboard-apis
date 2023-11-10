@@ -542,6 +542,19 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			* Custom format [=string/starts with=] `"web "`("web" followed by U+0020 SPACE) prefix
 				and suffix (after stripping out `"web "`) passes the [=parsing a MIME type=] check.
 
+	<h3 id="unsanitized-data-types-x"><dfn>Unsanitized data types</dfn></h3>
+
+		The implementation MAY recognize the native OS clipboard format description
+		for the following data types, to be able to populate the
+		{{ClipboardItem}} with the correct description for paste events, and
+		set the correct data format on the OS clipboard in response to copy and cut
+		events.
+
+			These data types must not be sanitized and should be exposed by UAs
+			if a corresponding native type exists on the clipboard:
+
+			* text/html
+
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
 
@@ -620,6 +633,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		Some platforms may support having more than one [=/clipboard item=] at a time on the [=clipboard=], while other platforms replace the previous [=/clipboard item=] with the new one.
 
 		A [=/clipboard item=] has a <dfn>list of representations</dfn>, each <dfn>representation</dfn> with an associated <dfn for=representation>mime type</dfn> (a [=/MIME type=]), an <dfn for="representation">isCustom</dfn> flag, initially |false|, that indicates if this [=representation=] should be treated as a [=web custom format=] (as opposed to a well-known format of the [=system clipboard=]), and <dfn for=representation>data</dfn> (a {{ClipboardItemData}}).
+
 		A <dfn>web custom format</dfn> has [=representation/isCustom=] set to |true|.
 
 		<p class=note>
@@ -802,11 +816,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		{{Clipboard/read()}} returns a {{Promise}} to [=clipboard items=] object that represents contents of [=system clipboard data=].
 		</p>
 
-		An <dfn>unsanitized</dfn> object is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=]. It contains <dfn>unsanitized mime types</dfn> that is currently limited to "text/html".
-
-		<p class="note">
-		In the future, other MIME types may be added.
-		</p>
+		{{ClipboardUnsanitizedFormats/unsanitized}} is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=] that are in the [=unsanitized data types=].
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
@@ -819,15 +829,11 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			1. Let |p| be [=a new promise=] in |realm|.
 
-			1. Let |format| be a {{DOMString}}.
-
 			1. If |formats| is not empty, then:
 
-					1. If |formats|'s size is greater than 1, then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+				1. For each |format| in |formats|["{{ClipboardUnsanitizedFormats/unsanitized}}"]:
 
-					1. Set |format| to |formats|[0].
-
-					1. If |format| is not in [=unsanitized mime types=], then [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. If |format| is not in [=unsanitized data types=], then [=reject=] |p| with |format| {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -857,15 +863,23 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 						
 						1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
 
+						1. Let |isUnsanitized| be |false|.
+
+						1. If |formats| is not empty, then:
+
+							1. For each |format| in |formats|["{{ClipboardUnsanitizedFormats/unsanitized}}"]:
+
+								1. If |format| is equal to [=representation/MIME type=], set |isUnsanitized| to true.
+
 						1. Set |representation|'s [=representation/data=] to |systemClipboardRepresentation|'s [=system clipboard representation/data=].
 
 							Issue: It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.
 						
-						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless it satisfies the below conditions:
+						1. The user agent, MUST NOT sanitize |representation|'s [=representation/data=], if it satisfies the below conditions:
 						
 							1. |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is "image/png", which should remain unsanitized to preserve meta data.
 							
-							1. If |format| is not empty and |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is equal to |format|.
+							1. |isUnsanitized| is true.
 
 						1. Append |representation| to |item|'s [=list of representations=].
 					
