@@ -546,7 +546,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 		The implementation MAY recognize the native OS clipboard format description
 		for the following data types, to be able to populate the
-		{{ClipboardItem}} with the correct description for paste events, and
+		{{ClipboardItem}} with the correct [=/MIME type=], and
 		set the correct data format on the OS clipboard in response to copy and cut
 		events.
 
@@ -882,6 +882,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 							1. |isUnsanitized| is true.
 
 						1. Append |representation| to |item|'s [=list of representations=].
+
+						1. Set |isUnsanitized| to |false|.
 					
 					1. If |item|'s [=list of representations=] size is greater than 0, append |item| to |items|.
 					
