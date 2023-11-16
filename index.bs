@@ -544,17 +544,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 	<h3 id="unsanitized-data-types-x"><dfn>Unsanitized data types</dfn></h3>
 
-		The implementation MAY recognize the native OS clipboard format description
-		for the following data types, to be able to populate the
-		{{ClipboardItem}} with the correct [=/MIME type=], and
-		set the correct data format on the OS clipboard in response to copy and cut
-		events.
+			These data types MUST NOT be sanitized by UAs:
 
-			These data types must not be sanitized and should be exposed by UAs
-			if a corresponding native type exists on the clipboard:
-
-			* text/html
-
+			* image/png (which should remain unsanitized to preserve meta data)
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
 
@@ -816,7 +808,11 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		{{Clipboard/read()}} returns a {{Promise}} to [=clipboard items=] object that represents contents of [=system clipboard data=].
 		</p>
 
-		{{ClipboardUnsanitizedFormats/unsanitized}} is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=] that are in the [=unsanitized data types=].
+		<dfn>Optional unsanitized data types</dfn> are [=representation/mime type=]s that MUST not be sanitized by the user agent. The valid [=optional unsanitized data types=] are listed below:
+
+			* text/html
+
+		{{ClipboardUnsanitizedFormats/unsanitized}} is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=] that are [=optional unsanitized data types=].
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
@@ -833,7 +829,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. For each |format| in |formats|["{{ClipboardUnsanitizedFormats/unsanitized}}"]:
 
-					1. If |format| is not in [=unsanitized data types=], then [=reject=] |p| with |format| {{"NotAllowedError"}} {{DOMException}} in |realm|.
+					1. If |format| is not in [=optional unsanitized data types=], then [=reject=] |p| with |format| {{"NotAllowedError"}} {{DOMException}} in |realm|.
 
 			1. Run the following steps [=in parallel=]:
 
@@ -877,7 +873,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 						
 						1. The user agent, MUST NOT sanitize |representation|'s [=representation/data=], if it satisfies the below conditions:
 						
-							1. |representation|'s [=representation/MIME type=]'s [=MIME type/essence=] is "image/png", which should remain unsanitized to preserve meta data.
+							1. |representation|'s [=representation/MIME type=] is in [=unsanitized data types=] list.
 							
 							1. |isUnsanitized| is true.
 
