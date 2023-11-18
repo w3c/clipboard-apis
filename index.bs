@@ -550,9 +550,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* [=optional unsanitized data types=]
 
-			<p class=note>
-				The image/png MIME type is not sanitized to preserve meta data.
-			</p>
+			<dfn>Optional unsanitized data types</dfn> are [=representation/mime type=]s that MUST NOT be sanitized by the user agent. The valid [=optional unsanitized data types=] are listed below:
+
+			* text/html
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
 
@@ -815,9 +815,6 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		</p>
 
 		{{ClipboardUnsanitizedFormats/unsanitized}} is a [=sequence=] of {{DOMString}}s corresponding to the [=representation/mime type=] that the author wants to be treated as [=optional unsanitized data types=].
-		<dfn>Optional unsanitized data types</dfn> are [=representation/mime type=]s that MUST NOT be sanitized by the user agent. The valid [=optional unsanitized data types=] are listed below:
-
-			* text/html
 
 		The <dfn>clipboard task source</dfn> is triggered in response to reading or writing of [=system clipboard data=].
 
