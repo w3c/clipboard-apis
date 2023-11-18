@@ -550,7 +550,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* [=optional unsanitized data types=]
 
-			<dfn>Optional unsanitized data types</dfn> are [=representation/mime type=]s that MUST NOT be sanitized by the user agent. The valid [=optional unsanitized data types=] are listed below:
+			<dfn>Optional unsanitized data types</dfn> are [=representation/mime type=]s specified by the web authors that MUST NOT be sanitized by the user agent.
+			The valid [=optional unsanitized data types=] are listed below:
 
 			* text/html
 
