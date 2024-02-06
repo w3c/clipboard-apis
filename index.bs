@@ -545,9 +545,11 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 	<h3 id="unsanitized-data-types-x"><dfn>Unsanitized data types</dfn></h3>
 		<em>This section is non-normative.</em>
 
-			These data types MAY NOT be sanitized by UAs:
+			These data types MUST NOT be sanitized by UAs:
 
 			* image/png
+
+			These data types MAY NOT be sanitized by UAs:
 
 			* [=optional unsanitized data types=]
 
@@ -556,7 +558,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			* text/html
 
-			<p class=note> [=optional unsanitized data types=] may not be supported by the user agent. In some privacy modes the [=representation/mime type=]s listed in [=optional unsanitized data types=] may not be unsanitized.</p>
+			<p class=note> [=optional unsanitized data types=] may not be supported by a user agent due to their privacy requirements.</p>
 
 <h2 id="async-clipboard-api">Asynchronous Clipboard API</h2>
 
@@ -875,13 +877,13 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 								1. If |format| is equal to [=representation/MIME type=], set |isUnsanitized| to true.
 
-						1. Set |representation|'s [=representation/data=] to |systemClipboardRepresentation|'s [=system clipboard representation/data=].
+						1. Resolve |representation|'s [=representation/data=] with |systemClipboardRepresentation|'s [=system clipboard representation/data=].
 
 							Issue: It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.
 						
-						1. The user agent, MAY NOT sanitize |representation|'s [=representation/data=], if it satisfies the below conditions:
+						1. The user agent, MAY sanitize |representation|'s [=representation/data=], unless |representation|'s [=representation/MIME type=]'s essence is "image/png", which should remain unsanitized to preserve meta data, or if it satisfies the below conditions:
 						
-							1. |representation|'s [=representation/MIME type=] is in [=unsanitized data types=] list.
+							1. |representation|'s [=representation/MIME type=] is in optional [=unsanitized data types=] list.
 							
 							1. |isUnsanitized| is true.
 
@@ -890,20 +892,20 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 						1. Set |isUnsanitized| to |false|.
 					
 					1. If |item|'s [=list of representations=] size is greater than 0, append |item| to |items|.
-					
-				If |items| has a size > 0, then:
+
+				1. If |items| has a size > 0, then:
 				
-					1. Let |firstItem| be |items|[0]
+						1. Let |firstItem| be |items|[0]
+						
+						1. Run the [=read web custom format=] algorithm given |firstItem|.
 					
-					1. Run the [=read web custom format=] algorithm given |firstItem|.
-				
-				Else:
+				1. 	Else:
 
-					1. Let |customItem| be a new [=/clipboard item=].
+						1. Let |customItem| be a new [=/clipboard item=].
 
-					1. Run the [=read web custom format=] algorithm given |customItem|.
+						1. Run the [=read web custom format=] algorithm given |customItem|.
 
-					1. If |customItem|'s [=list of representations=] size is greater than 0, append |item| to |items|.
+						1. If |customItem|'s [=list of representations=] size is greater than 0, append |customItem| to |items|.
 
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
