@@ -1803,7 +1803,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				On MacOS, follow the convention described below:
 
-				1. Assign NSHTMLPboardType to |wellKnownFormat|.
+				1. Assign NSPasteboardTypeHTML to |wellKnownFormat|.
 
 				On Linux, ChromeOS, and Android, follow the convention described below:
 
@@ -1822,6 +1822,20 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 				On Linux, ChromeOS, and Android, follow the convention described below:
 
 				1. Assign "image/png" to |wellKnownFormat|.
+
+		1. Else, if |mimeType|'s [=MIME type/essence=] is "image/svg+xml", then
+
+				On Windows, follow the convention described below:
+
+				1. Assign CFSTR_MIME_SVG_XML to |wellKnownFormat|.
+
+				On MacOS, follow the convention described below:
+
+				1. Assign UTTypeSVG to |wellKnownFormat|.
+
+				On Linux, ChromeOS, and Android, follow the convention described below:
+
+				1. Assign "image/svg+xml" to |wellKnownFormat|.
 
 		1. Return |wellKnownFormat|.
 
@@ -1850,14 +1864,18 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			1. Else, if |osFormatName| "PNG", then set |mimeTypeString| to "image/png".
 
+			1. Else, if |osFormatName| CFSTR_MIME_SVG_XML, then set |mimeTypeString| to "image/svg+xml".
+
 
 		On MacOS, follow the convention described below:
 
 			1. If |osFormatName| is NSPasteboardTypeString, then set |mimeTypeString| to "text/plain".
 
-			1. Else, if |osFormatName| is NSHTMLPboardType, then set |mimeTypeString| to "text/html".
+			1. Else, if |osFormatName| is NSPasteboardTypeHTML, then set |mimeTypeString| to "text/html".
 
 			1. Else, if |osFormatName| NSPasteboardTypePNG, then set |mimeTypeString| to "image/png".
+
+			1. Else, if |osFormatName| UTTypeSVG, then set |mimeTypeString| to "image/svg+xml".
 
 
 		On Linux, ChromeOS, and Android, follow the convention described below:
@@ -1867,6 +1885,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. Else, if |osFormatName| "text/html", then set |mimeTypeString| to "text/html".
 			
 			1. Else, if |osFormatName| "image/png", then set |mimeTypeString| to "image/png".
+
+			1. Else, if |osFormatName| "image/svg+xml", then set |mimeTypeString| to "image/svg+xml".
 
 
 		1. Let |mimeType| be the result of [=parsing a MIME type=] given |mimeTypeString|.
