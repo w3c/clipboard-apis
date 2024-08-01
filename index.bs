@@ -1024,8 +1024,6 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
 
-					Issue: clipboard-write was removed in https://github.com/w3c/clipboard-apis/pull/164.
-
 				1. If |r| is false, then:
 				
 					1. [=Queue a global task=] on the [=permission task source=], given |realm|'s [=realm/global object=], to [=reject=] |p| with {{"NotAllowedError"}} {{DOMException}} in |realm|.
@@ -1118,8 +1116,6 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
-
-					Issue: clipboard-write was removed in https://github.com/w3c/clipboard-apis/pull/164.
 
 				1. If |r| is false, then:
 				
