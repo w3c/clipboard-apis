@@ -5,9 +5,9 @@
   <title>Clipboard API and events</title>
   <meta content="w3c/ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 4afc1fdf9, updated Tue May 28 15:43:17 2024 -0700" name="generator">
+  <meta content="Bikeshed version 6270e4735, updated Tue Aug 6 12:12:30 2024 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="03f35a1affb4afc50120d24a40c79e07f78a9e36" name="revision">
+  <meta content="2eebe171417f37602ca04dabc5f743a7deb55801" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -926,21 +926,43 @@ D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
 4 = lab(85,5,15)
 5 = lab(85,-10,-50)
 6 = lab(85,35,-15)
+
+For darkmode:
+0 = oklab(50%   0%  108%)
+1 = oklab(50% -51%   51%)
+2 = oklab(50% -64%  -20%)
+3 = oklab(50%   6%   19%)
+4 = oklab(50% -12%  -64%)
+5 = oklab(50%  44%  -19%)  
+6 = oklab(50% 102%   38%)
 */
+
 [data-algorithm] var { cursor: pointer; }
-var[data-var-color="0"] { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
-var[data-var-color="1"] { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
-var[data-var-color="2"] { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
-var[data-var-color="3"] { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
-var[data-var-color="4"] { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
-var[data-var-color="5"] { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
-var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+var[data-var-color] { background-color: var(--var-bg); box-shadow: 0 0 0 2px var(--var-bg); }
+
+var[data-var-color] { --var-bg: #F4D200; }
+var[data-var-color="1"] { --var-bg: #FF87A2; }
+var[data-var-color="2"] { --var-bg: #96E885; }
+var[data-var-color="3"] { --var-bg: #3EEED2; }
+var[data-var-color="4"] { --var-bg: #EACFB6; }
+var[data-var-color="5"] { --var-bg: #82DDFF; }
+var[data-var-color="6"] { --var-vg: #FFBCF2; }
+
+@media (prefers-color-scheme: dark) {
+	var[data-var-color] { --var-bg: #bc1a00; }
+	var[data-var-color="1"] { --var-bg: #007f00; }
+	var[data-var-color="2"] { --var-bg: #008698; }
+	var[data-var-color="3"] { --var-bg: #7f5b2b; }
+	var[data-var-color="4"] { --var-bg: #004df3; }
+	var[data-var-color="5"] { --var-bg: #a1248a; }
+	var[data-var-color="6"] { --var-vg: #ff0000; }
+}
 </style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-06-04">4 June 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-08-09">9 August 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -988,8 +1010,8 @@ for directly accessing the clipboard contents.</p>
    <p> Publication as an Editors Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may
     be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
     this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/114929/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
-   <p>This document is governed by the <a href="https://www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
+   <p> This document was produced by a group operating under the <a href="https://www.w3.org/policies/patent-policy/20200915/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/114929/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+   <p>This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
