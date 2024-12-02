@@ -198,7 +198,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 		An example is given below:
 
 		<pre class="example javascript">
-			var pasteEvent = new ClipboardEvent('paste');
+			var pasteEvent = new ClipboardEvent('paste', {
+				clipboardData: new DataTransfer()
+			});
 			pasteEvent.clipboardData.items.add('My string', 'text/plain');
 			document.dispatchEvent(pasteEvent);
 		</pre>
