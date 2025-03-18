@@ -1932,7 +1932,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. Append |representation| to |item|'s [=list of representations=].
 
 	</div><!-- algorithm -->
-
+    
+    <div class="algorithm" data-algorithm="read-web-custom-format">
 	<h3 id="to-write-web-custom-formats"><dfn>write web custom formats</dfn></h3>
 
 		: Input
