@@ -956,51 +956,23 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 					Issue: Add definition of sanitized copy.
 
-				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
+				1. For each |systemClipboardItem| in |data|:
 
-					1. For each |systemClipboardItem| in |data|:
+					1. For each |systemClipboardRepresentation| in |systemClipboardItem|:
 
-						1. For each |systemClipboardRepresentation| in |systemClipboardItem|:
-
-							1. Let |mimeType| be the result of running the [=well-known mime type from os specific format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
+						1. Let |mimeType| be the result of running the [=well-known mime type from os specific format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
 							
-							1. If |mimeType| is null, continue this loop.
+						1. If |mimeType| is null, continue this loop.
 
-							1. Let |representation| be a new [=representation=].
+						1. If |mimeType|'s [=MIME type/essence=] is "text/plain", then:
 
-							1. If |representation|'s [=representation/MIME type=] [=MIME type/essence=] is "text/plain", then:
+							1. Resolve |p| with |systemClipboardRepresentation|'s [=system clipboard representation/data=].
 
-								1. Set |representation|'s [=representation/MIME type=] to |mimeType|.
+							1. Abort these steps.
 
-								1. Let |representationDataPromise| be the |representation|'s [=representation/data=].
+				1. Resolve |p| with empty string.
 
-								1. [=promise/React=] to |representationDataPromise|:
-
-									1. If |representationDataPromise| was fulfilled with value |v|, then:
-
-										1. If |v| is a {{DOMString}}, then follow the below steps:
-
-											1. Resolve |p| with |v|.
-
-											1. Return |p|.
-
-										1. If |v| is a {{Blob}}, then follow the below steps:
-
-											1. Let |string| be the result of [=UTF-8 decoding=] |v|'s underlying byte sequence.
-
-											1. Resolve |p| with |string|.
-
-											1. Return |p|.
-
-									1. If |representationDataPromise| was rejected, then:
-
-										1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
-
-										1. Return |p|.
-
-					1. [=Reject=] |p| with {{"NotFoundError"}} {{DOMException}} in |realm|.
-
-					1. Return |p|.
+			1. Return |p|.
 
 			<div></div>
 
