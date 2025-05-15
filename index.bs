@@ -966,7 +966,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 							
 							1. If |mimeType| is null, then [=iteration/continue=].
 
-							1. If |mimeType|'s [=MIME type/essence=] is "text/plain", then:
+							1. If |mimeType|'s [=MIME type/essence=] is "`text/plain`":
 
 								1. Resolve |p| with |systemClipboardRepresentation|'s [=system clipboard representation/data=].
 
