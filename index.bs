@@ -956,21 +956,23 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 					Issue: Add definition of sanitized copy.
 
-				1. For each |systemClipboardItem| in |data|:
+				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
 
-					1. For each |systemClipboardRepresentation| in |systemClipboardItem|:
+					1. For each |systemClipboardItem| of |data|:
 
-						1. Let |mimeType| be the result of running the [=well-known mime type from os specific format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
+						1. For each |systemClipboardRepresentation| of |systemClipboardItem|:
+
+							1. Let |mimeType| be the result of running the [=well-known mime type from os specific format=] algorithm given |systemClipboardRepresentation|'s [=system clipboard representation/name=].
 							
-						1. If |mimeType| is null, continue this loop.
+							1. If |mimeType| is null, then [=iteration/continue=].
 
-						1. If |mimeType|'s [=MIME type/essence=] is "text/plain", then:
+							1. If |mimeType|'s [=MIME type/essence=] is "text/plain", then:
 
-							1. Resolve |p| with |systemClipboardRepresentation|'s [=system clipboard representation/data=].
+								1. Resolve |p| with |systemClipboardRepresentation|'s [=system clipboard representation/data=].
 
-							1. Abort these steps.
+								1. Abort these steps.
 
-				1. Resolve |p| with empty string.
+					1. Resolve |p| with empty string.
 
 			1. Return |p|.
 
