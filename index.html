@@ -3,11 +3,11 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Clipboard API and events</title>
-  <meta content="w3c/ED" name="w3c-status">
+  <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 6270e4735, updated Tue Aug 6 12:12:30 2024 -0700" name="generator">
+  <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/clipboard-apis/" rel="canonical">
-  <meta content="2eebe171417f37602ca04dabc5f743a7deb55801" name="revision">
+  <meta content="c3ba4522b7acba91d523d00361b848829f41e909" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -656,7 +656,7 @@ a[href].issue-return {
 	background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg);
 }
 .mdn-anno > .feature > .support > .nodejs::before {
-	background-image: url(https://nodejs.org/static/images/favicons/favicon.ico);
+	background-image: url(https://nodejs.org/favicon.ico);
 }
 .mdn-anno > .feature > .support > .opera_android::before {
 	background-image: url(https://resources.whatwg.org/browser-logos/opera.svg);
@@ -962,7 +962,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1>Clipboard API and events</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-08-09">9 August 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2025-05-16">16 May 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -980,7 +980,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
       <dd class="editor p-author h-card vcard" data-editor-id="59482"><a class="p-name fn u-email email" href="mailto:garykac@google.com">Gary Kacmarcik</a> (<span class="p-org org">Google</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="126950"><a class="p-name fn u-email email" href="mailto:snianu@microsoft.com">Anupam Snigdha</a> (<span class="p-org org">Microsoft</span>)
       <dt class="editor">Former Editors:
-      <dd class="editor p-author h-card vcard"><span class="p-name fn">Hallvord R. M. Steen</span> (<span class="p-org org">Mozilla</span>)
+      <dd class="editor p-author h-card vcard" data-editor-id="42065"><a class="p-name fn u-email email" href="mailto:hsteen@mozilla.com">Hallvord R. M. Steen</a> (<span class="p-org org">Mozilla</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="78883"><a class="p-name fn u-email email" href="mailto:glyuk@microsoft.com">Grisha Lyukshin</a> (<span class="p-org org">Microsoft</span>)
       <dt>Explainer:
       <dd><a href="https://github.com/w3c/clipboard-apis/blob/master/explainer.adoc">Async Clipboard API Explainer</a>
@@ -988,7 +988,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -999,18 +999,14 @@ for directly accessing the clipboard contents.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
-   <p> This document was published by the <a href="https://w3c.github.io/editing/">Web Editing Working Group</a> as an Editors Draft. This document is intended to become a W3C Recommendation. </p>
-   <p></p>
+   <p> This document was published by the <a href="https://www.w3.org/groups/wg/webediting">Web Editing Working Group</a> as an Editor’s Draft. </p>
+   <p> Publication as an Editor’s Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. </p>
+   <p> This is a draft document
+	and may be updated, replaced
+	or obsoleted by other documents at any time.
+	It is inappropriate to cite this document as other than work in progress. </p>
    <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/clipboard-apis">https://github.com/w3c/clipboard-apis</a>.</strong> </p>
-   <p></p>
-   <p> This document was published by the <a href="https://w3c.github.io/editing/">Web Editing Working Group</a> as a Working Draft.
-
-    Feedback and comments on this specification are welcome. Please use <a href="https://github.com/w3c/clipboard-apis/issues">GitHub issues</a> Historical discussions can be found in the <a href="https://lists.w3.org/Archives/Public/public-editing-tf/">public-editing-tf@w3.org archives</a>. </p>
-   <p> Publication as an Editors Draft does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. This is a draft document and may
-    be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite
-    this document as other than work in progress. </p>
-   <p> This document was produced by a group operating under the <a href="https://www.w3.org/policies/patent-policy/20200915/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/2004/01/pp-impl/114929/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
+   <p>This document was produced by a group operating under the <a href="https://www.w3.org/policies/patent-policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="https://www.w3.org/groups/wg/webediting/ipr" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/policies/patent-policy/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. </p>
    <p>This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1403,7 +1399,7 @@ permissions to read the clipboard.</p>
    <h2 class="heading settled" data-level="6" id="clipboard-event-api"><span class="secno">6. </span><span class="content">Clipboard Event API</span><a class="self-link" href="#clipboard-event-api"></a></h2>
    <p>The Clipboard Event API allows you to override the default cut, copy
 	and paste behavior of the user agent.</p>
-   <p>Access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer④">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent">ClipboardEvent</a></code>'s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata①">clipboardData</a></code> attribute.
+   <p>Access to the clipboard is performed using the standard <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#datatransfer" id="ref-for-datatransfer④">DataTransfer</a></code> methods to mutate the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items" id="ref-for-dom-datatransfer-items①">items</a></code> on a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent">ClipboardEvent</a></code>’s <code class="idl"><a data-link-type="idl" href="#dom-clipboardevent-clipboarddata" id="ref-for-dom-clipboardevent-clipboarddata①">clipboardData</a></code> attribute.
 	One consequence of this is that these clipboard APIs can only
 	access clipboard data in the context of a <code class="idl"><a data-link-type="idl" href="#clipboardevent" id="ref-for-clipboardevent①">ClipboardEvent</a></code> handler.</p>
    <p class="note" role="note"><span class="marker">Note:</span> If you need to access the clipboard outside of a clipboard event
@@ -1561,7 +1557,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
     <div class="algorithm" data-algorithm="navigator-clipboard">
      <h4 class="heading settled" data-level="7.1.1" id="h-navigator-clipboard"><span class="secno">7.1.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-for="Navigator" data-dfn-type="dfn" data-noexport id="navigator-clipboard">clipboard</dfn></span><a class="self-link" href="#h-navigator-clipboard"></a></h4>
       It is used to execute read/write operations from/to the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard①⓪">system clipboard</a>.
-		The <code class="idl"><a data-link-type="idl" href="#dom-navigator-clipboard" id="ref-for-dom-navigator-clipboard">clipboard</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>'s <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard">clipboard</a> object. 
+		The <code class="idl"><a data-link-type="idl" href="#dom-navigator-clipboard" id="ref-for-dom-navigator-clipboard">clipboard</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>’s <a data-link-type="dfn" href="#navigator-clipboard" id="ref-for-navigator-clipboard">clipboard</a> object. 
     </div>
    </div>
    <h3 class="heading settled" data-level="7.2" id="clipboard-item-interface"><span class="secno">7.2. </span><span class="content">ClipboardItem Interface</span><a class="self-link" href="#clipboard-item-interface"></a></h3>
@@ -1634,9 +1630,9 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
     <li data-md>
      <p>If <var>options</var> is empty, then set options["presentationStyle"] = "unspecified".</p>
     <li data-md>
-     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item">clipboard item</a> to a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②①">clipboard item</a>.</p>
+     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item">clipboard item</a> to a new <a data-link-type="dfn" href="#clipboard-item" id="ref-for-clipboard-item②①">clipboard item</a>.</p>
     <li data-md>
-     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item①">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style">presentation style</a> to <var>options</var>["<code class="idl"><a data-link-type="idl" href="#dom-clipboarditemoptions-presentationstyle" id="ref-for-dom-clipboarditemoptions-presentationstyle">presentationStyle</a></code>"].</p>
+     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item①">clipboard item</a>’s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style">presentation style</a> to <var>options</var>["<code class="idl"><a data-link-type="idl" href="#dom-clipboarditemoptions-presentationstyle" id="ref-for-dom-clipboarditemoptions-presentationstyle">presentationStyle</a></code>"].</p>
     <li data-md>
      <p>Let <var>types</var> be a list of <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString⑧">DOMString</a></code>.</p>
     <li data-md>
@@ -1661,7 +1657,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
       <li data-md>
        <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror①">TypeError</a></code>.</p>
       <li data-md>
-       <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item②">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations①">list of representations</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> a <a data-link-type="dfn" href="#representation" id="ref-for-representation⑤">representation</a> whose <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑤">MIME type</a> is <var>mimeType</var> and whose [representation/isCustom] is <var>isCustom</var>, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror②">TypeError</a></code>.</p>
+       <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item②">clipboard item</a>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations①">list of representations</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> a <a data-link-type="dfn" href="#representation" id="ref-for-representation⑤">representation</a> whose <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type⑤">MIME type</a> is <var>mimeType</var> and whose [representation/isCustom] is <var>isCustom</var>, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror②">TypeError</a></code>.</p>
      </ol>
      <p class="note" role="note">The step above prevents collision between mime-types well-known by the user agent and those that are intended by the author to be treated as a custom type.  For example, it would be possible for the author’s list of items to contain representations for "text/html" as well as "web text/html".</p>
      <ol>
@@ -1670,7 +1666,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
       <li data-md>
        <p>Set <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data">data</a> to <var>value</var>.</p>
       <li data-md>
-       <p>Append <var>representation</var> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item③">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations②">list of representations</a>.</p>
+       <p>Append <var>representation</var> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item③">clipboard item</a>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations②">list of representations</a>.</p>
       <li data-md>
        <p>Let <var>mimeTypeString</var> be the result of <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#serialize-a-mime-type" id="ref-for-serialize-a-mime-type">serializing a MIME type</a> with <var>mimeType</var>.</p>
       <li data-md>
@@ -1679,17 +1675,17 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
        <p>Add <var>mimeTypeString</var> to <var>types</var>.</p>
      </ol>
     <li data-md>
-     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>'s <a data-link-type="dfn" href="#clipboarditem-types-array" id="ref-for-clipboarditem-types-array">types array</a> to the result of running <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-frozen-array" id="ref-for-dfn-create-frozen-array">create a frozen array</a> from <var>types</var>.</p>
+     <p>Set <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>’s <a data-link-type="dfn" href="#clipboarditem-types-array" id="ref-for-clipboarditem-types-array">types array</a> to the result of running <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-create-frozen-array" id="ref-for-dfn-create-frozen-array">create a frozen array</a> from <var>types</var>.</p>
    </ol>
    <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-level="7.2.1" data-lt="presentationStyle" id="dom-clipboarditem-presentationstyle"><span class="secno">7.2.1. </span><span class="content">presentationStyle</span><a class="self-link" href="#dom-clipboarditem-presentationstyle" id="ref-for-dom-clipboarditem-presentationstyle②"></a></h4>
-   <p> The <code class="idl"><a data-link-type="idl" href="#dom-clipboarditem-presentationstyle" id="ref-for-dom-clipboarditem-presentationstyle①">presentationStyle</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item④">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style①">presentation style</a>. </p>
+   <p> The <code class="idl"><a data-link-type="idl" href="#dom-clipboarditem-presentationstyle" id="ref-for-dom-clipboarditem-presentationstyle①">presentationStyle</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item④">clipboard item</a>’s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style①">presentation style</a>. </p>
    <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="ClipboardItem" data-dfn-type="attribute" data-export data-level="7.2.2" data-lt="types" id="dom-clipboarditem-types"><span class="secno">7.2.2. </span><span class="content">types</span><a class="self-link" href="#dom-clipboarditem-types" id="ref-for-dom-clipboarditem-types②"></a></h4>
-   <p> The <code class="idl"><a data-link-type="idl" href="#dom-clipboarditem-types" id="ref-for-dom-clipboarditem-types①">types</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>'s <a data-link-type="dfn" href="#clipboarditem-types-array" id="ref-for-clipboarditem-types-array①">types array</a>. </p>
+   <p> The <code class="idl"><a data-link-type="idl" href="#dom-clipboarditem-types" id="ref-for-dom-clipboarditem-types①">types</a></code> getter steps are to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>’s <a data-link-type="dfn" href="#clipboarditem-types-array" id="ref-for-clipboarditem-types-array①">types array</a>. </p>
    <h4 class="heading settled dfn-paneled idl-code" data-dfn-for="ClipboardItem" data-dfn-type="method" data-export data-level="7.2.3" data-lt="getType(type)" id="dom-clipboarditem-gettype"><span class="secno">7.2.3. </span><span class="content">getType(type)</span><a class="self-link" href="#dom-clipboarditem-gettype" id="ref-for-dom-clipboarditem-gettype①"></a></h4>
    <p>This method must run the below steps:</p>
    <ol>
     <li data-md>
-     <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant realm</a>.</p>
+     <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant realm</a>.</p>
     <li data-md>
      <p>Let <var>isCustom</var> be <var>false</var>.</p>
     <li data-md>
@@ -1705,7 +1701,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
     <li data-md>
      <p>If <var>mimeType</var> is failure, then throw a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#exceptiondef-typeerror" id="ref-for-exceptiondef-typeerror③">TypeError</a></code>.</p>
     <li data-md>
-     <p>Let <var>itemTypeList</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>'s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑤">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations③">list of representations</a>.</p>
+     <p>Let <var>itemTypeList</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑤">clipboard item</a>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations③">list of representations</a>.</p>
     <li data-md>
      <p>Let <var>p</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise">a new promise</a> in <var>realm</var>.</p>
     <li data-md>
@@ -1791,7 +1787,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
       The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-read" id="ref-for-dom-clipboard-read④">read(formats)</a></code> method must run these steps: 
      <ol>
       <li data-md>
-       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant realm</a>.</p>
+       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant realm</a>.</p>
       <li data-md>
        <p>Let <var>p</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise①">a new promise</a> in <var>realm</var>.</p>
       <li data-md>
@@ -1853,7 +1849,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
              <p>Resolve <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data②">data</a> with <var>systemClipboardRepresentation</var>’s <a data-link-type="dfn" href="#system-clipboard-representation-data" id="ref-for-system-clipboard-representation-data">data</a>.</p>
              <p class="issue" id="issue-0a41fcd5"><a class="self-link" href="#issue-0a41fcd5"></a> It should be possible to read the data asynchronously from the system clipboard after the author calls getType, however, this set of steps implies that data will be provided at the time of read.</p>
             <li data-md>
-             <p>The user agent, MAY sanitize <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data③">data</a>, unless <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①①">MIME type</a>'s essence is "image/png", which should remain unsanitized to preserve meta data, or if it satisfies the below conditions:</p>
+             <p>The user agent, MAY sanitize <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data③">data</a>, unless <var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①①">MIME type</a>’s essence is "image/png", which should remain unsanitized to preserve meta data, or if it satisfies the below conditions:</p>
              <ol>
               <li data-md>
                <p><var>representation</var>’s <a data-link-type="dfn" href="#representation-mime-type" id="ref-for-representation-mime-type①②">MIME type</a> is in optional <a data-link-type="dfn" href="#unsanitized-data-types" id="ref-for-unsanitized-data-types">unsanitized data types</a> list.</p>
@@ -1917,7 +1913,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
       The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-readtext" id="ref-for-dom-clipboard-readtext②">readText()</a></code> method must run these steps: 
      <ol>
       <li data-md>
-       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant realm</a>.</p>
+       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant realm</a>.</p>
       <li data-md>
        <p>Let <var>p</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise②">a new promise</a> in <var>realm</var>.</p>
       <li data-md>
@@ -2014,7 +2010,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
       The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-write" id="ref-for-dom-clipboard-write⑤">write(data)</a></code> method must run these steps: 
      <ol>
       <li data-md>
-       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm③">relevant realm</a>.</p>
+       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm③">relevant realm</a>.</p>
       <li data-md>
        <p>Let <var>p</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise③">a new promise</a> in <var>realm</var>.</p>
       <li data-md>
@@ -2045,7 +2041,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
            <p>For each <var>clipboardItem</var> in <var>dataList</var>:</p>
            <ol>
             <li data-md>
-             <p>For each <var>representation</var> in <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑥">clipboard item</a>'s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑦">list of representations</a>:</p>
+             <p>For each <var>representation</var> in <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑥">clipboard item</a>’s <a data-link-type="dfn" href="#list-of-representations" id="ref-for-list-of-representations⑦">list of representations</a>:</p>
              <ol>
               <li data-md>
                <p>Let <var>representationDataPromise</var> be the <var>representation</var>’s <a data-link-type="dfn" href="#representation-data" id="ref-for-representation-data⑤">data</a>.</p>
@@ -2100,7 +2096,7 @@ and suffix (after stripping out `"web "`) passes the <a data-link-type="dfn" hre
                <p>Append <var>cleanItem</var> to <var>cleanItemList</var>.</p>
              </ol>
             <li data-md>
-             <p>Let <var>option</var> be <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑦">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style②">presentation style</a>.</p>
+             <p>Let <var>option</var> be <var>clipboardItem</var>’s <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑦">clipboard item</a>’s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style②">presentation style</a>.</p>
             <li data-md>
              <p><a data-link-type="dfn" href="#write-blobs-and-option-to-the-clipboard" id="ref-for-write-blobs-and-option-to-the-clipboard">Write blobs and option to the clipboard</a> with <var>cleanItemList</var> and <var>option</var>.</p>
            </ol>
@@ -2125,7 +2121,7 @@ navigator<c- p>.</c->clipboard<c- p>.</c->write<c- p>(</c->data<c- p>).</c->then
       The <code class="idl"><a data-link-type="idl" href="#dom-clipboard-writetext" id="ref-for-dom-clipboard-writetext①">writeText(data)</a></code> method must run these steps: 
      <ol>
       <li data-md>
-       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm④">relevant realm</a>.</p>
+       <p>Let <var>realm</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm④">relevant realm</a>.</p>
       <li data-md>
        <p>Let <var>p</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#a-new-promise" id="ref-for-a-new-promise④">a new promise</a> in <var>realm</var>.</p>
       <li data-md>
@@ -2189,8 +2185,7 @@ is <a data-link-type="dfn" href="#allowed-to-modify-the-clipboard" id="ref-for-a
         <p>Set the action’s <a data-link-type="dfn" href="#script-may-access-clipboard" id="ref-for-script-may-access-clipboard①">script-may-access-clipboard</a> flag</p>
       </ol>
      <li data-md>
-      <p>If action is <em>paste</em> and the script thread is <a data-link-type="dfn" href="#allowed-to-read-from-clipboard" id="ref-for-allowed-to-read-from-clipboard">allowed to
-read from clipboard</a>, then</p>
+      <p>If action is <em>paste</em> and the script thread is <a data-link-type="dfn" href="#allowed-to-read-from-clipboard" id="ref-for-allowed-to-read-from-clipboard">allowed to read from clipboard</a>, then</p>
       <ol>
        <li data-md>
         <p>Set the action’s <a data-link-type="dfn" href="#script-may-access-clipboard" id="ref-for-script-may-access-clipboard②">script-may-access-clipboard</a> flag.</p>
@@ -2725,7 +2720,7 @@ platforms.</p>
      <dd data-md>
       <p><var>items</var>, a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑨">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①②">Blob</a></code>></p>
      <dd data-md>
-      <p><var>presentationStyle</var>, a <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑧">clipboard item</a>'s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style③">presentation style</a></p>
+      <p><var>presentationStyle</var>, a <a data-link-type="dfn" href="#clipboarditem-clipboard-item" id="ref-for-clipboarditem-clipboard-item⑧">clipboard item</a>’s <a data-link-type="dfn" href="#presentation-style" id="ref-for-presentation-style③">presentation style</a></p>
      <dt data-md>Output
      <dd data-md>
       <p>None</p>
@@ -2752,7 +2747,7 @@ platforms.</p>
          <li data-md>
           <p>If <var>webMimeType</var> is failure, then abort all steps.</p>
          <li data-md>
-          <p>Let <var>webCustomFormat</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑦">type</a></code>'s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a> equal to <var>webMimeType</var>.</p>
+          <p>Let <var>webCustomFormat</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑦">type</a></code>’s <a data-link-type="dfn" href="https://mimesniff.spec.whatwg.org/#mime-type-essence" id="ref-for-mime-type-essence①">essence</a> equal to <var>webMimeType</var>.</p>
          <li data-md>
           <p>Set <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type⑧">type</a></code> to <var>webCustomFormat</var>.</p>
          <li data-md>
@@ -2949,39 +2944,41 @@ platforms.</p>
       </ol>
     </ol>
    </div>
-   <h3 class="heading settled" id="to-write-web-custom-formats"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="write-web-custom-formats">write web custom formats</dfn></span><a class="self-link" href="#to-write-web-custom-formats"></a></h3>
-   <dl>
-    <dt data-md>Input
-    <dd data-md>
-     <p><var>items</var>,  a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence①①">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①④">Blob</a></code>></p>
-   </dl>
-   <ol>
-    <li data-md>
-     <p>Let <var>idx</var> be a number initialized to 0.</p>
-    <li data-md>
-     <p>Let <var>webCustomFormatMap</var> be the <a data-link-type="dfn" href="#os-specific-custom-map-name" id="ref-for-os-specific-custom-map-name①">os specific custom map name</a>.</p>
-    <li data-md>
-     <p>Let <var>webCustomFormatMapString</var> be an empty JSON string.</p>
-    <li data-md>
-     <p>For each <var>item</var> in <var>items</var>:</p>
-     <ol>
-      <li data-md>
-       <p>Let <var>webCustomFormat</var> be the <a data-link-type="dfn" href="#os-specific-custom-name" id="ref-for-os-specific-custom-name">os specific custom name</a>.</p>
-      <li data-md>
-       <p>Let <var>webCustomFormatIdx</var> be the result of appending <var>idx</var> to <var>webCustomFormat</var>.</p>
-      <li data-md>
-       <p>Insert <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①⓪">type</a></code> as key and <var>webCustomFormatIdx</var> as value into the <var>webCustomFormatMapString</var> using a JSON serializer.</p>
-       <p class="note" role="note"><span class="marker">Note:</span> Need a JSON writer to serialize the content into the <var>webCustomFormatMapString</var>.</p>
-      <li data-md>
-       <p>Insert the <var>item</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②⓪">system clipboard</a> using <var>webCustomFormatIdx</var> as the format.</p>
-      <li data-md>
-       <p>Increment <var>idx</var>.</p>
-      <li data-md>
-       <p>If <var>idx</var> is greater than 100, then break from this loop.</p>
-     </ol>
-    <li data-md>
-     <p>Insert the <var>webCustomFormatMapString</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②①">system clipboard</a> using <var>webCustomFormatMap</var> as the format.</p>
-   </ol>
+   <div class="algorithm" data-algorithm="write-web-custom-format">
+    <h3 class="heading settled" id="to-write-web-custom-formats"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="write-web-custom-formats">write web custom formats</dfn></span><a class="self-link" href="#to-write-web-custom-formats"></a></h3>
+    <dl>
+     <dt data-md>Input
+     <dd data-md>
+      <p><var>items</var>,  a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence①①">sequence</a>&lt;<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-Blob" id="ref-for-dfn-Blob①④">Blob</a></code>></p>
+    </dl>
+    <ol>
+     <li data-md>
+      <p>Let <var>idx</var> be a number initialized to 0.</p>
+     <li data-md>
+      <p>Let <var>webCustomFormatMap</var> be the <a data-link-type="dfn" href="#os-specific-custom-map-name" id="ref-for-os-specific-custom-map-name①">os specific custom map name</a>.</p>
+     <li data-md>
+      <p>Let <var>webCustomFormatMapString</var> be an empty JSON string.</p>
+     <li data-md>
+      <p>For each <var>item</var> in <var>items</var>:</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>webCustomFormat</var> be the <a data-link-type="dfn" href="#os-specific-custom-name" id="ref-for-os-specific-custom-name">os specific custom name</a>.</p>
+       <li data-md>
+        <p>Let <var>webCustomFormatIdx</var> be the result of appending <var>idx</var> to <var>webCustomFormat</var>.</p>
+       <li data-md>
+        <p>Insert <var>item</var>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/FileAPI/#dfn-type" id="ref-for-dfn-type①⓪">type</a></code> as key and <var>webCustomFormatIdx</var> as value into the <var>webCustomFormatMapString</var> using a JSON serializer.</p>
+        <p class="note" role="note"><span class="marker">Note:</span> Need a JSON writer to serialize the content into the <var>webCustomFormatMapString</var>.</p>
+       <li data-md>
+        <p>Insert the <var>item</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②⓪">system clipboard</a> using <var>webCustomFormatIdx</var> as the format.</p>
+       <li data-md>
+        <p>Increment <var>idx</var>.</p>
+       <li data-md>
+        <p>If <var>idx</var> is greater than 100, then break from this loop.</p>
+      </ol>
+     <li data-md>
+      <p>Insert the <var>webCustomFormatMapString</var> into the <a data-link-type="dfn" href="#system-clipboard" id="ref-for-system-clipboard②①">system clipboard</a> using <var>webCustomFormatMap</var> as the format.</p>
+    </ol>
+   </div>
    <div class="algorithm" data-algorithm="os-specific-custom-map-name">
     <h3 class="heading settled" id="to-os-specific-custom-map-name"><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="os-specific-custom-map-name">os specific custom map name</dfn></span><a class="self-link" href="#to-os-specific-custom-map-name"></a></h3>
     <dl>
@@ -3478,8 +3475,8 @@ HTML code.</p>
    <li>
     <a data-link-type="biblio">[ENCODING]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="b0fcb8d7">utf-8 decode</span>
-     <li><span class="dfn-paneled" id="0303e8e5">utf-8 encode</span>
+     <li><span class="dfn-paneled" id="b0fcb8d7">UTF-8 decode</span>
+     <li><span class="dfn-paneled" id="0303e8e5">UTF-8 encode</span>
     </ul>
    <li>
     <a data-link-type="biblio">[FileAPI]</a> defines the following terms:
@@ -3525,9 +3522,9 @@ HTML code.</p>
     <a data-link-type="biblio">[MIMESNIFF]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="7c195f8b">essence</span>
-     <li><span class="dfn-paneled" id="16785ec4">mime type</span>
-     <li><span class="dfn-paneled" id="d72dabca">parse a mime type</span>
-     <li><span class="dfn-paneled" id="d6e5d5bd">serialize a mime type</span>
+     <li><span class="dfn-paneled" id="16785ec4">MIME type</span>
+     <li><span class="dfn-paneled" id="d72dabca">parse a MIME type</span>
+     <li><span class="dfn-paneled" id="d6e5d5bd">serialize a MIME type</span>
     </ul>
    <li>
     <a data-link-type="biblio">[PERMISSIONS]</a> defines the following terms:
@@ -3592,7 +3589,7 @@ HTML code.</p>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-html5">[HTML5]
-   <dd>Ian Hickson; et al. <a href="https://www.w3.org/html/wg/drafts/html/master/"><cite>HTML5</cite></a>. URL: <a href="https://www.w3.org/html/wg/drafts/html/master/">https://www.w3.org/html/wg/drafts/html/master/</a>
+   <dd>Ian Hickson; et al. <a href="https://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 27 March 2018. REC. URL: <a href="https://www.w3.org/TR/html5/">https://www.w3.org/TR/html5/</a>
    <dt id="biblio-microsoft-clip-op">[MICROSOFT-CLIP-OP]
    <dd><a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)"><cite>About DHTML Data Transfer. Microsoft Developer Network.</cite></a>. URL: <a href="https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)">https://msdn.microsoft.com/en-us/ie/ms537658(v=vs.94)</a>
    <dt id="biblio-svg11">[SVG11]
@@ -4148,12 +4145,12 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "0204d188": {"dfnID":"0204d188","dfnText":"size","external":true,"refSections":[{"refs":[{"id":"ref-for-list-size"}],"title":"7.3.3. write(data)"}],"url":"https://infra.spec.whatwg.org/#list-size"},
-"0303e8e5": {"dfnID":"0303e8e5","dfnText":"utf-8 encode","external":true,"refSections":[{"refs":[{"id":"ref-for-utf-8-encode"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-utf-8-encode\u2460"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-utf-8-encode\u2461"}],"title":"7.3.4. writeText(data)"}],"url":"https://encoding.spec.whatwg.org/#utf-8-encode"},
+"0303e8e5": {"dfnID":"0303e8e5","dfnText":"UTF-8 encode","external":true,"refSections":[{"refs":[{"id":"ref-for-utf-8-encode"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-utf-8-encode\u2460"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-utf-8-encode\u2461"}],"title":"7.3.4. writeText(data)"}],"url":"https://encoding.spec.whatwg.org/#utf-8-encode"},
 "050af578": {"dfnID":"050af578","dfnText":"editing host","external":true,"refSections":[{"refs":[{"id":"ref-for-editing-host"}],"title":"3. Terminology"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#editing-host"},
 "129bdae8": {"dfnID":"129bdae8","dfnText":"Event","external":true,"refSections":[{"refs":[{"id":"ref-for-event"},{"id":"ref-for-event\u2460"}],"title":"5.1. Clipboard event interfaces"}],"url":"https://dom.spec.whatwg.org/#event"},
 "1441e3bf": {"dfnID":"1441e3bf","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-name"}],"title":"process an HTML paste event"}],"url":"https://w3c.github.io/FileAPI/#dfn-name"},
 "1641b9ef": {"dfnID":"1641b9ef","dfnText":"create a frozen array","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-create-frozen-array"}],"title":"7.2. ClipboardItem Interface"}],"url":"https://webidl.spec.whatwg.org/#dfn-create-frozen-array"},
-"16785ec4": {"dfnID":"16785ec4","dfnText":"mime type","external":true,"refSections":[{"refs":[{"id":"ref-for-mime-type"},{"id":"ref-for-mime-type\u2460"},{"id":"ref-for-mime-type\u2461"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-mime-type\u2462"}],"title":"well-known mime type from os specific format"}],"url":"https://mimesniff.spec.whatwg.org/#mime-type"},
+"16785ec4": {"dfnID":"16785ec4","dfnText":"MIME type","external":true,"refSections":[{"refs":[{"id":"ref-for-mime-type"},{"id":"ref-for-mime-type\u2460"},{"id":"ref-for-mime-type\u2461"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-mime-type\u2462"}],"title":"well-known mime type from os specific format"}],"url":"https://mimesniff.spec.whatwg.org/#mime-type"},
 "168f1b6e": {"dfnID":"168f1b6e","dfnText":"global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-realm-global"},{"id":"ref-for-concept-realm-global\u2460"}],"title":"7.3.1. read(formats)"},{"refs":[{"id":"ref-for-concept-realm-global\u2461"},{"id":"ref-for-concept-realm-global\u2462"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-concept-realm-global\u2463"},{"id":"ref-for-concept-realm-global\u2464"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-concept-realm-global\u2465"},{"id":"ref-for-concept-realm-global\u2466"}],"title":"7.3.4. writeText(data)"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
 "1e280de0": {"dfnID":"1e280de0","dfnText":"files","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-datatransfer-files"}],"title":"5.1. Clipboard event interfaces"},{"refs":[{"id":"ref-for-dom-datatransfer-files\u2460"}],"title":"10.2. General security policies"},{"refs":[{"id":"ref-for-dom-datatransfer-files\u2461"}],"title":"fire a clipboard event"}],"url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files"},
 "2551a9c6": {"dfnID":"2551a9c6","dfnText":"concept dnd rw","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-dnd-rw"},{"id":"ref-for-concept-dnd-rw\u2460"}],"title":"fire a clipboard event"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw"},
@@ -4195,7 +4192,7 @@ let dfnPanelData = {
 "ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"}],"title":"7.2. ClipboardItem Interface"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
 "allowed-to-modify-the-clipboard": {"dfnID":"allowed-to-modify-the-clipboard","dfnText":"allowed to modify the clipboard","external":false,"refSections":[{"refs":[{"id":"ref-for-allowed-to-modify-the-clipboard"}],"title":"8. Clipboard Actions"}],"url":"#allowed-to-modify-the-clipboard"},
 "allowed-to-read-from-clipboard": {"dfnID":"allowed-to-read-from-clipboard","dfnText":"allowed to read from clipboard","external":false,"refSections":[{"refs":[{"id":"ref-for-allowed-to-read-from-clipboard"}],"title":"8. Clipboard Actions"}],"url":"#allowed-to-read-from-clipboard"},
-"b0fcb8d7": {"dfnID":"b0fcb8d7","dfnText":"utf-8 decode","external":true,"refSections":[{"refs":[{"id":"ref-for-utf-8-decode"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-utf-8-decode\u2460"}],"title":"write blobs and option to the clipboard"}],"url":"https://encoding.spec.whatwg.org/#utf-8-decode"},
+"b0fcb8d7": {"dfnID":"b0fcb8d7","dfnText":"UTF-8 decode","external":true,"refSections":[{"refs":[{"id":"ref-for-utf-8-decode"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-utf-8-decode\u2460"}],"title":"write blobs and option to the clipboard"}],"url":"https://encoding.spec.whatwg.org/#utf-8-decode"},
 "b262501e": {"dfnID":"b262501e","dfnText":"reject","external":true,"refSections":[{"refs":[{"id":"ref-for-reject"},{"id":"ref-for-reject\u2460"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-reject\u2461"},{"id":"ref-for-reject\u2462"}],"title":"7.3.1. read(formats)"},{"refs":[{"id":"ref-for-reject\u2463"},{"id":"ref-for-reject\u2464"},{"id":"ref-for-reject\u2465"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-reject\u2466"},{"id":"ref-for-reject\u2467"},{"id":"ref-for-reject\u2468"},{"id":"ref-for-reject\u2460\u24ea"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-reject\u2460\u2460"}],"title":"7.3.4. writeText(data)"}],"url":"https://webidl.spec.whatwg.org/#reject"},
 "b75bb3bd": {"dfnID":"b75bb3bd","dfnText":"SecureContext","external":true,"refSections":[{"refs":[{"id":"ref-for-SecureContext"}],"title":"7.1. Navigator Interface"},{"refs":[{"id":"ref-for-SecureContext\u2460"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-SecureContext\u2461"}],"title":"7.3. Clipboard Interface"}],"url":"https://webidl.spec.whatwg.org/#SecureContext"},
 "b7d73f5b": {"dfnID":"b7d73f5b","dfnText":"Blob","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-Blob"},{"id":"ref-for-dfn-Blob\u2460"},{"id":"ref-for-dfn-Blob\u2461"},{"id":"ref-for-dfn-Blob\u2462"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-dfn-Blob\u2463"},{"id":"ref-for-dfn-Blob\u2464"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-dfn-Blob\u2465"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-dfn-Blob\u2466"},{"id":"ref-for-dfn-Blob\u2467"},{"id":"ref-for-dfn-Blob\u2468"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-dfn-Blob\u2460\u24ea"},{"id":"ref-for-dfn-Blob\u2460\u2460"}],"title":"7.3.4. writeText(data)"},{"refs":[{"id":"ref-for-dfn-Blob\u2460\u2461"},{"id":"ref-for-dfn-Blob\u2460\u2462"}],"title":"write blobs and option to the clipboard"},{"refs":[{"id":"ref-for-dfn-Blob\u2460\u2463"}],"title":"write web custom formats"}],"url":"https://w3c.github.io/FileAPI/#dfn-Blob"},
@@ -4224,8 +4221,8 @@ let dfnPanelData = {
 "clipboarditem-types-array": {"dfnID":"clipboarditem-types-array","dfnText":"types array","external":false,"refSections":[{"refs":[{"id":"ref-for-clipboarditem-types-array"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-clipboarditem-types-array\u2460"}],"title":"7.2.2. types"}],"url":"#clipboarditem-types-array"},
 "create-a-clipboarditem-object": {"dfnID":"create-a-clipboarditem-object","dfnText":"create a ClipboardItem object","external":false,"refSections":[{"refs":[{"id":"ref-for-create-a-clipboarditem-object"}],"title":"7.3.1. read(formats)"}],"url":"#create-a-clipboarditem-object"},
 "d124397f": {"dfnID":"d124397f","dfnText":"permission state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission-state"}],"title":"9.2.1. check clipboard write permission"}],"url":"https://w3c.github.io/permissions/#dfn-permission-state"},
-"d6e5d5bd": {"dfnID":"d6e5d5bd","dfnText":"serialize a mime type","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-mime-type"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-serialize-a-mime-type\u2460"}],"title":"7.2.3. getType(type)"}],"url":"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type"},
-"d72dabca": {"dfnID":"d72dabca","dfnText":"parse a mime type","external":true,"refSections":[{"refs":[{"id":"ref-for-parse-a-mime-type"}],"title":"6.5. Optional data types"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2460"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2461"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2462"}],"title":"write blobs and option to the clipboard"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2463"}],"title":"well-known mime type from os specific format"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2464"}],"title":"read web custom format"}],"url":"https://mimesniff.spec.whatwg.org/#parse-a-mime-type"},
+"d6e5d5bd": {"dfnID":"d6e5d5bd","dfnText":"serialize a MIME type","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-mime-type"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-serialize-a-mime-type\u2460"}],"title":"7.2.3. getType(type)"}],"url":"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type"},
+"d72dabca": {"dfnID":"d72dabca","dfnText":"parse a MIME type","external":true,"refSections":[{"refs":[{"id":"ref-for-parse-a-mime-type"}],"title":"6.5. Optional data types"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2460"}],"title":"7.2. ClipboardItem Interface"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2461"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2462"}],"title":"write blobs and option to the clipboard"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2463"}],"title":"well-known mime type from os specific format"},{"refs":[{"id":"ref-for-parse-a-mime-type\u2464"}],"title":"read web custom format"}],"url":"https://mimesniff.spec.whatwg.org/#parse-a-mime-type"},
 "d82f90d1": {"dfnID":"d82f90d1","dfnText":"getData(format)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-datatransfer-getdata"}],"title":"fire a clipboard event"}],"url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata"},
 "dacde8b5": {"dfnID":"dacde8b5","dfnText":"a new promise","external":true,"refSections":[{"refs":[{"id":"ref-for-a-new-promise"}],"title":"7.2.3. getType(type)"},{"refs":[{"id":"ref-for-a-new-promise\u2460"}],"title":"7.3.1. read(formats)"},{"refs":[{"id":"ref-for-a-new-promise\u2461"}],"title":"7.3.2. readText()"},{"refs":[{"id":"ref-for-a-new-promise\u2462"}],"title":"7.3.3. write(data)"},{"refs":[{"id":"ref-for-a-new-promise\u2463"}],"title":"7.3.4. writeText(data)"}],"url":"https://webidl.spec.whatwg.org/#a-new-promise"},
 "dc8f85df": {"dfnID":"dc8f85df","dfnText":"concept dnd p","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-dnd-p"}],"title":"fire a clipboard event"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p"},
@@ -4755,161 +4752,163 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
-"#allowed-to-modify-the-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"allowed to modify the clipboard","type":"dfn","url":"#allowed-to-modify-the-clipboard"},
-"#allowed-to-read-from-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"allowed to read from clipboard","type":"dfn","url":"#allowed-to-read-from-clipboard"},
-"#check-clipboard-read-permission": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"check clipboard read permission","type":"dfn","url":"#check-clipboard-read-permission"},
-"#check-clipboard-write-permission": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"check clipboard write permission","type":"dfn","url":"#check-clipboard-write-permission"},
-"#clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"Clipboard","type":"interface","url":"#clipboard"},
-"#clipboard-item": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard item","type":"dfn","url":"#clipboard-item"},
-"#clipboard-items": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard items","type":"dfn","url":"#clipboard-items"},
-"#clipboard-task-source": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard task source","type":"dfn","url":"#clipboard-task-source"},
-"#clipboardevent": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardEvent","type":"interface","url":"#clipboardevent"},
-"#clipboarditem": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItem","type":"interface","url":"#clipboarditem"},
-"#clipboarditem-clipboard-item": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard item","type":"dfn","url":"#clipboarditem-clipboard-item"},
-"#clipboarditem-types-array": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"types array","type":"dfn","url":"#clipboarditem-types-array"},
-"#create-a-clipboarditem-object": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"create a clipboarditem object","type":"dfn","url":"#create-a-clipboarditem-object"},
-"#dictdef-clipboardeventinit": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardEventInit","type":"dictionary","url":"#dictdef-clipboardeventinit"},
-"#dictdef-clipboarditemoptions": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItemOptions","type":"dictionary","url":"#dictdef-clipboarditemoptions"},
-"#dictdef-clipboardpermissiondescriptor": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardPermissionDescriptor","type":"dictionary","url":"#dictdef-clipboardpermissiondescriptor"},
-"#dictdef-clipboardunsanitizedformats": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardUnsanitizedFormats","type":"dictionary","url":"#dictdef-clipboardunsanitizedformats"},
-"#dom-clipboard-read": {"export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"read()","type":"method","url":"#dom-clipboard-read"},
-"#dom-clipboard-readtext": {"export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"readText()","type":"method","url":"#dom-clipboard-readtext"},
-"#dom-clipboard-write": {"export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write(data)","type":"method","url":"#dom-clipboard-write"},
-"#dom-clipboard-writetext": {"export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"writeText(data)","type":"method","url":"#dom-clipboard-writetext"},
-"#dom-clipboardevent-clipboarddata": {"export":true,"for_":["ClipboardEvent"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboardData","type":"attribute","url":"#dom-clipboardevent-clipboarddata"},
-"#dom-clipboarditem-clipboarditem": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItem(items, options)","type":"constructor","url":"#dom-clipboarditem-clipboarditem"},
-"#dom-clipboarditem-gettype": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"getType(type)","type":"method","url":"#dom-clipboarditem-gettype"},
-"#dom-clipboarditem-presentationstyle": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentationStyle","type":"attribute","url":"#dom-clipboarditem-presentationstyle"},
-"#dom-clipboarditem-supports": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"supports(type)","type":"method","url":"#dom-clipboarditem-supports"},
-"#dom-clipboarditem-types": {"export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"types","type":"attribute","url":"#dom-clipboarditem-types"},
-"#dom-clipboarditemoptions-presentationstyle": {"export":true,"for_":["ClipboardItemOptions"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentationStyle","type":"dict-member","url":"#dom-clipboarditemoptions-presentationstyle"},
-"#dom-clipboardunsanitizedformats-unsanitized": {"export":true,"for_":["ClipboardUnsanitizedFormats"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"unsanitized","type":"dict-member","url":"#dom-clipboardunsanitizedformats-unsanitized"},
-"#dom-navigator-clipboard": {"export":true,"for_":["Navigator"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard","type":"attribute","url":"#dom-navigator-clipboard"},
-"#editable-context": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"editable context","type":"dfn","url":"#editable-context"},
-"#enumdef-presentationstyle": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"PresentationStyle","type":"enum","url":"#enumdef-presentationstyle"},
-"#eventdef-globaleventhandlers-clipboardchange": {"export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboardchange","type":"event","url":"#eventdef-globaleventhandlers-clipboardchange"},
-"#eventdef-globaleventhandlers-copy": {"export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"copy","type":"event","url":"#eventdef-globaleventhandlers-copy"},
-"#eventdef-globaleventhandlers-cut": {"export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"cut","type":"event","url":"#eventdef-globaleventhandlers-cut"},
-"#eventdef-globaleventhandlers-paste": {"export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"paste","type":"event","url":"#eventdef-globaleventhandlers-paste"},
-"#fire-a-clipboard-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"fire a clipboard event","type":"dfn","url":"#fire-a-clipboard-event"},
-"#list-of-representations": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"list of representations","type":"dfn","url":"#list-of-representations"},
-"#mandatory-data-types": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"mandatory data types","type":"dfn","url":"#mandatory-data-types"},
-"#navigator-clipboard": {"export":true,"for_":["Navigator"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard","type":"dfn","url":"#navigator-clipboard"},
-"#optional-data-types": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"optional data types","type":"dfn","url":"#optional-data-types"},
-"#optional-unsanitized-data-types": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"optional unsanitized data types","type":"dfn","url":"#optional-unsanitized-data-types"},
-"#os-specific-custom-map-name": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific custom map name","type":"dfn","url":"#os-specific-custom-map-name"},
-"#os-specific-custom-name": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific custom name","type":"dfn","url":"#os-specific-custom-name"},
-"#os-specific-well-known-format": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific well-known format","type":"dfn","url":"#os-specific-well-known-format"},
-"#presentation-style": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentation style","type":"dfn","url":"#presentation-style"},
-"#process-an-html-paste-event": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"process an html paste event","type":"dfn","url":"#process-an-html-paste-event"},
-"#read-web-custom-format": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"read web custom format","type":"dfn","url":"#read-web-custom-format"},
-"#representation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"representation","type":"dfn","url":"#representation"},
-"#representation-data": {"export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"data","type":"dfn","url":"#representation-data"},
-"#representation-iscustom": {"export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"iscustom","type":"dfn","url":"#representation-iscustom"},
-"#representation-mime-type": {"export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"mime type","type":"dfn","url":"#representation-mime-type"},
-"#script-may-access-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"script-may-access-clipboard","type":"dfn","url":"#script-may-access-clipboard"},
-"#script-triggered": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"script-triggered","type":"dfn","url":"#script-triggered"},
-"#system-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard","type":"dfn","url":"#system-clipboard"},
-"#system-clipboard-data": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard data","type":"dfn","url":"#system-clipboard-data"},
-"#system-clipboard-item": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard item","type":"dfn","url":"#system-clipboard-item"},
-"#system-clipboard-representation": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard representation","type":"dfn","url":"#system-clipboard-representation"},
-"#system-clipboard-representation-data": {"export":true,"for_":["system clipboard representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"data","type":"dfn","url":"#system-clipboard-representation-data"},
-"#system-clipboard-representation-name": {"export":true,"for_":["system clipboard representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"name","type":"dfn","url":"#system-clipboard-representation-name"},
-"#typedefdef-clipboarditemdata": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItemData","type":"typedef","url":"#typedefdef-clipboarditemdata"},
-"#typedefdef-clipboarditems": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItems","type":"typedef","url":"#typedefdef-clipboarditems"},
-"#unsanitized-data-types": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"unsanitized data types","type":"dfn","url":"#unsanitized-data-types"},
-"#web-custom-format": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"web custom format","type":"dfn","url":"#web-custom-format"},
-"#well-known-mime-type-from-os-specific-format": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"well-known mime type from os specific format","type":"dfn","url":"#well-known-mime-type-from-os-specific-format"},
-"#write-blobs-and-option-to-the-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write blobs and option to the clipboard","type":"dfn","url":"#write-blobs-and-option-to-the-clipboard"},
-"#write-content-to-the-clipboard": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write content to the clipboard","type":"dfn","url":"#write-content-to-the-clipboard"},
-"#write-web-custom-formats": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write web custom formats","type":"dfn","url":"#write-web-custom-formats"},
-"http://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"allowed to show a popup","type":"dfn","url":"http://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup"},
-"https://dom.spec.whatwg.org/#constructing-events": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"constructing events","type":"dfn","url":"https://dom.spec.whatwg.org/#constructing-events"},
-"https://dom.spec.whatwg.org/#dictdef-eventinit": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventInit","type":"dictionary","url":"https://dom.spec.whatwg.org/#dictdef-eventinit"},
-"https://dom.spec.whatwg.org/#dom-event-composed": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"composed","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-composed"},
-"https://dom.spec.whatwg.org/#dom-event-istrusted": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"isTrusted","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-istrusted"},
-"https://dom.spec.whatwg.org/#dom-event-preventdefault": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"preventDefault()","type":"method","url":"https://dom.spec.whatwg.org/#dom-event-preventdefault"},
-"https://dom.spec.whatwg.org/#event": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Event","type":"interface","url":"https://dom.spec.whatwg.org/#event"},
-"https://dom.spec.whatwg.org/#eventtarget": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventTarget","type":"interface","url":"https://dom.spec.whatwg.org/#eventtarget"},
-"https://encoding.spec.whatwg.org/#utf-8-decode": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"encoding","spec":"encoding","status":"current","text":"utf-8 decode","type":"dfn","url":"https://encoding.spec.whatwg.org/#utf-8-decode"},
-"https://encoding.spec.whatwg.org/#utf-8-encode": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"encoding","spec":"encoding","status":"current","text":"utf-8 encode","type":"dfn","url":"https://encoding.spec.whatwg.org/#utf-8-encode"},
-"https://html.spec.whatwg.org/multipage/dnd.html#datatransfer": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransfer","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransfer"},
-"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransferItem","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem"},
-"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransferItemList","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"clearData(format)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"files","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"getData(format)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"items","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"setData(format, data)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types": {"export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"types","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types"},
-"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear": {"export":true,"for_":["DataTransferItemList"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"clear()","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear"},
-"https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"the body element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2"},
-"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"in parallel","type":"dfn","url":"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel"},
-"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd p","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p"},
-"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd ro","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro"},
-"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd rw","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw"},
-"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data item kind","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind"},
-"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data item type string","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string"},
-"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data store mode","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode"},
-"https://html.spec.whatwg.org/multipage/interaction.html#editing-host": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"editing host","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#editing-host"},
-"https://html.spec.whatwg.org/multipage/interaction.html#focusable-area": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"focusable area","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"},
-"https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"has focus steps","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps"},
-"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"transient activation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation"},
-"https://html.spec.whatwg.org/multipage/system-state.html#navigator": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Navigator","type":"interface","url":"https://html.spec.whatwg.org/multipage/system-state.html#navigator"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global": {"export":true,"for_":["realm"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant realm","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
-"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"queue a global task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task"},
-"https://infra.spec.whatwg.org/#list-contain": {"export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"contain","type":"dfn","url":"https://infra.spec.whatwg.org/#list-contain"},
-"https://infra.spec.whatwg.org/#list-size": {"export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"size","type":"dfn","url":"https://infra.spec.whatwg.org/#list-size"},
-"https://infra.spec.whatwg.org/#string-starts-with": {"export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"starts with","type":"dfn","url":"https://infra.spec.whatwg.org/#string-starts-with"},
-"https://mimesniff.spec.whatwg.org/#mime-type": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#mime-type"},
-"https://mimesniff.spec.whatwg.org/#mime-type-essence": {"export":true,"for_":["MIME type"],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"essence","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#mime-type-essence"},
-"https://mimesniff.spec.whatwg.org/#parse-a-mime-type": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"parse a mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#parse-a-mime-type"},
-"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"serialize a mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type"},
-"https://w3c.github.io/FileAPI/#dfn-Blob": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"Blob","type":"interface","url":"https://w3c.github.io/FileAPI/#dfn-Blob"},
-"https://w3c.github.io/FileAPI/#dfn-file": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"File","type":"interface","url":"https://w3c.github.io/FileAPI/#dfn-file"},
-"https://w3c.github.io/FileAPI/#dfn-lastModified": {"export":true,"for_":["File"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"lastModified","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-lastModified"},
-"https://w3c.github.io/FileAPI/#dfn-name": {"export":true,"for_":["File"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"name","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-name"},
-"https://w3c.github.io/FileAPI/#dfn-type": {"export":true,"for_":["Blob"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"type","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-type"},
-"https://w3c.github.io/permissions/#dfn-permission-descriptor-type": {"export":true,"for_":["powerful feature"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission descriptor type","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-descriptor-type"},
-"https://w3c.github.io/permissions/#dfn-permission-state": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission state","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-state"},
-"https://w3c.github.io/permissions/#dfn-powerful-feature": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"powerful feature","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-powerful-feature"},
-"https://w3c.github.io/permissions/#dfn-request-permission-to-use": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"request permission to use","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-request-permission-to-use"},
-"https://w3c.github.io/permissions/#dom-permissiondescriptor": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"PermissionDescriptor","type":"dictionary","url":"https://w3c.github.io/permissions/#dom-permissiondescriptor"},
-"https://w3c.github.io/permissions/#dom-permissionstate-denied": {"export":true,"for_":["PermissionState"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"denied","type":"enum-value","url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
-"https://w3c.github.io/permissions/#dom-permissionstate-granted": {"export":true,"for_":["PermissionState"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"granted","type":"enum-value","url":"https://w3c.github.io/permissions/#dom-permissionstate-granted"},
-"https://w3c.github.io/permissions/#permissions-task-source": {"export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"permission task source","type":"dfn","url":"https://w3c.github.io/permissions/#permissions-task-source"},
-"https://webidl.spec.whatwg.org/#Exposed": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
-"https://webidl.spec.whatwg.org/#SameObject": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SameObject","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SameObject"},
-"https://webidl.spec.whatwg.org/#SecureContext": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SecureContext","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SecureContext"},
-"https://webidl.spec.whatwg.org/#a-new-promise": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"a new promise","type":"dfn","url":"https://webidl.spec.whatwg.org/#a-new-promise"},
-"https://webidl.spec.whatwg.org/#dfn-create-frozen-array": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"create a frozen array","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-create-frozen-array"},
-"https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled": {"export":true,"for_":["promise"],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"react","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled"},
-"https://webidl.spec.whatwg.org/#exceptiondef-typeerror": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"TypeError","type":"exception","url":"https://webidl.spec.whatwg.org/#exceptiondef-typeerror"},
-"https://webidl.spec.whatwg.org/#idl-DOMException": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMException","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
-"https://webidl.spec.whatwg.org/#idl-DOMString": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
-"https://webidl.spec.whatwg.org/#idl-boolean": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"boolean","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-boolean"},
-"https://webidl.spec.whatwg.org/#idl-frozen-array": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
-"https://webidl.spec.whatwg.org/#idl-promise": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Promise","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-promise"},
-"https://webidl.spec.whatwg.org/#idl-record": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"record","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-record"},
-"https://webidl.spec.whatwg.org/#idl-sequence": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"sequence","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-sequence"},
-"https://webidl.spec.whatwg.org/#idl-undefined": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"undefined","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-undefined"},
-"https://webidl.spec.whatwg.org/#new": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"new","type":"dfn","url":"https://webidl.spec.whatwg.org/#new"},
-"https://webidl.spec.whatwg.org/#notallowederror": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotAllowedError","type":"exception","url":"https://webidl.spec.whatwg.org/#notallowederror"},
-"https://webidl.spec.whatwg.org/#notfounderror": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotFoundError","type":"exception","url":"https://webidl.spec.whatwg.org/#notfounderror"},
-"https://webidl.spec.whatwg.org/#reject": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"reject","type":"dfn","url":"https://webidl.spec.whatwg.org/#reject"},
-"https://webidl.spec.whatwg.org/#this": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"this","type":"dfn","url":"https://webidl.spec.whatwg.org/#this"},
+"#allowed-to-modify-the-clipboard": {"displayText":"allowed to modify the clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"allowed to modify the clipboard","type":"dfn","url":"#allowed-to-modify-the-clipboard"},
+"#allowed-to-read-from-clipboard": {"displayText":"allowed to read from clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"allowed to read from clipboard","type":"dfn","url":"#allowed-to-read-from-clipboard"},
+"#check-clipboard-read-permission": {"displayText":"check clipboard read permission","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"check clipboard read permission","type":"dfn","url":"#check-clipboard-read-permission"},
+"#check-clipboard-write-permission": {"displayText":"check clipboard write permission","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"check clipboard write permission","type":"dfn","url":"#check-clipboard-write-permission"},
+"#clipboard": {"displayText":"Clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"Clipboard","type":"interface","url":"#clipboard"},
+"#clipboard-item": {"displayText":"clipboard item","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard item","type":"dfn","url":"#clipboard-item"},
+"#clipboard-items": {"displayText":"clipboard items","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard items","type":"dfn","url":"#clipboard-items"},
+"#clipboard-task-source": {"displayText":"clipboard task source","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard task source","type":"dfn","url":"#clipboard-task-source"},
+"#clipboardevent": {"displayText":"ClipboardEvent","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardEvent","type":"interface","url":"#clipboardevent"},
+"#clipboarditem": {"displayText":"ClipboardItem","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItem","type":"interface","url":"#clipboarditem"},
+"#clipboarditem-clipboard-item": {"displayText":"clipboard item","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard item","type":"dfn","url":"#clipboarditem-clipboard-item"},
+"#clipboarditem-types-array": {"displayText":"types array","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"types array","type":"dfn","url":"#clipboarditem-types-array"},
+"#create-a-clipboarditem-object": {"displayText":"create a clipboarditem object","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"create a clipboarditem object","type":"dfn","url":"#create-a-clipboarditem-object"},
+"#dictdef-clipboardeventinit": {"displayText":"ClipboardEventInit","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardEventInit","type":"dictionary","url":"#dictdef-clipboardeventinit"},
+"#dictdef-clipboarditemoptions": {"displayText":"ClipboardItemOptions","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItemOptions","type":"dictionary","url":"#dictdef-clipboarditemoptions"},
+"#dictdef-clipboardpermissiondescriptor": {"displayText":"ClipboardPermissionDescriptor","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardPermissionDescriptor","type":"dictionary","url":"#dictdef-clipboardpermissiondescriptor"},
+"#dictdef-clipboardunsanitizedformats": {"displayText":"ClipboardUnsanitizedFormats","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardUnsanitizedFormats","type":"dictionary","url":"#dictdef-clipboardunsanitizedformats"},
+"#dom-clipboard-read": {"displayText":"read()","export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"read()","type":"method","url":"#dom-clipboard-read"},
+"#dom-clipboard-readtext": {"displayText":"readText()","export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"readText()","type":"method","url":"#dom-clipboard-readtext"},
+"#dom-clipboard-write": {"displayText":"write(data)","export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write(data)","type":"method","url":"#dom-clipboard-write"},
+"#dom-clipboard-writetext": {"displayText":"writeText(data)","export":true,"for_":["Clipboard"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"writeText(data)","type":"method","url":"#dom-clipboard-writetext"},
+"#dom-clipboardevent-clipboarddata": {"displayText":"clipboardData","export":true,"for_":["ClipboardEvent"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboardData","type":"attribute","url":"#dom-clipboardevent-clipboarddata"},
+"#dom-clipboarditem-clipboarditem": {"displayText":"ClipboardItem(items, options)","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItem(items, options)","type":"constructor","url":"#dom-clipboarditem-clipboarditem"},
+"#dom-clipboarditem-gettype": {"displayText":"getType(type)","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"getType(type)","type":"method","url":"#dom-clipboarditem-gettype"},
+"#dom-clipboarditem-presentationstyle": {"displayText":"presentationStyle","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentationStyle","type":"attribute","url":"#dom-clipboarditem-presentationstyle"},
+"#dom-clipboarditem-supports": {"displayText":"supports(type)","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"supports(type)","type":"method","url":"#dom-clipboarditem-supports"},
+"#dom-clipboarditem-types": {"displayText":"types","export":true,"for_":["ClipboardItem"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"types","type":"attribute","url":"#dom-clipboarditem-types"},
+"#dom-clipboarditemoptions-presentationstyle": {"displayText":"presentationStyle","export":true,"for_":["ClipboardItemOptions"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentationStyle","type":"dict-member","url":"#dom-clipboarditemoptions-presentationstyle"},
+"#dom-clipboardunsanitizedformats-unsanitized": {"displayText":"unsanitized","export":true,"for_":["ClipboardUnsanitizedFormats"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"unsanitized","type":"dict-member","url":"#dom-clipboardunsanitizedformats-unsanitized"},
+"#dom-navigator-clipboard": {"displayText":"clipboard","export":true,"for_":["Navigator"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard","type":"attribute","url":"#dom-navigator-clipboard"},
+"#editable-context": {"displayText":"editable context","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"editable context","type":"dfn","url":"#editable-context"},
+"#enumdef-presentationstyle": {"displayText":"PresentationStyle","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"PresentationStyle","type":"enum","url":"#enumdef-presentationstyle"},
+"#eventdef-globaleventhandlers-clipboardchange": {"displayText":"clipboardchange","export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboardchange","type":"event","url":"#eventdef-globaleventhandlers-clipboardchange"},
+"#eventdef-globaleventhandlers-copy": {"displayText":"copy","export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"copy","type":"event","url":"#eventdef-globaleventhandlers-copy"},
+"#eventdef-globaleventhandlers-cut": {"displayText":"cut","export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"cut","type":"event","url":"#eventdef-globaleventhandlers-cut"},
+"#eventdef-globaleventhandlers-paste": {"displayText":"paste","export":true,"for_":["GlobalEventHandlers"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"paste","type":"event","url":"#eventdef-globaleventhandlers-paste"},
+"#fire-a-clipboard-event": {"displayText":"fire a clipboard event","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"fire a clipboard event","type":"dfn","url":"#fire-a-clipboard-event"},
+"#list-of-representations": {"displayText":"list of representations","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"list of representations","type":"dfn","url":"#list-of-representations"},
+"#mandatory-data-types": {"displayText":"mandatory data types","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"mandatory data types","type":"dfn","url":"#mandatory-data-types"},
+"#navigator-clipboard": {"displayText":"clipboard","export":true,"for_":["Navigator"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"clipboard","type":"dfn","url":"#navigator-clipboard"},
+"#optional-data-types": {"displayText":"optional data types","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"optional data types","type":"dfn","url":"#optional-data-types"},
+"#optional-unsanitized-data-types": {"displayText":"optional unsanitized data types","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"optional unsanitized data types","type":"dfn","url":"#optional-unsanitized-data-types"},
+"#os-specific-custom-map-name": {"displayText":"os specific custom map name","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific custom map name","type":"dfn","url":"#os-specific-custom-map-name"},
+"#os-specific-custom-name": {"displayText":"os specific custom name","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific custom name","type":"dfn","url":"#os-specific-custom-name"},
+"#os-specific-well-known-format": {"displayText":"os specific well-known format","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"os specific well-known format","type":"dfn","url":"#os-specific-well-known-format"},
+"#presentation-style": {"displayText":"presentation style","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"presentation style","type":"dfn","url":"#presentation-style"},
+"#process-an-html-paste-event": {"displayText":"process an html paste event","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"process an html paste event","type":"dfn","url":"#process-an-html-paste-event"},
+"#read-web-custom-format": {"displayText":"read web custom format","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"read web custom format","type":"dfn","url":"#read-web-custom-format"},
+"#representation": {"displayText":"representation","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"representation","type":"dfn","url":"#representation"},
+"#representation-data": {"displayText":"data","export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"data","type":"dfn","url":"#representation-data"},
+"#representation-iscustom": {"displayText":"iscustom","export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"iscustom","type":"dfn","url":"#representation-iscustom"},
+"#representation-mime-type": {"displayText":"mime type","export":true,"for_":["representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"mime type","type":"dfn","url":"#representation-mime-type"},
+"#script-may-access-clipboard": {"displayText":"script-may-access-clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"script-may-access-clipboard","type":"dfn","url":"#script-may-access-clipboard"},
+"#script-triggered": {"displayText":"script-triggered","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"script-triggered","type":"dfn","url":"#script-triggered"},
+"#system-clipboard": {"displayText":"system clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard","type":"dfn","url":"#system-clipboard"},
+"#system-clipboard-data": {"displayText":"system clipboard data","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard data","type":"dfn","url":"#system-clipboard-data"},
+"#system-clipboard-item": {"displayText":"system clipboard item","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard item","type":"dfn","url":"#system-clipboard-item"},
+"#system-clipboard-representation": {"displayText":"system clipboard representation","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"system clipboard representation","type":"dfn","url":"#system-clipboard-representation"},
+"#system-clipboard-representation-data": {"displayText":"data","export":true,"for_":["system clipboard representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"data","type":"dfn","url":"#system-clipboard-representation-data"},
+"#system-clipboard-representation-name": {"displayText":"name","export":true,"for_":["system clipboard representation"],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"name","type":"dfn","url":"#system-clipboard-representation-name"},
+"#typedefdef-clipboarditemdata": {"displayText":"ClipboardItemData","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItemData","type":"typedef","url":"#typedefdef-clipboarditemdata"},
+"#typedefdef-clipboarditems": {"displayText":"ClipboardItems","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"ClipboardItems","type":"typedef","url":"#typedefdef-clipboarditems"},
+"#unsanitized-data-types": {"displayText":"unsanitized data types","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"unsanitized data types","type":"dfn","url":"#unsanitized-data-types"},
+"#web-custom-format": {"displayText":"web custom format","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"web custom format","type":"dfn","url":"#web-custom-format"},
+"#well-known-mime-type-from-os-specific-format": {"displayText":"well-known mime type from os specific format","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"well-known mime type from os specific format","type":"dfn","url":"#well-known-mime-type-from-os-specific-format"},
+"#write-blobs-and-option-to-the-clipboard": {"displayText":"write blobs and option to the clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write blobs and option to the clipboard","type":"dfn","url":"#write-blobs-and-option-to-the-clipboard"},
+"#write-content-to-the-clipboard": {"displayText":"write content to the clipboard","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write content to the clipboard","type":"dfn","url":"#write-content-to-the-clipboard"},
+"#write-web-custom-formats": {"displayText":"write web custom formats","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"clipboard-apis","status":"local","text":"write web custom formats","type":"dfn","url":"#write-web-custom-formats"},
+"http://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup": {"displayText":"allowed to show a popup","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"allowed to show a popup","type":"dfn","url":"http://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup"},
+"https://dom.spec.whatwg.org/#constructing-events": {"displayText":"constructing events","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"constructing events","type":"dfn","url":"https://dom.spec.whatwg.org/#constructing-events"},
+"https://dom.spec.whatwg.org/#dictdef-eventinit": {"displayText":"EventInit","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventInit","type":"dictionary","url":"https://dom.spec.whatwg.org/#dictdef-eventinit"},
+"https://dom.spec.whatwg.org/#dom-event-composed": {"displayText":"composed","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"composed","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-composed"},
+"https://dom.spec.whatwg.org/#dom-event-istrusted": {"displayText":"isTrusted","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"isTrusted","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-istrusted"},
+"https://dom.spec.whatwg.org/#dom-event-preventdefault": {"displayText":"preventDefault()","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"preventDefault()","type":"method","url":"https://dom.spec.whatwg.org/#dom-event-preventdefault"},
+"https://dom.spec.whatwg.org/#event": {"displayText":"Event","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Event","type":"interface","url":"https://dom.spec.whatwg.org/#event"},
+"https://dom.spec.whatwg.org/#eventtarget": {"displayText":"EventTarget","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventTarget","type":"interface","url":"https://dom.spec.whatwg.org/#eventtarget"},
+"https://encoding.spec.whatwg.org/#utf-8-decode": {"displayText":"UTF-8 decode","export":true,"for_":[],"level":"1","normative":true,"shortname":"encoding","spec":"encoding","status":"current","text":"utf-8 decode","type":"dfn","url":"https://encoding.spec.whatwg.org/#utf-8-decode"},
+"https://encoding.spec.whatwg.org/#utf-8-encode": {"displayText":"UTF-8 encode","export":true,"for_":[],"level":"1","normative":true,"shortname":"encoding","spec":"encoding","status":"current","text":"utf-8 encode","type":"dfn","url":"https://encoding.spec.whatwg.org/#utf-8-encode"},
+"https://html.spec.whatwg.org/multipage/dnd.html#datatransfer": {"displayText":"DataTransfer","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransfer","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransfer"},
+"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem": {"displayText":"DataTransferItem","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransferItem","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitem"},
+"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist": {"displayText":"DataTransferItemList","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"DataTransferItemList","type":"interface","url":"https://html.spec.whatwg.org/multipage/dnd.html#datatransferitemlist"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata": {"displayText":"clearData(format)","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"clearData(format)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-cleardata"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files": {"displayText":"files","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"files","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-files"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata": {"displayText":"getData(format)","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"getData(format)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-getdata"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items": {"displayText":"items","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"items","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-items"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata": {"displayText":"setData(format, data)","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"setData(format, data)","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-setdata"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types": {"displayText":"types","export":true,"for_":["DataTransfer"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"types","type":"attribute","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransfer-types"},
+"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear": {"displayText":"clear()","export":true,"for_":["DataTransferItemList"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"clear()","type":"method","url":"https://html.spec.whatwg.org/multipage/dnd.html#dom-datatransferitemlist-clear"},
+"https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2": {"displayText":"the body element","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"the body element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2"},
+"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel": {"displayText":"in parallel","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"in parallel","type":"dfn","url":"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel"},
+"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p": {"displayText":"concept dnd p","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd p","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-p"},
+"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro": {"displayText":"concept dnd ro","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd ro","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-ro"},
+"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw": {"displayText":"concept dnd rw","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"concept dnd rw","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#concept-dnd-rw"},
+"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind": {"displayText":"drag data item kind","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data item kind","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-kind"},
+"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string": {"displayText":"drag data item type string","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data item type string","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-item-type-string"},
+"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode": {"displayText":"drag data store mode","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"drag data store mode","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#drag-data-store-mode"},
+"https://html.spec.whatwg.org/multipage/interaction.html#editing-host": {"displayText":"editing host","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"editing host","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#editing-host"},
+"https://html.spec.whatwg.org/multipage/interaction.html#focusable-area": {"displayText":"focusable area","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"focusable area","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#focusable-area"},
+"https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps": {"displayText":"has focus steps","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"has focus steps","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#has-focus-steps"},
+"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation": {"displayText":"transient activation","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"transient activation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/interaction.html#transient-activation"},
+"https://html.spec.whatwg.org/multipage/system-state.html#navigator": {"displayText":"Navigator","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Navigator","type":"interface","url":"https://html.spec.whatwg.org/multipage/system-state.html#navigator"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global": {"displayText":"global object","export":true,"for_":["realm"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-global"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global": {"displayText":"relevant global object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm": {"displayText":"relevant realm","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant realm","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task": {"displayText":"queue a global task","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"queue a global task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task"},
+"https://infra.spec.whatwg.org/#list-contain": {"displayText":"contain","export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"contain","type":"dfn","url":"https://infra.spec.whatwg.org/#list-contain"},
+"https://infra.spec.whatwg.org/#list-size": {"displayText":"size","export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"size","type":"dfn","url":"https://infra.spec.whatwg.org/#list-size"},
+"https://infra.spec.whatwg.org/#string-starts-with": {"displayText":"starts with","export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"starts with","type":"dfn","url":"https://infra.spec.whatwg.org/#string-starts-with"},
+"https://mimesniff.spec.whatwg.org/#mime-type": {"displayText":"MIME type","export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#mime-type"},
+"https://mimesniff.spec.whatwg.org/#mime-type-essence": {"displayText":"essence","export":true,"for_":["MIME type"],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"essence","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#mime-type-essence"},
+"https://mimesniff.spec.whatwg.org/#parse-a-mime-type": {"displayText":"parse a MIME type","export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"parse a mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#parse-a-mime-type"},
+"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type": {"displayText":"serialize a MIME type","export":true,"for_":[],"level":"1","normative":true,"shortname":"mimesniff","spec":"mimesniff","status":"current","text":"serialize a mime type","type":"dfn","url":"https://mimesniff.spec.whatwg.org/#serialize-a-mime-type"},
+"https://w3c.github.io/FileAPI/#dfn-Blob": {"displayText":"Blob","export":true,"for_":[],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"Blob","type":"interface","url":"https://w3c.github.io/FileAPI/#dfn-Blob"},
+"https://w3c.github.io/FileAPI/#dfn-file": {"displayText":"File","export":true,"for_":[],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"File","type":"interface","url":"https://w3c.github.io/FileAPI/#dfn-file"},
+"https://w3c.github.io/FileAPI/#dfn-lastModified": {"displayText":"lastModified","export":true,"for_":["File"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"lastModified","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-lastModified"},
+"https://w3c.github.io/FileAPI/#dfn-name": {"displayText":"name","export":true,"for_":["File"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"name","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-name"},
+"https://w3c.github.io/FileAPI/#dfn-type": {"displayText":"type","export":true,"for_":["Blob"],"level":"1","normative":true,"shortname":"fileapi","spec":"fileapi","status":"current","text":"type","type":"attribute","url":"https://w3c.github.io/FileAPI/#dfn-type"},
+"https://w3c.github.io/permissions/#dfn-permission-descriptor-type": {"displayText":"permission descriptor type","export":true,"for_":["powerful feature"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission descriptor type","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-descriptor-type"},
+"https://w3c.github.io/permissions/#dfn-permission-state": {"displayText":"permission state","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission state","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-state"},
+"https://w3c.github.io/permissions/#dfn-powerful-feature": {"displayText":"powerful feature","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"powerful feature","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-powerful-feature"},
+"https://w3c.github.io/permissions/#dfn-request-permission-to-use": {"displayText":"request permission to use","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"request permission to use","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-request-permission-to-use"},
+"https://w3c.github.io/permissions/#dom-permissiondescriptor": {"displayText":"PermissionDescriptor","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"PermissionDescriptor","type":"dictionary","url":"https://w3c.github.io/permissions/#dom-permissiondescriptor"},
+"https://w3c.github.io/permissions/#dom-permissionstate-denied": {"displayText":"denied","export":true,"for_":["PermissionState"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"denied","type":"enum-value","url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
+"https://w3c.github.io/permissions/#dom-permissionstate-granted": {"displayText":"granted","export":true,"for_":["PermissionState"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"granted","type":"enum-value","url":"https://w3c.github.io/permissions/#dom-permissionstate-granted"},
+"https://w3c.github.io/permissions/#permissions-task-source": {"displayText":"permission task source","export":true,"for_":[],"level":"","normative":true,"shortname":"clipboard-apis","spec":"","status":"anchor-block","text":"permission task source","type":"dfn","url":"https://w3c.github.io/permissions/#permissions-task-source"},
+"https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
+"https://webidl.spec.whatwg.org/#SameObject": {"displayText":"SameObject","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SameObject","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SameObject"},
+"https://webidl.spec.whatwg.org/#SecureContext": {"displayText":"SecureContext","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SecureContext","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SecureContext"},
+"https://webidl.spec.whatwg.org/#a-new-promise": {"displayText":"a new promise","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"a new promise","type":"dfn","url":"https://webidl.spec.whatwg.org/#a-new-promise"},
+"https://webidl.spec.whatwg.org/#dfn-create-frozen-array": {"displayText":"create a frozen array","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"create a frozen array","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-create-frozen-array"},
+"https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled": {"displayText":"react","export":true,"for_":["promise"],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"react","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-perform-steps-once-promise-is-settled"},
+"https://webidl.spec.whatwg.org/#exceptiondef-typeerror": {"displayText":"TypeError","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"TypeError","type":"exception","url":"https://webidl.spec.whatwg.org/#exceptiondef-typeerror"},
+"https://webidl.spec.whatwg.org/#idl-DOMException": {"displayText":"DOMException","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMException","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
+"https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"https://webidl.spec.whatwg.org/#idl-boolean": {"displayText":"boolean","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"boolean","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-boolean"},
+"https://webidl.spec.whatwg.org/#idl-frozen-array": {"displayText":"FrozenArray","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"https://webidl.spec.whatwg.org/#idl-promise": {"displayText":"Promise","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Promise","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-promise"},
+"https://webidl.spec.whatwg.org/#idl-record": {"displayText":"record","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"record","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-record"},
+"https://webidl.spec.whatwg.org/#idl-sequence": {"displayText":"sequence","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"sequence","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-sequence"},
+"https://webidl.spec.whatwg.org/#idl-undefined": {"displayText":"undefined","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"undefined","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-undefined"},
+"https://webidl.spec.whatwg.org/#new": {"displayText":"new","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"new","type":"dfn","url":"https://webidl.spec.whatwg.org/#new"},
+"https://webidl.spec.whatwg.org/#notallowederror": {"displayText":"NotAllowedError","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotAllowedError","type":"exception","url":"https://webidl.spec.whatwg.org/#notallowederror"},
+"https://webidl.spec.whatwg.org/#notfounderror": {"displayText":"NotFoundError","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotFoundError","type":"exception","url":"https://webidl.spec.whatwg.org/#notfounderror"},
+"https://webidl.spec.whatwg.org/#reject": {"displayText":"reject","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"reject","type":"dfn","url":"https://webidl.spec.whatwg.org/#reject"},
+"https://webidl.spec.whatwg.org/#this": {"displayText":"this","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"this","type":"dfn","url":"https://webidl.spec.whatwg.org/#this"},
 };
 
 function mkRefHint(link, ref) {
     const linkText = link.textContent;
     let dfnTextElements = '';
-    if (ref.text != linkText) {
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
         dfnTextElements =
             mk.li({},
                 mk.b({}, "Term: "),
-                mk.span({}, ref.text)
+                mk.span({}, ref.displayText)
             );
     }
     const forList = ref.for_;
@@ -4979,7 +4978,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
