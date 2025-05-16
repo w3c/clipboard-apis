@@ -12,7 +12,7 @@ Repository: w3c/clipboard-apis
 !Explainer: <a href="https://github.com/w3c/clipboard-apis/blob/master/explainer.adoc">Async Clipboard API Explainer</a>
 Editor: Gary Kacmarcik, Google, garykac@google.com, w3cid 59482
 Editor: Anupam Snigdha, Microsoft, snianu@microsoft.com, w3cid 126950
-Former Editor: Hallvord R. M. Steen, Mozilla
+Former Editor: Hallvord R. M. Steen, Mozilla, hsteen@mozilla.com, w3cid 42065
 Former Editor: Grisha Lyukshin, Microsoft, glyuk@microsoft.com, w3cid 78883
 Abstract:
 	This document describes APIs for accessing data on the system clipboard. It provides
@@ -1932,7 +1932,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. Append |representation| to |item|'s [=list of representations=].
 
 	</div><!-- algorithm -->
-
+    
+    <div class="algorithm" data-algorithm="write-web-custom-format">
 	<h3 id="to-write-web-custom-formats"><dfn>write web custom formats</dfn></h3>
 
 		: Input
