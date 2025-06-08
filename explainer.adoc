@@ -230,10 +230,6 @@ The one case where permission must be explicitly requested is with the
 permission must have already been granted (either by requesting permission
 explicitly or by calling one of the read methods).
 
-IMPORTANT: The exact method for explicitly requesting a permission is still
-an active discussion. See
-link:https://github.com/w3c/permissions/issues/158[this permission bug].
-
 
 == Relationship to Current Clipboard API
 
