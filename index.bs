@@ -242,7 +242,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			<pre class="idl" data-highlight="webidl">
 			dictionary ClipboardChangeEventInit : EventInit {
-				sequence<DOMString> types = [];
+				sequence&lt;DOMString&gt; types = [];
 			};
 			</pre>
 
@@ -257,14 +257,14 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			[Exposed=Window]
 			interface ClipboardChangeEvent : Event {
 				constructor(DOMString type, optional ClipboardChangeEventInit eventInitDict = {});
-				readonly attribute FrozenArray<DOMString> types;
+				readonly attribute FrozenArray&lt;DOMString&gt; types;
 			};
 			</pre>
 
 			: <dfn for="ClipboardChangeEvent" data-export>types</dfn>
 			:: Returns a {{FrozenArray}} of {{DOMString}} objects indicating the [=mandatory data types=] 
-			   available on the [=system clipboard=] when the event was fired. [=Optional data types=] and
-			   custom formats are excluded to limit fingerprinting surface.
+				available on the [=system clipboard=] when the event was fired. [=Optional data types=] and
+				custom formats are excluded to limit fingerprinting surface.
 
 			</div>
 
@@ -273,7 +273,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			The <dfn export for="ClipboardChangeEvent">ClipboardChangeEvent(type, eventInitDict)</dfn> constructor steps are:
 
-			1. Set [=this=].{{ClipboardChangeEvent/types}} to a [=list/clone=] of |eventInitDict|["{{ClipboardChangeEventInit/types}}"].
+			1. Set [=this=].{{ClipboardChangeEvent/types}} to a [=list/clone=] of <var ignore=''>eventInitDict</var>["{{ClipboardChangeEventInit/types}}"].
 
 			</div>
 
@@ -2006,8 +2006,8 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. Append |representation| to |item|'s [=list of representations=].
 
 	</div><!-- algorithm -->
-    
-    <div class="algorithm" data-algorithm="write-web-custom-format">
+	
+	<div class="algorithm" data-algorithm="write-web-custom-format">
 	<h3 id="to-write-web-custom-formats"><dfn>write web custom formats</dfn></h3>
 
 		: Input
