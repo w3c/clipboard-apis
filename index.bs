@@ -226,9 +226,83 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			If the clipboard contents are changed outside the user agent, then the
 			{{GlobalEventHandlers/clipboardchange}} event MUST fire when the user agent regains focus.
+			No event fires when the clipboard changes while the document is out of focus.
+
+			This event doesn't provide any user clipboard data, hence there is no user permission 
+			required for listening to clipboard changes using this API.
+
+			This event provides the native data types (text, image) present on the clipboard when the
+			clipboardchange fires. Custom data types are not provided since it can significantly add 
+			to the fingerprinting surface.
+
+			The {{GlobalEventHandlers/clipboardchange}} event does not bubble and is not cancelable, as it
+			is not triggered by a user action but rather by changes to the [=system clipboard=] state.
+
+			<div id="clipboardchangeeventinit-idl">
+
+			<pre class="idl" data-highlight="webidl">
+			dictionary ClipboardChangeEventInit : EventInit {
+				sequence<DOMString> types = [];
+			};
+			</pre>
+
+			: <dfn for="ClipboardChangeEventInit" data-export>types</dfn>
+			:: A sequence of {{DOMString}} representing the [=mandatory data types=] available on the [=system clipboard=].
+
+			</div>
+
+			<div id="clipboardchangeevent-idl">
+
+			<pre class="idl" data-highlight="webidl">
+			[Exposed=Window]
+			interface ClipboardChangeEvent : Event {
+				constructor(DOMString type, optional ClipboardChangeEventInit eventInitDict = {});
+				readonly attribute FrozenArray<DOMString> types;
+			};
+			</pre>
+
+			: <dfn for="ClipboardChangeEvent" data-export>types</dfn>
+			:: Returns a {{FrozenArray}} of {{DOMString}} objects indicating the [=mandatory data types=] 
+			   available on the [=system clipboard=] when the event was fired. [=Optional data types=] and
+			   custom formats are excluded to limit fingerprinting surface.
+
+			</div>
+
+			<div class="algorithm" data-algorithm="clipboardchange-event-steps">
+			<h5 id="h-clipboardchange-event-steps">ClipboardChangeEvent constructor steps</h5>
+
+			The <dfn export for="ClipboardChangeEvent">ClipboardChangeEvent(type, eventInitDict)</dfn> constructor steps are:
+
+			1. Set [=this=].{{ClipboardChangeEvent/types}} to a [=list/clone=] of |eventInitDict|["{{ClipboardChangeEventInit/types}}"].
+
+			</div>
 
 			Since synthetic {{GlobalEventHandlers/cut}} and {{GlobalEventHandlers/copy}} events do not update the [=system clipboard=],
 			they will not trigger a "clipboardchange" event.
+
+			<div class="example" id="example-clipboardchange-usage">
+			The {{GlobalEventHandlers/clipboardchange}} event enables web applications to efficiently monitor
+			clipboard changes and provide dynamic user interfaces based on available data formats:
+
+			<pre class="example javascript">
+			// Listen for clipboard changes
+			navigator.clipboard.addEventListener('clipboardchange', function(event) {
+				// Check what types are available
+				const hasText = event.types.includes('text/plain');
+				const hasHTML = event.types.includes('text/html');
+				const hasImage = event.types.includes('image/png');
+				
+				// Update UI based on available formats
+				document.getElementById('paste-text-btn').disabled = !hasText;
+				document.getElementById('paste-html-btn').disabled = !hasHTML;
+				document.getElementById('paste-image-btn').disabled = !hasImage;
+			});
+			</pre>
+
+			This approach is more efficient than polling the clipboard using {{Clipboard/read()}} or 
+			{{Clipboard/readText()}} methods, and works across browsers that require user activation
+			for clipboard access.
+			</div>
 
 		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
 
