@@ -224,16 +224,13 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			* Scripts that use the [[#async-clipboard-api]] to write to the clipboard
 			* Actions that update the clipboard outside the user agent
 
-			If the clipboard contents are changed outside the user agent, then the
-			{{GlobalEventHandlers/clipboardchange}} event MUST fire when the user agent regains focus.
-			No event fires when the clipboard changes while the document is out of focus.
+			If the clipboard contents are changed while the document is not in focus, a single
+			{{GlobalEventHandlers/clipboardchange}} event MUST fire when the document regains focus,
+			even if the clipboard changed multiple times.
+			No event fires when the clipboard changes while the document is out of focus, which helps prevent malicious applications from monitoring the clipboard in the background.
 
-			This event doesn't provide any user clipboard data, hence there is no user permission 
+			This event doesn't provide any user clipboard data, hence there is no user permission or transient user activation
 			required for listening to clipboard changes using this API.
-
-			This event provides the native data types (text, image) present on the clipboard when the
-			clipboardchange fires. Custom data types are not provided since it can significantly add 
-			to the fingerprinting surface.
 
 			The {{GlobalEventHandlers/clipboardchange}} event does not bubble and is not cancelable, as it
 			is not triggered by a user action but rather by changes to the [=system clipboard=] state.
@@ -286,22 +283,25 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			<pre class="example javascript">
 			// Listen for clipboard changes
-			navigator.clipboard.addEventListener('clipboardchange', function(event) {
-				// Check what types are available
-				const hasText = event.types.includes('text/plain');
-				const hasHTML = event.types.includes('text/html');
-				const hasImage = event.types.includes('image/png');
+			navigator.clipboard.addEventListener('clipboardchange', (e) => {
+				// Check what data types are available on the clipboard
+				const hasText = e.types.includes('text/plain');
+				const hasHTML = e.types.includes('text/html');
+				const hasImage = e.types.includes('image/png');
 				
 				// Update UI based on available formats
 				document.getElementById('paste-text-btn').disabled = !hasText;
 				document.getElementById('paste-html-btn').disabled = !hasHTML;
 				document.getElementById('paste-image-btn').disabled = !hasImage;
 			});
+
+			// Alternatively, you can use the onclipboardchange property
+			// navigator.clipboard.onclipboardchange = (e) => { ... };
 			</pre>
 
-			This approach is more efficient than polling the clipboard using {{Clipboard/read()}} or 
-			{{Clipboard/readText()}} methods, and works across browsers that require user activation
-			for clipboard access.
+			This event-driven approach is more efficient than polling the clipboard with methods like
+			{{Clipboard/read()}} or {{Clipboard/readText()}} and works across browsers that require user activation
+			for clipboard access, as the UI can react instantly to clipboard changes without waiting for a timer to fire.
 			</div>
 
 		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
