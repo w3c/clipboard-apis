@@ -224,10 +224,41 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			* Scripts that use the [[#async-clipboard-api]] to write to the clipboard
 			* Actions that update the clipboard outside the user agent
 
-			If the clipboard contents are changed while the document is not in focus, a single
-			{{GlobalEventHandlers/clipboardchange}} event MUST fire when the document regains focus,
-			even if the clipboard changed multiple times.
-			No event fires when the clipboard changes while the document is out of focus, which helps prevent malicious applications from monitoring the clipboard in the background.
+			<div class="algorithm" data-algorithm="fire-clipboardchange-event">
+			<h5 id="h-fire-clipboardchange-event">To fire a clipboardchange event</h5>
+
+			To <dfn export>fire a clipboardchange event</dfn> given a {{Document}} <var>document</var>:
+
+			1. If <var>document</var> does not have [=sticky activation=], then return.
+
+			2. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
+
+			3. If <var>document</var> has <a>focus</a>:
+				1. Let <var>types</var> be a [=list=] of [=mandatory data types=] available on the [=system clipboard=].
+				2. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var>.
+				3. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
+			4. Otherwise:
+				1. Set <var>document</var>'s <dfn for="Document">clipboardchange pending flag</dfn> to true.
+
+			</div>
+
+			<div class="algorithm" data-algorithm="document-focus-steps">
+			<h5 id="h-document-focus-steps">Document focus steps</h5>
+
+			When a {{Document}} <var>document</var> gains <a>focus</a>:
+
+			1. If <var>document</var>'s [=Document/clipboardchange pending flag=] is true:
+				1. Set <var>document</var>'s [=Document/clipboardchange pending flag=] to false.
+				2. Let <var>types</var> be a [=list=] of [=mandatory data types=] available on the [=system clipboard=].
+				3. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var>.
+				4. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
+				5. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
+
+			</div>
+
+			For documents in nested browsing contexts, the {{GlobalEventHandlers/clipboardchange}} event fires independently in each {{Document}} based on its own focus state. A clipboard change will fire events in all focused documents across the browsing context tree that have [=sticky activation=].
+
+			<strong>Note:</strong> The <code>clipboardchange</code> event is only available after <a href="https://html.spec.whatwg.org/multipage/interaction.html#sticky-activation">sticky activation</a>.
 
 			This event doesn't provide any user clipboard data, hence there is no user permission or transient user activation
 			required for listening to clipboard changes using this API.
@@ -278,10 +309,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			they will not trigger a "clipboardchange" event.
 
 			<div class="example" id="example-clipboardchange-usage">
-			The {{GlobalEventHandlers/clipboardchange}} event enables web applications to efficiently monitor
-			clipboard changes and provide dynamic user interfaces based on available data formats:
-
-			<pre class="example javascript">
+			<pre class="javascript">
 			// Listen for clipboard changes
 			navigator.clipboard.addEventListener('clipboardchange', (e) => {
 				// Check what data types are available on the clipboard
@@ -298,10 +326,6 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			// Alternatively, you can use the onclipboardchange property
 			// navigator.clipboard.onclipboardchange = (e) => { ... };
 			</pre>
-
-			This event-driven approach is more efficient than polling the clipboard with methods like
-			{{Clipboard/read()}} or {{Clipboard/readText()}} and works across browsers that require user activation
-			for clipboard access, as the UI can react instantly to clipboard changes without waiting for a timer to fire.
 			</div>
 
 		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
