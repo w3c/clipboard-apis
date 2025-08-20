@@ -235,8 +235,9 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 
 			3. If <var>document</var> has <a>focus</a>:
 				1. Let <var>types</var> be a [=list=] of [=mandatory data types=] available on the [=system clipboard=].
-				2. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var>.
-				3. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
+				2. Let <var>changeId</var> be a unique identifier for this clipboard change, generated in an implementation-specific manner.
+				3. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var> and its {{ClipboardChangeEventInit/changeId}} member set to <var>changeId</var>.
+				4. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
 			4. Otherwise:
 				1. Set <var>document</var>'s <dfn for="Document">clipboardchange pending flag</dfn> to true.
 
@@ -250,15 +251,18 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			1. If <var>document</var>'s [=Document/clipboardchange pending flag=] is true:
 				1. Set <var>document</var>'s [=Document/clipboardchange pending flag=] to false.
 				2. Let <var>types</var> be a [=list=] of [=mandatory data types=] available on the [=system clipboard=].
-				3. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var>.
-				4. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
-				5. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
+				3. Let <var>changeId</var> be a unique identifier for this clipboard change, generated in an implementation-specific manner.
+				4. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var> and its {{ClipboardChangeEventInit/changeId}} member set to <var>changeId</var>.
+				5. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
+				6. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
 
 			</div>
 
 			For documents in nested browsing contexts, the {{GlobalEventHandlers/clipboardchange}} event fires independently in each {{Document}} based on its own focus state. A clipboard change will fire events in all focused documents across the browsing context tree that have [=sticky activation=].
 
 			<strong>Note:</strong> The <code>clipboardchange</code> event is only available after <a href="https://html.spec.whatwg.org/multipage/interaction.html#sticky-activation">sticky activation</a>.
+
+			The {{ClipboardChangeEvent/changeId}} provides a unique identifier for each clipboard change operation. For the same clipboard change, all windows and tabs within the same origin will receive events with identical {{ClipboardChangeEvent/changeId}} values, enabling applications with multiple windows to deduplicate events and avoid redundant processing. The identifier is origin-specific and does not provide cross-origin correlation capabilities.
 
 			This event doesn't provide any user clipboard data, hence there is no user permission or transient user activation
 			required for listening to clipboard changes using this API.
@@ -271,11 +275,15 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			<pre class="idl" data-highlight="webidl">
 			dictionary ClipboardChangeEventInit : EventInit {
 				sequence&lt;DOMString&gt; types = [];
+				DOMString changeId = "";
 			};
 			</pre>
 
 			: <dfn for="ClipboardChangeEventInit" data-export>types</dfn>
 			:: A sequence of {{DOMString}} representing the [=mandatory data types=] available on the [=system clipboard=].
+
+			: <dfn for="ClipboardChangeEventInit" data-export>changeId</dfn>
+			:: A {{DOMString}} representing a unique identifier for this clipboard change operation.
 
 			</div>
 
@@ -286,6 +294,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			interface ClipboardChangeEvent : Event {
 				constructor(DOMString type, optional ClipboardChangeEventInit eventInitDict = {});
 				readonly attribute FrozenArray&lt;DOMString&gt; types;
+				readonly attribute DOMString changeId;
 			};
 			</pre>
 
@@ -293,6 +302,11 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			:: Returns a {{FrozenArray}} of {{DOMString}} objects indicating the [=mandatory data types=] 
 				available on the [=system clipboard=] when the event was fired. [=Optional data types=] and
 				custom formats are excluded to limit fingerprinting surface.
+
+			: <dfn for="ClipboardChangeEvent" data-export>changeId</dfn>
+			:: Returns a {{DOMString}} representing a unique identifier for this specific clipboard change operation.
+				This identifier is consistent across all windows and tabs within the same origin for the same clipboard change,
+				enabling applications to deduplicate events when multiple windows receive the same clipboard change notification.
 
 			</div>
 
@@ -302,6 +316,7 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			The <dfn export for="ClipboardChangeEvent">ClipboardChangeEvent(type, eventInitDict)</dfn> constructor steps are:
 
 			1. Set [=this=].{{ClipboardChangeEvent/types}} to a [=list/clone=] of <var ignore=''>eventInitDict</var>["{{ClipboardChangeEventInit/types}}"].
+			2. Set [=this=].{{ClipboardChangeEvent/changeId}} to <var ignore=''>eventInitDict</var>["{{ClipboardChangeEventInit/changeId}}"].
 
 			</div>
 
@@ -309,9 +324,21 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 			they will not trigger a "clipboardchange" event.
 
 			<div class="example" id="example-clipboardchange-usage">
+			The {{GlobalEventHandlers/clipboardchange}} event enables web applications to efficiently monitor
+			clipboard changes and provide dynamic user interfaces based on available data formats:
+
 			<pre class="javascript">
+			// For applications with multiple windows, track processed change IDs to avoid duplication
+			const processedChangeIds = new Set();
+
 			// Listen for clipboard changes
 			navigator.clipboard.addEventListener('clipboardchange', (e) => {
+				// Deduplicate events across multiple windows using changeId
+				if (processedChangeIds.has(e.changeId)) {
+					return; // This change has already been processed
+				}
+				processedChangeIds.add(e.changeId);
+				
 				// Check what data types are available on the clipboard
 				const hasText = e.types.includes('text/plain');
 				const hasHTML = e.types.includes('text/html');
@@ -321,11 +348,22 @@ url: https://w3c.github.io/permissions/#permissions-task-source; type: dfn;
 				document.getElementById('paste-text-btn').disabled = !hasText;
 				document.getElementById('paste-html-btn').disabled = !hasHTML;
 				document.getElementById('paste-image-btn').disabled = !hasImage;
+				
+				// For remote desktop apps, sync clipboard to remote only once per change
+				if (hasText || hasHTML || hasImage) {
+					syncClipboardToRemote(e.changeId);
+				}
 			});
 
 			// Alternatively, you can use the onclipboardchange property
 			// navigator.clipboard.onclipboardchange = (e) => { ... };
 			</pre>
+
+			This event-driven approach is more efficient than polling the clipboard with methods like
+			{{Clipboard/read()}} or {{Clipboard/readText()}} and works across browsers that require user activation
+			for clipboard access, as the UI can react instantly to clipboard changes without waiting for a timer to fire.
+			The {{ClipboardChangeEvent/changeId}} is particularly useful for applications with multiple windows,
+			ensuring that each clipboard change is processed only once across all windows of the same origin.
 			</div>
 
 		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
