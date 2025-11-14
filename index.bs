@@ -42,9 +42,8 @@ url: https://w3ctag.github.io/privacy-principles/#dfn-partition; type: dfn;
 	text: partitions
 url: https://storage.spec.whatwg.org/#storage-key; type: dfn;
 	text: storage key
-url: https://storage.spec.whatwg.org/#storage-shelf; type: dfn;
-	text: storage shelf
-	text: storage shelves
+url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purposes; type: dfn;
+	text: obtain a storage key for non-storage purposes
 </pre>
 
 <pre class="biblio">
@@ -243,7 +242,7 @@ url: https://storage.spec.whatwg.org/#storage-shelf; type: dfn;
 
 			3. If <var>document</var> has [=system focus=]:
 				1. Let <var>types</var> be a list of [=mandatory data types=] available on the [=system clipboard=].
-				2. Let <var>changeId</var> be a unique identifier for the current clipboard state, generated according to the requirements defined in <a href="#h-changeid-generation">ChangeId Generation</a>.
+				2. Let <var>changeId</var> be the result of running [=generate a changeId=] given <var>document</var>.
 				3. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var> and its {{ClipboardChangeEventInit/changeId}} member set to <var>changeId</var>.
 				4. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
 			4. If <var>document</var> does not have [=system focus=]:
@@ -258,15 +257,13 @@ url: https://storage.spec.whatwg.org/#storage-shelf; type: dfn;
 
 			When a {{Document}} <var>document</var> gains [=system focus=]:
 
-			1. If <var>document</var>'s [=Document/clipboardchange pending flag=] is true:
-				1. Set <var>document</var>'s [=Document/clipboardchange pending flag=] to false.
-				2. Let <var>types</var> be a list of [=mandatory data types=] available on the [=system clipboard=].
-				3. Let <var>changeId</var> be a unique identifier for the current clipboard state, generated according to the requirements defined in <a href="#h-changeid-generation">ChangeId Generation</a>.
-				4. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var> and its {{ClipboardChangeEventInit/changeId}} member set to <var>changeId</var>.
-				5. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
-				6. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.
-
-			</div>
+		1. If <var>document</var>'s [=Document/clipboardchange pending flag=] is true:
+			1. Set <var>document</var>'s [=Document/clipboardchange pending flag=] to false.
+			2. Let <var>types</var> be a list of [=mandatory data types=] available on the [=system clipboard=].
+			3. Let <var>changeId</var> be the result of running [=generate a changeId=] given <var>document</var>.
+			4. Let <var>eventInit</var> be a new {{ClipboardChangeEventInit}} dictionary with its {{ClipboardChangeEventInit/types}} member set to <var>types</var> and its {{ClipboardChangeEventInit/changeId}} member set to <var>changeId</var>.
+			5. Let <var>global</var> be <var>document</var>'s [=relevant global object=].
+			6. [=Fire an event=] named {{GlobalEventHandlers/clipboardchange}} at <var>global</var>, using {{ClipboardChangeEvent}}, with <var>eventInit</var>.			</div>
 
 			For documents in nested browsing contexts, the {{GlobalEventHandlers/clipboardchange}} event fires independently in each {{Document}} based on its own focus state. A clipboard change will fire an event in the single document that has [=system focus=] (if that document has [=sticky activation=] or persistent clipboard permissions).
 
@@ -329,28 +326,30 @@ url: https://storage.spec.whatwg.org/#storage-shelf; type: dfn;
 
 			</div>
 
-			<h5 id="h-changeid-generation">ChangeId Generation</h5>
+		<h5 id="h-changeid-generation">ChangeId Generation</h5>
 
-			Let <var>changeId</var> be a unique identifier for the current clipboard state. User agents MUST NOT deliver the same <var>changeId</var> value to documents associated with different [=storage shelves=] and MUST deliver the exact same <var>changeId</var> value to all documents associated with the same [=storage shelf=].
+	<div class="algorithm" data-algorithm="generate-changeid">
 
-			<p class="note">The above requirements ensure that documents from the same origin and with the same partitioning receive identical change IDs for the same clipboard modification, enabling proper event deduplication across multiple windows and tabs, while preventing cross-partition correlation that could be used for tracking.</p>
+	To <dfn>generate a changeId</dfn> for a {{Document}} <var>document</var>:
 
-			<h6 id="h-changeid-implementation">Implementation Considerations</h6>
+	1. Let <var>globalChangeId</var> be a user agent-specific unique identifier representing the current state of the [=system clipboard=]. This identifier changes each time the [=system clipboard=] is modified, and is reset when the user agent restarts.
 
-			<p><em>This section is non-normative.</em></p>
+	2. Let <var>storageKey</var> be the result of running <a href="https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purposes">obtain a storage key for non-storage purposes</a> given <var>document</var>'s [=relevant settings object=].
 
-			User agents have flexibility in how they implement {{ClipboardChangeEvent/changeId}} generation, provided they meet the normative requirements above. A recommended approach is to store a random UUID per [=storage shelf=] and hash it with a browser-wide clipboard change identifier. This provides good privacy properties and persistent correlation within the same storage context.
+	3. Let <var>storageKeyBytes</var> be some user agent-specific binary representation of <var>storageKey</var>.
 
-			Regardless of the chosen approach, implementations should ensure that:
-			<ul>
-				<li>The identifier space is large enough to prevent collisions (e.g., 128-bit integers)</li>
-				<li>Cross-partition correlation is cryptographically infeasible</li>
-				<li>The generation method is consistent within a browsing session</li>
-				<li>Identifiers are cleared appropriately when site data is deleted</li>
-			</ul>
+	4. Let <var>hashedValue</var> be the result of applying a cryptographic hash function (such as SHA-256) to the concatenation of <var>globalChangeId</var> (as bytes) and <var>storageKeyBytes</var>.
 
-			Since synthetic {{GlobalEventHandlers/cut}} and {{GlobalEventHandlers/copy}} events do not update the [=system clipboard=],
-			they will not trigger a "clipboardchange" event.
+	5. Return a 128-bit integer derived from <var>hashedValue</var> (for example, by taking the first 128 bits of the hash output).
+
+	</div>
+
+		<p class="note">The above algorithm ensures that documents from the same origin and with the same partitioning receive identical change IDs for the same clipboard modification, enabling proper event deduplication across multiple windows and tabs, while preventing cross-partition correlation that could be used for tracking. As Client-side Storage Partitioning changes are incorporated into the storage key definition, this approach will automatically provide anonymization across partitions.</p>
+
+		<p class="note">The {{ClipboardChangeEvent/changeId}} does not persist across browser restarts, as the <var>globalChangeId</var> counter is reset when the user agent restarts. Similarly, when a user clears site data, the affected tabs should be refreshed, which causes event listeners to be re-attached and only receive future events with new change IDs.</p>
+
+		Since synthetic {{GlobalEventHandlers/cut}} and {{GlobalEventHandlers/copy}} events do not update the [=system clipboard=],
+		they will not trigger a "clipboardchange" event.
 
 			<div class="example" id="example-clipboardchange-usage">
 			The {{GlobalEventHandlers/clipboardchange}} event enables web applications to efficiently monitor
@@ -388,14 +387,12 @@ url: https://storage.spec.whatwg.org/#storage-shelf; type: dfn;
 			// navigator.clipboard.onclipboardchange = (e) => { ... };
 			</pre>
 
-			This event-driven approach is more efficient than polling the clipboard with methods like
-			{{Clipboard/read()}} or {{Clipboard/readText()}} and works across browsers that require user activation
-			for clipboard access, as the UI can react instantly to clipboard changes without waiting for a timer to fire.
-			The {{ClipboardChangeEvent/changeId}} is particularly useful for applications with multiple windows,
-			ensuring that each clipboard change is processed only once across all windows of the same [=partition=].
-			</div>
-
-		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
+		This event-driven approach is more efficient than polling the clipboard with methods like
+		{{Clipboard/read()}} or {{Clipboard/readText()}} and works across browsers that require user activation
+		for clipboard access, as the UI can react instantly to clipboard changes without waiting for a timer to fire.
+		The {{ClipboardChangeEvent/changeId}} is particularly useful for applications with multiple windows,
+		ensuring that each clipboard change is processed only once across all windows with the same [=storage key=].
+		</div>		<h4 id="clipboard-event-copy">The <dfn event for=GlobalEventHandlers>copy</dfn> event</h4>
 
 			When the user initiates a copy action, the user agent
 			[=fire a clipboard event|fires a clipboard event=] named
