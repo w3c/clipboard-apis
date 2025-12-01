@@ -209,6 +209,7 @@ Example of detecting clipboard changes:
   navigator.clipboard.addEventListener("clipboardchange", callback);
 ```
 
+The complete explainer specifically for "clipboardchange" event API can be found [here](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/ClipboardAPI/clipboard-change-event-explainer.md).
 
 == Clipboard Permissions
 
