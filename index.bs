@@ -209,7 +209,9 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 		An example is given below:
 
 		<pre class="example javascript">
-			var pasteEvent = new ClipboardEvent('paste');
+			var pasteEvent = new ClipboardEvent('paste', {
+				clipboardData: new DataTransfer()
+			});
 			pasteEvent.clipboardData.items.add('My string', 'text/plain');
 			document.dispatchEvent(pasteEvent);
 		</pre>
