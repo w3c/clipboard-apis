@@ -1252,6 +1252,8 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 			1. Let |p| be [=a new promise=] in |realm|.
 
+			1. Let |snapshotChangeCount| be the current [=clipboard change count=].
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
@@ -1320,6 +1322,18 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 						1. Let |option| be |clipboardItem|'s [=ClipboardItem/clipboard item=]'s [=presentation style=].
 
+						1. If this is the first iteration of the loop over |dataList|, then:
+
+							Issue: This check protects only the first item’s write. An external clipboard write after this check does not abort subsequent item writes.
+
+							1. Let |currentChangeCount| be the current [=clipboard change count=].
+
+							1. If |currentChangeCount| is not equal to |snapshotChangeCount|, then follow the below steps:
+
+								1. [=Reject=] |p| with {{"InvalidStateError"}} {{DOMException}} in |realm|.
+
+								1. Abort these steps.
+
 						1. [=Write blobs and option to the clipboard=] with |cleanItemList| and |option|.
 
 					1. Resolve |p|.
@@ -1347,6 +1361,8 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 			1. Let |p| be [=a new promise=] in |realm|.
 
+			1. Let |snapshotChangeCount| be the current [=clipboard change count=].
+
 			1. Run the following steps [=in parallel=]:
 
 				1. Let |r| be the result of running [=check clipboard write permission=].
@@ -1372,6 +1388,14 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 					1. Add |textBlob| to |itemList|.
 
 					1. Let |option| be set to "unspecified".
+
+					1. Let |currentChangeCount| be the current [=clipboard change count=].
+
+					1. If |currentChangeCount| is not equal to |snapshotChangeCount|, then follow the below steps:
+
+						1. [=Reject=] |p| with {{"InvalidStateError"}} {{DOMException}} in |realm|.
+
+						1. Abort these steps.
 
 					1. [=Write blobs and option to the clipboard=] with |itemList| and |option|.
 
