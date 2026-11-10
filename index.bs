@@ -851,6 +851,14 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 			1. Set |clipboardItemObject|'s [=/clipboard item=] to |clipboardItem|.
 
+			1. Let |types| be an empty list.
+			1. For each |representation| in |clipboardItem|'s [=list of representations=]:
+				1. Let |type| be |representation|'s [=representation/MIME type=] [=serialize a MIME type|serialized=].
+				1. If |representation|'s [=representation/isCustom=] is true, prefix |type| with `"web "`.
+				1. Append |type| to |types|.
+			1. Set |clipboardItemObject|'s [=ClipboardItem/types array=] to the result of running [=create a frozen array=] from |types|.
+			1. Return |clipboardItemObject|.
+
 		The <dfn constructor for="ClipboardItem" lt="ClipboardItem(items, options)"><code>new ClipboardItem(<var>items</var>, <var>options</var>)</code></dfn> constructor steps are:
 			1. If |items| is empty, then throw a {{TypeError}}.
 
