@@ -1113,21 +1113,9 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 						1. Append |representation| to |item|'s [=list of representations=].
 					
+					1. Run the [=read web custom format=] algorithm given |item| and |systemClipboardItem|.
+
 					1. If |item|'s [=list of representations=] size is greater than 0, append the [=ordered map=] «[ "item" → |item|, "originating" → |systemClipboardItem| ]» to |items|.
-
-				1. If |items| has a size > 0, then:
-				
-						1. Let |firstItem| be |items|[0]["item"]
-						
-						1. Run the [=read web custom format=] algorithm given |firstItem|.
-					
-				1. 	Else:
-
-						1. Let |customItem| be a new [=/clipboard item=].
-
-						1. Run the [=read web custom format=] algorithm given |customItem|.
-
-						1. If |customItem|'s [=list of representations=] size is greater than 0, append the [=ordered map=] «[ "item" → |customItem|, "originating" → null ]» to |items|.
 
 
 				1. [=Queue a global task=] on the [=clipboard task source=], given |realm|'s [=realm/global object=], to perform the below steps:
@@ -2132,18 +2120,17 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 		: Input
 		:: |item|, a [=/clipboard item=]
+		:: |systemClipboardItem|, a [=system clipboard item=]
 
-		1. Let |webCustomFormatMap| be the [=os specific custom map name=].
+		1. Let |mapName| be the [=os specific custom map name=].
 
-		1. Read |webCustomFormatMap| from the [=system clipboard=].
+		1. Let |mapRepresentation| be the [=system clipboard representation=] in |systemClipboardItem|'s list of [=system clipboard representation=]s whose [=system clipboard representation/name=] is |mapName|.
 
-			Issue: specify in more detail the process of reading a |webCustomFormatMap|.
+		1. If there is no such representation or its [=system clipboard representation/data=] is empty, return |item|.
 
-		1. If |webCustomFormatMap| is empty, then return |item|.
+		1. Let |webCustomFormatMapString| be the JSON string deserialized from |mapRepresentation|'s [=system clipboard representation/data=].
 
-		1. Let |webCustomFormatMapString| be the JSON string deserialized from |webCustomFormatMap|.
-
-			Note: Need a JSON reader to deserialize the content from the |webCustomFormatMap|.
+			Note: Need a JSON reader to deserialize the content from |mapRepresentation|'s [=system clipboard representation/data=].
 
 		1. For each (|key|, |value|) in |webCustomFormatMapString|:
 
