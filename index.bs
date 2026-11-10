@@ -944,7 +944,7 @@ url: https://storage.spec.whatwg.org/#obtain-a-storage-key-for-non-storage-purpo
 
 						Note: This branch covers {{ClipboardItem}}s obtained from {{Clipboard/read()}}, for which the OS clipboard read is deferred to this point. To ensure the read happens at most once per type — even if {{ClipboardItem/getType()}} is called multiple times concurrently for the same MIME type — the resulting {{Promise}} is cached in [=this=]'s [=ClipboardItem/representations with resolvers=] map, keyed by a normalized type string so that `"text/html"` and `"web text/html"` are tracked independently while differently-cased spellings of the same type (e.g., `"text/HTML"` and `"text/html"`) collapse to a single entry.
 
-						1. Let |key| be |mimeType|'s [=MIME type/essence=]. If |isCustom| is true, prefix |key| with `"web "`.
+						1. Let |key| be |mimeType|'s [=MIME type/essence=]. If |isCustom| is true, set |key| to `"web "` followed by |mimeType| [=serialize a MIME type|serialized=].
 
 						1. If [=this=]'s [=ClipboardItem/representations with resolvers=][|key|] [=map/exists=], then return [=this=]'s [=ClipboardItem/representations with resolvers=][|key|].
 
